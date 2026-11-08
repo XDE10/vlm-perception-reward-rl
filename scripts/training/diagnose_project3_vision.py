@@ -16,10 +16,11 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--model',default='Qwen/Qwen2.5-VL-3B-Instruct');p.add_argument('--revision',default='66285546d2b821cf421d4f5eb2576359d3770cd3');p.add_argument('--adapter');p.add_argument('--data',required=True);p.add_argument('--image-archive-root',default='data/project3_sources/intergps/data/geometry3k');p.add_argument('--output',required=True);p.add_argument('--max-new-tokens',type=int,default=2048);a=p.parse_args()
     import torch
     from PIL import Image
-    from transformers import AutoModelForVision2Seq,AutoProcessor
+    from transformers import AutoProcessor
+    from src.training.hf_compat import vision_model_class
     if not torch.cuda.is_available():raise RuntimeError('Visual model diagnostic requires CUDA')
     if a.revision=='main':raise ValueError('Pin model revision')
-    processor=AutoProcessor.from_pretrained(a.model,revision=a.revision,max_pixels=802816);model=AutoModelForVision2Seq.from_pretrained(a.model,revision=a.revision,torch_dtype=torch.bfloat16,attn_implementation='sdpa').to('cuda').eval()
+    processor=AutoProcessor.from_pretrained(a.model,revision=a.revision,max_pixels=802816);model=vision_model_class().from_pretrained(a.model,revision=a.revision,dtype=torch.bfloat16,attn_implementation='sdpa').to('cuda').eval()
     if a.adapter:
         from peft import PeftModel
         model=PeftModel.from_pretrained(model,a.adapter).eval()
