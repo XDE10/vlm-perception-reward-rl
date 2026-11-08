@@ -36,6 +36,9 @@ SEALED_MANIFESTS = [
 SKIP_DIR_NAMES = {
     ".git",
     ".pytest_cache",
+    ".ruff_cache",
+    ".mypy_cache",
+    ".hypothesis",
     ".venv",
     ".pilot_deps",
     "__pycache__",
@@ -60,13 +63,19 @@ def iter_files():
         kept = []
         for name in sorted(dirnames):
             rel_child = (rel / name).as_posix() if rel != Path(".") else name
-            if name in SKIP_DIR_NAMES or rel_child in SKIP_DIR_PATHS:
+            if name in SKIP_DIR_NAMES or rel_child in SKIP_DIR_PATHS or (rel == Path(".") and name == ".cache"):
                 continue
             kept.append(name)
         dirnames[:] = kept
         for name in sorted(filenames):
             path = Path(dirpath) / name
-            if path == MANIFEST or name.endswith(".pyc"):
+            if (
+                path == MANIFEST
+                or name.endswith(".pyc")
+                or name == "uv.lock"
+                or name in {".DS_Store", "Thumbs.db", "desktop.ini"}
+                or ":Zone.Identifier" in name
+            ):
                 continue
             yield path
 

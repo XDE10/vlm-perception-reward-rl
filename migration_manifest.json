@@ -13,8 +13,8 @@
   },
   {
    "path": ".gitignore",
-   "bytes": 5577,
-   "sha256": "a3cdccb8361e115421c8a4ab1eb7010b2df6c4f4797f9eedf624d918d5e61f12",
+   "bytes": 5576,
+   "sha256": "3100c931e4e16eb556aa976bd9ce99d24c896a5f59f3b29ed2c9b9d78f723b5d",
    "updated_in": "2026-11-08_restructure",
    "source_sha256": "daa8e39c3ea8606c19692d6c814a47c4939a9785cc2007282eddb55a4294df84",
    "changed_for_portability": true
@@ -19943,10 +19943,10 @@
   },
   {
    "path": "pyproject.toml",
-   "bytes": 457,
-   "sha256": "2813809c2289e37e0b95d97f8d8a749aa5b87602821c138185d37a3de8e3f279",
+   "bytes": 476,
+   "sha256": "63fc39f72da883df87ef8f46f277faad14be505de5d3fdc704c790036378ff2a",
    "source_sha256": "2813809c2289e37e0b95d97f8d8a749aa5b87602821c138185d37a3de8e3f279",
-   "changed_for_portability": false
+   "changed_for_portability": true
   },
   {
    "path": "reports/README.md",
@@ -22484,10 +22484,10 @@
   },
   {
    "path": "tools/build_migration_manifest.py",
-   "bytes": 10511,
-   "sha256": "81ba03438da2e21f50377f6c035c4844e191cd6a630b5b3a945e8a9e34be8361",
+   "bytes": 10811,
+   "sha256": "1d4706246342ffd248816b910b9866414413509996490dc77c65e2c8a8c27bc6",
    "source_sha256": "81ba03438da2e21f50377f6c035c4844e191cd6a630b5b3a945e8a9e34be8361",
-   "changed_for_portability": false
+   "changed_for_portability": true
   },
   {
    "path": "tools/check_links.py",
@@ -22540,8 +22540,8 @@
    "changes": [
     {
      "path": ".gitignore",
-     "previous_sha256": "8ab63edd6eb2d881e553f2a6af251275f14f42a05611a08853892ab0932e308e",
-     "current_sha256": "a3cdccb8361e115421c8a4ab1eb7010b2df6c4f4797f9eedf624d918d5e61f12"
+     "previous_sha256": "a3cdccb8361e115421c8a4ab1eb7010b2df6c4f4797f9eedf624d918d5e61f12",
+     "current_sha256": "3100c931e4e16eb556aa976bd9ce99d24c896a5f59f3b29ed2c9b9d78f723b5d"
     }
    ],
    "moves": {},
