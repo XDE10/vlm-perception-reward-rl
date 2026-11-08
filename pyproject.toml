@@ -1,0 +1,12 @@
+[project]
+name = "project3-multimodal-geometry"
+version = "0.1.0"
+description = "项目三：多模态几何推理的视觉依赖与稀疏感知奖励（Qwen2.5-VL-3B-Instruct）"
+readme = "README.md"
+requires-python = ">=3.10"
+# 运行依赖不在此声明：CPU 检查环境见 requirements/，GPU 环境需按驱动单独固定
+# PyTorch/CUDA 版本，见 docs/training.md。
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--strict-markers"

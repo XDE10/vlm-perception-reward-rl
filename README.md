@@ -1,166 +1,99 @@
 # 项目三：多模态几何推理的视觉依赖与稀疏感知奖励
 
-更新：2026-11-08（完成与其他两个项目的彻底分离清理，见 [清理记录](迁移记录/清理记录_20261108.md)）。本 README 是新接手者和 Codex 的项目入口，覆盖当前事实、运行入口与后续验收。这个目录可以独立迁移，不需要另外两个项目目录。原 `modern_genai` 内的项目专用内容已清理；旧原仓库绝对路径只存在于部分历史记录，不是运行依赖。
+基于 Qwen2.5-VL-3B-Instruct 的几何图形事实感知项目：先用手工/半自动认证的
+几何事实做感知 SFT，再用稀疏、可解释的感知奖励做 GRPO，研究“视觉信息是否被
+真正使用”。本仓库是可复现的数据、配置、训练入口与审计证据集合；**尚未有
+GPU 验收后的训练产物**。
 
-## 项目目标
+## 当前状态
 
-研究视觉语言模型在几何题中是否实际使用图像，以及经过原图审核、排除文字已给信息的感知事实，能否为监督和强化学习提供更可信的信号。主模型是 **Qwen/Qwen2.5-VL-3B-Instruct**，主要数据为 Geometry3K，外部评测计划包含带来源重叠说明的 MathVista。
+| 项目 | 事实（2026-11-08） |
+| --- | --- |
+| 批准数据 | 609 条训练事实（458 幅图）/ 82 条 validation 事实（77 幅图），部分认证事实，不是全图金标 |
+| 模型 | `Qwen/Qwen2.5-VL-3B-Instruct` revision `66285546d2b821cf421d4f5eb2576359d3770cd3` |
+| 训练阶段 | 已实现感知 SFT 入口与稀疏 GRPO 入口；`configs/` 只有 2 步工程 smoke |
+| GPU | 未验收：没有真实 VL 前后向、视觉 rollout、显存/恢复记录 |
+| 测试 | Python 3.11.4 下 68 passed / 2 failed（缺 `math_verify`、`trl`，见 [docs/verification.md](docs/verification.md)） |
+| 历史 | 2026-10-24 迁移（Python 3.12 时代记录 15 passed）、2026-11-08 清理与结构整理，均记录在 [CHANGELOG.md](CHANGELOG.md) |
 
-当前交付的是部分感知事实数据、图像审计、HF/TRL 训练入口与视觉诊断脚本。完整几何问答能力提升、全图感知准确率和 V0～V4 受控实验尚未得到模型实测。
+“已实现代码”“CPU 测试通过”“真实 GPU 跑通”“能力提升”是四种不同结论，报告
+时必须分开陈述。2 步 smoke 或 ZIP 完整性检查不代表训练成功。
 
-## 给 Codex 的最小阅读顺序
+## 最小阅读顺序
 
-1. [AGENTS.md](AGENTS.md)：本目录的项目身份和阅读入口。
-2. 本 README：当前状态、代码地图和实际命令。
-3. [当前运行数据清单](data/portable_release/manifest.json) 与 [当前配置目录](configs)：核对实际文件、批准范围、模型和输出身份。
-4. 按任务阅读下方相关源文件；再查 [完整研究方案](project_blueprints/项目三_多模态几何推理_详细实施方案.md) 与 [Strict v8 实测报告](reports/strict_v8_20261024/执行报告.md)。
+1. 本页 → [docs/repo_layout.md](docs/repo_layout.md)（目录与模块地图）
+2. [docs/data.md](docs/data.md)（数据准入与边界）+ [data/portable_release/manifest.json](data/portable_release/manifest.json)
+3. [docs/architecture.md](docs/architecture.md)（流水线与身份链）
+4. [docs/training.md](docs/training.md)（配置、命令、GPU 验收清单）
+5. [docs/verification.md](docs/verification.md)（校验、测试与报告规范）
 
-`data/portable_release/manifest.json` 的 `approved_training_files` / `approved_evaluation_files` 是本包当前数据准入范围。清单里的跨项目 `summary` 是原联合报告的背景，不会自动扩大授权。代码功能以实际源码为准；旧方案中的“待实现”“暂停写脚本”或旧数据数量可能已被后续实现和发布取代。具体冲突先看文件和版本，不能按段落里的“最新”二字推断。
+历史方案与迁移证据在 [docs/blueprints/](docs/blueprints/) 与
+[docs/migration/](docs/migration/)，仅供溯源，**不可当作当前入口**。
 
-## 当前事实与未完成事项
-
-- 当前批准的逐事实修剪子集为 **609 train / 82 validation**，涉及 **458 / 77 幅不同图像**。不是把 Geometry3K 全部题目批准为感知金标。
-- 原图关联、题答/事实审核、文字蕴含排除和跨 split 像素 SHA 守卫已有记录。历史阶段的 531、928 等计数不代表当前最终 train 数。
-- `model_perception` 只含认证且图像独占的部分事实；AI 审核加确定性检查不等于完整人工金标。
-- 当前感知 SFT 目标只有 `model_perception`，**不包含完整答案推理**；不能把这一 smoke 称为完整 V2“感知＋答案 SFT”。
-- 当前稀疏 GRPO smoke 从感知 SFT 的合并权重起跑，不能直接当作方案中从原始 V0 起跑的 V3/V4 公平对照。
-- 实际入口是 HF Transformers/TRL；详细方案中的 EasyR1 是设计路线，当前包没有已验证的 EasyR1 集成结果。
-- 包内相关 CPU 测试记录为 **15 passed**，迁移 SHA 校验通过；实际 VL processor、模型前后向、视觉 rollout、显存和恢复均待 GPU 验收。
-
-当前只有工程 smoke 配置，没有本项目 GPU 训练产物、完整正式实验结果或已实测的 Linux/CUDA 环境锁文件。原仓库借用过的 Windows 虚拟环境已经清理；现在需要在本项目或目标训练环境重新创建依赖环境。
-
-## 模型与数据来源
-
-- 主模型：`Qwen/Qwen2.5-VL-3B-Instruct`，revision `66285546d2b821cf421d4f5eb2576359d3770cd3`。
-- 视觉分支通过对应 VL 模型的 `AutoProcessor` 处理图片与聊天模板；配置中保留的文本 `tokenizer_path` 不代表视觉分支应改用普通文本 tokenizer。
-- Geometry3K 原始材料和 InterGPS 图示/文本逻辑关联见 [data/project3_sources](data/project3_sources) 与 [图像关联审计](data/project3_audit)。
-- MathVista 来源/同图重叠见 [真实数据审计报告](reports/project3_cpu_20261023/审计报告.md)。完整官方 testmini 与排除已知 Geometry3K 来源/精确重叠的自定义子集应分别报告，不能直接称完全 OOD。
-
-## 当前数据与使用边界
-
-- [感知训练子集](data/portable_release/project3_train_fact_pruned.jsonl)：609 行，批准训练，含非空认证正事实及明确稀疏范围。
-- [感知 validation](data/portable_release/project3_validation_fact_pruned.jsonl)：82 行，只用于评测与诊断。
-- [dev 保护 ID](data/portable_release/reserved_dev_ids_never_train.json)：保留划分身份。
-
-训练输入白名单是 `problem` 和 `image_path`；感知 SFT 目标白名单是 `model_perception`。`reference_answer`、认证正负事实、审核意见和内部符号身份不进入问题提示。私有答案/认证事实仅在对应评测或奖励侧使用。
-
-迁移运行副本的 691 行只把 `image_path` 改为包内相对路径；题目、答案、标签、批准状态与图片字节保持不变，原发布文件和原 SHA 留档。每次校验会核对图片 SHA。
-
-事实按 Angle → Length → Parallel → Perpendicular → Tangent 的顺序规范化；角的顶点角色不能机械按字母重排。认证范围之外的事实未知，需要 mask；稀疏 Recall/有限范围 FP 不等于全图事实 Precision 或完整防幻觉能力。
-
-所有已批准训练行仍需要通过文件 SHA、逐行 `training_approved`、唯一 ID 和模型输入白名单检查。候选、隔离、存疑数据不可通过手改批准字段或仅更新哈希进入训练。新数据版本应保留原发布与来源证据，验证/测试内容不能进入合成生成器。
-
-## 目录与代码地图
-
-- [configs](configs)：本项目使用相对路径的最新工程配置，执行时从本目录根部运行。
-- [data/portable_release](data/portable_release)：当前实际运行副本；原始发布和历史版本在 `data/` 其他目录中留档。
-- [src](src)、[scripts](scripts)、[tests](tests)：训练、数据、评分与测试实现。2026-11-08 已与其他两个项目彻底分离：仅保留项目三主线模块/脚本与必要验证记录，共用 API 合成栈、项目一/二专用脚本与测试已删除（详见 [清理记录](迁移记录/清理记录_20261108.md)）。
-- [project_blueprints](project_blueprints)：详细研究方案、共用规范和历史配置。里面旧路径配置不能替代根目录 `configs/`。
-- [reports](reports)、[迁移记录](迁移记录)：逐项审核、失败/隔离证据、版本化测试与迁移验收。
-- [tools/verify_migration.py](tools/verify_migration.py)：无需模型或网络的离线完整性校验。
-
-本项目主要实现：
-
-- [scripts/train_project3.py](scripts/train_project3.py)：感知 SFT/视觉 GRPO 命令入口。
-- [src/training/approved_hf.py](src/training/approved_hf.py)：VL processor、视觉 assistant-only labels、LoRA、TRL 与合并权重身份检查。
-- [src/data/approved_training_inputs.py](src/data/approved_training_inputs.py)：训练文件授权、图片字段与监督白名单。
-- [src/data/perception_v4.py](src/data/perception_v4.py)、[src/training/perception_reward_v4.py](src/training/perception_reward_v4.py)：认证事实范围和稀疏奖励回调。
-- [src/data/geometry_model_serialization.py](src/data/geometry_model_serialization.py)：模型可见事实序列化；内部 `radius_*` 不能泄漏。
-- [src/data/geometry_split_guard.py](src/data/geometry_split_guard.py)：图像像素身份与跨划分保护。
-- [scripts/diagnose_project3_vision.py](scripts/diagnose_project3_vision.py)：同一批固定 ID 的原图、无图、黑图和中央遮挡诊断。
-- [src/evaluation/geometry_perception_parser.py](src/evaluation/geometry_perception_parser.py)：有限关系 schema 解析与集合语义评价支持。
-
-## 环境与首次检查
-
-所有下方相对路径命令均先进入本项目根目录；不使用旧 `modern_genai` 路径或旧 venv。Python 3.12 是之前 CPU 模块验证所用版本。首先只需标准库即可检查迁移完整性：
+## 快速检查（无需 GPU）
 
 ```bash
-python --version
-python tools/verify_migration.py
-python tools/verify_migration.py --full
+python tools/verify_migration.py --full   # 离线完整性：manifest、release、逐行批准、图片 SHA
+python -m pytest -q                        # CPU 测试（当前基线 68/2，两处为环境缺包）
+python tools/check_links.py                # 当前文档相对链接
 ```
 
-第一条校验模式检查清单文件存在性/大小、当前 release SHA、批准范围、配置依赖和图片 SHA；`--full` 额外检查所有记录文件的 SHA。脚本可在别处通过其绝对路径调用，它会自行定位包根。校验通过不证明 CUDA 训练或新环境依赖已安装。
+`python` 需要 3.10+（本机实测 3.11.4）。上述通过只证明离线/CPU 性质，不证明
+CUDA、模型前后向或新环境依赖已安装。
 
-CPU 环境参考步骤（先使用你安装的 Python 3.12 创建虚拟环境）：
+## 目录结构
+
+```text
+.
+├── README.md / AGENTS.md / CHANGELOG.md
+├── pyproject.toml / .editorconfig / .gitignore
+├── configs/       当前执行配置（SFT smoke、稀疏 GRPO smoke）
+├── data/          冻结的数据载荷（约 1.4 GB，不进 git，见 data/README.md）
+├── docs/          当前文档 + guides/ + 历史归档 blueprints/、migration/
+├── reports/       只追加的实验与审核证据（布局冻结）
+├── requirements/  环境记录（非锁文件）
+├── scripts/       data/ training/ reporting/ migration/ common/ 分组脚本
+├── src/           data/ evaluation/ losses/ teachers/ training/ 库代码
+├── tests/         CPU 测试
+└── tools/         verify_migration.py / build_migration_manifest.py / check_links.py
+```
+
+分组说明与“为什么 data/、reports/ 不移动”见 [docs/repo_layout.md](docs/repo_layout.md)。
+
+## 数据边界（最重要）
+
+- 唯一训练/评测数据入口：`data/portable_release/` 中由
+  [release manifest](data/portable_release/manifest.json) 的 `approved_*_files`
+  列出的文件；609/82 行是当前批准范围。
+- 模型输入只放行 `problem` 与相对 `image_path`；SFT 目标是 `model_perception`。
+  `reference_answer`、认证正负事实、审核意见不得进入提示。
+- 认证范围之外的事实视为未知（mask）；不能宣称完整防幻觉或全图 precision/recall。
+- 不手改批准字段、行内容、图片或 SHA；不把 validation/测试题用于训练或调奖励。
+- 新数据版本使用新的带日期目录并重新封板，保留来源证据。
+
+## 训练入口
 
 ```bash
-python -m venv .venv
+# 感知 SFT（需要已验收的 GPU 环境；当前未执行）
+python -m scripts.training.train_project3 --config configs/project3_fact_sft_smoke.json
+
+# 稀疏 GRPO（从 SFT merged 权重起跑，依赖 merged 权重身份清单）
+python -m scripts.training.train_project3 --config configs/project3_sparse_v4_grpo_smoke.json
 ```
 
-Windows PowerShell 激活：
+环境安装、输出目录、诊断脚本与 GPU 验收清单见
+[docs/training.md](docs/training.md)。稀疏 GRPO 的数学检查通过子进程调用
+`math_verify`（未列入 requirements 快照，属既有事实）。
 
-```powershell
-.\.venv\Scripts\Activate.ps1
-```
+## 历史与溯源
 
-Linux/macOS 激活：
-
-```bash
-source .venv/bin/activate
-```
-
-激活后恢复模块检查环境并运行相关测试：
-
-```bash
-python -m pip install -r requirements-cpu-snapshot.txt
-python -m pytest tests/test_approved_training_inputs.py tests/test_training_entries_cpu.py tests/test_perception_v4.py tests/test_geometry_model_serialization.py -q
-```
-
-[requirements-cpu-snapshot.txt](requirements-cpu-snapshot.txt) 是旧 CPU 环境的主要包版本记录，包含 PyTorch、Transformers、TRL、PEFT 等，**不是完整依赖锁或已实测的 CUDA 安装方案**。目标 GPU 环境应单独固定与驱动匹配的 PyTorch/CUDA 和框架版本并做 import/API 验收，不要据 CPU 包安装成功宣称 GPU 可运行。原 `.pilot_deps/`（数学验证器本地依赖副本）已于 2026-11-08 分离清理删除；GRPO 奖励仍通过 `python -m scripts.math_verify_v3_strict_worker` 使用 pip 包 `math_verify`，需在目标环境按实际验证安装（该包未列入 requirements 快照，为既有事实，非本次清理引入）。
-
-最近已保存的相关 CPU 检查为 15 passed，证据见 [迁移验收记录](迁移记录/迁移验收.md) 和 [机器可读结果](迁移记录/迁移验收.json)。本次 README 更新只运行文档与离线完整性检查，没有重跑模型测试或 GPU 训练。
-
-## 当前 GPU 入口与输出
-
-先做感知 SFT，再从它实际导出的 merged 权重执行当前工程 RL smoke：
-
-```bash
-python -m scripts.train_project3 --config configs/project3_fact_sft_smoke.json
-python -m scripts.train_project3 --config configs/project3_sparse_v4_grpo_smoke.json
-```
-
-两份配置都是 2 步，学习率 `2e-5`、LoRA 默认 rank 16、BF16、`max_length=3800`、`max_pixels=802816`。RL 每题 4 条回答、最多生成 2048 tokens、`beta=0.04`，感知奖励权重为 0.2；这些是工程默认，不是已验证的最优超参数。
-
-SFT 预期输出 `runs/strict_v8_project3_perception_sft_smoke/merged/`，RL 依赖其实际权重和身份清单。迁移包没有这些训练产物。
-
-在 GPU 环境中做固定 validation 视觉诊断的示例（先创建输出目录）：
-
-```bash
-python -c "from pathlib import Path; Path('runs').mkdir(exist_ok=True)"
-python -m scripts.diagnose_project3_vision --data data/portable_release/project3_validation_fact_pruned.jsonl --output runs/vision_validation_diagnostic.jsonl
-```
-
-默认诊断原始 VL 模型；若检查训练后的模型需按脚本接口明确传入对应 adapter/模型身份。无图条件真正移除 image 及视觉占位；中央遮挡只是输入扰动，不能当作几何真值测试。
-
-正式模型命令需要目标 CUDA 环境和配置中的固定模型 revision 权重；本次文档更新不会自动执行这些训练/下载命令。当前入口检查单张可见 GPU，不能直接当成多卡配置。重新开始实验使用新输出目录；恢复必须核对完整 checkpoint 身份，不能只加载 adapter 就声称恢复了优化过程。
-
-## 完整实验与评测计划
-
-完整设计包含 V0 原始 VL、V1 答案 SFT、V2 感知＋答案 SFT、V3 答案/格式 GRPO、V4 额外感知奖励 GRPO。方案中的主要因果对照为同一 V0 起点的 V3/V4；当前“感知事实 SFT → 稀疏 GRPO”只是工程验证路径，不能直接填入上述正式结果矩阵。
-
-正式比较需固定同一有效题集、权重起点、题目/图片处理、生成与更新预算，建立同范围的 answer-only 基线。感知标签只用于有证据的范围，不能给无金标事实任意判错或补标签。
-
-评测包括几何最终答案正确率、视觉扰动敏感度、认证范围内事实得分、未知覆盖、截断及资源成本。Geometry3K 官方划分、逐事实批准子集、MathVista 官方完整集合与去已知来源/精确重叠子集分别标注。图像复用与同题泄漏是不同证据，不能混称。
-
-## 建议继续工作的顺序
-
-1. 先验收图片 SHA、split 像素守卫、模型可见事实序列化与 `problem/image_path` 白名单；逐行核对 canonicalization 和奖励范围。
-2. 在真实 GPU 加载固定 VL 模型/processor，以最长图片和题目执行前后向，检查图像 token、assistant mask、有限 loss/梯度及峰值显存。
-3. 对固定 validation 做原图/无图/黑图/中央遮挡诊断，建立带原始预测的 V0 基线；不要先按测试表现挑视觉必需子集。
-4. 完成感知 SFT 的 checkpoint 保存/恢复与 merged 身份检查，再验证稀疏 GRPO 的奖励接线和视觉 rollout。
-5. 根据完整研究问题补齐答案监督与匹配的 answer-only baseline，冻结 V0～V4 的正式起点和预算，再训练评测。当前事实 SFT 本身不能证明几何解题能力提升。
-
-每个阶段保存配置、数据/模型身份、原始预测、评分版本、恢复记录、显存和成本。将“已实现代码”“CPU 通过”“真实模型跑通”“最终能力提升”分别陈述；未运行的检查保留未验证状态。
-
-## 历史材料、迁移与后续维护
-
-本项目不依赖文本数学项目的训练输出；只依赖本目录中按当前配置生成的视觉 SFT 合并基座。认证事实是部分覆盖，无法据此宣称完整图示感知正确。
-
-共用 API 审核缓存压缩包 `reports/data_release_preparation_20261024/shared_api_cache.zip`（15119 个小文件，约 107 MB）已于 2026-11-08 按清理决定删除（见 [清理记录](迁移记录/清理记录_20261108.md)）；现有训练与离线校验不依赖它，缓存内容无法从本包再生。历史成本账本是审计事实，不是新任务的调用额度；恢复 API 数据流水线前应依据当前任务的实际范围、密钥与预算。不要自动重新生成或扩量已封存数据。
-
-[migration_manifest.json](migration_manifest.json) 跟踪迁移负载文件的大小和哈希，数据 release 的 manifest 另行保护训练批准。本次只同步 README/AGENTS 对应的文档清单项，并在 `迁移记录/README交接补充前_20261024.md`、`迁移记录/migration_manifest_交接补充前_20261024.json` 保留旧版本。以后合法修改文档/代码应说明变更和相关校验；不能用批量重算训练数据 SHA 的方式绕过数据准入。
-
-## 新对话可直接使用的开场说明
-
-> 请先读取本项目 AGENTS.md、README.md、configs/ 和 data/portable_release/manifest.json。结合实际源码说明项目目标、已完成工作、未验证事项和建议的下一步。继续本项目主线，保留既有数据与审核记录；不要把历史方案或 2 步 smoke 写成已完成的正式训练结果。
+- 2026-10-24：从旧 `modern_genai` 工作区迁移本项目的便携发布数据、配置与代码，
+  原始清单封板在 [docs/migration/migration_manifest_交接补充前_20261024.json](docs/migration/migration_manifest_交接补充前_20261024.json)。
+- 2026-11-08：删除旧项目共用设施与残留（约 950 MB），把迁移清单改为当前树
+  清单（schema_version 2），封板副本与删除记录保留在
+  [docs/migration/](docs/migration/)。
+- 2026-11-08：目录整理（`project_blueprints/`→`docs/blueprints/`、
+  `迁移记录/`→`docs/migration/`、脚本分组、文档重写），移动映射由
+  `migration_manifest.json` 的 `documentation_updates` 记录和
+  [CHANGELOG.md](CHANGELOG.md) 记录。
+- 历史报告中的绝对路径、失败项和隔离项保持原样，不因整理而改写。
