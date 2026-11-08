@@ -1,8 +1,30 @@
 # 训练与诊断入口
 
-本页给出环境、配置和命令。**当前没有 GPU 训练产物**：`configs/` 只有 2 步
-工程 smoke，`runs/` 不存在，所有 GPU/CUDA 行为仍未验收。历史 CPU 通过与
-ZIP 完整性不能证明真实 VL 前后向或视觉 rollout 可用。
+本页给出环境、配置和命令。**当前没有 GPU 训练产物**，所有 GPU/CUDA 行为仍未验收。
+历史 CPU 通过与 ZIP 完整性不能证明真实 VL 前后向或视觉 rollout 可用。
+
+## 协议 v3 统一入口（2026-11-09 起的正式实验）
+
+所有实验组共用一个入口和一份基础配置，组别只改白名单字段（见
+[configs/README.md](../configs/README.md)）：
+
+```bash
+python -m scripts.training.train_rl --arm rl_v5 --seed 1 \
+  [--runtime runs/frozen_runtime.json] [--model-path <本地固定 revision 快照>] [--resume <checkpoint>]
+```
+
+- 组别与种子登记在 `configs/experiments/arms.json`：`rl_ans`（答案 + 格式）、`rl_v4`、`rl_v5`、
+  `rl_v5_placebo`、`rl_blind`，以及可选的 `rl_v5_groupnorm`。
+- 输出 `runs/rl_v3_20261109/<组>/seed<k>/`：`rollouts.jsonl`（逐条 rollout、答案判定、v4/v5 明细、
+  加权奖励）、`run_identity.json`（配置哈希、包版本、源码与数据 SHA、运行时决策）、
+  `trainable_parameters.json`、`checkpoint-*`、`final/`（LoRA adapter）、`train_summary.json`。
+- 已有 checkpoint 的目录拒绝重跑；`--resume` 要求运行身份完全一致，否则失败。
+- `--smoke` 只用于工程检查（例如 `max_steps=2,num_generations=2,prompts_per_step=2,per_device_train_batch_size=2`），
+  会记录在运行身份里，不能用于报告结果。
+- CPU 开发与测试环境见 [requirements/dev-cpu.txt](../requirements/dev-cpu.txt)；GPU 环境与
+  Colab 运行器在执行计划 S2 阶段提供。
+
+以下是旧入口（感知 SFT → 稀疏 GRPO）的说明，作为历史保留。
 
 ## 环境
 

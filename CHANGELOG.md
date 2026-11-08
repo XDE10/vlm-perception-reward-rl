@@ -4,6 +4,24 @@
 [README](README.md) 和版本化报告为准；历史细节见
 [docs/migration/](docs/migration/)。
 
+## 2026-11-09 — S1：修复审计问题，新增协议 v3 统一 GRPO 入口
+
+按 [执行计划](docs/plan/执行计划_20261108.md) 第 4 节逐项修复，决策见
+[决策记录](docs/plan/决策记录.md) D1–D17。没有 GPU 运行，没有改动已批准数据或冻结的 v4 评分。
+
+- 新增 `src/rewards/`：逐条断言解析（坏条只算一个 FALSE，不再整段归零）、InterGPS 几何证伪、
+  可证伪感知奖励 v5、math_verify 常驻进程池、罗列攻击探针。
+- 新增协议 v3（perception → think → answer，所有组共用，恢复推理段）与统一入口
+  `scripts/training/train_rl.py`；`configs/experiments/` 用基础配置加组别白名单覆盖，保证组间只在声明因素上不同。
+- 修复：LoRA 改为按精确模块名只挂语言模块，并在运行时断言 ViT/merger 冻结（旧入口同样修复）；
+  多奖励改用 `scale_rewards=batch`，避免组内标准化抹掉 λ；每步 8 题 × 8 条采样、整批生成；
+  格式奖励要求 perception 非空且可解析；每条 rollout 落盘。
+- 兼容：transformers 5 移除了 `AutoModelForVision2Seq`，旧入口与诊断脚本改用兼容类。
+- 新增 `scripts/data/calibrate_perception_v5.py`（阈值校准与攻击表）、`requirements/dev-cpu.txt`、
+  `tools/build_migration_manifest.py --git-tracked-only`。
+- 测试：沙箱（无 `data/`）下 172 passed / 2 failed，两项失败都依赖本机 `data/`，见
+  [docs/verification.md](docs/verification.md)。
+
 ## 2026-11-08 — 仓库整理（目录结构、文档与校验入口）
 
 本次只做结构、文档与元数据整理，**没有**重新训练、重新审核数据或扩大批准范围。
