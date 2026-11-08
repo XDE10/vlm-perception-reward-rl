@@ -1,0 +1,16 @@
+{
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "executable": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\tiny_posttrain\\.venv\\Scripts\\python.exe",
+  "packages": {
+    "torch": "2.14.1+cpu",
+    "pytest": "8.4.2",
+    "transformers": "4.57.6",
+    "datasets": "4.7.0",
+    "huggingface-hub": "0.36.2",
+    "sympy": "1.14.0",
+    "numpy": "2.2.6",
+    "tokenizers": "0.22.2",
+    "pyarrow": "21.0.0"
+  },
+  "torch_cuda_version": null
+}

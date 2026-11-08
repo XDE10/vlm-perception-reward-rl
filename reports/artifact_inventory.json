@@ -1,0 +1,427 @@
+[
+  {
+    "path": "src/__init__.py",
+    "bytes": 73,
+    "sha256": "abc23f8032d755a1fbc3fb9dba2d40cad41339b7c0b2f59d82f519929204bb97"
+  },
+  {
+    "path": "src/data/__init__.py",
+    "bytes": 64,
+    "sha256": "359741359a86fafae36c1f04f5ff32f363422f359d1ea24e29b1e99a68c2fc8b"
+  },
+  {
+    "path": "src/data/prepare_math_data.py",
+    "bytes": 8958,
+    "sha256": "bf83cf0746316d0509c06b08c225e691a14e5bbe84be3d0a4c3b163871acaf4d"
+  },
+  {
+    "path": "src/evaluation/__init__.py",
+    "bytes": 74,
+    "sha256": "aeed11e5984a8a1eca97da477c1e68a3709af9ffed4d7de8b80746dd38cc2eef"
+  },
+  {
+    "path": "src/evaluation/geometry_perception_parser.py",
+    "bytes": 6872,
+    "sha256": "ef1ca9b1bfae904f89ef5076114c43df8ff393110ffac13f36211c59bf755d01"
+  },
+  {
+    "path": "src/evaluation/math_verifier.py",
+    "bytes": 5889,
+    "sha256": "bf043f92edcdac98747719c6d95d1f702380287fad62072236da94325cbb3fe7"
+  },
+  {
+    "path": "src/losses/__init__.py",
+    "bytes": 88,
+    "sha256": "658efa27e281dbfe0725e9fea8e595e314b1d6d37467ad5e6d01bdf50c44d1eb"
+  },
+  {
+    "path": "src/losses/reference.py",
+    "bytes": 4178,
+    "sha256": "44f1b36b7d900bc8fc4b114f8aa490ee9b43f1a51f5efe7b28560a6b3f9f20f7"
+  },
+  {
+    "path": "src/synthesis/__init__.py",
+    "bytes": 76,
+    "sha256": "30b443ad54c66f62b5fd966d53098332c8c913d6dc53ff3260ee57c56ea3f256"
+  },
+  {
+    "path": "src/synthesis/async_client.py",
+    "bytes": 12654,
+    "sha256": "a38fe8ea28fc8ef4e7ff5ba8db29e1ec37a8e5fe52bc477464b0a4a38b621791"
+  },
+  {
+    "path": "src/teachers/__init__.py",
+    "bytes": 63,
+    "sha256": "0ee09db59b8fc27bc94ae389868700d375c2f9f86e2b5731dc01dbfd4021c129"
+  },
+  {
+    "path": "src/teachers/tokenizer_audit.py",
+    "bytes": 7155,
+    "sha256": "36c74b4ebc71ad4d064eeddf15ef07f02f618457bcd293ef32401725f4238cb7"
+  },
+  {
+    "path": "tests/test_delivery_artifacts.py",
+    "bytes": 755,
+    "sha256": "752eec7d9b71c090e91b5560bc43bc2a19062a6a1a230e6a53dee3456907dbac"
+  },
+  {
+    "path": "tests/test_geometry_parser.py",
+    "bytes": 3247,
+    "sha256": "71f4a886b53cc433eff5bfa162b00647d0862f3703a0c8392010cc597f5ee68a"
+  },
+  {
+    "path": "tests/test_losses_and_masks.py",
+    "bytes": 4329,
+    "sha256": "b963a02d955656b7a98b8d466b26f4545ed1475aaf08bfb94a613abb1f00d0d3"
+  },
+  {
+    "path": "tests/test_math_data.py",
+    "bytes": 1738,
+    "sha256": "f601deb400e3a22ccffb12d660b62cdc1e9dbaf541b02cf9e23dc2dcb6084409"
+  },
+  {
+    "path": "tests/test_math_data_integration.py",
+    "bytes": 1649,
+    "sha256": "ccaf06f76b2c4718e205d043269bd124dedef62990dd95c9e23feb7f9aa525e8"
+  },
+  {
+    "path": "tests/test_math_verifier.py",
+    "bytes": 1893,
+    "sha256": "9b35c07f0c4815f216f00e7111e8dedfaff65f791ddbdec5e69ed68becf39722"
+  },
+  {
+    "path": "tests/test_synthesis_client.py",
+    "bytes": 5114,
+    "sha256": "3d1d69ad5f0d79d032c6de5214d859dd8a7f1e3eece99a6d5759bbeadf6afe1a"
+  },
+  {
+    "path": "tests/test_tokenizer_audit.py",
+    "bytes": 691,
+    "sha256": "3c18f60ad7728aada5217fc10f822abae732fd0211d77a3a119f7ef085fc9f8f"
+  },
+  {
+    "path": "tests/test_tokenizer_integration.py",
+    "bytes": 815,
+    "sha256": "ab0f0e31db4c26e5f91061ba094036d6b8ca9d0d43f5b7d273adae6b28e327ce"
+  },
+  {
+    "path": "scripts/finalize_overnight_report.py",
+    "bytes": 7286,
+    "sha256": "ca73083432f47214e67f4595bc55404b141cc6005e7cdf02442e6b8412048d98"
+  },
+  {
+    "path": "scripts/run_cpu_demo.py",
+    "bytes": 1755,
+    "sha256": "7570888f1f26a3cd2d1fb55acdede40268180503c51d3a7bbd3d9322f3f55ca6"
+  },
+  {
+    "path": "data/math/gsm8k_test.jsonl",
+    "bytes": 1492044,
+    "sha256": "a70d6a96a1d0db216c5543f044e9dbe3cb1c2a28a26abe4d012b10d669057569"
+  },
+  {
+    "path": "data/math/gsm8k_train.jsonl",
+    "bytes": 8399892,
+    "sha256": "2f9fdf82696df195f7f968c26b8a8e354e8869013d1aa242c796cf418dae8c10"
+  },
+  {
+    "path": "data/math/math500_test.jsonl",
+    "bytes": 699517,
+    "sha256": "4a8ada6bff87e172a59d78467764e781ae92460a4c6a3ec23f11e99ecd97c04e"
+  },
+  {
+    "path": "data/math/math_dev.jsonl",
+    "bytes": 368020,
+    "sha256": "b5b3c90eeea953ae954cc2aa652caff4bd9c6edcb95f1b896215b84772225023"
+  },
+  {
+    "path": "data/math/math_quarantine.jsonl",
+    "bytes": 108839,
+    "sha256": "fdff750a9070b55ba3fe9005284e1a8f9fe1f0ee58fc100255c1a111ce3a7c19"
+  },
+  {
+    "path": "data/math/math_source_test.jsonl",
+    "bytes": 6874945,
+    "sha256": "de8e153914ed7c77857237d390bb1f7d8f57d8e554a2c39e816324e72b306002"
+  },
+  {
+    "path": "data/math/math_train.jsonl",
+    "bytes": 10260767,
+    "sha256": "abde8c70f51190e1731084b720a19b8e0155f0aa2106a32175dc6270d513a3ea"
+  },
+  {
+    "path": "data/math_manifest.json",
+    "bytes": 3690,
+    "sha256": "0416b28f855a4ab4568daeec01c433df6ae085e1580a766299b1507d69aa5bda"
+  },
+  {
+    "path": "data/raw_math_cache/DigitalLearningGmbH___math-lighteval/default/0.0.0/0530c78699ea5e8eb5530600900e1f328b48acad/dataset_info.json",
+    "bytes": 1097,
+    "sha256": "d4f4ad71c7c0cb221d03e4e7de8a221c51986502e10f78169c12b77814f71bac"
+  },
+  {
+    "path": "data/raw_math_cache/DigitalLearningGmbH___math-lighteval/default/0.0.0/0530c78699ea5e8eb5530600900e1f328b48acad/math-lighteval-test.arrow",
+    "bytes": 3735344,
+    "sha256": "43172cd5062bfdaef65ec4253a3dab7d5403590e7ca7ce7a7b3da1c1ea2776aa"
+  },
+  {
+    "path": "data/raw_math_cache/DigitalLearningGmbH___math-lighteval/default/0.0.0/0530c78699ea5e8eb5530600900e1f328b48acad/math-lighteval-train.arrow",
+    "bytes": 5988456,
+    "sha256": "b98718a059d1f2750b03bf1db5841445e5a06236375e2789e3a09852bd286507"
+  },
+  {
+    "path": "data/raw_math_cache/HuggingFaceH4___math-500/default/0.0.0/6e4ed1a2a79af7d8630a6b768ec859cb5af4d3be/dataset_info.json",
+    "bytes": 869,
+    "sha256": "314768b6c94fe43d0d720d362cd08c0f10ced24d026ffa2f7f3bf0ff135dfdb3"
+  },
+  {
+    "path": "data/raw_math_cache/HuggingFaceH4___math-500/default/0.0.0/6e4ed1a2a79af7d8630a6b768ec859cb5af4d3be/math-500-test.arrow",
+    "bytes": 401544,
+    "sha256": "ff2663846092b986df3026f53904030cbaf8e061c9f978d319a7bd86b3a04ea4"
+  },
+  {
+    "path": "data/raw_math_cache/openai___gsm8k/main/0.0.0/740312add88f781978c0658806c59bc2815b9866/dataset_info.json",
+    "bytes": 924,
+    "sha256": "6ba0a5352f1b642cb1b084e2d219338e91b2e8ab8c506da849e75495c322edd8"
+  },
+  {
+    "path": "data/raw_math_cache/openai___gsm8k/main/0.0.0/740312add88f781978c0658806c59bc2815b9866/gsm8k-test.arrow",
+    "bytes": 714584,
+    "sha256": "45965b000311d1550e5619b60b5bf31cf76edebfd8b8eddc62a876fbf8c9be95"
+  },
+  {
+    "path": "data/raw_math_cache/openai___gsm8k/main/0.0.0/740312add88f781978c0658806c59bc2815b9866/gsm8k-train.arrow",
+    "bytes": 3965528,
+    "sha256": "6146bca074f4c6c5e07de7e96cc968adab3833dbdafeda21830f27558eea3d9b"
+  },
+  {
+    "path": "data/synthesis_mock/cache.jsonl",
+    "bytes": 1624,
+    "sha256": "f9241e612c93ce3bad1e55eed9e43abbec170138163a010696885a677367e914"
+  },
+  {
+    "path": "data/synthesis_mock/cache.sqlite",
+    "bytes": 16384,
+    "sha256": "455c145f27a545ca4ef07a00b01a5f780fa18e69b4c6289a657ac4320f04ddcc"
+  },
+  {
+    "path": "data/tokenizers/Qwen2.5-1.5B-Instruct/config.json",
+    "bytes": 660,
+    "sha256": "98d2ff8cc47488d08a2b0b3acf4eb99ef210779b42bd48605f6b8e36acdbf670"
+  },
+  {
+    "path": "data/tokenizers/Qwen2.5-1.5B-Instruct/merges.txt",
+    "bytes": 1671839,
+    "sha256": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3"
+  },
+  {
+    "path": "data/tokenizers/Qwen2.5-1.5B-Instruct/tokenizer.json",
+    "bytes": 7031645,
+    "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+  },
+  {
+    "path": "data/tokenizers/Qwen2.5-1.5B-Instruct/tokenizer_config.json",
+    "bytes": 7305,
+    "sha256": "5b5d4f65d0acd3b2d56a35b56d374a36cbc1c8fa5cf3b3febbbfabf22f359583"
+  },
+  {
+    "path": "data/tokenizers/Qwen2.5-1.5B-Instruct/vocab.json",
+    "bytes": 2776833,
+    "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+  },
+  {
+    "path": "data/tokenizers/Qwen2.5-7B-Instruct/config.json",
+    "bytes": 663,
+    "sha256": "7463bb0ea78315365e6c6b74de4e73bbcc8359dfb0c5a737584e077d42c0b03c"
+  },
+  {
+    "path": "data/tokenizers/Qwen2.5-7B-Instruct/merges.txt",
+    "bytes": 1671839,
+    "sha256": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3"
+  },
+  {
+    "path": "data/tokenizers/Qwen2.5-7B-Instruct/tokenizer.json",
+    "bytes": 7031645,
+    "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+  },
+  {
+    "path": "data/tokenizers/Qwen2.5-7B-Instruct/tokenizer_config.json",
+    "bytes": 7305,
+    "sha256": "5b5d4f65d0acd3b2d56a35b56d374a36cbc1c8fa5cf3b3febbbfabf22f359583"
+  },
+  {
+    "path": "data/tokenizers/Qwen2.5-7B-Instruct/vocab.json",
+    "bytes": 2776833,
+    "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+  },
+  {
+    "path": "data/tokenizers/Qwen2.5-Coder-7B-Instruct/config.json",
+    "bytes": 663,
+    "sha256": "c0242402ad6a13b331ea320feea8c7e3776ffb7a4eff0757b9cd667e116d9a28"
+  },
+  {
+    "path": "data/tokenizers/Qwen2.5-Coder-7B-Instruct/merges.txt",
+    "bytes": 1671839,
+    "sha256": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3"
+  },
+  {
+    "path": "data/tokenizers/Qwen2.5-Coder-7B-Instruct/tokenizer.json",
+    "bytes": 7031645,
+    "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+  },
+  {
+    "path": "data/tokenizers/Qwen2.5-Coder-7B-Instruct/tokenizer_config.json",
+    "bytes": 7305,
+    "sha256": "959e7f1d9a1b7641a6d6ce05ca97b75c7894fcb66cbe5a040406458fb1128ee4"
+  },
+  {
+    "path": "data/tokenizers/Qwen2.5-Coder-7B-Instruct/vocab.json",
+    "bytes": 2776833,
+    "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+  },
+  {
+    "path": "data/tokenizers/Qwen2.5-Math-7B-Instruct/config.json",
+    "bytes": 658,
+    "sha256": "3a6dd7a4b3e6dd81c05ec943d837166508ceb953e1ce2baa57c84611d4765ef0"
+  },
+  {
+    "path": "data/tokenizers/Qwen2.5-Math-7B-Instruct/merges.txt",
+    "bytes": 1671839,
+    "sha256": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3"
+  },
+  {
+    "path": "data/tokenizers/Qwen2.5-Math-7B-Instruct/tokenizer.json",
+    "bytes": 7031645,
+    "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+  },
+  {
+    "path": "data/tokenizers/Qwen2.5-Math-7B-Instruct/tokenizer_config.json",
+    "bytes": 7315,
+    "sha256": "d743761ff02297cc5cdf38a612b0f78d5cdf5ceb3f251ab1d25ad353d24b1887"
+  },
+  {
+    "path": "data/tokenizers/Qwen2.5-Math-7B-Instruct/vocab.json",
+    "bytes": 2776833,
+    "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+  },
+  {
+    "path": "reports/completion_audit.json",
+    "bytes": 579,
+    "sha256": "40b8f4fc5e4b8841cdebbaa08baf18186bd187a84ad08c61932d321b4ad5c9b3"
+  },
+  {
+    "path": "reports/cpu_demo.json",
+    "bytes": 1841,
+    "sha256": "b29266166ee3379072308377513d571e973952b28c593bd828d2933f196dc18d"
+  },
+  {
+    "path": "reports/cpu_demo_execution.log",
+    "bytes": 90,
+    "sha256": "32046f9f8ca6e04c21bfa376cdf93798eeac41c5fbdc8e22b801dd4a1f8c8a5c"
+  },
+  {
+    "path": "reports/cpu_environment.json",
+    "bytes": 486,
+    "sha256": "152e936d332ba847bd695dfc2854ffbdc4da5d8055e22ac4825f522f12a9dfe9"
+  },
+  {
+    "path": "reports/hardening_pytest.log",
+    "bytes": 101,
+    "sha256": "9628770e42b96d65fb0db66f0cbfd36e37d8e8b1bd980304d7f06d45dcb43d8d"
+  },
+  {
+    "path": "reports/hf_connectivity.log",
+    "bytes": 5,
+    "sha256": "74234df06346be5b8fcd66762a3d7b105d9946191845a22fc531097e7e68565c"
+  },
+  {
+    "path": "reports/math_data_execution.log",
+    "bytes": 352,
+    "sha256": "6a0eae295809c69cf5a1bdf195820ba951e1b412042d959cc0e39b1e7a66c086"
+  },
+  {
+    "path": "reports/math_reference_diagnostic.log",
+    "bytes": 689,
+    "sha256": "0ac5b493f1da7cda7192268a399867a6f5d61648cb88ac936b8c5c780a801718"
+  },
+  {
+    "path": "reports/metadata_hardening_pytest.log",
+    "bytes": 100,
+    "sha256": "841dee71668af61870eb061e98714ac6f5338c9c95ddca200411eb1d04e22155"
+  },
+  {
+    "path": "reports/pytest_full.log",
+    "bytes": 8887,
+    "sha256": "aeab12b8912e1f78b3f77cc1c667b36e64014c60efab8b74009828b8d940a7b6"
+  },
+  {
+    "path": "reports/task1_real_pytest.log",
+    "bytes": 101,
+    "sha256": "15d1c6c14521d6b70e0f2f91671582c94d54e072cb6ea3fd17c7579108453b53"
+  },
+  {
+    "path": "reports/task1_unit_pytest.log",
+    "bytes": 100,
+    "sha256": "c34282110065ae616ccc4d12dd09a855d9a8466d0aff478a12b8481798191f18"
+  },
+  {
+    "path": "reports/task2_real_pytest.log",
+    "bytes": 101,
+    "sha256": "27060063f43b9cb2dfa593d4fca546512f22ea33bb35bb8d85aa6a53df8a6d89"
+  },
+  {
+    "path": "reports/task2_source_fix_pytest.log",
+    "bytes": 100,
+    "sha256": "697879dd2c41d789dbbdb55ad397d7cedbd8b380e3044add201ef4cfc4e05b87"
+  },
+  {
+    "path": "reports/task2_unit_pytest.log",
+    "bytes": 101,
+    "sha256": "769cfaa546b1f965045bf96280d397c2ff39d1a990b124574cd13d844da4ad30"
+  },
+  {
+    "path": "reports/task2_verifier_pytest.log",
+    "bytes": 101,
+    "sha256": "5aedc73140581fc41cbefdc70fdf3338822c87c6572eba7279f50b8070be146c"
+  },
+  {
+    "path": "reports/task3_pytest.log",
+    "bytes": 101,
+    "sha256": "60fd281d80bf93cf5518dd4aba296db03dd6ff3e5e22c40328997b64b1c722a1"
+  },
+  {
+    "path": "reports/task4_client_pytest.log",
+    "bytes": 100,
+    "sha256": "b2e962f67ed011d7dd467e36509d120610663f34c1fa8ef1a32d4a5cb7d21a54"
+  },
+  {
+    "path": "reports/task4_geometry_pytest.log",
+    "bytes": 101,
+    "sha256": "6c023b8d7aab3add47430d16c94e2b576cca4abffa464ad7457ba7ddc04ecd78"
+  },
+  {
+    "path": "reports/tokenizer_alignment_report.json",
+    "bytes": 2235865,
+    "sha256": "496ceee2535d8aac26b5ec8c20a5ffa86d5b6d62a296ddfbd50be72d504883ba"
+  },
+  {
+    "path": "reports/tokenizer_alignment_summary.md",
+    "bytes": 1037,
+    "sha256": "f25022376562213d2f03ff1d62029939f53f97dbec7c2afd834b30be03246b5f"
+  },
+  {
+    "path": "reports/tokenizer_audit_execution.log",
+    "bytes": 308,
+    "sha256": "a1e2aae10d4e40ba9625859eb218a78c45b17b3b63e5fcfbba37f2180cbee901"
+  },
+  {
+    "path": "pytest.ini",
+    "bytes": 54,
+    "sha256": "63d2d16d09ffac6af35c37894465ff5fda0f528400c04ea11195910526b03f28"
+  },
+  {
+    "path": "OVERNIGHT_CPU_README.md",
+    "bytes": 4475,
+    "sha256": "af9fa4d5f8526bc62685c2a9f8ff2413a2aaba4bbc6ce715cc8fcff360e496b2"
+  }
+]

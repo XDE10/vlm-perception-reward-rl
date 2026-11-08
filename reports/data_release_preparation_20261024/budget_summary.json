@@ -1,0 +1,10 @@
+{
+  "cap_usd": 5,
+  "provider_dispatch_attempts": 6393,
+  "completed_requests": 6343,
+  "completed_usage_peak_estimate_usd": 2.7913447799999997,
+  "retained_unknown_error_reserve_usd": 0.123,
+  "committed_upper_usd": 2.91434478,
+  "not_actual_account_balance_delta": true,
+  "error_requests_not_assumed_free": true
+}

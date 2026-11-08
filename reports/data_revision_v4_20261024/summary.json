@@ -1,0 +1,310 @@
+{
+  "project1_frozen": {
+    "questions": 30,
+    "completed": 30,
+    "generation_requests": 30,
+    "schema_valid": 29,
+    "answer_verified": 26,
+    "automatic_candidates": 15,
+    "common_pairs": 15,
+    "numeric_normalizations": 4,
+    "failure_signals": {
+      "outside_150_1500_qwen_tokens": 12,
+      "answer_not_verified": 4,
+      "wrong_json_schema": 1
+    },
+    "wall_seconds": 68.36000000000058,
+    "reserved_usd": 0.0713403,
+    "usage_estimated_peak_usd": 0.008206824,
+    "returned_models": {
+      "deepseek-flash": 30
+    },
+    "engineering_gate_passed": false,
+    "process_accuracy": null,
+    "training_approved": false,
+    "bulk_generation_enabled": false,
+    "human_review": "pending",
+    "comparison_limits": "different heldout development topics and explicit scope; v3->v4 rates are not causal parser or teacher improvements"
+  },
+  "project1_cache_reaudit": {
+    "v3_records": 30,
+    "parsing_recovered": 1,
+    "parsing_recovered_ids": [
+      "12847ff8e11e29cbc8a1691eb733d5c9566e5ab085f32dd87eddaeba59dd6cf0"
+    ],
+    "known_mathematical_error_isolated": 2,
+    "mathematical_error_ids": [
+      "0e10fb1c055c1cce1d8b1023a947714512a4a41b27f7c4e0220333abe8ebce6f",
+      "b800f92437cfba40cd743f2cb63c7e495e10e268820ff83b3e78373b807ddd44"
+    ],
+    "v4_schema_valid": 28,
+    "v4_automatic_output_candidates": 12,
+    "candidate_statuses": {
+      "not_automatically_admitted": 8,
+      "automatic_pending_process_and_human": 7,
+      "mathematical_error_isolated": 2,
+      "source_or_scope_review": 13
+    },
+    "api_calls": 0,
+    "interpretation": "post-hoc cache robustness check; frozen v3 14/30 and 12 common pairs unchanged; no API repair or reference-fed generation",
+    "legacy_text_records": 144,
+    "legacy_text_json_repair": "not_applicable; prior deterministic text-format audit preserved"
+  },
+  "project1_ai_review": {
+    "pairs_reviewed": 15,
+    "pair_decisions": {
+      "pass": 10,
+      "uncertain": 2,
+      "isolate": 3
+    },
+    "source_answer_leak_pilot_questions": 1,
+    "frozen_denominator": 30,
+    "reviewed_pending_pairs": 10,
+    "frozen_gate_rewritten": false,
+    "blindness_gate_passed": false,
+    "all_question_process_accuracy": null,
+    "interpretation": "Read all 15 full raw+compact trajectories. 10 pass is an AI assessment of selected pairs, not a human gold precision estimate or a causal v3/v4 comparison."
+  },
+  "project1_pool": {
+    "input_pool": 1500,
+    "automatic_scope_candidates": 1182,
+    "quality_isolated": 4,
+    "experiment_scope_excluded": 174,
+    "manual_review": 142,
+    "cleaned_questions": 39,
+    "quality_reasons": {
+      "circle_internal_external_tangency_unspecified": 1,
+      "damaged_or_empty_reference": 1,
+      "damaged_reference_answer": 1,
+      "average_price_semantics_ambiguous": 1,
+      "reference_exponents_and_relation_conflict": 1
+    },
+    "scope_reasons": {
+      "open_solution_experiment_excludes_option_letter_answer_not_quality_defect": 161,
+      "open_solution_experiment_excludes_complete_multiple_choice_not_quality_defect": 10,
+      "predeclared_known_elementary_arithmetic_scope_exclusion_not_wrong_math": 3
+    },
+    "box_categories": {
+      "repeated_identical_answer": 1303,
+      "distinct_boxes_components_collection_or_intermediate_requires_review": 128,
+      "single_box": 55,
+      "malformed_boxes": 14
+    },
+    "math_train_media_classes": {
+      "prose_only_screen_pass_semantics_pending": 6520,
+      "prose_sufficiency_pending_review": 285,
+      "requires_drawing_code_review": 368,
+      "depends_on_missing_image_or_external_material": 11
+    },
+    "length_is_not_difficulty": true,
+    "human_review": "pending",
+    "training_approved": false
+  },
+  "project2_wrapper_revision": {
+    "version": "code-v3-wrapper-filter-20261024",
+    "train": 2500,
+    "dev": 197,
+    "isolated_by_split": {
+      "train": 25,
+      "dev": 3
+    },
+    "isolated_reasons": {
+      "pure_parameter_dictionary": 21,
+      "constant_return": 2,
+      "pure_parameter_sequence": 3,
+      "identity_return_parameter": 2
+    },
+    "audited_ace_reserves": 2512,
+    "new_train_ids": [
+      "ace/oss_5357",
+      "ace/oss_19540",
+      "ace/oss_650",
+      "ace/oss_7418",
+      "ace/oss_16948",
+      "ace/oss_16759",
+      "ace/oss_13364",
+      "ace/oss_3200",
+      "ace/oss_17903",
+      "ace/oss_9540",
+      "ace/oss_7131",
+      "ace/oss_419",
+      "ace/oss_6754",
+      "ace/oss_8678",
+      "ace/oss_14355",
+      "ace/oss_3818",
+      "ace/oss_120",
+      "ace/oss_13155",
+      "ace/oss_1876",
+      "ace/oss_4826",
+      "ace/oss_14687",
+      "ace/oss_4601",
+      "ace/oss_1411",
+      "ace/oss_2516",
+      "ace/oss_3365"
+    ],
+    "new_dev_ids": [],
+    "new_dev_fresh_container_attempts": 0,
+    "new_dev_all_source_tests_passed": false,
+    "new_dev_pending_container_ids": [
+      "ace/oss_117",
+      "ace/oss_5950",
+      "ace/oss_10109"
+    ],
+    "sandbox_infrastructure_error": "Sandbox infrastructure failure: failed to connect to the docker API at npipe:////./pipe/dockerDesktopLinuxEngine; check if the path is correct and if the daemon is running: open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified.\n",
+    "release_ready": false,
+    "sandbox": {
+      "image_id": "sha256:3b0c23d092b8ff94262fd3518cf8250c4b1d65c014d6090eea3b23383145201e",
+      "worker_sha256": "d298fc461bc1cabab70cf401823f5c88d00c746f9d0dfa4b223c73c93f9a431f",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-i",
+        "--network",
+        "none",
+        "--read-only",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "--pids-limit",
+        "64",
+        "--memory",
+        "512m",
+        "--cpus",
+        "1",
+        "--user",
+        "65534:65534",
+        "--tmpfs",
+        "/tmp:rw,noexec,nosuid,size=64m",
+        "--mount",
+        "type=bind,source=D:\\Users\\Mr.Z\\Desktop\\modern_genai\\scripts\\code_sandbox_worker.py,target=/worker.py,readonly",
+        "--entrypoint",
+        "python",
+        "sha256:3b0c23d092b8ff94262fd3518cf8250c4b1d65c014d6090eea3b23383145201e",
+        "-I",
+        "/worker.py"
+      ],
+      "boundary": "No network, no host secrets/workspace mounts; only read-only worker script mounted; input via stdin; per-child CPU/AS/file/process/time bounds."
+    },
+    "heldout_and_cross_split_checks": "Protected + ID + family/body/name + Jaccard .85 + prompt<=2560",
+    "old_train_or_dev_recycled_to_other_split": false,
+    "accuracy_scope": "provided tests, not independent semantic oracle; AST metrics are not difficulty labels",
+    "human_review": "pending",
+    "training_approved": false,
+    "paid_api_calls": 0
+  },
+  "project2_fresh_dev_release": {
+    "version": "code-v3-fresh-dev-completed",
+    "parent_manifest_sha256": "f5c8fc2b3a3b4fb795b7345ff5ea9ef475a0d0f414f036fc6d53d05565ccb820",
+    "fresh_dev_ids": [
+      "ace/oss_117",
+      "ace/oss_5950",
+      "ace/oss_10109"
+    ],
+    "sandbox": {
+      "image_id": "sha256:3b0c23d092b8ff94262fd3518cf8250c4b1d65c014d6090eea3b23383145201e",
+      "worker_sha256": "d298fc461bc1cabab70cf401823f5c88d00c746f9d0dfa4b223c73c93f9a431f",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-i",
+        "--network",
+        "none",
+        "--read-only",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "--pids-limit",
+        "64",
+        "--memory",
+        "512m",
+        "--cpus",
+        "1",
+        "--user",
+        "65534:65534",
+        "--tmpfs",
+        "/tmp:rw,noexec,nosuid,size=64m",
+        "--mount",
+        "type=bind,source=D:\\Users\\Mr.Z\\Desktop\\modern_genai\\scripts\\code_sandbox_worker.py,target=/worker.py,readonly",
+        "--entrypoint",
+        "python",
+        "sha256:3b0c23d092b8ff94262fd3518cf8250c4b1d65c014d6090eea3b23383145201e",
+        "-I",
+        "/worker.py"
+      ],
+      "boundary": "No network, no host secrets/workspace mounts; only read-only worker script mounted; input via stdin; per-child CPU/AS/file/process/time bounds."
+    },
+    "train": 2500,
+    "dev": 200,
+    "training_approved": false,
+    "human_review": "pending",
+    "scripts": {
+      "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\scripts\\resume_code_v3_dev.py": "ec1a87898462fb369134e668f9916843dc4d97bed56313e67b163b6fccb9fd9f"
+    },
+    "files": {
+      "dev_metadata.jsonl": {
+        "path": "data/project2_code_v3_dev_verified/dev_metadata.jsonl",
+        "sha256": "cecab0f14e94fb0155679f3fc1a57418d2e52673456e6c51c5cbdcc2bf68f532"
+      },
+      "dev_verification.jsonl": {
+        "path": "data/project2_code_v3_dev_verified/dev_verification.jsonl",
+        "sha256": "e32ab7adc87307d918108794d199e74acbbebd106d58bf23751e5ff4c52e159c"
+      },
+      "train_prompts.jsonl": {
+        "path": "data/project2_code_v3_dev_verified/train_prompts.jsonl",
+        "sha256": "7baa634313ddbee4ba62d719d9ef8693a65e1da66f7d91f0bbdd64e3a151bfdb"
+      }
+    }
+  },
+  "project3_schema_comparison": {
+    "version": "intergps-perception-v2-20261024",
+    "same_train_topics": 200,
+    "v1_supported": 454,
+    "v2_supported": 1799,
+    "total_source_diagram_entries": 1922,
+    "v1_nonempty_visual_cases": 162,
+    "v2_nonempty_visual_cases": 199,
+    "v2_nonempty_nonisolated_visual_cases": 198,
+    "relations": {
+      "Length": 353,
+      "PointLiesOnLine": 891,
+      "Perpendicular": 109,
+      "Angle": 179,
+      "PointLiesOnCircle": 189,
+      "Parallel": 25,
+      "CongruentLength": 19,
+      "CongruentAngle": 21,
+      "ArcMeasure": 10,
+      "Area": 2,
+      "Tangent": 1
+    },
+    "categories": {
+      "visual_candidate": 1795,
+      "uncertain": 123,
+      "text_explicit": 4
+    },
+    "remaining_reasons": {
+      "unresolved_measure_label_requires_source_alias_mapping": 89,
+      "unresolved_or_invalid_point": 15,
+      "unsupported_arc": 4,
+      "empty_expression": 10,
+      "nonpositive_measure": 2,
+      "unsupported_area_shape": 2,
+      "degenerate_line": 1
+    },
+    "isolated_ids": [
+      "742"
+    ],
+    "gold_image_only_accuracy": null,
+    "human_reviewed_count": 0,
+    "training_approved": false,
+    "accuracy_boundary": "Tested schema semantics and selected image examples; no full 200-case image/prose adjudication; coverage is not precision."
+  },
+  "training_runs": 0,
+  "bulk_requests": 0,
+  "human_review": "pending",
+  "training_approved": false
+}

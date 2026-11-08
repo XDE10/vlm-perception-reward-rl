@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "test_count": 87,
+  "test_seconds": 7.72,
+  "scope": "All four requested CPU infrastructure tasks; no GPU or real API training validation",
+  "requirements": {
+    "task3_real_support_losses": "tests/test_losses_and_masks.py",
+    "task1_real_tokenizers": "reports/tokenizer_alignment_report.json",
+    "task2_real_data": "data/math_manifest.json",
+    "task2_adversarial_verifier": "tests/test_math_verifier.py",
+    "task4_mock_client": "tests/test_synthesis_client.py",
+    "task4_geometry_attacks": "tests/test_geometry_parser.py"
+  }
+}

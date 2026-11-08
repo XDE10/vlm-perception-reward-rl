@@ -1,0 +1,89 @@
+{
+  "constructed_trace": {
+    "sample_id": "train:10",
+    "completion": "<perception>Length(A,C)=1; Length(C,D)=6; Length(A,C)=2; Parallel((A,B),(D,E))</perception>\\boxed{4}",
+    "origin": "HAND-CONSTRUCTED FROM KNOWN LABELS. NOT A MODEL PREDICTION.",
+    "perception": {
+      "reward": 0.4444444444444444,
+      "precision": 0.6666666666666666,
+      "recall": 0.3333333333333333,
+      "f1": 0.4444444444444444,
+      "format_valid": true,
+      "true_positive": 2,
+      "certified_false_positive": 1,
+      "masked_predictions": 1,
+      "metric_scope": "sparse certified propositions only; not whole-image precision"
+    },
+    "answer": {
+      "correct": true,
+      "status": "equivalent",
+      "version": "math-verify-0.9.0+conservative-type-gate-v1",
+      "process_correctness": "not_certified"
+    }
+  },
+  "empty_output": {
+    "reward": 0.0,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "format_valid": true,
+    "true_positive": 0,
+    "certified_false_positive": 0,
+    "masked_predictions": 0,
+    "metric_scope": "sparse certified propositions only; not whole-image precision"
+  },
+  "no_trusted_gold": {
+    "reward": 0.0,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "format_valid": false,
+    "masked_predictions": 0
+  },
+  "wrong_arity_not_rejected": {
+    "reward": 0.0,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "format_valid": true,
+    "true_positive": 0,
+    "certified_false_positive": 0,
+    "masked_predictions": 1,
+    "metric_scope": "sparse certified propositions only; not whole-image precision"
+  },
+  "unknown_negative_length_not_rejected": {
+    "reward": 0.0,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "format_valid": true,
+    "true_positive": 0,
+    "certified_false_positive": 0,
+    "masked_predictions": 1,
+    "metric_scope": "sparse certified propositions only; not whole-image precision"
+  },
+  "legacy_parser_example": "Angle(A,B,C)=60deg; Length(A,B)=3; Perpendicular(AB,CD)",
+  "current_release": {
+    "rows": 691,
+    "target_equals_tokens": 691,
+    "lexical_sorted_tokens": 691,
+    "semantic_unique": 691,
+    "constant_conflict_rows": [],
+    "bad_parse_rows": [],
+    "model_visible_source_id_rows": []
+  },
+  "extended_order": [
+    "Angle",
+    "ArcMeasure",
+    "ArcLength",
+    "Area",
+    "CongruentAngle",
+    "CongruentLength",
+    "Length",
+    "Parallel",
+    "Perpendicular",
+    "PointLiesOnCircle",
+    "PointLiesOnLine",
+    "Tangent"
+  ]
+}

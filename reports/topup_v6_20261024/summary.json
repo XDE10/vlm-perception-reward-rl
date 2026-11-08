@@ -1,0 +1,126 @@
+{
+  "release": {
+    "project1_approved_pairs": 977,
+    "project1_new_approved": 764,
+    "project2_math_train": 2500,
+    "project2_math_dev": 256,
+    "project2_code_train": {
+      "function": 1250,
+      "stdin_stdout": 1250
+    },
+    "project2_code_dev": {
+      "function": 100,
+      "stdin_stdout": 100
+    },
+    "project3_train": 531,
+    "project3_validation": 123,
+    "rl_priority_excluding_new_dev": 4810,
+    "project3_cases_with_explicit_negatives": 0,
+    "targets_met": {
+      "p1_800to1000": true,
+      "p2_math": true,
+      "p2_code": true,
+      "p3_500plus": true
+    },
+    "gpu_runs": 0,
+    "approval": "itemwise user-delegated AI engineering release; not human gold"
+  },
+  "budget": {
+    "cap_total_usd": 8,
+    "all_dispatch_attempts": 12619,
+    "new_dispatch_attempts": 6226,
+    "completed_peak_usage_usd": 6.584390556,
+    "unknown_error_retained_reserve_usd": 0.2397909,
+    "committed_upper_usd": 6.824181456,
+    "is_actual_account_debit": false,
+    "live_pending_requests": 0,
+    "unknown_error_dispatches": 91
+  },
+  "p1_main": {
+    "new_questions": 1495,
+    "generation": {
+      "complete": 1495
+    },
+    "local_common": 782,
+    "pair_review": {
+      "pass": 763,
+      "isolate": 15,
+      "uncertain": 4
+    },
+    "local_rule_sha": "5fafda75996f9e9b60f60ece56fccfc2cda2bf505a6c2f895e9f54bb731adb16",
+    "review_contract_sha": "da33500c51292ebfd383e03c45cd9ed062f124a6a37d7a9444ca2358c56d60f6"
+  },
+  "p1_main_local": {
+    "target_questions": 500,
+    "generation_completed": 1495,
+    "schema_valid": 1413,
+    "answer_verified": 1233,
+    "automatic_admitted": 782,
+    "common_pairs": 782,
+    "failure_signals": {
+      "outside_150_1500_qwen_tokens": 522,
+      "answer_not_verified": 262,
+      "invalid_json_no_blind_repair": 43,
+      "repeated_separated_derivation_12grams": 14,
+      "non_stop_finish": 8,
+      "incomplete_written_derivation": 19,
+      "wrong_json_schema": 3,
+      "invalid_bare_final_answer": 17,
+      "unbalanced_box": 15,
+      "not_solved_or_missing_information": 6
+    },
+    "verifier_errors": 0,
+    "training_approved": false,
+    "process_review": "pending"
+  },
+  "rl_official_levels": {
+    "Level 5": 1959,
+    "Level 3": 1402,
+    "Level 4": 1469,
+    "Level 1": 506,
+    "Level 2": 1182,
+    "Level ?": 2
+  },
+  "p2_math_train_levels": {
+    "Level 5": 466,
+    "Level 3": 335,
+    "Level 2": 255,
+    "Level 4": 377,
+    "Level 1": 106,
+    "not_MATH_levelled": 961
+  },
+  "p3_final_review": {
+    "records": 1500,
+    "accepted_by_split": {
+      "train": 531,
+      "validation": 123
+    },
+    "task_statuses": {
+      "uncertain": 428,
+      "pass": 1034,
+      "not_reviewed": 1,
+      "isolate": 37
+    },
+    "positive_facts": 3571,
+    "explicit_negative_facts": 0,
+    "api_calls": 0,
+    "raw_source_sha": "38260329b30d6ff43de55253abecf86ca8dcc4a78ebf3fc114c3b2f6834e6931",
+    "extra_raw_source_sha": "6efa4ed3dafb7f8599d65c6bd6b73b0d9984dd3c606a4a31785645fd2de9c3cf",
+    "parser_sha": "841ac3c3a15fb1ed11f6be35543ba1028b1ccca1574c5dd30881b0dbde77b5ea"
+  },
+  "p3_training_relation_counts": {
+    "Perpendicular": 217,
+    "PointLiesOnCircle": 454,
+    "PointLiesOnLine": 578,
+    "CongruentAngle": 41,
+    "Length": 739,
+    "Angle": 391,
+    "CongruentLength": 81,
+    "Parallel": 31,
+    "ArcMeasure": 4,
+    "ArcLength": 1
+  },
+  "p3_training_incidence_only_cases": 100,
+  "gold_precision": null,
+  "no_gpu_run": true
+}

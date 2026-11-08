@@ -1,0 +1,9 @@
+{
+  "b800f924_left_factor": "-20",
+  "b800f924_right_factor": "-20",
+  "b800f924_correct_domain": "x>0",
+  "teacher_spurious_factor_residual": "1",
+  "742_blue_to_green_target_over_source": "4/3",
+  "742_reverse": "3/4",
+  "trained": false
+}

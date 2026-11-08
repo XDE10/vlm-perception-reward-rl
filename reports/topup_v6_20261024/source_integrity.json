@@ -1,0 +1,9 @@
+{
+  "code_source_revision": "b761a24a95fa03289a231d2d31c183636ffb9833",
+  "code_source_shards_sha_verified": 11,
+  "source_bytes_verified": 2692965085,
+  "old_code_v2_files_sha_verified": 10,
+  "old_math_manifest_files_sha_verified": 7,
+  "no_source_mutation": true,
+  "old_code_v1_structural_and_split_files_sha_verified": 7
+}

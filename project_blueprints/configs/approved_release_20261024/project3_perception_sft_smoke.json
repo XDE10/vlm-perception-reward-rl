@@ -1,0 +1,19 @@
+{
+  "data_manifest": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\delegated_ai_releases_20261024\\manifest.json",
+  "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+  "model_revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+  "tokenizer_path": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\tokenizers\\Qwen2.5-7B-Instruct",
+  "seed": 42,
+  "max_steps": 2,
+  "learning_rate": 2e-05,
+  "batch_size": 1,
+  "gradient_accumulation_steps": 8,
+  "save_steps": 1,
+  "max_length": 3800,
+  "export_merged_base": false,
+  "stage": "sft",
+  "vision": true,
+  "data_file": "project3_perception_prototype_ai_approved.jsonl",
+  "max_pixels": 802816,
+  "output_dir": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\runs\\project3_perception_sft_smoke"
+}

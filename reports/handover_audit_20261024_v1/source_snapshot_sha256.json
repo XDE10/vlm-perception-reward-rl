@@ -1,0 +1,18 @@
+{
+  "AGENTS.md": "6462ba3d599c31611f5a676bb6cbad7636ad0294b0db6fd4fa994529f30d313f",
+  "README.md": "c9d62e4cc17d14f41688fdb06462635064e4080c71306d3e74c2fe5cd3ebeba0",
+  "data/portable_release/manifest.json": "ce02856dc5c594d7899539fb67e5b0eac621def38103e91b3f822af4ceaff2ba",
+  "scripts/train_project3.py": "a652d9eb2c879dfcbfcdf247ecdb6a264b9a320d0f7f857802800074e2de0c74",
+  "src/training/approved_hf.py": "c5cb9e38317da57bc3df0692ad461790b2f6287fa5614233a6a1240679b0974d",
+  "src/data/approved_training_inputs.py": "236ba095002d723ae3b544e9159c930292bbc4ade1eefe5ba85e1ac72d10e2ac",
+  "src/data/perception_v4.py": "841ac3c3a15fb1ed11f6be35543ba1028b1ccca1574c5dd30881b0dbde77b5ea",
+  "src/training/perception_reward_v4.py": "d05fc197c5303621ad27c5ee5f0c63b8408669d9ed49419efd2411c44a1f9d68",
+  "src/data/geometry_model_serialization.py": "a5441167fec81eeb0d7ec4e84366af77b9aeabb223dfa42cb0590c5ec0ce2715",
+  "src/data/geometry_split_guard.py": "d34e3a339780044e3c9f6408e86edf930382155e14c749246b02f32c4730d7b5",
+  "src/evaluation/geometry_perception_parser.py": "ef1ca9b1bfae904f89ef5076114c43df8ff393110ffac13f36211c59bf755d01",
+  "scripts/diagnose_project3_vision.py": "0fb982fb8ee72627d0739f5a9ba5776ff75380835e7c76277b6cd6ffbed20f26",
+  "src/data/perception_text_guards.py": "da4f299b9c5982eff37bc47e8cddeee3e5e238ed359a7a667058b09e70f6f849",
+  "src/data/project3_perception_v2.py": "51b00daf3d9b1363754863ff9f0425e197eaaba5c54707604c378e7a298d3c86",
+  "reports/strict_v8_20261024/执行报告.md": "d721e4b9b15cd4c86914e0cd444261fd6505b273ea3c4f9d0f0f5a790e257487",
+  "project_blueprints/项目三_多模态几何推理_详细实施方案.md": "c01ef411e9e93ed48d032eeaee374ff312260721c92ed0d5047c3651c499c6f3"
+}

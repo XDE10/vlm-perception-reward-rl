@@ -1,0 +1,90 @@
+{
+  "schema_version": "intergps-perception-prototype-v1",
+  "seed": "project3-train-perception-200-v1-20261023",
+  "eligible_unique_train_count": 2096,
+  "selected_count": 200,
+  "selected_splits": {
+    "train": 200
+  },
+  "cases_with_visual_candidate": 162,
+  "cases_with_visual_candidate_fraction": 0.81,
+  "diagram_count": 1922,
+  "diagram_parse_status": {
+    "supported": 454,
+    "unsupported": 1458,
+    "syntax_error": 10
+  },
+  "diagram_unsupported_reasons": {
+    "unsupported_root_PointLiesOnLine": 904,
+    "symbolic_or_nonrational_value": 349,
+    "unsupported_root_PointLiesOnCircle": 189,
+    "empty_expression": 10,
+    "unsupported_Angle_shape": 7,
+    "unsupported_Equality_target": 4,
+    "unsupported_Line_shape": 2,
+    "nonpositive_length": 2,
+    "degenerate_line": 1
+  },
+  "text_count": 399,
+  "text_parse_status": {
+    "unsupported": 343,
+    "supported": 56
+  },
+  "text_unsupported_reasons": {
+    "unsupported_root_Find": 200,
+    "unsupported_root_Rectangle": 2,
+    "unsupported_Equality_target": 7,
+    "unsupported_root_Isosceles": 3,
+    "symbolic_or_nonrational_value": 37,
+    "unsupported_root_IsIncenterOf": 3,
+    "unsupported_root_Similar": 6,
+    "unsupported_root_IsMidsegmentOf": 10,
+    "unsupported_root_Circle": 9,
+    "unsupported_root_Congruent": 4,
+    "unsupported_root_IsDiameterOf": 6,
+    "unsupported_root_Parallelogram": 11,
+    "unsupported_root_IsChordOf": 2,
+    "unsupported_root_Line": 2,
+    "unsupported_Line_shape": 6,
+    "unsupported_root_IsHypotenuseOf": 1,
+    "unsupported_Angle_shape": 9,
+    "unsupported_root_InscribedIn": 3,
+    "unsupported_root_Trapezoid": 2,
+    "unsupported_root_Arc": 2,
+    "unsupported_root_Regular": 3,
+    "unsupported_root_Triangle": 4,
+    "unsupported_root_IsCentroidOf": 2,
+    "unsupported_root_Square": 1,
+    "unsupported_root_Rhombus": 1,
+    "unsupported_root_IsDiagonalOf": 2,
+    "unsupported_root_IntersectAt": 1,
+    "unsupported_root_Equilateral": 1,
+    "unsupported_root_IsMidpointOf": 2,
+    "unsupported_root_Kite": 1
+  },
+  "categories": {
+    "visual_candidate": 450,
+    "uncertain": 1468,
+    "text_explicit": 4
+  },
+  "supported_relations": {
+    "Length": 215,
+    "Perpendicular": 109,
+    "Angle": 104,
+    "Parallel": 25,
+    "Tangent": 1
+  },
+  "conflicting_diagram_fact_count": 0,
+  "visual_candidates_missing_coordinates": 0,
+  "visual_candidates_out_of_bounds_coordinates": 44,
+  "human_reviewed_count": 0,
+  "human_precision": null,
+  "training_approved_count": 0,
+  "limitations": [
+    "visual_candidate means limited formal text checks found no entailment; it is not visual-exclusive ground truth.",
+    "Official text logic forms may omit prose facts or entailments; prose-level semantic review remains pending.",
+    "Only rational numeric Angle/Length and direct Parallel/Perpendicular/Tangent are supported; symbolic values, Congruent and other roots remain uncertain.",
+    "Source coordinates are evidence locators, not certified symbol bounding boxes; out-of-bounds positions are flagged.",
+    "No human or AI image adjudication is claimed by this build; all 30 review entries remain pending."
+  ]
+}

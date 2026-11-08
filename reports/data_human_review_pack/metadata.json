@@ -1,0 +1,3175 @@
+{
+  "version": "human-review-pack-v1-20261023",
+  "script_sha256": "819150919bdfa26757583fb54c63c6ef9525630df517e8cac5f3f855af3b2d6a",
+  "api_calls": 0,
+  "gpu_operations": 0,
+  "training_runs": 0,
+  "human_review_status": "pending",
+  "sampling": "subject/interface round robin; length tertiles within each subject with starting tertile rotated by sorted subject index; fixed SHA256 order within each tertile; same seed; no quality cherry picking",
+  "length_definition": "Existing token field when present; otherwise problem character count. Tertiles within each subject/interface; not tokenizer-equivalent across datasets.",
+  "inventory": {
+    "data/math/math_train.jsonl": {
+      "sha256": "abde8c70f51190e1731084b720a19b8e0155f0aa2106a32175dc6270d513a3ea",
+      "hash_matches": true,
+      "kind": "manifest input identity"
+    },
+    "data/math/math_dev.jsonl": {
+      "sha256": "b5b3c90eeea953ae954cc2aa652caff4bd9c6edcb95f1b896215b84772225023",
+      "hash_matches": true,
+      "kind": "manifest input identity"
+    },
+    "data/math/math_quarantine.jsonl": {
+      "sha256": "fdff750a9070b55ba3fe9005284e1a8f9fe1f0ee58fc100255c1a111ce3a7c19",
+      "hash_matches": true,
+      "kind": "manifest input identity"
+    },
+    "data/math/gsm8k_train.jsonl": {
+      "sha256": "2f9fdf82696df195f7f968c26b8a8e354e8869013d1aa242c796cf418dae8c10",
+      "hash_matches": true,
+      "kind": "manifest input identity"
+    },
+    "data/math/gsm8k_test.jsonl": {
+      "sha256": "a70d6a96a1d0db216c5543f044e9dbe3cb1c2a28a26abe4d012b10d669057569",
+      "hash_matches": true,
+      "kind": "manifest input identity"
+    },
+    "data/math/math500_test.jsonl": {
+      "sha256": "4a8ada6bff87e172a59d78467764e781ae92460a4c6a3ec23f11e99ecd97c04e",
+      "hash_matches": true,
+      "kind": "manifest input identity"
+    },
+    "data/math/math_source_test.jsonl": {
+      "sha256": "de8e153914ed7c77857237d390bb1f7d8f57d8e554a2c39e816324e72b306002",
+      "hash_matches": true,
+      "kind": "manifest input identity"
+    },
+    "data/project1_sft_v2/README.md": {
+      "path": "data/project1_sft_v2/README.md",
+      "sha256": "2ab9c07a9dde5293dfa376763b3883183b2133ab79ae61ac772579a1357a6248",
+      "manifest": "data/project1_sft_v2/manifest.json",
+      "hash_matches": true
+    },
+    "data/project1_sft_v2/sft_train_2200.jsonl": {
+      "path": "data/project1_sft_v2/sft_train_2200.jsonl",
+      "sha256": "dbf1f3553e56f25864cfdecc03eced8571f084b132144f386e097cde68776d5e",
+      "manifest": "data/project1_sft_v2/manifest.json",
+      "hash_matches": true,
+      "rows": 1500,
+      "schema_key_variants": {
+        "answer_token_count,automatic_quality,domain,family_id,level_link_kind,linked_train_level,local_math_verify_rechecked,problem,problem_hash,problem_raw_sha256,problem_type,prompt_token_count,quality_status,reference_answer,response_token_count,rl_train_overlap,sample_id,semantic_review,solution,solution_sha256,source,source_category,source_finish_reason,source_math_verify,source_path,source_ratio_group,source_reasoning_complete,source_revision,source_row,source_split,source_uuid,source_verification_ratio,split,supervised_token_count,system_prompt,total_token_count,training_approved,trajectory_index": 1500
+      }
+    },
+    "data/project1_sft_v2/sft_train_3000.jsonl": {
+      "path": "data/project1_sft_v2/sft_train_3000.jsonl",
+      "sha256": "758323346bfb1c87c02926e91d6843d07a9d4e8a03d448a47fd2b1588053f9d1",
+      "manifest": "data/project1_sft_v2/manifest.json",
+      "hash_matches": true,
+      "rows": 1500,
+      "schema_key_variants": {
+        "answer_token_count,automatic_quality,domain,family_id,level_link_kind,linked_train_level,local_math_verify_rechecked,problem,problem_hash,problem_raw_sha256,problem_type,prompt_token_count,quality_status,reference_answer,response_token_count,rl_train_overlap,sample_id,semantic_review,solution,solution_sha256,source,source_category,source_finish_reason,source_math_verify,source_path,source_ratio_group,source_reasoning_complete,source_revision,source_row,source_split,source_uuid,source_verification_ratio,split,supervised_token_count,system_prompt,total_token_count,training_approved,trajectory_index": 1500
+      },
+      "required_schema": [
+        "problem",
+        "reference_answer",
+        "sample_id",
+        "solution",
+        "training_approved"
+      ],
+      "required_schema_pass": true,
+      "unique_sample_ids": true
+    },
+    "data/project1_sft_v2/train_overlap.json": {
+      "path": "data/project1_sft_v2/train_overlap.json",
+      "sha256": "63f53e4ea4db96326788c53942df6f0cd80a3ec8141ca51d8961c955ee8cc941",
+      "manifest": "data/project1_sft_v2/manifest.json",
+      "hash_matches": true
+    },
+    "data/screening_sources/openr1/data/train-00000-of-00010.parquet": {
+      "sha256": "ccc3a95e4875dc4cff9bec2f0fb1c93e4c9cbb24fb24853fd0b96c416e1a263c",
+      "hash_matches": true,
+      "kind": "full source parquet"
+    },
+    "data/screening_sources/openr1/data/train-00001-of-00010.parquet": {
+      "sha256": "a7d3eb54d97f7e1237a872947f2246de54a104be224646f62f588abdf6c7db60",
+      "hash_matches": true,
+      "kind": "full source parquet"
+    },
+    "data/screening_sources/openr1/data/train-00002-of-00010.parquet": {
+      "sha256": "a44a2354bfa752541ab768b62edf01f3df4b9b2a7660774ab1eb6e7f19f0a86b",
+      "hash_matches": true,
+      "kind": "full source parquet"
+    },
+    "data/screening_sources/openr1/data/train-00003-of-00010.parquet": {
+      "sha256": "dd7d2f0f04d80b3ae08484b706c4f7fd9dd29eeff4038c36257a307c77b877e9",
+      "hash_matches": true,
+      "kind": "full source parquet"
+    },
+    "data/screening_sources/openr1/data/train-00004-of-00010.parquet": {
+      "sha256": "e358157990d7744643e25f1e692556ac5fd4a2212c008cf67475b14e040861ea",
+      "hash_matches": true,
+      "kind": "full source parquet"
+    },
+    "data/screening_sources/openr1/data/train-00005-of-00010.parquet": {
+      "sha256": "30254d14d17b63d1f7963488d53a2d26aa22070f71baa2fe601201b081e38060",
+      "hash_matches": true,
+      "kind": "full source parquet"
+    },
+    "data/screening_sources/openr1/data/train-00006-of-00010.parquet": {
+      "sha256": "b3bce93c06d4dc22788c04d0a1da5cbadb5b3db31046809c59a4ec26e96ebb52",
+      "hash_matches": true,
+      "kind": "full source parquet"
+    },
+    "data/screening_sources/openr1/data/train-00007-of-00010.parquet": {
+      "sha256": "7def8029cf6d40f7493e9aa4be4b49c251ae7e0cb23b0b117c485e09ff5d5021",
+      "hash_matches": true,
+      "kind": "full source parquet"
+    },
+    "data/screening_sources/openr1/data/train-00008-of-00010.parquet": {
+      "sha256": "29cf75a663e91039fc92bffd86a9ad845f992302da52d1fb1563b6c41ae777ed",
+      "hash_matches": true,
+      "kind": "full source parquet"
+    },
+    "data/screening_sources/openr1/data/train-00009-of-00010.parquet": {
+      "sha256": "14df2775196a701b97a71cf0285fa75d97980fbda4db9ec9af9c2a07658ca256",
+      "hash_matches": true,
+      "kind": "full source parquet"
+    },
+    "data/project2_code/dev_metadata.jsonl": {
+      "path": "data/project2_code/dev_metadata.jsonl",
+      "sha256": "ef90733d498cd0e52d903fadcf97a0f4a3928720ae9a1a6354085253cc6282c1",
+      "manifest": "data/project2_code/manifest.json",
+      "hash_matches": true,
+      "rows": 200,
+      "schema_key_variants": {
+        "domain,entry_point,execution_status,family_id,function_signature,interface,problem,problem_hash,prompt,reference_ast_sha256,reference_code_sha256,sample_id,source,source_category,source_family,source_id,source_revision,source_split,split,static_status,test_case_count": 200
+      }
+    },
+    "data/project2_code/dev_verification.jsonl": {
+      "path": "data/project2_code/dev_verification.jsonl",
+      "sha256": "557f062048711c3a990eebcb88d7c64e254639f6807e76f52d0ab9f49f695cf3",
+      "manifest": "data/project2_code/manifest.json",
+      "hash_matches": true,
+      "rows": 200,
+      "schema_key_variants": {
+        "domain,entry_point,execution_status,family_id,function_signature,gold_standard_solution,interface,problem,problem_hash,prompt,reference_ast_sha256,reference_code_sha256,sample_id,source,source_category,source_family,source_id,source_revision,source_split,split,static_status,test_case_count,verification_info": 200
+      }
+    },
+    "data/project2_code/interface_audit.jsonl": {
+      "path": "data/project2_code/interface_audit.jsonl",
+      "sha256": "0c96afcc5d0649fb710b63b8529070285da88850c03569b5fef18048aea287ad",
+      "manifest": "data/project2_code/manifest.json",
+      "hash_matches": true,
+      "rows": 35735,
+      "schema_key_variants": {
+        "reason,sample_id": 35735
+      }
+    },
+    "data/project2_code/literal_quarantine.jsonl": {
+      "path": "data/project2_code/literal_quarantine.jsonl",
+      "sha256": "865add8d75c0b34b4882a9672b37cb2a0aa7c3779a478c8dd5ad1c9eb8a2ab50",
+      "manifest": "data/project2_code/manifest.json",
+      "hash_matches": true,
+      "rows": 1,
+      "schema_key_variants": {
+        "findings,sample_id": 1
+      }
+    },
+    "data/project2_code/math_train_prompts.jsonl": {
+      "path": "data/project2_code/math_train_prompts.jsonl",
+      "sha256": "a025f3610c0583bddd1a9fde385bef7baa97b09b5860f3904781bd2a2643729f",
+      "manifest": "data/project2_code/manifest.json",
+      "hash_matches": true,
+      "rows": 2500,
+      "schema_key_variants": {
+        "domain,family_id,problem,problem_hash,sample_id,source,source_revision,source_split": 2500
+      },
+      "required_schema": [
+        "domain",
+        "problem",
+        "sample_id",
+        "source"
+      ],
+      "required_schema_pass": true,
+      "unique_sample_ids": true
+    },
+    "data/project2_code/structural_candidates.jsonl": {
+      "path": "data/project2_code/structural_candidates.jsonl",
+      "sha256": "42e3e4b1e39bb580935df9044834b5ab093b1314dac2fa7f29756b6eab2c1e8a",
+      "manifest": "data/project2_code/manifest.json",
+      "hash_matches": true,
+      "rows": 30636,
+      "schema_key_variants": {
+        "domain,entry_point,execution_status,family_id,function_signature,interface,problem,problem_hash,prompt,reference_ast_sha256,reference_code_sha256,sample_id,source,source_category,source_family,source_id,source_revision,source_split,static_status,test_case_count": 30636
+      }
+    },
+    "data/project2_code/train_prompts.jsonl": {
+      "path": "data/project2_code/train_prompts.jsonl",
+      "sha256": "355b5ae4e488c0aa829ca35b45eb365705d01d328cac10847bfbc15100efd4b5",
+      "manifest": "data/project2_code/manifest.json",
+      "hash_matches": true,
+      "rows": 2500,
+      "schema_key_variants": {
+        "domain,entry_point,execution_status,family_id,function_signature,interface,problem,problem_hash,prompt,reference_ast_sha256,reference_code_sha256,sample_id,source,source_category,source_family,source_id,source_revision,source_split,split,static_status,test_case_count": 2500
+      }
+    },
+    "data/project2_code_v2/agent_audit_queue_50.jsonl": {
+      "path": "data/project2_code_v2/agent_audit_queue_50.jsonl",
+      "sha256": "da5c04f992b9d0b309d701231405a4c82ac330f28150b0d42817fc2fdcbedaab",
+      "manifest": "data/project2_code_v2/manifest.json",
+      "hash_matches": true,
+      "rows": 50,
+      "schema_key_variants": {
+        "domain,entry_point,execution,execution_status,family_id,function_signature,interface,problem,problem_hash,prompt,reference_ast_sha256,reference_body_sha256,reference_code,sample_id,source,source_category,source_id,source_key,source_revision,source_split,split,test_cases,verification_info,verification_status": 50
+      }
+    },
+    "data/project2_code_v2/dev_metadata.jsonl": {
+      "path": "data/project2_code_v2/dev_metadata.jsonl",
+      "sha256": "facb54c5b880dbbfbb528b06198d5c5ec245a0d1f97c1a2b048543c566903366",
+      "manifest": "data/project2_code_v2/manifest.json",
+      "hash_matches": true,
+      "rows": 200,
+      "schema_key_variants": {
+        "domain,entry_point,execution_status,family_id,function_signature,interface,problem,problem_hash,prompt,prompt_token_count,reference_ast_sha256,reference_body_sha256,sample_id,source,source_category,source_id,source_key,source_revision,source_split,split,verification_status": 200
+      }
+    },
+    "data/project2_code_v2/dev_verification.jsonl": {
+      "path": "data/project2_code_v2/dev_verification.jsonl",
+      "sha256": "923fa5ac5d228837db8d23d3ee901a58a20227e3e9a6993c93fdc6066ae9ea3c",
+      "manifest": "data/project2_code_v2/manifest.json",
+      "hash_matches": true,
+      "rows": 200,
+      "schema_key_variants": {
+        "domain,entry_point,execution,execution_status,family_id,function_signature,interface,problem,problem_hash,prompt,prompt_token_count,reference_ast_sha256,reference_body_sha256,reference_code,sample_id,source,source_category,source_id,source_key,source_revision,source_split,split,test_cases,verification_info,verification_status": 200
+      },
+      "required_schema": [
+        "interface",
+        "problem",
+        "reference_code",
+        "sample_id"
+      ],
+      "required_schema_pass": true,
+      "unique_sample_ids": true
+    },
+    "data/project2_code_v2/extra_stdio_dev_candidates.jsonl": {
+      "path": "data/project2_code_v2/extra_stdio_dev_candidates.jsonl",
+      "sha256": "ece3bb6b10789a890265adc5ee7a1d137e310a9ae3790d9408c9945706b94de7",
+      "manifest": "data/project2_code_v2/manifest.json",
+      "hash_matches": true,
+      "rows": 80,
+      "schema_key_variants": {
+        "domain,entry_point,execution_status,family_id,function_signature,gold_standard_solution,interface,problem,problem_hash,prompt,reference_ast_sha256,reference_code_sha256,sample_id,source,source_category,source_family,source_id,source_revision,source_split,split,static_status,test_case_count,verification_info": 80
+      }
+    },
+    "data/project2_code_v2/function_candidates.jsonl": {
+      "path": "data/project2_code_v2/function_candidates.jsonl",
+      "sha256": "23d9056d70f0a7f2a7d3c366017a2db6ce0dcec506070747c617be5da07167aa",
+      "manifest": "data/project2_code_v2/manifest.json",
+      "hash_matches": true,
+      "rows": 3138,
+      "schema_key_variants": {
+        "entry_point,family_id,function_signature,interface,problem,problem_hash,reference_ast_sha256,reference_body_sha256,reference_code,reference_code_sha256,sample_id,source,source_category,source_id,source_key,source_revision,source_split,test_cases,verification_status": 3138
+      }
+    },
+    "data/project2_code_v2/function_execution.jsonl": {
+      "path": "data/project2_code_v2/function_execution.jsonl",
+      "sha256": "10f4492c55556f6bd6b5cb985a6e1aafc71981e1ecf99632424024213fda2c3c",
+      "manifest": "data/project2_code_v2/manifest.json",
+      "hash_matches": true,
+      "rows": 128,
+      "schema_key_variants": {
+        "constant_mutant_passes,error,exit_code,passed,sample_id,stdout": 128
+      }
+    },
+    "data/project2_code_v2/function_source_audit.jsonl": {
+      "path": "data/project2_code_v2/function_source_audit.jsonl",
+      "sha256": "b88f69d2c8625fdae7c88857d986bc3bb1191c3659d62834d9d84286d638ba69",
+      "manifest": "data/project2_code_v2/manifest.json",
+      "hash_matches": true,
+      "rows": 24266,
+      "schema_key_variants": {
+        "evidence,reason,sample_id": 24266
+      }
+    },
+    "data/project2_code_v2/input_budget_audit.jsonl": {
+      "path": "data/project2_code_v2/input_budget_audit.jsonl",
+      "sha256": "5d2f46b7b42f410cea5d7b24d0f7b0063cb4abdc5e7e81137164e0923c7d99e0",
+      "manifest": "data/project2_code_v2/manifest.json",
+      "hash_matches": true,
+      "rows": 1,
+      "schema_key_variants": {
+        "interface,prompt_tokens,reason,sample_id": 1
+      }
+    },
+    "data/project2_code_v2/stdio_execution.jsonl": {
+      "path": "data/project2_code_v2/stdio_execution.jsonl",
+      "sha256": "af69d3915db250488b5f0ba2b6d1947bf57bb519a2df85ccbbc68075bd3140f4",
+      "manifest": "data/project2_code_v2/manifest.json",
+      "hash_matches": true,
+      "rows": 230,
+      "schema_key_variants": {
+        "cases_checked,passed,sample_id": 124,
+        "cases_checked,error,passed,sample_id": 106
+      }
+    },
+    "data/project2_code_v2/train_prompts.jsonl": {
+      "path": "data/project2_code_v2/train_prompts.jsonl",
+      "sha256": "ab362060ae464281acbf3208e815dac4387f9ebbaf9e776e0d479815938cdf5a",
+      "manifest": "data/project2_code_v2/manifest.json",
+      "hash_matches": true,
+      "rows": 2500,
+      "schema_key_variants": {
+        "domain,entry_point,execution_status,family_id,function_signature,interface,problem,problem_hash,prompt,prompt_token_count,reference_ast_sha256,reference_body_sha256,sample_id,source,source_category,source_id,source_key,source_revision,source_split,split,verification_status": 2500
+      },
+      "required_schema": [
+        "interface",
+        "problem",
+        "prompt",
+        "sample_id",
+        "source"
+      ],
+      "required_schema_pass": true,
+      "unique_sample_ids": true
+    },
+    "src/synthesis/compact_v3.py": {
+      "sha256": "a89e9174c2f29c4f1b87345f1ed281da918066986cd456f6665b400c911f5afb",
+      "hash_matches": true,
+      "kind": "manifest input identity"
+    },
+    "src/synthesis/compact_format_review.py": {
+      "sha256": "9d6f054d031eb44387a58f6ccb9e9196b62302f757436e6b44ca0d8d39470ce1",
+      "hash_matches": true,
+      "kind": "manifest input identity"
+    },
+    "src/synthesis/compact_v2.py": {
+      "sha256": "3d556ef3419ccaddb2218d5f2e054e54e16552fb78f133131bfe98f51764baae",
+      "hash_matches": true,
+      "kind": "manifest input identity"
+    },
+    "src/synthesis/deepseek_pilot.py": {
+      "sha256": "11a0c63dbebfba15a5462864a645cbf6643dd178a9e617621f9c208e1ec0f220",
+      "hash_matches": true,
+      "kind": "manifest input identity"
+    },
+    "scripts/compact_distillation_v3.py": {
+      "sha256": "c1a5eba77b75f584a8c81fef9c1714b74e33b5ec0bfce2de41e07a90f11af8dc",
+      "hash_matches": true,
+      "kind": "manifest input identity"
+    },
+    "scripts/math_verify_pilot_worker.py": {
+      "sha256": "923e03a3b54d90b571431b03bc8cf52562bba3c0064b30f32e3a8981645aade3",
+      "hash_matches": true,
+      "kind": "manifest input identity"
+    },
+    "data/math_manifest.json": {
+      "sha256": "0416b28f855a4ab4568daeec01c433df6ae085e1580a766299b1507d69aa5bda",
+      "hash_matches": true,
+      "kind": "manifest input identity"
+    },
+    "reports/openr1_full_audit_final_20261023/manifest.json": {
+      "sha256": "c41c112734cf1479bf4c4c018b5f06ab4033ff60f232e4d4acd2fc067cce18d2",
+      "hash_matches": true,
+      "kind": "manifest input identity"
+    },
+    "reports/openr1_full_audit_final_20261023/questions.jsonl": {
+      "sha256": "a8cf06a73169371b56da15df493830c36c6cb65fbaa2f54ea7767cb5b01c5656",
+      "hash_matches": true,
+      "kind": "manifest input identity"
+    },
+    "reports/project1_sft_v2_plan_20261023/coverage_proposal.json": {
+      "sha256": "4f7d9e466105594e8c1207f2e0df01ded25c565afbaeaf7d31ea6f5a014207e2",
+      "hash_matches": true,
+      "kind": "manifest input identity"
+    },
+    "data/deepseek_pilot_20261023/manifest.json": {
+      "sha256": "6042a78988adb37945af4f2e8389dbc2e56e8d3df27eedd55c9e91bc05927760",
+      "hash_matches": true,
+      "kind": "manifest input identity"
+    },
+    "data/compact_distillation_v2_20261023/manifest.json": {
+      "sha256": "32e2a610aa0d4cc2778e29357ff5b5f0747bd8789879c5d21cb4189a2985c3ea",
+      "hash_matches": true,
+      "kind": "manifest input identity"
+    },
+    "data/project1_sft/sft_train.jsonl": {
+      "sha256": "3163633d56893aaed4278c538229be6cc7553909146ca367bf0521d08fd6edf5",
+      "hash_matches": true,
+      "kind": "manifest input identity"
+    },
+    "data/tokenizers/Qwen2.5-7B-Instruct/tokenizer.json": {
+      "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+      "hash_matches": true,
+      "kind": "manifest input identity"
+    },
+    "data/tokenizers/Qwen2.5-7B-Instruct/tokenizer_config.json": {
+      "sha256": "5b5d4f65d0acd3b2d56a35b56d374a36cbc1c8fa5cf3b3febbbfabf22f359583",
+      "hash_matches": true,
+      "kind": "manifest input identity"
+    },
+    "data/tokenizers/Qwen2.5-7B-Instruct/vocab.json": {
+      "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+      "hash_matches": true,
+      "kind": "manifest input identity"
+    },
+    "data/tokenizers/Qwen2.5-7B-Instruct/merges.txt": {
+      "sha256": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+      "hash_matches": true,
+      "kind": "manifest input identity"
+    },
+    "data/tokenizers/Qwen2.5-7B-Instruct/config.json": {
+      "sha256": "7463bb0ea78315365e6c6b74de4e73bbcc8359dfb0c5a737584e077d42c0b03c",
+      "hash_matches": true,
+      "kind": "manifest input identity"
+    },
+    "data/project1_textonly_v3/actual_source_row_rechecks.json": {
+      "path": "data/project1_textonly_v3/actual_source_row_rechecks.json",
+      "sha256": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f",
+      "manifest": "data/project1_textonly_v3/manifest.json",
+      "hash_matches": true
+    },
+    "data/project1_textonly_v3/native_candidates.jsonl": {
+      "path": "data/project1_textonly_v3/native_candidates.jsonl",
+      "sha256": "6ff109355d99cdafa13e2e760ea1bb9f1ed071f6154a37978ad86d5c09201917",
+      "manifest": "data/project1_textonly_v3/manifest.json",
+      "hash_matches": true,
+      "rows": 1500,
+      "schema_key_variants": {
+        "answer_tokens,linked_train_level,local_math_verify_rechecked,original_problem,problem,problem_type,reference_answer,sample_id,semantic_review,semantic_self_containedness,solution,source_cleaning,source_position,source_revision,source_verified,split,total_tokens,training_approved": 1500
+      },
+      "required_schema": [
+        "problem",
+        "reference_answer",
+        "sample_id",
+        "solution",
+        "training_approved"
+      ],
+      "required_schema_pass": true,
+      "unique_sample_ids": true
+    },
+    "data/project1_textonly_v3/screened_out.jsonl": {
+      "path": "data/project1_textonly_v3/screened_out.jsonl",
+      "sha256": "b738499dbd3e5918ed329ae92c8b9c79f4962bf2d9ba0d6677e947f00159b3a3",
+      "manifest": "data/project1_textonly_v3/manifest.json",
+      "hash_matches": true,
+      "rows": 1030,
+      "schema_key_variants": {
+        "problem,problem_type,reasons,sample_id,semantics,was_in_old_1500": 1030
+      }
+    },
+    "data/project1_textonly_v3/summary.json": {
+      "path": "data/project1_textonly_v3/summary.json",
+      "sha256": "626c5d4af5f734d53807f2bd5963e2e7dd285e897426a460807c6211fe67465e",
+      "manifest": "data/project1_textonly_v3/manifest.json",
+      "hash_matches": true
+    },
+    "data/screening_sources/code/data/train-00000-of-00011.parquet": {
+      "sha256": "7c35b071371e6774c9177c18039e101efa3da057d299e72cf047f3be0d74b1c3",
+      "hash_matches": true,
+      "kind": "full source parquet",
+      "manifest": "data/screening_sources/code_source.json"
+    },
+    "data/screening_sources/code/data/train-00001-of-00011.parquet": {
+      "sha256": "dc9ef809bf764e0b76b9d41328e3fe155be0fa4fb236533b83b7252cf9d6de3c",
+      "hash_matches": true,
+      "kind": "full source parquet",
+      "manifest": "data/screening_sources/code_source.json"
+    },
+    "data/screening_sources/code/data/train-00002-of-00011.parquet": {
+      "sha256": "d8529e402f7687a93fe0701e492f709cd2ae92878d1f9d6f3271396f290ffcfb",
+      "hash_matches": true,
+      "kind": "full source parquet",
+      "manifest": "data/screening_sources/code_source.json"
+    },
+    "data/screening_sources/code/data/train-00003-of-00011.parquet": {
+      "sha256": "666551e0b8ca04a9c801acb371d01683c698f719a761b7c682f69745249a7193",
+      "hash_matches": true,
+      "kind": "full source parquet",
+      "manifest": "data/screening_sources/code_source.json"
+    },
+    "data/screening_sources/code/data/train-00004-of-00011.parquet": {
+      "sha256": "aad20e382fd2d826b76ab91f8e324593fc3ea65e86accc93e05143a20250d60b",
+      "hash_matches": true,
+      "kind": "full source parquet",
+      "manifest": "data/screening_sources/code_source.json"
+    },
+    "data/screening_sources/code/data/train-00005-of-00011.parquet": {
+      "sha256": "aee44a3f2f33e766e262e5e06995d760cb5e73acaa04e3f1b116742234667634",
+      "hash_matches": true,
+      "kind": "full source parquet",
+      "manifest": "data/screening_sources/code_source.json"
+    },
+    "data/screening_sources/code/data/train-00006-of-00011.parquet": {
+      "sha256": "dabea3d25128e313b7045726f569c38ad5cbfb0df33d28803c035419fee6d87e",
+      "hash_matches": true,
+      "kind": "full source parquet",
+      "manifest": "data/screening_sources/code_source.json"
+    },
+    "data/screening_sources/code/data/train-00007-of-00011.parquet": {
+      "sha256": "1a8ab20b13391789474f4fc96a2db8eaab5853fbd6b96083312f285ae4ade8ba",
+      "hash_matches": true,
+      "kind": "full source parquet",
+      "manifest": "data/screening_sources/code_source.json"
+    },
+    "data/screening_sources/code/data/train-00008-of-00011.parquet": {
+      "sha256": "037f88c494a1f900d4fe89e197f8935ab703a44e90762ab238935a06c80a3cb9",
+      "hash_matches": true,
+      "kind": "full source parquet",
+      "manifest": "data/screening_sources/code_source.json"
+    },
+    "data/screening_sources/code/data/train-00009-of-00011.parquet": {
+      "sha256": "85d8ebdf11459cfc8a21e7010fdfe65857d65241e8aa477aa40605e3ef15e43b",
+      "hash_matches": true,
+      "kind": "full source parquet",
+      "manifest": "data/screening_sources/code_source.json"
+    },
+    "data/screening_sources/code/data/train-00010-of-00011.parquet": {
+      "sha256": "d6eed64c6645cdcfba888e302ae37e3f87e620cd0a63193e913b45a5bf3da228",
+      "hash_matches": true,
+      "kind": "full source parquet",
+      "manifest": "data/screening_sources/code_source.json"
+    },
+    "reports/compact_distillation_v3_20261023/blind_request_audit.json": {
+      "path": "reports/compact_distillation_v3_20261023/blind_request_audit.json",
+      "sha256": "8589602dae89669060963d530bb89e5ac47388006b7a58b76a2be5d2184f4203",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/common_candidates.json": {
+      "sha256": "4ed5c6b89b6b291ee088011e3e49537003b6db4bb06fc2aff23d09b34f0d1fb5",
+      "rows": 12,
+      "kind": "v3 frozen gate candidates pending human process review"
+    },
+    "reports/compact_distillation_v3_20261023/partial_results.json": {
+      "path": "reports/compact_distillation_v3_20261023/partial_results.json",
+      "sha256": "f0f39e3727125837ca03b7b49cd7156112b55f3746f7a3474c88655bc0394bdc",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/results.json": {
+      "path": "reports/compact_distillation_v3_20261023/results.json",
+      "sha256": "10d0a488b722274da2c8535409c3632d1f1cc208f650245686b316e10cd74da3",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/summary.json": {
+      "path": "reports/compact_distillation_v3_20261023/summary.json",
+      "sha256": "7eb3c547015efa4c7ce29e50bd4acbf413d65af6aa1463b6ab8780bd3c33bd74",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/0b32ef0441d4d2d42a47b0019bc6fb216083cc56b00115d399f6182c6613e606.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/0b32ef0441d4d2d42a47b0019bc6fb216083cc56b00115d399f6182c6613e606.json",
+      "sha256": "dd6d5d9e558c0ebd8abf03bdcf053ebe95e31353e4aec8c2b9fceec3cebc6b7c",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/0c4aabe4b309393e9a330f3e5db9d23e9f39d422bed3b2909cb44cdd44a2c390.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/0c4aabe4b309393e9a330f3e5db9d23e9f39d422bed3b2909cb44cdd44a2c390.json",
+      "sha256": "0e40a792ebd44bfd24401f54252f04e637e44bd1384fce287aa09c2767640f55",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/0cb10b6e60c314627dc80efc07438e4acfe57a2b65b17fec1f0142c48381812a.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/0cb10b6e60c314627dc80efc07438e4acfe57a2b65b17fec1f0142c48381812a.json",
+      "sha256": "9759fb35104280b9326ce363d07a4e0fd9d7bc7d2216fa2d92da6f6f24a568f8",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/257421065942eea5df3911e5ab41ad3b1c622736a3e010b69e608dda550e3485.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/257421065942eea5df3911e5ab41ad3b1c622736a3e010b69e608dda550e3485.json",
+      "sha256": "34927fce3c668cd763ffd66c4ae0e93f9f557ea56d47655fd9e5a3a82802fc52",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/2617cc62a70b57739d0297f7db46b5747be13a224a166670f5cda360ec8968cc.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/2617cc62a70b57739d0297f7db46b5747be13a224a166670f5cda360ec8968cc.json",
+      "sha256": "f4f0a4c9add1b9bf9b92f514c50a37f9c4b14a45a8075ca2cc7bf0ffe731de81",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/2e7e4183e783d341d7ed70342c5a47efcb75e832f46f205cc55ade9f6f922e21.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/2e7e4183e783d341d7ed70342c5a47efcb75e832f46f205cc55ade9f6f922e21.json",
+      "sha256": "03f6633e85aa3316bf0ee38599406528e0b4d63b099ca558b36becd973a171bc",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/32137925e2fdf0db4636def80364b74d0cf008e90714a380f96cb0f79b90ece8.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/32137925e2fdf0db4636def80364b74d0cf008e90714a380f96cb0f79b90ece8.json",
+      "sha256": "0a8c46e6fee429fe4dda244cd2d0a1f6f0f5f108c60089c02328bdc341b99749",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/40edafae5ce81f837ce25a2401dfb03eec3b644d275d05782ed7de93e0fc0720.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/40edafae5ce81f837ce25a2401dfb03eec3b644d275d05782ed7de93e0fc0720.json",
+      "sha256": "1a1a33335a6ffa31b22c610c3514f6f114fcd32677e7840719c7cd11a648c559",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/43ad6dc3b2197680986f525c9b391015d84990329779954dc36c7cb9510ba3e8.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/43ad6dc3b2197680986f525c9b391015d84990329779954dc36c7cb9510ba3e8.json",
+      "sha256": "f6712b8aab1405f8aa2ab1a7ab4c8e68405393891c68a17f2faa5852f097bca4",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/482ec9bc46940d32342bf5a4b204a7bc139cc2004d6f91da3f9e7674141c2c34.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/482ec9bc46940d32342bf5a4b204a7bc139cc2004d6f91da3f9e7674141c2c34.json",
+      "sha256": "aacc61503112963843b2749b8ba63aeeaf4b236f164cfe382ba26eba3a462ed0",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/51f52f488bd18632594f0c28d0341ef02575ee18b7cf98a505da0e18494eabdc.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/51f52f488bd18632594f0c28d0341ef02575ee18b7cf98a505da0e18494eabdc.json",
+      "sha256": "6b6cdf63ed8ecfc46082187e0b34699e2bf75dd10a72e1476e971cb6223ae121",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/539c63d8e88d2fc10027b69aaea346013636778caa6e98a86a078727d88f88bd.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/539c63d8e88d2fc10027b69aaea346013636778caa6e98a86a078727d88f88bd.json",
+      "sha256": "befddeff0be890236244434bee1d8e9f8803c143aaec4ddb9677e5366b63c623",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/55ca6f0b50e0a30817ca0e1612a9c0ab84cc5e1216edb11dbb8471a09512c697.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/55ca6f0b50e0a30817ca0e1612a9c0ab84cc5e1216edb11dbb8471a09512c697.json",
+      "sha256": "8a1d6deccb47cef93b9e3a6f7358bef6bac015ba731bcc5f721a25c7865527f7",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/62b22623a48969a782f162a6e5961d0c98e3e36061559b90c0f75b3390fe0033.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/62b22623a48969a782f162a6e5961d0c98e3e36061559b90c0f75b3390fe0033.json",
+      "sha256": "866bd527de376f7b4fd0dc90fcfdb654052c3dd8b10d4905dce151e529b576ba",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/6b3003c284afb047b6ffd821d04d83cc230f6ca2df2f9e4ef9e72499838eed95.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/6b3003c284afb047b6ffd821d04d83cc230f6ca2df2f9e4ef9e72499838eed95.json",
+      "sha256": "19a87b1a5842795ce763e0154d53a0bc53df470af3534f2086e55b8acb6cbc25",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/6bac718c301056f21c07ddf529f531c93ca9ad5822697ab1a45fc3a6f7e5b8d5.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/6bac718c301056f21c07ddf529f531c93ca9ad5822697ab1a45fc3a6f7e5b8d5.json",
+      "sha256": "01131462fca72b9abced15c925c8c94c1bec099e15ef136aa7dc4fbe6f74f6b7",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/6c76de5ab5384839840fdb037e6ae3e4ac08a7845563c71a7eb3dcac29a3c062.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/6c76de5ab5384839840fdb037e6ae3e4ac08a7845563c71a7eb3dcac29a3c062.json",
+      "sha256": "bb88b3f4c01bba988ea67db9bdb1fba6adf5c29d03047af3e1ae94aadb824add",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/71d21ab89d53abaaae6f3bb211f3ecd336334efb6e31b73304d553113b07d40f.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/71d21ab89d53abaaae6f3bb211f3ecd336334efb6e31b73304d553113b07d40f.json",
+      "sha256": "6ec9afc7cc4c0e863ca07b4485ac3a4da5622970ea85758ec4ec8793ae462570",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/821661b73d29d19a1b2aa0948fc14e6da49812a21237a9fdbd44f42eb324c961.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/821661b73d29d19a1b2aa0948fc14e6da49812a21237a9fdbd44f42eb324c961.json",
+      "sha256": "13f0b310e107a4f4ec6e25e2f3ee64a34304e53e4e91010e247287ca1adbff8d",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/84a03766bfdaf3022c3527a90eff1593290804df6288b11afe8de9c1754d21c0.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/84a03766bfdaf3022c3527a90eff1593290804df6288b11afe8de9c1754d21c0.json",
+      "sha256": "c52d5299d32305bcdda2d258a8c41394ab9a8c84637a638e85182cf929460bfd",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/88df5846553746d9e194b959fdddc8006a8fb6b480602e00a0ed20dd5c77b6cf.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/88df5846553746d9e194b959fdddc8006a8fb6b480602e00a0ed20dd5c77b6cf.json",
+      "sha256": "7b95930d496f7f1f246a396dbdcba9d9cd18ea1d89e8615975394dff21ad2bc4",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/8a91dbcca607d31fe77b49b4bf2ccb130b29873cf2432ed6a7c99b815da28cb1.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/8a91dbcca607d31fe77b49b4bf2ccb130b29873cf2432ed6a7c99b815da28cb1.json",
+      "sha256": "251c02c0e44350b78190db90ced9dfe38fc042f1736cc1c11b6690a8d6748d4f",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/8f463e215b639e726ca1d0b325823c6a906d38378373399832f48d8c8769e6f9.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/8f463e215b639e726ca1d0b325823c6a906d38378373399832f48d8c8769e6f9.json",
+      "sha256": "603cd97efab5b6495cc51bf98808886761d1f52d26046ff3906e6320c48f74c2",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/a0d3f24a20b956a0a38c10ba6c978783ae9fbe78954a89721d8439e5ffed60bb.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/a0d3f24a20b956a0a38c10ba6c978783ae9fbe78954a89721d8439e5ffed60bb.json",
+      "sha256": "40bd88bb4aa44b6fd869f305e6960b02739f9ad64079ada474f0c359ab40a86e",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/b76adb283c8f364b9e0f24ecbd952148dcfbc21cabc5d71c8912790a34daa570.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/b76adb283c8f364b9e0f24ecbd952148dcfbc21cabc5d71c8912790a34daa570.json",
+      "sha256": "787fb55423d54ca997177e523bf5b1024c2009c33bd7bee5862735f6c35bdbf1",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/d276ae8c34c69fbdac69d0381437f74767133482ead1ecbd03a4e58472e35747.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/d276ae8c34c69fbdac69d0381437f74767133482ead1ecbd03a4e58472e35747.json",
+      "sha256": "503ee935a8ee730fc23e6cd65238af1719263231af8809039336956da23792b4",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/f6dc95490354922818e28fc924bc5a3558307fa55a43093842eef7715b4d20eb.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/f6dc95490354922818e28fc924bc5a3558307fa55a43093842eef7715b4d20eb.json",
+      "sha256": "f1c727a69bcc4ec9d3bfb3f88b7dd846758b5bb7def9f3c0e8560e489ac64d6e",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/f82cb0c9039f74606cb044f4c3568ac656ad2a2eb5c159a10ef591155e248388.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/f82cb0c9039f74606cb044f4c3568ac656ad2a2eb5c159a10ef591155e248388.json",
+      "sha256": "d083e69cf7d912fac8dc3d70accec7156881fb47044b678d593c2f772d42f279",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/fb0e4ffdaea52bd773db4655842356e6b5ade18e34e8ce68bef7d00fd9c9eb0d.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/fb0e4ffdaea52bd773db4655842356e6b5ade18e34e8ce68bef7d00fd9c9eb0d.json",
+      "sha256": "9feee6221332ff1fd83c7db5d4aedacdf47884fee2c37388b96192404f0b6204",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/fbf4b139a244409f75200e7857c78291f4fc3ba2b7adeafc48e5c7136dc5a7f3.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/fbf4b139a244409f75200e7857c78291f4fc3ba2b7adeafc48e5c7136dc5a7f3.json",
+      "sha256": "e027f0bb91d61225d4d936e60e2497881e59585cb464d89165783515fddfd181",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "reports/compact_distillation_v3_20261023/api_cache/ledger.json": {
+      "path": "reports/compact_distillation_v3_20261023/api_cache/ledger.json",
+      "sha256": "9792fab9268de4567093100c9f84d95b43da92bc2dda036518018219e0a9afcf",
+      "manifest": "reports/compact_distillation_v3_20261023/frozen_run_manifest.json",
+      "hash_matches": true
+    },
+    "data/project3_audit/geometry3k_intergps_links.jsonl": {
+      "sha256": "f738dd5517c4d09071389974362b0fd80cc77e41935b40567460c42e66efa422",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_audit/intergps_annotations.jsonl": {
+      "sha256": "d83517c40cfb5e864344b0221dcd1698d118e461b16c587822c0b6ee8c67c00b",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/manual_image_review_30_pending.jsonl": {
+      "sha256": "a0669483a62fc96a4d69e7e966f49700a3335bbed6b7dbd610216d48ddf8c73c",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_review/manifest.json"
+    },
+    "data/project3_perception_prototype/prototype_200.jsonl": {
+      "sha256": "19aaa8f1e9fa82ab72cbb8f035e4ed88323bf4137bdc36b0e732c9bd6d053452",
+      "rows": 200
+    },
+    "data/project3_perception_prototype/schema.json": {
+      "sha256": "1c5eb20539a5abb82dfcda3815e1db125e71785085c20cf5a665fb4d15f1642a",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/selected_train_ids.json": {
+      "sha256": "47b47d305099d4b22998b1c62a2b514d886a43058028716d68abd5c7718b43d9",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1002.png": {
+      "sha256": "f9f788cfbe1a5ef6a36fa9c6fc851bf5445fbc287144ea7a8de4224bc679b768",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1003.png": {
+      "sha256": "e14fd8d19e8e86126aa43c51c0042aaae74b94ba82103f1701b3d7787e4b324b",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1007.png": {
+      "sha256": "571b3650460e8dcc9a405a48dbb8835f4e8edcca550a040a7f45ee31d63ded48",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1008.png": {
+      "sha256": "f746d193c109c3de46a0472c7a6e14143c9f07a517f00d9f3c04017992579c43",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1021.png": {
+      "sha256": "8cadd4391b91ca992de73bc7ae5a2a2c0709bfe7c6a8814661dac8b412ec122c",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1022.png": {
+      "sha256": "bb68423d1733ff65642ca129fc4ee3fa746b796ee8aabb831ed90e6d5bbe637b",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1025.png": {
+      "sha256": "1ae00a0f7c88ea8e93d32757e5ba738207da909d2ffa3a31cb058b811a4feb8a",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/103.png": {
+      "sha256": "5779bcf11a2c8262d5651a1ca315cad169926911852b3260a0fef7c6943817e7",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1041.png": {
+      "sha256": "677f832413c98f5f2f9992befb2817441f147b93d977c4f79a4516620b538928",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1053.png": {
+      "sha256": "cd76307b3a98c55fc44200c5de17fa3c3acfd862d84548156af623a82a5c365c",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1055.png": {
+      "sha256": "29c35f7394b9703b5ada6a30ac7d8b74c44f6bf9232df291b055a9aaed718443",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1057.png": {
+      "sha256": "dd7abf47b906d239c30f237b9171e8f02745e1b8b8cf31a91e6bc5f2abaabba7",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1063.png": {
+      "sha256": "3ae6cf1d13c4a5e615f7f7915e375973514bf5cc9a22db0290fb7c0885f2e2f9",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1076.png": {
+      "sha256": "2e1405701795ee11e767ce774f6b60c653ed410739ebd38c1b565f2e195a9bde",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/108.png": {
+      "sha256": "2b9df1b7d96194e6a79c85350cbd2031884b801b711938a8baec458bdd215115",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1089.png": {
+      "sha256": "b06e4bbfc9b8bbd20fc56b9e8e266bea66edfcdbe5eafbe8d7df3a63b9541e38",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1090.png": {
+      "sha256": "f92602369c9d4932eb66e5aca60ff673d27fb9e8c60380f79811d2fbd907ea23",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1109.png": {
+      "sha256": "9df7135826f8119d1aacc24d697b7ed5139df1bbe3939be318fa7bc0abc97ec8",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1112.png": {
+      "sha256": "b983b29d6b9435e3d7d90f4d361cf81f0ee8b84a8d91afb3b671e73b4617126f",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1120.png": {
+      "sha256": "634e37a9ed99eadf3415eeeddb288c360b295fb57f94a513ada07b399edd7fc5",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1136.png": {
+      "sha256": "2467c018666b7eb1946db3f814fb154da82ab04410187c84999274e2a1c91f90",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1163.png": {
+      "sha256": "f6b4cfbfb54641fc4ddb6f013297a42dddf124ac4064214275cdb478b7366e2f",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1174.png": {
+      "sha256": "b7e08d0f932c7439b60d17c53d9d834864ac7b2fedbdb74f3942fc80a5671edd",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1187.png": {
+      "sha256": "dad0663c502b0b2b759c25748e776d2808e326a10e0e71b278301a3aec9781bc",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1195.png": {
+      "sha256": "d5fec549e00ba0ae4a1b2921ff34e461dbfee2a5475ee3230cf5f03494c7e9b7",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1206.png": {
+      "sha256": "321c5fcb3bf21859068aaa43839862a062aff77badc395662eca42749b27c4e4",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/124.png": {
+      "sha256": "600432edde78c63c992aa61734b47d183512cd9496a093919ceb6ef0b87e3103",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1243.png": {
+      "sha256": "a07a385d82228296f6f85aab0d6d8599ba2d88afb9c08a2b52e5cd38f3c5e34f",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1244.png": {
+      "sha256": "a356247b2945ddbefb6c0ec11039d1c84e0788d8c3db1dcd2ec3754be1307e81",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1245.png": {
+      "sha256": "3a90174123ee10ef3bae0341ba953862ebde3284a2cc9594b4ef6e68aa69a994",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1263.png": {
+      "sha256": "781bb9776f033d56c9fd2c24aa7951b659a1ac967aa64964d4170bb8c1012b02",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/127.png": {
+      "sha256": "bf0c9d0b7de00c7426d3fd72af1f132ae3940d29497fd31994485f5af75f2523",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1274.png": {
+      "sha256": "43264d9a03ac5546fd8b07dd91f990b23d7ff92fe7e6201786f5271274aafbba",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1285.png": {
+      "sha256": "717ac77f4a9eb3ab6561602f1c1c664986a5a3ca55b10cc632f7b96bbc5f8ef0",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1288.png": {
+      "sha256": "14f18562c9b5d5bde215b7f31c7711427fe300c2cba5a4e3194e885406b3f129",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1289.png": {
+      "sha256": "184c8c1d31d1a1175688ffa06f07be4bc3c8fb042581a7d3fd9085e24c51d886",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1297.png": {
+      "sha256": "c272772206fdd9786acc828c4b3c213e1a153efcbf83dda3f8b2720ecf763bca",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1304.png": {
+      "sha256": "64190092104a8cbf9d4d06044203b1ff17cae44d218e68a18ef246c7a6622c45",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1331.png": {
+      "sha256": "85f4c1401fd7b31308b78295b7c104a38706ca51846b765ce0952eb4e3c4fab5",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1361.png": {
+      "sha256": "0696702c4d9c2374aa3b398f20e80387d7bda884d7d21fc0749dd4d98464f66b",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1366.png": {
+      "sha256": "8bbc2f1e711b5f9ebeee6ff3c340de37cd477dd517f8ade6ec77fe0bbfe86d08",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/14.png": {
+      "sha256": "b682087cd41c83d9a90f8bf324b114035f7de39b4c948db4eaee132a7d35480d",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1404.png": {
+      "sha256": "73d6f36de1e1a69c92047a59adb552df6fba4d47d9b555b0b5586d09af32d386",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1423.png": {
+      "sha256": "83efca40d58ec9b88151fd190275294a2b35c05734118fe48b4f4d7abd1ea13a",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1426.png": {
+      "sha256": "0063d9d6f57458525875bc614f8bc2351ca0dd73f2253c09126b22bb191bad2f",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1428.png": {
+      "sha256": "9d7983be178e3a7fc58b4fa78a318ca76c5acd7ad794bc94a51f20104a67fbcb",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/144.png": {
+      "sha256": "7b97d1d8fc0b4228686979625940ece9e10d8ad95dee49bda9f7958ab53e0e2b",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1480.png": {
+      "sha256": "fd409ef92dfd38cb69cb7a943b5c72b75ff9c62438deca83645aa1513da98932",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1484.png": {
+      "sha256": "90c3504662a203f5ac7d1ece7321df46152b95faec0aea1851da041aa699df4d",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1493.png": {
+      "sha256": "58f2dbcf9f376a95a5044553729d8353b10ffff6a85a112f5f092256ad93ffe1",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1495.png": {
+      "sha256": "7337f5b3ec55da329497b83752e638269d2f3ae002060b18de2a5a3fd471430d",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1497.png": {
+      "sha256": "97cabaec54a1e7bfa6b33f51156427605ff37344ed28b93f83dac526f5e11237",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1498.png": {
+      "sha256": "fe7e66673220d15258846675a2ba1dc502b69e18dc4e5bb270922845df0a066f",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1509.png": {
+      "sha256": "ed2400b72dbe55839244ed28069e20975361240264681dae2570d961e1d5031b",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1510.png": {
+      "sha256": "89682e675a61d87d423a58d1c48474090cb4865374319eabf8a76895a03855f8",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1521.png": {
+      "sha256": "c25b9cd4c3669110510485dd9439a513b96d1ceaf7e89f6baed8097fd5df13c6",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1547.png": {
+      "sha256": "8966d582bf303d14a561d2926f8de00786cf377cf369edca1a381e2fb0e582f6",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1551.png": {
+      "sha256": "e51a4139382c1420a93af0e9a8460ce783eb7013dda613962a6812d43cdf59c0",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1567.png": {
+      "sha256": "eb7c89fa18c63c9531de2a09d768ec4a2558cab8e5fa5eb14416edfc72f4cc43",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1571.png": {
+      "sha256": "be9fd17bb3c63eea9a6a7efda0194ba6b9ddfa45eb8e0b936f33434a56295875",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1576.png": {
+      "sha256": "ba31b38004f8781bd1b8c7fea1dc2acaab6007ec60266fc9e17529d8bb58c32c",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1584.png": {
+      "sha256": "17e697ed997cb9963edea787d30df53350050473e85d69bd9cc24f6442ee94e6",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1585.png": {
+      "sha256": "b3f9a6e5f4908573d4ff469077cbbc4149205bdee4dc483ec033564b8a084ee1",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1596.png": {
+      "sha256": "4a488d7b4da5fcfe31d09f05d56f605fc92d7381960340cff43ae3e2d1236e01",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/16.png": {
+      "sha256": "8bb187e4765f19f65a5b4a5d82141f90b0f25d8a174769a0c374e7c11821ad13",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1603.png": {
+      "sha256": "054a830285c275082c21bd6be5c6a145fae8795cf18eb06a990837bc2245dccf",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1604.png": {
+      "sha256": "309d10399f299e6b51ba569c4cc2598cf45efe9a2247f0042876b318e3bce054",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1606.png": {
+      "sha256": "1f4b2e91e1220f35a8b6fcfa033a84493159512dae8dfe278eefd731de1781b7",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1607.png": {
+      "sha256": "390cf50a327085e960414779972f16b99574fe5545f57de99c6eb67d660b9c90",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1641.png": {
+      "sha256": "cf70e53215dfff0881efe459af29c5aaa70a4e01943f228b3c3136905306fadf",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1643.png": {
+      "sha256": "c54cb3b83d1582d1596148b07282a0e45a80734d8f9d17d650475fdb942ac6aa",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1644.png": {
+      "sha256": "da39d2a9062b7aedfd6c152bd47986e95a8e486760792b4f91baa01ec8130298",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1647.png": {
+      "sha256": "de3fabd6780dc5e6dc0b2b75d782a81f87705d7a272a87329fa2230d563074f0",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1656.png": {
+      "sha256": "3c2e2b234cd266065cbc0486345c83ba3e96e25ec31bc203009fa6f55fa9f4c3",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1683.png": {
+      "sha256": "a80a62631f16e4b89c893a37b96af0398940ff8a28ad73de157bba7accdd42c9",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/17.png": {
+      "sha256": "726a6c5b3565f666feb3c7a306f1c41b153c46c45158dcc2e94c69aac45fe466",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1704.png": {
+      "sha256": "60974846da09a26aafd5d61a2a9b4b8ef0a6a7cf3d001df55b908aabe0e305e4",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1725.png": {
+      "sha256": "08ee9ae2ce57b07a4ad7732f74e626603e7dd7a5171526fb6124654730024d40",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1743.png": {
+      "sha256": "eb7bfe5e0d4e2e7d3956f67ea9d4d919b2cfb11dbad20b4100e69f1f22d0987f",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1749.png": {
+      "sha256": "eaa69e34b8bbb74e2826dd4003df9434110bd677e3ae8bc84f1fddaacac0d635",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1781.png": {
+      "sha256": "565223ab78fa18d05be64699351c5cf35ddc59b2ef3b93ea42c3304f36f47761",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1820.png": {
+      "sha256": "7f47331d45c2fecdc4f618dddbeb3283f00e396bb3d514a976f8e4874e84d93f",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1822.png": {
+      "sha256": "3e6f11124d9df5f55849cfc619242dd438dc26e504ba32b043019845e87ef9f0",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1826.png": {
+      "sha256": "50a89c75ed90a972887ae324866f40fccd8e3a313b0e2ac2c1977767c4b1d382",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1838.png": {
+      "sha256": "1b59eeec9fba42d6d5f3b160fb3ef51c4c1626cb4b35f03f83227162811fa112",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1846.png": {
+      "sha256": "61e7a2a56cbedf517cdef0cef134c45185c622fa4c5eee7b0edf0706b1e9f39f",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1849.png": {
+      "sha256": "014c7db2960456a37e305d414dba09f75a880e48f866955b565b90eab62a0225",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1852.png": {
+      "sha256": "193cec7e204871f2fa4800bacd13dc528b0b976e2b602090e73093e714866035",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1860.png": {
+      "sha256": "6f4a94299ad14c03f6303306b932a2fdfd7c8e30c92c0d4487a6f2bd40d4fb19",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/187.png": {
+      "sha256": "7397cfc9593b6e6e3810de3c2f3284f677618a962f441a8e7231079451e02624",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1892.png": {
+      "sha256": "672631d3d48e6b7c3f71e16258e37f0a0db6b0687c801b7f58d3684590159f1b",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1904.png": {
+      "sha256": "0918453a7882be2e3f3e84ab551f301cb6737fd1e1a2495e0c6edf00398f0147",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/191.png": {
+      "sha256": "32e407dd7b7baa167b3ff4b75ae89bf4bd25b96760ed277520315f5e06df6644",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1910.png": {
+      "sha256": "ec8671817ee2270f375dac1cfe45fd59291c57e88a5be6b0690c533cc35840a7",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1916.png": {
+      "sha256": "f50573ab853dcd6aa38d5a009d325dbc71cc116a45680de5cd68372d75b8c609",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1921.png": {
+      "sha256": "559b853fa6e38c153da89143d1f37f9b869ab396da95cde53ec267154969f882",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1923.png": {
+      "sha256": "fb3548d10dc66bbca71c42e8b2725549e3a9bcc278cf86de0ffe79764a5cbc31",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1926.png": {
+      "sha256": "146d27100e880bed51e015c02eee5b5393f2d478cdd876ceb77c994b60b708e2",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1937.png": {
+      "sha256": "5a382434150fe1d0545484065f967e3b7c03b3610e2af562899bb344741d1467",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1938.png": {
+      "sha256": "eb2cfb08085b40ccab424da6f1a74990ef6fbfddb077439d401acf27fc8980e8",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1943.png": {
+      "sha256": "ad53bd4a8f396c9e402c5d58c6f677a6fecfe829d0ea8551765ab11e3acaf22a",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1944.png": {
+      "sha256": "cb2b5c53a3f5127c6b7c2064630a56acc1bacd7759d485561516c2309f989063",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1960.png": {
+      "sha256": "e4a60ff4bb11a4c533f7fee7823d16a23a79fb2317df21de6f65ddce889e6b85",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1964.png": {
+      "sha256": "51094f028339767a462206ce2d8da55c8504979f8d51a1d54fdea5aa37b85c48",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1974.png": {
+      "sha256": "def8fc80fa5966a2ed5ab8c9c58d9ce7099bb97c901df1ee770bb5b968433946",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1975.png": {
+      "sha256": "81acad0a58250ddb915b3c139afa526c8c36ac4e1af4b462f191c18d51ccbe3c",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1987.png": {
+      "sha256": "d40c20e5ad871c3d373342291d46d70db2012443c1edebc4db72a8a139383a55",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/1989.png": {
+      "sha256": "83efca40d58ec9b88151fd190275294a2b35c05734118fe48b4f4d7abd1ea13a",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/2004.png": {
+      "sha256": "758650f65417a21ee783cc5d756c52691232ea95b05fb5fc3196a0f729d18557",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/2009.png": {
+      "sha256": "94d98e58bb281119b88e048c6e0a3982bf01cbf7edac4ae3be00e025acd17174",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/2010.png": {
+      "sha256": "9c2a079dd3dcf914282de1e240be192f050424dabc5f8c4d1f4c92eb4e73337c",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/2013.png": {
+      "sha256": "34ebf8c50e881bdd1de85904059d144db9db20338d0a2d8c59eb91f75a204024",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/2014.png": {
+      "sha256": "85a652be1e21b2d79a94d3ce1d855b175d0b0889910a626e0cc0fb5f3cf18278",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/2031.png": {
+      "sha256": "6ef693f87a01595d18324b7008de2ed82d1c7dd7b02c4252f278e4de02e81e1f",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/2043.png": {
+      "sha256": "864bacef31f039219b018bbb0dcece9e0afc9628b56d24047362c5f3d0c050e2",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/2044.png": {
+      "sha256": "216c8df22bc3dae2991447e8c3a2d93857ca4182eefec5973773925647d62bd8",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/2050.png": {
+      "sha256": "678d626e7fd3fc75fa3187c65441e540f89774c43568ecc4063e9306130bfa87",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/2056.png": {
+      "sha256": "19f4864e3b66f965a56ea7be5a80ea0deb3d66fa177c18875c2ca056e35ae45a",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/2057.png": {
+      "sha256": "0c76ea73bba3f4d18ab8b23384bfdd3ad99f2d8195a165686adbeba6e6fe9b84",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/209.png": {
+      "sha256": "3d21e7b1d9998c782f78f4b7f444173bab8c16153c6157d90c450340e35ca4b3",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/2099.png": {
+      "sha256": "fb2016933fd63645b4a5d3d1a1308fa5f0f54adbcd7ecb8b38efe88ee343e0f6",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/265.png": {
+      "sha256": "a2aa589bf4d6bc63ea6a338a7be6f92e0ff89796644b7726439a2281b5a88c86",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/268.png": {
+      "sha256": "05e3d99583754aebf8ebfe2adefb57d2bcd72d8393bc6808c11a881abe86c124",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/272.png": {
+      "sha256": "9eb26a744adc19cf67ae3e75a24e939c644711c75a2fcd702f5e47406b2e8325",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/285.png": {
+      "sha256": "15541f5f3febae8f9282fcdd501e7156a156caf53301a9dbb7465eccdf167cdc",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/304.png": {
+      "sha256": "6ca101db0ce46ac2bdede75bc0a1d5d57ed7e76e8d49201bccbc470d0dd552b5",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/321.png": {
+      "sha256": "592b196494401c6205353873db13d654fdbbcc44c80f13bbb2a32fbb6a7bd2e1",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/324.png": {
+      "sha256": "4c4f3fe047c667a86e3da9f9951ee14d5dde292b6ce0eb406613f4b426b6b5d9",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/331.png": {
+      "sha256": "64a52ca11432a73971d01fa6579609ca2444703ab955d1dd1251c7e0d063215d",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/341.png": {
+      "sha256": "6a9a5f9181e3191701b0ef52c6f5d69d9ec3c78846ac3adc0386e921b6e7e07d",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/345.png": {
+      "sha256": "c90389cee9de60de820daf5abfaddde871944070086a451f29fce0aec9b6245c",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/351.png": {
+      "sha256": "014c7db2960456a37e305d414dba09f75a880e48f866955b565b90eab62a0225",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/36.png": {
+      "sha256": "6c25299ec239cfc1f283f2832174e1528fb3d26bc1e925e918a0b0b3956bd421",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/417.png": {
+      "sha256": "d2cd3d7f96fc481fb7c017d80e5900c1d491198095250eefb02a8b069c83d18a",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/424.png": {
+      "sha256": "141cf642b265d536bc4aa9c147897f6eeefd312c8b08ddbfeb328f2332928d8d",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/433.png": {
+      "sha256": "57e7b58011d4c5f3540bb4c93296d601b358bf84525516d27bb94cd50bcd962e",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/451.png": {
+      "sha256": "a93fa2c15fe84e8826bb1056f8ced47a66c90eec94623dfd5b59661b105defe1",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/452.png": {
+      "sha256": "f05b34b31012aceafa855bea5a9aea5b5ce97d6ace8b339cfed5001de97dac27",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/459.png": {
+      "sha256": "9802971ec6577d422efb349f225dd7c89c2a6f7f677e50cf699fd4dd5b0f0d67",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/467.png": {
+      "sha256": "5f5d70e5ed9bc8620d7a5102ab2dfe88482aa942e412446268074c151e5920d3",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/476.png": {
+      "sha256": "071a3192d57c399918af82a8df70eed874e3d17edc27f80c580c9f757598b76d",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/481.png": {
+      "sha256": "899d6d24e3dfee5bb0b5d00180225f5fbc2fdc27b5c9a12cc9a5cd8272332bef",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/498.png": {
+      "sha256": "2ed594a37cddb2a53104c17ae399087d177fed6981c560b4ec0fcf54a3cb3cb3",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/538.png": {
+      "sha256": "0f899e58bbabab5ed519da335154c1db77459b081f56018a7a76024b608559ff",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/540.png": {
+      "sha256": "4cbe109bb5cdb4f86e94156650c6ac53a8ebac265e12d98de4fa3a875a534c80",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/545.png": {
+      "sha256": "b9ff3548b80342898dd2708b806ff00b0b1f08dd1563c6d62e285ec2831decf7",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/556.png": {
+      "sha256": "d8bcf68ff73c9ccfebf1c9f101753f457704e7c9ff556920562a97e2adcbf54d",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/562.png": {
+      "sha256": "c1dfd288f25137df89a827c4f04268ec86ea7d5a2396d141b23447449fd75fb0",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/568.png": {
+      "sha256": "c2190a0ef03b7bda8aa3d41596fc9feb1c553414e79097c5e725a8d829de9850",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/598.png": {
+      "sha256": "de948ded632e2ee8a78f96d6bd76fe0bfcc75e0c04cfd85b012dbc6aed60a392",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/609.png": {
+      "sha256": "0cb42383adfea9daa5cb722fb35f4b0082072c368243728dbe03c014e24d9945",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/621.png": {
+      "sha256": "571b3650460e8dcc9a405a48dbb8835f4e8edcca550a040a7f45ee31d63ded48",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/636.png": {
+      "sha256": "1e50cefac1c3da0bad14acd30e91d514f1cd2b96a909ec0077686e9937431cdf",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/638.png": {
+      "sha256": "f21e08a0f8ec4792fab3482eae3d98d9f4d34c63d064a32c2dce4b34520c1741",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/680.png": {
+      "sha256": "1462a84cc119a6d15e72a5eb8b8d2b72429d750f39727f1fe9e4f35d86b1f70a",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/681.png": {
+      "sha256": "22c6a41ebff1c884e6e3e12081a20cd6a97fb2ebb94dc70890a9ec868eb56fa9",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/690.png": {
+      "sha256": "9af8d8bb832c9be8ffd44782be8167d10180f35b946065eff777df5fe7a83292",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/700.png": {
+      "sha256": "86e1bfa89740d773222452a2b6616215ec947e1188e30769ea4a52e9487ce71c",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/704.png": {
+      "sha256": "36c50c530c1dcca2c96f25630541e89c0a322703ac9a888945583f6227607a19",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/711.png": {
+      "sha256": "7d1da49de9089b8d21d128d3ec5141d84e4fa749f36a875544d966e794a2ba58",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/718.png": {
+      "sha256": "46c41ea5aad60bd86dec8dd0f4d412c47121deef3ac1e6654d2b9eb4546c059b",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/721.png": {
+      "sha256": "537c35edaa285579c90e0e6659ff5502e0c926cb6d22b6bac8fb2872e3c42aed",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/725.png": {
+      "sha256": "ef0ea49546e81e01b23305ff0cfc3d343fc79fa8d9bcd32b1ba7b25ad619a4f7",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/734.png": {
+      "sha256": "60511ecf4be3b233f612026feaaa8ff81e78f87e152e6605768f3a20beca520f",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/742.png": {
+      "sha256": "263827b6cd8ecb04f2003504cb00e5a897ee503ee54c9a7bf0c3113b2c9dcf93",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/754.png": {
+      "sha256": "8fee2867594ebb3781e0f3892ac4f4fae9805d29d484bce59983a4f4fd2ee749",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/761.png": {
+      "sha256": "50e4dec80a95af2f7f77f4f3ca46d621655d95bc543e9880814e147a29b39b77",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/771.png": {
+      "sha256": "690a9ecf1d4480814efd379d6a531f459fc7e20372acca04a57880ee52e7fb66",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/805.png": {
+      "sha256": "d09e6411554f99bfedf1bd05527a9aef86c835e12fd76987bb1923b76ae32f13",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/809.png": {
+      "sha256": "e255223c058ae6ed0f805c7f77f937b5208ebc0ac964d0206dc55b08feb23e76",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/811.png": {
+      "sha256": "62f4f61cbb1ea164a9b478d73ca18eb5583ef1def56ba614a660260b3c50940e",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/836.png": {
+      "sha256": "e7e2705e1d7c485dc326a971941545e97a878312e9bf6e59f18318e1d7f58d4d",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/841.png": {
+      "sha256": "0ae1364f1e28d76536e7a1476c728a5f2e81e825e9ef7d841704c3147e64f107",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/845.png": {
+      "sha256": "8f3e879dcb9838dba87adeff51ab03a9bb72cea054d928764f78586a0cb0399e",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/853.png": {
+      "sha256": "9ba6af2ca9a1c3138113e40021596d4eec12245f2413391976537bfa58a821a6",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/855.png": {
+      "sha256": "839912a45bd44daabea88c3e0d4fc074abd1bb26e804b767672f7eb95e8ac4a5",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/857.png": {
+      "sha256": "9a9581e1445add044080fa7033152813a1704bdf0e457a47b33d6d29487ec790",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/860.png": {
+      "sha256": "366ab14c380ccd1ae94a856df8ae3bbfacb3b553a7cf6a4211be76f0041a99b5",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/863.png": {
+      "sha256": "335eed632a18855896cfcc4e91c2cfe040db3706a8bd1aa105e1c2fd667fcdf9",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/867.png": {
+      "sha256": "67281b2ba4d32626782a741661eacc66a99224ea3b02f0a5882732ede192088d",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/884.png": {
+      "sha256": "7e352348a8f17c33b1b227727ddf09ac57b80ee2902d8d4a6b19d0215c98a78d",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/888.png": {
+      "sha256": "5e7afa7ef2c5fa38b3ff152ffe847fa8174dd8f3d26c4da42a3b9cb8a1a4d011",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/901.png": {
+      "sha256": "2e8cdee0759a6b5072f1de1548e9c6c299efa5b4067a5b37aeabea3a4207639d",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/902.png": {
+      "sha256": "5927a2110a9ebe0e924376d7b5f1994d909061fef5394b48c85a10619a4f7736",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/924.png": {
+      "sha256": "5e8167519dbfec03eac3f09f3ab94dee001976fbfa7c7f4986ea1959d5b8fce7",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/93.png": {
+      "sha256": "4980618747a983eaab215d8df7644eb6f04e79da2c4e8c86f4c9961599f3b143",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/933.png": {
+      "sha256": "40f1c863302768c8e18668a683871f5b3c12215db70294c7ad65add9047f104a",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/935.png": {
+      "sha256": "fc773eaba24adb0fee9c2657eb39433892edf60602e5eb62a7fbc846a131743f",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/938.png": {
+      "sha256": "4643214395d4f754571e035b32046dcfabb13aa997f434b4bdb8b6824cfb0038",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/943.png": {
+      "sha256": "f71cc822b5dd18f42ff89628aae6154644abda50b1970d83adab59bc0520f61e",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/946.png": {
+      "sha256": "ee470c7ac34f1dca40450b5af866bf01949a9997c07055cd0b6b0de1cc230c6b",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/949.png": {
+      "sha256": "b58945dae38bbd448d6acd3f3de7255b2d84b0979649442084a1f275bd687429",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/955.png": {
+      "sha256": "b258c779f20fa5cb25558a0a39731288f1f2477af65782bc841bcc53b5456301",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/965.png": {
+      "sha256": "cbab1250dd70e1cf7c3d8c25460255f560f563a8269ece9fce0d67a3e30db3a2",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/967.png": {
+      "sha256": "705445fa2af81a44dcb80243c8feeab1a95b2294f69d4cd8fa5368a1f366601a",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/968.png": {
+      "sha256": "07ea1d2a75cf0a7935590bab0eecf1da318ba71f794f70c47d02661ebe5a8ef0",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/969.png": {
+      "sha256": "fb3548d10dc66bbca71c42e8b2725549e3a9bcc278cf86de0ffe79764a5cbc31",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/985.png": {
+      "sha256": "eb2cfb08085b40ccab424da6f1a74990ef6fbfddb077439d401acf27fc8980e8",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/987.png": {
+      "sha256": "9304ec712cbdd2913fc90dbbd42652c846220d47d2a577d8d52ab4f2a7e60630",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "data/project3_perception_prototype/images/990.png": {
+      "sha256": "06a04dd3b7fc3f9b110da4fec2c927fcc520f4429480de9c2e4d3a0e7f4dc968",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "reports/project3_perception_prototype/manual_image_review_30_pending.md": {
+      "sha256": "8857bb68a511b07974d3a3c2ece34d1882738d323bde24a7194d0f4fdb52aad5",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "reports/project3_perception_prototype/prototype_200.md": {
+      "sha256": "cd55b1990ed6b9a31d1b7b89a54f042d3eb03ca5ae6b46655efe0ec10790395a",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "reports/project3_perception_prototype/summary.json": {
+      "sha256": "18c3aadd13da8e845e57734d02b66e5266ad6474b4b2efe8f094eff5475fd307",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "reports/project3_perception_prototype/执行报告.md": {
+      "sha256": "798328be0e2a0bf79643e0fcd411f53c7068c72b7df586506ff823605666559a",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_prototype/manifest.json"
+    },
+    "reports/project3_perception_prototype/manifest.json": {
+      "sha256": "ac9348f5ff0c9766fe973b987db971c983fa9592896c8487c777075b5f3df6d5",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_review/manifest.json"
+    },
+    "data/project3_perception_preview/canonical_perception_preview.jsonl": {
+      "sha256": "b80202c407a3550dfd4b7f8cd0d025a14f1d800d8ae5fdcada2c83fdfccb2504",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_review/manifest.json"
+    },
+    "data/project3_perception_preview/schema.json": {
+      "sha256": "f8ef4e990778cf6c8e8195113482a0ce9bd6cc28eee3bb29f3e12f6368348284",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_review/manifest.json"
+    },
+    "reports/project3_perception_review/canonical_preview_说明与200题预览.md": {
+      "sha256": "99dcaaeaead07407d96445be8533b3e6c57e05246651a7a1e65661ebb432605a",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_review/manifest.json"
+    },
+    "reports/project3_perception_review/manual_link_review_30.json": {
+      "sha256": "f51bb8a2a23d502d78a1c8e53ada267d3831672c6dccfe51184842adfd240fd4",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_review/manifest.json"
+    },
+    "reports/project3_perception_review/manual_link_review_30.jsonl": {
+      "sha256": "e70912bfd82666d591cf92b8012ac3ddc406661844c837ca2c81d940e50435fe",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_review/manifest.json"
+    },
+    "reports/project3_perception_review/manual_link_review_30.md": {
+      "sha256": "123c7bd9b7efd16a8564948c564653ac91ed457b3e417640234739411a380080",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_review/manifest.json"
+    },
+    "reports/project3_perception_review/summary.json": {
+      "sha256": "63f02f1111f508e5d63e9dadb842511e4797ac5fa56138f69d993e8fd4e8514b",
+      "hash_matches": true,
+      "manifest": "reports/project3_perception_review/manifest.json"
+    },
+    "reports/compact_distillation_v3_20261023/reviewed_common_candidates.json": {
+      "sha256": "a4bced01ed94e1340756145f11c15263e66208ab2f0c0db05bcef901776f16c5",
+      "kind": "post-freeze supplementary review; original gate preserved"
+    },
+    "reports/compact_distillation_v3_20261023/final_data_status.json": {
+      "sha256": "af330a4e67fede906e20eadcdaa5b769f3f59f01cb74ae2012f865f1e567502e",
+      "kind": "post-freeze supplementary review; original gate preserved"
+    },
+    "reports/compact_distillation_v3_20261023/source_review_flags.json": {
+      "sha256": "3260cc5768b555b56c8ffa3a6f543968fa13cee7f4f3389a0025c4e319643361",
+      "kind": "post-freeze supplementary review; original gate preserved"
+    }
+  },
+  "categories": [
+    {
+      "key": "p1_native_v3",
+      "title": "项目一原生净化v3候选",
+      "path": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project1_textonly_v3\\native_candidates.jsonl",
+      "population": 1500,
+      "note": "净化只改变已登记字段；题意、推导和答案仍须用户确认。"
+    },
+    {
+      "key": "p1_api_candidates",
+      "title": "项目一API精炼v3冻结准入候选（待人工审核）",
+      "path": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\reports\\compact_distillation_v3_20261023\\common_candidates.json",
+      "population": 12,
+      "note": "冻结自动准入只验证答案/结构等登记条件；中间过程和源题质量仍待用户签字。"
+    },
+    {
+      "key": "p1_rl_train",
+      "title": "项目一数学RL训练池",
+      "path": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_train.jsonl",
+      "population": 7184,
+      "note": "7184是题池，不是已按7B真实难度筛出的最终RL题；参考解答仅供审核。"
+    },
+    {
+      "key": "p1_math_dev",
+      "title": "项目一数学dev",
+      "path": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_dev.jsonl",
+      "population": 256,
+      "note": "开发集不能送入SFT/API生成训练解答，不能据此修改最终测试。"
+    },
+    {
+      "key": "p2_math_train",
+      "title": "项目二数学train（1500 MATH＋1000 GSM8K）",
+      "path": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code\\math_train_prompts.jsonl",
+      "population": 2500,
+      "note": "训练文件本身只有题目；本报告本地关联参考解答，不回写prompt也不发API。"
+    },
+    {
+      "key": "p2_math_dev",
+      "title": "项目二共享数学dev",
+      "path": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_dev.jsonl",
+      "population": 256,
+      "note": "与项目一共享同一256题及SHA，不是第二份独立留出集。"
+    },
+    {
+      "key": "p2_code_train",
+      "title": "项目二代码v2 train",
+      "path": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code_v2\\train_prompts.jsonl",
+      "population": 2500,
+      "note": "1250函数＋1250标准输入输出；多数训练题仅静态筛选，不能称已执行通过。"
+    },
+    {
+      "key": "p2_code_dev",
+      "title": "项目二代码v2 dev",
+      "path": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code_v2\\dev_verification.jsonl",
+      "population": 200,
+      "note": "100函数＋100标准输入输出；参考程序通过源用例不证明规格与覆盖完整。"
+    },
+    {
+      "key": "p3_geometry",
+      "title": "项目三视觉独占原型待审",
+      "path": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project3_perception_prototype\\prototype_200.jsonl",
+      "population": 200,
+      "note": "这是原型审核，不是视觉独占金标；图像、关联、文字泄露和关系语义均待用户确认。"
+    }
+  ],
+  "selected": [
+    {
+      "category": "p1_native_v3",
+      "sample_id": "0a885d1b015a12581fd58fe3e6ee84fb1f939e40b86482a82556595525fd2637",
+      "record_sha256": "45326278f34cbddf865812622751ab02e0cdca0005566fb8d1f11345ce728724",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project1_textonly_v3\\native_candidates.jsonl",
+      "stratum": {
+        "subject_or_interface": "Algebra",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_native_v3",
+      "sample_id": "f7480070b854c046b14921e10b3912c4a29c436b4e24f33d6545625b8d6b664c",
+      "record_sha256": "6fddb2a2bbd09421619c9943a6b4a83c11101508eb23f5d5dacbc899ee7d91d4",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project1_textonly_v3\\native_candidates.jsonl",
+      "stratum": {
+        "subject_or_interface": "Combinatorics",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_native_v3",
+      "sample_id": "826e786b40b1fe737cad31577a8acfd3a743046a82c955f0e8ce2a15d1287c50",
+      "record_sha256": "9450dd11e10b5a328948901b43e6982dc445b995957e49491a3cb4712b695dc1",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project1_textonly_v3\\native_candidates.jsonl",
+      "stratum": {
+        "subject_or_interface": "Geometry",
+        "length_tertile": 2
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_native_v3",
+      "sample_id": "8058c17100dac0d69dca936af9422b7a3354a3cf6083976332260674c15e4498",
+      "record_sha256": "89e897d5cbeded690eb9d65d55c57ff85db2901bad55156f37ad4a081744ab0a",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project1_textonly_v3\\native_candidates.jsonl",
+      "stratum": {
+        "subject_or_interface": "Inequalities",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_native_v3",
+      "sample_id": "40bb5c9152ba40c4daa0f2c73b3f2a6860dc9b19d3df7fae2866ebf1ebaa23d0",
+      "record_sha256": "6bdbaf9ae247ac69af69e8aa6bb19947ad8ddebef156c880e63944d075bdb67c",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project1_textonly_v3\\native_candidates.jsonl",
+      "stratum": {
+        "subject_or_interface": "Logic and Puzzles",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_native_v3",
+      "sample_id": "56ad91441cce80cb789ac0c4a1297e57c26ba9c31c9aaf59fd79aafd5057635f",
+      "record_sha256": "5c8247256bce22414d09675b7e16488554e5c4e241b4fb1e6ce1b044d1134b94",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project1_textonly_v3\\native_candidates.jsonl",
+      "stratum": {
+        "subject_or_interface": "Number Theory",
+        "length_tertile": 2
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_native_v3",
+      "sample_id": "a3ab910bca273fa3b996db7c004fcc410a80cc8996119e0ed21fa9ee6b795b66",
+      "record_sha256": "40cc33df6319ce05c428716c5f15f21a77bfdeb5f06e3890acddd1560277f34a",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project1_textonly_v3\\native_candidates.jsonl",
+      "stratum": {
+        "subject_or_interface": "Algebra",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_native_v3",
+      "sample_id": "22781584b1661145c5d7b9e2937a8f388d89e3410d0eb6daef6fcf8f2aefdc0b",
+      "record_sha256": "ae1d61390db8975df5039e55e836246fb1a1230fe08d42fde6c90ac2a0c4ac80",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project1_textonly_v3\\native_candidates.jsonl",
+      "stratum": {
+        "subject_or_interface": "Combinatorics",
+        "length_tertile": 2
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_native_v3",
+      "sample_id": "badc374358a157ec18250481f8786b9f68f964ea6f69eff0422896901cc64c85",
+      "record_sha256": "0ef3935689b4b195678b7cbea1e3b55e86a12f6e3cf0432164fc15a3b0c0cd71",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project1_textonly_v3\\native_candidates.jsonl",
+      "stratum": {
+        "subject_or_interface": "Geometry",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_native_v3",
+      "sample_id": "7349f524179bcc076d5aa666146f2107fd6ef26f72db92cebdc0fa0ad37b5503",
+      "record_sha256": "67db5dcb3539fe0533ddc5344502f01b66a40f152ce691738c61cba98413c9d2",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project1_textonly_v3\\native_candidates.jsonl",
+      "stratum": {
+        "subject_or_interface": "Inequalities",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_api_candidates",
+      "sample_id": "e221a60f0d24a83546e0bdbd08ca5a20a6144b331257b4e81854791804f6f58a",
+      "record_sha256": "e2bf931b2348c715cca201981969eae37e802bdd3a1ebdc42a70a65ccbcde147",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\reports\\compact_distillation_v3_20261023\\common_candidates.json",
+      "stratum": {
+        "subject_or_interface": "Algebra",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_api_candidates",
+      "sample_id": "e140e5f777e5d9181eed3d78444800ffc7d8079f6f03405e87fcbc53c52cc687",
+      "record_sha256": "326c29bbc854b5f3bdba94d20ead406cd6bbfb2602179b2ee5fc1f468484b181",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\reports\\compact_distillation_v3_20261023\\common_candidates.json",
+      "stratum": {
+        "subject_or_interface": "Combinatorics",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_api_candidates",
+      "sample_id": "57a1fd846e395243c1f915126ea96abe5946bc59940378cb4fe571877898f345",
+      "record_sha256": "438802d8375d3ed5e305fea261e307bd545da5070c157582f17acae831684e9e",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\reports\\compact_distillation_v3_20261023\\common_candidates.json",
+      "stratum": {
+        "subject_or_interface": "Geometry",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_api_candidates",
+      "sample_id": "66125d9b11bf568c992c99a69567ebd47054bee5a9be20890bc5ac2fb8d35464",
+      "record_sha256": "1f0320fd57855aea1f26c00684bce10b7cd31198bb363451e9369297122235fe",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\reports\\compact_distillation_v3_20261023\\common_candidates.json",
+      "stratum": {
+        "subject_or_interface": "Inequalities",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_api_candidates",
+      "sample_id": "8937d875cdc862261acd6fc5b11eac0abed1dc8925d143ac8cc3f625eb93cabe",
+      "record_sha256": "588ca48843eb7fa52998ccbd1e28b52ea2ff6473a23f0710023ffc132dcd46b7",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\reports\\compact_distillation_v3_20261023\\common_candidates.json",
+      "stratum": {
+        "subject_or_interface": "Number Theory",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_api_candidates",
+      "sample_id": "0e10fb1c055c1cce1d8b1023a947714512a4a41b27f7c4e0220333abe8ebce6f",
+      "record_sha256": "64b070088722bde567e5ae4841c7ad312068c778b18598faa7b62fd1b50ed0c4",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\reports\\compact_distillation_v3_20261023\\common_candidates.json",
+      "stratum": {
+        "subject_or_interface": "Algebra",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_api_candidates",
+      "sample_id": "82bf13d79fd343696b807e25d8cd1ca7b7b8843a4f99f175669ead089e6a30ca",
+      "record_sha256": "9e2f183f412412cf56692690586a3a61b1588af11161f45b6294918db077ab4c",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\reports\\compact_distillation_v3_20261023\\common_candidates.json",
+      "stratum": {
+        "subject_or_interface": "Inequalities",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_api_candidates",
+      "sample_id": "eacedcd809bf44bf89b3b3f846ddbdac04ab3aae9a837e5729e7f97595ebd64f",
+      "record_sha256": "8b03acaae7ae0b74284640ea247d71d9eeccac67ed03165b5c65a7897f74ecb1",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\reports\\compact_distillation_v3_20261023\\common_candidates.json",
+      "stratum": {
+        "subject_or_interface": "Number Theory",
+        "length_tertile": 2
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_api_candidates",
+      "sample_id": "3ef71ab0b68e078a27c4d7fe35b45aaadd1adc2806141707f87dd4ad78ff24c0",
+      "record_sha256": "c0fa82b6f7b3abe3033ac96abd8689784ddb0e391877d13da9e5b4a0b4e94599",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\reports\\compact_distillation_v3_20261023\\common_candidates.json",
+      "stratum": {
+        "subject_or_interface": "Algebra",
+        "length_tertile": 2
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_api_candidates",
+      "sample_id": "846b4c1b8b044e862864ed4f98765228187301c594b22d3fbe191f6eec2ad148",
+      "record_sha256": "4acc83e93f901f66fc3a86fd9f33706c79625d5036c2d7f5fffdfb4ed0964380",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\reports\\compact_distillation_v3_20261023\\common_candidates.json",
+      "stratum": {
+        "subject_or_interface": "Number Theory",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_rl_train",
+      "sample_id": "math/train/00642",
+      "record_sha256": "31a0157a844ff1b2c875c144a28e70dad2cca22acca4c27fd7170b9ee1ce8d96",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_train.jsonl",
+      "stratum": {
+        "subject_or_interface": "Algebra",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_rl_train",
+      "sample_id": "math/train/01910",
+      "record_sha256": "c1aa68449dfa0c3b38fba4cd98f85cfb55c857d0f0ad4b45bdd487992d6800f1",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_train.jsonl",
+      "stratum": {
+        "subject_or_interface": "Counting & Probability",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_rl_train",
+      "sample_id": "math/train/03010",
+      "record_sha256": "ceabfe0b5df1f1c2ee0fa2e0ffa58afefe01ae630a8f55a8c96e0fe18fc4254d",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_train.jsonl",
+      "stratum": {
+        "subject_or_interface": "Geometry",
+        "length_tertile": 2
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_rl_train",
+      "sample_id": "math/train/03672",
+      "record_sha256": "f703245a8fe8647399171b1123211efc2ce285cade2c78ece202a80a611691b1",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_train.jsonl",
+      "stratum": {
+        "subject_or_interface": "Intermediate Algebra",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_rl_train",
+      "sample_id": "math/train/04732",
+      "record_sha256": "0b787a427ec40ed380c19cfd631458c0f94db503fa1422f081bd8acf83f3dded",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_train.jsonl",
+      "stratum": {
+        "subject_or_interface": "Number Theory",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_rl_train",
+      "sample_id": "math/train/05777",
+      "record_sha256": "35f3ea28d3a9b25df87149336a5dffd3a32e60df6ba60a261714adb3e0e52295",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_train.jsonl",
+      "stratum": {
+        "subject_or_interface": "Prealgebra",
+        "length_tertile": 2
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_rl_train",
+      "sample_id": "math/train/06851",
+      "record_sha256": "d972369e410e118907419002de3851cc6dc5f8dd7427e57c4d42a85a029d823e",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_train.jsonl",
+      "stratum": {
+        "subject_or_interface": "Precalculus",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_rl_train",
+      "sample_id": "math/train/01551",
+      "record_sha256": "4c55bc51750485433ffd37ba2c4029390d2dccf298fc1914d0caceb7ef718d01",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_train.jsonl",
+      "stratum": {
+        "subject_or_interface": "Algebra",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_rl_train",
+      "sample_id": "math/train/02458",
+      "record_sha256": "70fde390f0907b23f466f8aeedbb4b43d5b54886e4293358dba58d2d5952dd7d",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_train.jsonl",
+      "stratum": {
+        "subject_or_interface": "Counting & Probability",
+        "length_tertile": 2
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_rl_train",
+      "sample_id": "math/train/03371",
+      "record_sha256": "584bc8f7cb7045ea5c46407ac48788aa6c6b5332837a4bccd3f8a57ad0f358d6",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_train.jsonl",
+      "stratum": {
+        "subject_or_interface": "Geometry",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_math_dev",
+      "sample_id": "math/train/01345",
+      "record_sha256": "f52a6dca0d851f97333f4399d67a479620cc16980ac60501db0aaaabf8376d49",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_dev.jsonl",
+      "stratum": {
+        "subject_or_interface": "Algebra",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_math_dev",
+      "sample_id": "math/train/02291",
+      "record_sha256": "91249af0718e737a6727ea4f3c0e8b2bc9e95b7af3077de8b6854c4494aed66d",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_dev.jsonl",
+      "stratum": {
+        "subject_or_interface": "Counting & Probability",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_math_dev",
+      "sample_id": "math/train/02955",
+      "record_sha256": "51198ebdf6a56feb8709b12513a8c8c1b9574fbe20ad3ab913383b6323e3b162",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_dev.jsonl",
+      "stratum": {
+        "subject_or_interface": "Geometry",
+        "length_tertile": 2
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_math_dev",
+      "sample_id": "math/train/04040",
+      "record_sha256": "369ab6616b36d32f4bf9d5868289cb2fc977fa59b0dc857b8e0b7a32157dad46",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_dev.jsonl",
+      "stratum": {
+        "subject_or_interface": "Intermediate Algebra",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_math_dev",
+      "sample_id": "math/train/04800",
+      "record_sha256": "d1cc4b8a4415444aaff5d7559d35fb7e56f348f9274a30901e3640be487f06c2",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_dev.jsonl",
+      "stratum": {
+        "subject_or_interface": "Number Theory",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_math_dev",
+      "sample_id": "math/train/05578",
+      "record_sha256": "0638a064b23febc1bd9958ff48effa50507d3ffd67f84f090ccaf0e10c97f18c",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_dev.jsonl",
+      "stratum": {
+        "subject_or_interface": "Prealgebra",
+        "length_tertile": 2
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_math_dev",
+      "sample_id": "math/train/07383",
+      "record_sha256": "a86f4bf9a7ab2df7882188cd214b3f437fa10403c3c4cc9ce2424e27e164d651",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_dev.jsonl",
+      "stratum": {
+        "subject_or_interface": "Precalculus",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_math_dev",
+      "sample_id": "math/train/00789",
+      "record_sha256": "33ad4bf42fae88c786113620a3a8dd053620a6535d884716141caba50c07bdc9",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_dev.jsonl",
+      "stratum": {
+        "subject_or_interface": "Algebra",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_math_dev",
+      "sample_id": "math/train/01763",
+      "record_sha256": "347845408db600e91d472cdab7a1e9c9934f870fa98965d45cf9af25f2b070a4",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_dev.jsonl",
+      "stratum": {
+        "subject_or_interface": "Counting & Probability",
+        "length_tertile": 2
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p1_math_dev",
+      "sample_id": "math/train/03368",
+      "record_sha256": "10eac3df4e6d52794315cb3c8644dc4baf7b87c01ccc21f250e6cee1d05899e7",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_dev.jsonl",
+      "stratum": {
+        "subject_or_interface": "Geometry",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_math_train",
+      "sample_id": "math/train/00265",
+      "record_sha256": "ea98567bdb4a59d935e357d3a1f61b25f79044a11820772a3c9062cd49208ce1",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code\\math_train_prompts.jsonl",
+      "stratum": {
+        "subject_or_interface": "Algebra",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_math_train",
+      "sample_id": "math/train/02385",
+      "record_sha256": "b77d05e83cd885e8d0240c352c991dda6410c7b1259cfdb734b4bf0fa4fa78f3",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code\\math_train_prompts.jsonl",
+      "stratum": {
+        "subject_or_interface": "Counting & Probability",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_math_train",
+      "sample_id": "math/train/03347",
+      "record_sha256": "e8531ce16097b658d4859c62da861e2a810222b9438f6f59434dbe38457e866c",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code\\math_train_prompts.jsonl",
+      "stratum": {
+        "subject_or_interface": "Geometry",
+        "length_tertile": 2
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_math_train",
+      "sample_id": "math/train/03398",
+      "record_sha256": "33267f9a3ea3c734aa35672bfba2684199db1e6c90c346b098cba1168caf25c8",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code\\math_train_prompts.jsonl",
+      "stratum": {
+        "subject_or_interface": "Intermediate Algebra",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_math_train",
+      "sample_id": "math/train/04968",
+      "record_sha256": "4dbefa825393f355da2fbcae9f24047fdd475ad22a0f90cc420d704b124f85f7",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code\\math_train_prompts.jsonl",
+      "stratum": {
+        "subject_or_interface": "Number Theory",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_math_train",
+      "sample_id": "math/train/06295",
+      "record_sha256": "4cc096f3c18cf1d8d583bdc54feef3dc969ace75e3cac2d6e51761da391c2904",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code\\math_train_prompts.jsonl",
+      "stratum": {
+        "subject_or_interface": "Prealgebra",
+        "length_tertile": 2
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_math_train",
+      "sample_id": "math/train/07480",
+      "record_sha256": "c4c63b67365344f46002454f6962141a20f1cd9829c424cb66f35d6387a35ba3",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code\\math_train_prompts.jsonl",
+      "stratum": {
+        "subject_or_interface": "Precalculus",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_math_train",
+      "sample_id": "gsm8k/train/01904",
+      "record_sha256": "599c0b7c10ce2f33ea6c1c10a7e5a9bdfd583a8b7cc56f50131966e0bb73123f",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code\\math_train_prompts.jsonl",
+      "stratum": {
+        "subject_or_interface": "openai/gsm8k",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_math_train",
+      "sample_id": "math/train/00703",
+      "record_sha256": "256161182f5dd055c363a3d4e7a9e58e0cf6e8dbfe7f9d746641c8c8cb99ae91",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code\\math_train_prompts.jsonl",
+      "stratum": {
+        "subject_or_interface": "Algebra",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_math_train",
+      "sample_id": "math/train/02142",
+      "record_sha256": "77703c02783b55cd6ab7ad7939dd225b869b348c9fb03ba9a9c1929f63a37a47",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code\\math_train_prompts.jsonl",
+      "stratum": {
+        "subject_or_interface": "Counting & Probability",
+        "length_tertile": 2
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_math_dev",
+      "sample_id": "math/train/01345",
+      "record_sha256": "f52a6dca0d851f97333f4399d67a479620cc16980ac60501db0aaaabf8376d49",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_dev.jsonl",
+      "stratum": {
+        "subject_or_interface": "Algebra",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_math_dev",
+      "sample_id": "math/train/02457",
+      "record_sha256": "6dd18bc4677d13441f28667b715cf1bb8012d3228e88e5dad5c06cf2fa8ef4a3",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_dev.jsonl",
+      "stratum": {
+        "subject_or_interface": "Counting & Probability",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_math_dev",
+      "sample_id": "math/train/02955",
+      "record_sha256": "51198ebdf6a56feb8709b12513a8c8c1b9574fbe20ad3ab913383b6323e3b162",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_dev.jsonl",
+      "stratum": {
+        "subject_or_interface": "Geometry",
+        "length_tertile": 2
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_math_dev",
+      "sample_id": "math/train/03671",
+      "record_sha256": "dc7877fd846a539ec2378c252cac7234de9a0024d516e87b083111853196a30f",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_dev.jsonl",
+      "stratum": {
+        "subject_or_interface": "Intermediate Algebra",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_math_dev",
+      "sample_id": "math/train/05481",
+      "record_sha256": "e42354af016ad2515370292370eafb331da8f005fbe56962c37a0770e62cfa70",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_dev.jsonl",
+      "stratum": {
+        "subject_or_interface": "Number Theory",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_math_dev",
+      "sample_id": "math/train/05662",
+      "record_sha256": "22dd51a9a0ae89373a7ada499216dbe4e5c629908b3da4f3d508614316faf418",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_dev.jsonl",
+      "stratum": {
+        "subject_or_interface": "Prealgebra",
+        "length_tertile": 2
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_math_dev",
+      "sample_id": "math/train/07038",
+      "record_sha256": "bc5390c8e11be633bb09813aaf27c7078b99858ab0c763ddab5b4aabb32c4271",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_dev.jsonl",
+      "stratum": {
+        "subject_or_interface": "Precalculus",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_math_dev",
+      "sample_id": "math/train/01667",
+      "record_sha256": "019f17f1b79e0a9cd6ff98b907bf44db9630cc3f24e23b37acb1b3f0f4c628d2",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_dev.jsonl",
+      "stratum": {
+        "subject_or_interface": "Algebra",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_math_dev",
+      "sample_id": "math/train/02219",
+      "record_sha256": "3bfd667ab5671fee033e2cba2db74af3bb244f0eeffab5e5b516274aab46fe34",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_dev.jsonl",
+      "stratum": {
+        "subject_or_interface": "Counting & Probability",
+        "length_tertile": 2
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_math_dev",
+      "sample_id": "math/train/02515",
+      "record_sha256": "fd953543288d0b7aee77fc919142f1c4ca83030c503f60474f418e2698f62aef",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\math\\math_dev.jsonl",
+      "stratum": {
+        "subject_or_interface": "Geometry",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_code_train",
+      "sample_id": "ace/oss_19391",
+      "record_sha256": "b25cb904e89b43f95d1e4e2d125f8e208c9a7e3717cf7b7385d54862962e061f",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code_v2\\train_prompts.jsonl",
+      "stratum": {
+        "subject_or_interface": "function",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_code_train",
+      "sample_id": "code/vfc_28601",
+      "record_sha256": "e19cf5979e1d89dafd59d229df03baa07358e771656a749befe725da0c452c33",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code_v2\\train_prompts.jsonl",
+      "stratum": {
+        "subject_or_interface": "stdin_stdout",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_code_train",
+      "sample_id": "ace/oss_14488",
+      "record_sha256": "d302540bf94bae93ba7de29edddab278cd7be435f4754eb817852f77deb65d81",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code_v2\\train_prompts.jsonl",
+      "stratum": {
+        "subject_or_interface": "function",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_code_train",
+      "sample_id": "code/vfc_129174",
+      "record_sha256": "4dc0bead463bb0c37b73bc3fcb287dde8d84964d0a06ccc3ac21d15faae8e6f8",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code_v2\\train_prompts.jsonl",
+      "stratum": {
+        "subject_or_interface": "stdin_stdout",
+        "length_tertile": 2
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_code_train",
+      "sample_id": "ace/oss_101",
+      "record_sha256": "45181544336e40e6768736f655e214602086d8e4e99576f80c246133aca51dc4",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code_v2\\train_prompts.jsonl",
+      "stratum": {
+        "subject_or_interface": "function",
+        "length_tertile": 2
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_code_train",
+      "sample_id": "code/vfc_55525",
+      "record_sha256": "9d027feb9471103191673cbcc6f3ffcf637038051a5345d9b0189ff5e1b522fc",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code_v2\\train_prompts.jsonl",
+      "stratum": {
+        "subject_or_interface": "stdin_stdout",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_code_train",
+      "sample_id": "ace/oss_6427",
+      "record_sha256": "4ad95388c7bd77d23c4e62165f95c93668e37499d3e3b13fc2319a805aabb95f",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code_v2\\train_prompts.jsonl",
+      "stratum": {
+        "subject_or_interface": "function",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_code_train",
+      "sample_id": "code/vfc_99759",
+      "record_sha256": "fa686ba318e50614966967d34e34f56cea543f3f9d89ae3b5551b32825e7f6ab",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code_v2\\train_prompts.jsonl",
+      "stratum": {
+        "subject_or_interface": "stdin_stdout",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_code_train",
+      "sample_id": "ace/oss_9122",
+      "record_sha256": "d00751c2e4eb857d0a4f974372c918aa42b302beaafdc16ceccabfa51f39f0e8",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code_v2\\train_prompts.jsonl",
+      "stratum": {
+        "subject_or_interface": "function",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_code_train",
+      "sample_id": "code/vfc_106585",
+      "record_sha256": "c6ee66c972cb5b8aa285cd742c3d6a25d624c45435f7caf3f76c1fe66cda4a2e",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code_v2\\train_prompts.jsonl",
+      "stratum": {
+        "subject_or_interface": "stdin_stdout",
+        "length_tertile": 2
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_code_dev",
+      "sample_id": "ace/oss_19485",
+      "record_sha256": "7f9856f0159acceb7f71cbed79b17c172070941fd506148537e014d264f8c7f6",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code_v2\\dev_verification.jsonl",
+      "stratum": {
+        "subject_or_interface": "function",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_code_dev",
+      "sample_id": "code/vfc_5910",
+      "record_sha256": "8736acd53d8d7107657beecbae44b9af55a2a8ac2c43a11232ee458e522b6e9b",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code_v2\\dev_verification.jsonl",
+      "stratum": {
+        "subject_or_interface": "stdin_stdout",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_code_dev",
+      "sample_id": "ace/oss_17645",
+      "record_sha256": "31fb87ebac942b1abe5618ef2a62d327b1d41ac4dc48a9680d8638730da84959",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code_v2\\dev_verification.jsonl",
+      "stratum": {
+        "subject_or_interface": "function",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_code_dev",
+      "sample_id": "code/vfc_88383",
+      "record_sha256": "f9f5b139b111f2d74694a7b49982de27a4f7ead37d55fc9b6679e676de47e63b",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code_v2\\dev_verification.jsonl",
+      "stratum": {
+        "subject_or_interface": "stdin_stdout",
+        "length_tertile": 2
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_code_dev",
+      "sample_id": "ace/oss_1836",
+      "record_sha256": "f75eee7fd81623343cc387fb72cb94ec25005a7b766c3f99138f9128e35a458b",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code_v2\\dev_verification.jsonl",
+      "stratum": {
+        "subject_or_interface": "function",
+        "length_tertile": 2
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_code_dev",
+      "sample_id": "code/vfc_26901",
+      "record_sha256": "d826587d82f2796a0fd5fc87ec588a0f3a0ad1932c2b2190345ceb05347867b0",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code_v2\\dev_verification.jsonl",
+      "stratum": {
+        "subject_or_interface": "stdin_stdout",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_code_dev",
+      "sample_id": "ace/oss_3751",
+      "record_sha256": "2d831d0d8fd4148994bf1882a38f6097aa78c07046ef3415f7416dccd3986d89",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code_v2\\dev_verification.jsonl",
+      "stratum": {
+        "subject_or_interface": "function",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_code_dev",
+      "sample_id": "code/vfc_17062",
+      "record_sha256": "ac742e923855ea63ea8e23398e4c1f3c8293ef5bcf39aade028fa700c820488f",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code_v2\\dev_verification.jsonl",
+      "stratum": {
+        "subject_or_interface": "stdin_stdout",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_code_dev",
+      "sample_id": "ace/oss_5448",
+      "record_sha256": "2b0816ddf17f7f465dca70422976b277c2534186585ace2e02ee9b9c2ad04a49",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code_v2\\dev_verification.jsonl",
+      "stratum": {
+        "subject_or_interface": "function",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p2_code_dev",
+      "sample_id": "code/vfc_137464",
+      "record_sha256": "773c6a988b1383f5b129afc6ee829d0ba50d5abe427b02996a4d63921e9ec204",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project2_code_v2\\dev_verification.jsonl",
+      "stratum": {
+        "subject_or_interface": "stdin_stdout",
+        "length_tertile": 2
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p3_geometry",
+      "sample_id": "144",
+      "record_sha256": "f4eb4e32b16fd8f154be4dc01d9a67c98ae4be7bd5962f4167a7dba17d5b97fd",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project3_perception_prototype\\prototype_200.jsonl",
+      "stratum": {
+        "subject_or_interface": "train",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p3_geometry",
+      "sample_id": "1987",
+      "record_sha256": "be9a4928775eefc3f7a115fca6b31ce9ca304818bdc6cda2d16a9af805e1f37f",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project3_perception_prototype\\prototype_200.jsonl",
+      "stratum": {
+        "subject_or_interface": "train",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p3_geometry",
+      "sample_id": "265",
+      "record_sha256": "f5925753ff47813a1c19b2166bc703c553c7bcee7d08ca50e231eec4b7abc353",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project3_perception_prototype\\prototype_200.jsonl",
+      "stratum": {
+        "subject_or_interface": "train",
+        "length_tertile": 2
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p3_geometry",
+      "sample_id": "1285",
+      "record_sha256": "a26cd378904ef30293fca08639849486eead185d340109e54fc20c1de80dbe59",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project3_perception_prototype\\prototype_200.jsonl",
+      "stratum": {
+        "subject_or_interface": "train",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p3_geometry",
+      "sample_id": "721",
+      "record_sha256": "a1004cc7f28a20fdcc723b307d699889bc34b2174cf708ce8ac1440051c4d707",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project3_perception_prototype\\prototype_200.jsonl",
+      "stratum": {
+        "subject_or_interface": "train",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p3_geometry",
+      "sample_id": "127",
+      "record_sha256": "e7e545e59b1d3274fd5e9e59b1444f945fdb55b3cbb4b91137a5e60b8f21c9fb",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project3_perception_prototype\\prototype_200.jsonl",
+      "stratum": {
+        "subject_or_interface": "train",
+        "length_tertile": 2
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p3_geometry",
+      "sample_id": "562",
+      "record_sha256": "3db526952b4e8006015e2970e48fed696ca7e6f0ce0c1df012a8d25cfb7791b2",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project3_perception_prototype\\prototype_200.jsonl",
+      "stratum": {
+        "subject_or_interface": "train",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p3_geometry",
+      "sample_id": "341",
+      "record_sha256": "3fcec6c8d356d1a55a20a93133725d4f6e97a6a3dca7088a5825aa2c9d632052",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project3_perception_prototype\\prototype_200.jsonl",
+      "stratum": {
+        "subject_or_interface": "train",
+        "length_tertile": 1
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p3_geometry",
+      "sample_id": "742",
+      "record_sha256": "01b02d325ebba916ab2c3ebfc5c1e239a08f0bca683199c527722b452dc90df0",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project3_perception_prototype\\prototype_200.jsonl",
+      "stratum": {
+        "subject_or_interface": "train",
+        "length_tertile": 2
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    },
+    {
+      "category": "p3_geometry",
+      "sample_id": "1820",
+      "record_sha256": "707cde656ac26ecd508e088b0e3774f9caffab258e63677446329bcfe5154302",
+      "source": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project3_perception_prototype\\prototype_200.jsonl",
+      "stratum": {
+        "subject_or_interface": "train",
+        "length_tertile": 0
+      },
+      "human_status": "pending",
+      "reviewer": "",
+      "decision": "",
+      "notes": ""
+    }
+  ],
+  "pending_insertions": []
+}

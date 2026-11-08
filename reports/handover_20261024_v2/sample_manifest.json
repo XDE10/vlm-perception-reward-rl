@@ -1,0 +1,614 @@
+{
+  "seed": 20261024,
+  "rng": "random.Random; group order A/B/C; split order train/validation; sample(sorted(sample_id),k), then same RNG shuffle",
+  "populations": {
+    "A/train": 552,
+    "A/validation": 79,
+    "B/train": 519,
+    "B/validation": 85,
+    "C/train": 609,
+    "C/validation": 82
+  },
+  "samples": [
+    {
+      "blind_id": "B001",
+      "sample_id": "train:593",
+      "original_id": "1429",
+      "split": "train",
+      "group": "C",
+      "candidate_count": 3
+    },
+    {
+      "blind_id": "B002",
+      "sample_id": "train:301",
+      "original_id": "1571",
+      "split": "train",
+      "group": "B",
+      "candidate_count": 5
+    },
+    {
+      "blind_id": "B003",
+      "sample_id": "train:324",
+      "original_id": "744",
+      "split": "train",
+      "group": "B",
+      "candidate_count": 40
+    },
+    {
+      "blind_id": "B004",
+      "sample_id": "train:955",
+      "original_id": "1676",
+      "split": "train",
+      "group": "A",
+      "candidate_count": 11
+    },
+    {
+      "blind_id": "B005",
+      "sample_id": "validation:118",
+      "original_id": "2342",
+      "split": "validation",
+      "group": "B",
+      "candidate_count": 2
+    },
+    {
+      "blind_id": "B006",
+      "sample_id": "validation:258",
+      "original_id": "2307",
+      "split": "validation",
+      "group": "B",
+      "candidate_count": 4
+    },
+    {
+      "blind_id": "B007",
+      "sample_id": "train:929",
+      "original_id": "538",
+      "split": "train",
+      "group": "B",
+      "candidate_count": 5
+    },
+    {
+      "blind_id": "B008",
+      "sample_id": "train:877",
+      "original_id": "1636",
+      "split": "train",
+      "group": "A",
+      "candidate_count": 4
+    },
+    {
+      "blind_id": "B009",
+      "sample_id": "train:609",
+      "original_id": "1651",
+      "split": "train",
+      "group": "B",
+      "candidate_count": 10
+    },
+    {
+      "blind_id": "B010",
+      "sample_id": "train:1966",
+      "original_id": "455",
+      "split": "train",
+      "group": "B",
+      "candidate_count": 4
+    },
+    {
+      "blind_id": "B011",
+      "sample_id": "train:1231",
+      "original_id": "78",
+      "split": "train",
+      "group": "B",
+      "candidate_count": 8
+    },
+    {
+      "blind_id": "B012",
+      "sample_id": "train:1819",
+      "original_id": "2017",
+      "split": "train",
+      "group": "C",
+      "candidate_count": 5
+    },
+    {
+      "blind_id": "B013",
+      "sample_id": "train:1950",
+      "original_id": "1879",
+      "split": "train",
+      "group": "A",
+      "candidate_count": 2
+    },
+    {
+      "blind_id": "B014",
+      "sample_id": "train:1047",
+      "original_id": "1740",
+      "split": "train",
+      "group": "B",
+      "candidate_count": 5
+    },
+    {
+      "blind_id": "B015",
+      "sample_id": "train:1156",
+      "original_id": "1689",
+      "split": "train",
+      "group": "B",
+      "candidate_count": 5
+    },
+    {
+      "blind_id": "B016",
+      "sample_id": "train:1892",
+      "original_id": "1703",
+      "split": "train",
+      "group": "C",
+      "candidate_count": 10
+    },
+    {
+      "blind_id": "B017",
+      "sample_id": "train:1071",
+      "original_id": "1808",
+      "split": "train",
+      "group": "A",
+      "candidate_count": 3
+    },
+    {
+      "blind_id": "B018",
+      "sample_id": "train:874",
+      "original_id": "950",
+      "split": "train",
+      "group": "A",
+      "candidate_count": 25
+    },
+    {
+      "blind_id": "B019",
+      "sample_id": "train:916",
+      "original_id": "1898",
+      "split": "train",
+      "group": "A",
+      "candidate_count": 8
+    },
+    {
+      "blind_id": "B020",
+      "sample_id": "validation:32",
+      "original_id": "2278",
+      "split": "validation",
+      "group": "A",
+      "candidate_count": 8
+    },
+    {
+      "blind_id": "B021",
+      "sample_id": "train:1191",
+      "original_id": "1624",
+      "split": "train",
+      "group": "B",
+      "candidate_count": 7
+    },
+    {
+      "blind_id": "B022",
+      "sample_id": "train:1290",
+      "original_id": "870",
+      "split": "train",
+      "group": "A",
+      "candidate_count": 35
+    },
+    {
+      "blind_id": "B023",
+      "sample_id": "train:214",
+      "original_id": "313",
+      "split": "train",
+      "group": "A",
+      "candidate_count": 12
+    },
+    {
+      "blind_id": "B024",
+      "sample_id": "train:1518",
+      "original_id": "356",
+      "split": "train",
+      "group": "A",
+      "candidate_count": 10
+    },
+    {
+      "blind_id": "B025",
+      "sample_id": "train:920",
+      "original_id": "565",
+      "split": "train",
+      "group": "B",
+      "candidate_count": 13
+    },
+    {
+      "blind_id": "B026",
+      "sample_id": "validation:245",
+      "original_id": "2396",
+      "split": "validation",
+      "group": "A",
+      "candidate_count": 6
+    },
+    {
+      "blind_id": "B027",
+      "sample_id": "validation:231",
+      "original_id": "2116",
+      "split": "validation",
+      "group": "C",
+      "candidate_count": 3
+    },
+    {
+      "blind_id": "B028",
+      "sample_id": "train:306",
+      "original_id": "2070",
+      "split": "train",
+      "group": "A",
+      "candidate_count": 4
+    },
+    {
+      "blind_id": "B029",
+      "sample_id": "train:158",
+      "original_id": "1376",
+      "split": "train",
+      "group": "A",
+      "candidate_count": 6
+    },
+    {
+      "blind_id": "B030",
+      "sample_id": "validation:46",
+      "original_id": "2151",
+      "split": "validation",
+      "group": "B",
+      "candidate_count": 2
+    },
+    {
+      "blind_id": "B031",
+      "sample_id": "train:503",
+      "original_id": "831",
+      "split": "train",
+      "group": "B",
+      "candidate_count": 3
+    },
+    {
+      "blind_id": "B032",
+      "sample_id": "train:1655",
+      "original_id": "1187",
+      "split": "train",
+      "group": "B",
+      "candidate_count": 4
+    },
+    {
+      "blind_id": "B033",
+      "sample_id": "train:1145",
+      "original_id": "1227",
+      "split": "train",
+      "group": "B",
+      "candidate_count": 2
+    },
+    {
+      "blind_id": "B034",
+      "sample_id": "train:763",
+      "original_id": "1667",
+      "split": "train",
+      "group": "C",
+      "candidate_count": 8
+    },
+    {
+      "blind_id": "B035",
+      "sample_id": "train:1254",
+      "original_id": "1047",
+      "split": "train",
+      "group": "A",
+      "candidate_count": 13
+    },
+    {
+      "blind_id": "B036",
+      "sample_id": "validation:120",
+      "original_id": "2108",
+      "split": "validation",
+      "group": "B",
+      "candidate_count": 38
+    },
+    {
+      "blind_id": "B037",
+      "sample_id": "validation:174",
+      "original_id": "2395",
+      "split": "validation",
+      "group": "C",
+      "candidate_count": 8
+    },
+    {
+      "blind_id": "B038",
+      "sample_id": "train:525",
+      "original_id": "1449",
+      "split": "train",
+      "group": "A",
+      "candidate_count": 3
+    },
+    {
+      "blind_id": "B039",
+      "sample_id": "validation:191",
+      "original_id": "2286",
+      "split": "validation",
+      "group": "C",
+      "candidate_count": 8
+    },
+    {
+      "blind_id": "B040",
+      "sample_id": "train:1730",
+      "original_id": "1856",
+      "split": "train",
+      "group": "C",
+      "candidate_count": 5
+    },
+    {
+      "blind_id": "B041",
+      "sample_id": "train:432",
+      "original_id": "1419",
+      "split": "train",
+      "group": "A",
+      "candidate_count": 15
+    },
+    {
+      "blind_id": "B042",
+      "sample_id": "train:1351",
+      "original_id": "634",
+      "split": "train",
+      "group": "B",
+      "candidate_count": 2
+    },
+    {
+      "blind_id": "B043",
+      "sample_id": "train:117",
+      "original_id": "723",
+      "split": "train",
+      "group": "C",
+      "candidate_count": 5
+    },
+    {
+      "blind_id": "B044",
+      "sample_id": "train:795",
+      "original_id": "417",
+      "split": "train",
+      "group": "B",
+      "candidate_count": 4
+    },
+    {
+      "blind_id": "B045",
+      "sample_id": "train:1321",
+      "original_id": "2080",
+      "split": "train",
+      "group": "B",
+      "candidate_count": 5
+    },
+    {
+      "blind_id": "B046",
+      "sample_id": "train:1550",
+      "original_id": "278",
+      "split": "train",
+      "group": "C",
+      "candidate_count": 8
+    },
+    {
+      "blind_id": "B047",
+      "sample_id": "train:1772",
+      "original_id": "1127",
+      "split": "train",
+      "group": "B",
+      "candidate_count": 10
+    },
+    {
+      "blind_id": "B048",
+      "sample_id": "train:1561",
+      "original_id": "762",
+      "split": "train",
+      "group": "C",
+      "candidate_count": 2
+    },
+    {
+      "blind_id": "B049",
+      "sample_id": "train:2022",
+      "original_id": "1058",
+      "split": "train",
+      "group": "A",
+      "candidate_count": 11
+    },
+    {
+      "blind_id": "B050",
+      "sample_id": "train:1804",
+      "original_id": "1795",
+      "split": "train",
+      "group": "B",
+      "candidate_count": 9
+    },
+    {
+      "blind_id": "B051",
+      "sample_id": "train:323",
+      "original_id": "2067",
+      "split": "train",
+      "group": "A",
+      "candidate_count": 2
+    },
+    {
+      "blind_id": "B052",
+      "sample_id": "train:1257",
+      "original_id": "750",
+      "split": "train",
+      "group": "A",
+      "candidate_count": 4
+    },
+    {
+      "blind_id": "B053",
+      "sample_id": "validation:147",
+      "original_id": "2220",
+      "split": "validation",
+      "group": "A",
+      "candidate_count": 17
+    },
+    {
+      "blind_id": "B054",
+      "sample_id": "train:1562",
+      "original_id": "703",
+      "split": "train",
+      "group": "C",
+      "candidate_count": 3
+    },
+    {
+      "blind_id": "B055",
+      "sample_id": "train:380",
+      "original_id": "1826",
+      "split": "train",
+      "group": "C",
+      "candidate_count": 5
+    },
+    {
+      "blind_id": "B056",
+      "sample_id": "train:1891",
+      "original_id": "1919",
+      "split": "train",
+      "group": "A",
+      "candidate_count": 8
+    },
+    {
+      "blind_id": "B057",
+      "sample_id": "validation:117",
+      "original_id": "2271",
+      "split": "validation",
+      "group": "A",
+      "candidate_count": 13
+    },
+    {
+      "blind_id": "B058",
+      "sample_id": "train:1570",
+      "original_id": "616",
+      "split": "train",
+      "group": "A",
+      "candidate_count": 4
+    },
+    {
+      "blind_id": "B059",
+      "sample_id": "train:978",
+      "original_id": "1843",
+      "split": "train",
+      "group": "B",
+      "candidate_count": 2
+    },
+    {
+      "blind_id": "B060",
+      "sample_id": "train:1555",
+      "original_id": "1870",
+      "split": "train",
+      "group": "B",
+      "candidate_count": 7
+    },
+    {
+      "blind_id": "B061",
+      "sample_id": "train:354",
+      "original_id": "1553",
+      "split": "train",
+      "group": "A",
+      "candidate_count": 10
+    },
+    {
+      "blind_id": "B062",
+      "sample_id": "train:1653",
+      "original_id": "1948",
+      "split": "train",
+      "group": "A",
+      "candidate_count": 3
+    },
+    {
+      "blind_id": "B063",
+      "sample_id": "train:960",
+      "original_id": "1602",
+      "split": "train",
+      "group": "B",
+      "candidate_count": 3
+    },
+    {
+      "blind_id": "B064",
+      "sample_id": "train:1475",
+      "original_id": "1770",
+      "split": "train",
+      "group": "B",
+      "candidate_count": 5
+    },
+    {
+      "blind_id": "B065",
+      "sample_id": "train:636",
+      "original_id": "1552",
+      "split": "train",
+      "group": "A",
+      "candidate_count": 4
+    },
+    {
+      "blind_id": "B066",
+      "sample_id": "validation:121",
+      "original_id": "2134",
+      "split": "validation",
+      "group": "A",
+      "candidate_count": 6
+    },
+    {
+      "blind_id": "B067",
+      "sample_id": "train:778",
+      "original_id": "545",
+      "split": "train",
+      "group": "A",
+      "candidate_count": 8
+    },
+    {
+      "blind_id": "B068",
+      "sample_id": "train:1948",
+      "original_id": "1289",
+      "split": "train",
+      "group": "B",
+      "candidate_count": 8
+    },
+    {
+      "blind_id": "B069",
+      "sample_id": "train:2051",
+      "original_id": "822",
+      "split": "train",
+      "group": "B",
+      "candidate_count": 25
+    },
+    {
+      "blind_id": "B070",
+      "sample_id": "train:442",
+      "original_id": "1285",
+      "split": "train",
+      "group": "B",
+      "candidate_count": 6
+    },
+    {
+      "blind_id": "B071",
+      "sample_id": "validation:0",
+      "original_id": "2254",
+      "split": "validation",
+      "group": "B",
+      "candidate_count": 8
+    },
+    {
+      "blind_id": "B072",
+      "sample_id": "train:826",
+      "original_id": "501",
+      "split": "train",
+      "group": "A",
+      "candidate_count": 15
+    },
+    {
+      "blind_id": "B073",
+      "sample_id": "train:895",
+      "original_id": "1340",
+      "split": "train",
+      "group": "C",
+      "candidate_count": 14
+    },
+    {
+      "blind_id": "B074",
+      "sample_id": "train:1367",
+      "original_id": "1406",
+      "split": "train",
+      "group": "C",
+      "candidate_count": 4
+    },
+    {
+      "blind_id": "B075",
+      "sample_id": "train:1211",
+      "original_id": "398",
+      "split": "train",
+      "group": "A",
+      "candidate_count": 3
+    }
+  ]
+}

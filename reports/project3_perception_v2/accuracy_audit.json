@@ -1,0 +1,30 @@
+{
+  "v1_supported_entries_checked": 454,
+  "semantics_preserved": 454,
+  "differences_requiring_review": [],
+  "image_spotcheck_scope": "AI visual review of actual images 144,1285,742,1987; not human certification and not 200-case precision",
+  "image_reviews": [
+    {
+      "id": "144",
+      "decision": "key_conditions_supported",
+      "evidence": "two equal-side ticks, 2x+7,3x-5,base22; x=12"
+    },
+    {
+      "id": "1285",
+      "decision": "key_conditions_supported",
+      "evidence": "angle-bisector arc, point A on BC, BD15 CD27 BC28 CA=b; b=18"
+    },
+    {
+      "id": "742",
+      "decision": "isolate",
+      "evidence": "blue area153 green272; stated blue-to-green implies target/source4/3, stored3/4; keep original gold unchanged"
+    },
+    {
+      "id": "1987",
+      "decision": "partial_supported_pending_aliases",
+      "evidence": "three drawn points on circle and inscribed angle28; arc GH56. Source center B and point aliases are not all printed in image."
+    }
+  ],
+  "full_visual_gold_accuracy": null,
+  "training_approved": false
+}

@@ -1,0 +1,6 @@
+{
+  "change": "Only strip exact redundant root type=json_object metadata, retain all required fields, partition, evidence, stop finish and grounding/task guards. New sidecar reparses cached responses without API resampling. Unknown extra fields remain invalid.",
+  "reason": "First three visual responses carried redundant response-format type field; no mathematical or visual fact criterion relaxed.",
+  "original_frozen_parser_sha": "46742c34b273174f0736ff237503800ac3bae640d4e8cb53317a6d661197fa87",
+  "affects_original_raw_reviews": false
+}

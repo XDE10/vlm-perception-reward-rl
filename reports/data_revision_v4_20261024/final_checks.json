@@ -1,0 +1,20 @@
+{
+  "old_version_files_checked": 278,
+  "old_version_differences": [],
+  "new_manifest_hash_entries_checked": 157,
+  "new_manifest_mismatches": [],
+  "local_links_checked": 224,
+  "missing_local_links": [],
+  "unclosed_markdown_fences": [],
+  "pilot_paid_calls": 30,
+  "pilot_reserve_usd": 0.0713403,
+  "pilot_verifier_errors": 0,
+  "fresh_dev_questions": 3,
+  "fresh_dev_source_testcases": 53,
+  "fresh_dev_constant_mutants_rejected": 6,
+  "pytest": "182 passed in 103.78s",
+  "gpu_training_runs": 0,
+  "bulk_generation_enabled": false,
+  "human_review": "pending",
+  "training_approved": false
+}

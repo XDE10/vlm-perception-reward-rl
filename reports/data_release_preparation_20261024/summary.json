@@ -1,0 +1,224 @@
+{
+  "native_pool": {
+    "version": "native-v5-refill-20261024",
+    "count": 1500,
+    "retained_from_original_1500": 1143,
+    "refilled": 357,
+    "per_type": {
+      "Algebra": 525,
+      "Geometry": 300,
+      "Number Theory": 300,
+      "Combinatorics": 225,
+      "Inequalities": 100,
+      "Logic and Puzzles": 50
+    },
+    "originals_rejected": 357,
+    "heldout_and_internal_jaccard_threshold": 0.85,
+    "claim": "fixed-rule native candidate proposal; not 1500 semantically gold or globally Math-Verify-rechecked solutions",
+    "training_approved": false,
+    "human_review": "not_performed",
+    "api_calls": 0
+  },
+  "generation": {
+    "target": 500,
+    "statuses": {
+      "complete": 468,
+      "uncertain_transport": 32
+    },
+    "wall_seconds": 93.78100000000268,
+    "shared_budget": {
+      "requests": 500,
+      "committed_upper_usd": 0.199955244,
+      "hard_cap_usd": 5,
+      "unresolved_requests": 32
+    },
+    "generation_saw_reference_fields": false,
+    "training_approved": false
+  },
+  "local_verification": {
+    "target_questions": 500,
+    "generation_completed": 468,
+    "schema_valid": 444,
+    "answer_verified": 408,
+    "automatic_admitted": 209,
+    "common_pairs": 209,
+    "failure_signals": {
+      "outside_150_1500_qwen_tokens": 215,
+      "answer_not_verified": 60,
+      "repeated_separated_derivation_12grams": 7,
+      "invalid_json_no_blind_repair": 8,
+      "incomplete_written_derivation": 9,
+      "invalid_bare_final_answer": 9,
+      "unbalanced_box": 9,
+      "not_solved_or_missing_information": 3,
+      "wrong_json_schema": 1,
+      "non_stop_finish": 1
+    },
+    "verifier_errors": 0,
+    "training_approved": false,
+    "process_review": "pending"
+  },
+  "project2_review": {
+    "items": 5456,
+    "results": 5456,
+    "verdicts": {
+      "pass": 4445,
+      "isolate": 885,
+      "uncertain": 126
+    },
+    "by_pool": {
+      "math/train": {
+        "pass": 2380,
+        "uncertain": 27,
+        "isolate": 93
+      },
+      "math/dev": {
+        "pass": 247,
+        "isolate": 6,
+        "uncertain": 3
+      },
+      "code/train": {
+        "pass": 1662,
+        "isolate": 744,
+        "uncertain": 94
+      },
+      "code/dev": {
+        "pass": 156,
+        "isolate": 42,
+        "uncertain": 2
+      }
+    },
+    "shared_budget": {
+      "requests": 5974,
+      "committed_upper_usd": 2.5859304,
+      "hard_cap_usd": 5,
+      "unresolved_requests": 50
+    },
+    "review_method": "user_delegated_AI; no human itemwise review claimed",
+    "whole_dataset_approved": false,
+    "training_approved": false,
+    "release_rule": "Only itemwise pass can be proposed for delegated engineering release; isolate/uncertain/not_reviewed never auto-pass. No quota replacement or dev relabeling."
+  },
+  "pair_review": {
+    "pairs": 219,
+    "verdicts": {
+      "pass": 213,
+      "isolate": 6
+    },
+    "by_cohort": {
+      "new_batch500": {
+        "pass": 203,
+        "isolate": 6
+      },
+      "prior_v4_10": {
+        "pass": 10
+      }
+    },
+    "shared_budget": {
+      "requests": 6193,
+      "committed_upper_usd": 2.803593768,
+      "hard_cap_usd": 5,
+      "unresolved_requests": 50
+    },
+    "human_review_performed": false,
+    "whole_native1500_approved": false
+  },
+  "geometry_full_candidates": {
+    "source_split_sizes": {
+      "train": 2101,
+      "validation": 300,
+      "test": 601
+    },
+    "unique_matched_split_sizes": {
+      "train": 2096,
+      "validation": 300,
+      "test": 600
+    },
+    "ambiguous_by_split": {
+      "train": 5,
+      "test": 1
+    },
+    "serialized_preview_without_source_radius_ids": 2989,
+    "training_ready_grounded_targets": 0,
+    "serialized_grounding_states": {
+      "pending_image_grounding": 2988,
+      "isolated": 7,
+      "isolated_direction_convention": 1
+    },
+    "rule": "Internal identities retained solely in audit JSON; stripped from diagnostic text. Unknown center/point labels and concentric circle identities require visible grounding; never collapse all circles.",
+    "training_approved": false,
+    "test_annotations_used_for_training": false,
+    "api_calls": 0
+  },
+  "geometry_visual_review": {
+    "reviewed_prototype_count": 200,
+    "verdicts": {
+      "pass": 29,
+      "uncertain": 73,
+      "isolate": 98
+    },
+    "approved_grounded_train_prototypes": 26,
+    "full_geometry_train_approved": false,
+    "human_review_performed": false,
+    "shared_budget": {
+      "requests": 6393,
+      "committed_upper_usd": 2.91434478,
+      "hard_cap_usd": 5,
+      "unresolved_requests": 50
+    },
+    "interpretation": "AI-reviewed prototype subset, not 200-case human gold precision; source names are accepted only when returned as visible labels or reviewed single-circle binding"
+  },
+  "approved_release": {
+    "release_kind": "itemwise_delegated_AI_engineering_subsets; not original full-pool or human-gold signoff",
+    "project2_approved_train_counts": {
+      "math": 2380,
+      "code": 1662
+    },
+    "project2_code_interfaces": {
+      "function": 926,
+      "stdin_stdout": 736
+    },
+    "project2_original_dev_ids_preserved": 456,
+    "project2_dev_review_statuses": {
+      "pass": 403,
+      "isolate": 47,
+      "uncertain": 5,
+      "uncertain_independent_reviewer_disagreement": 1
+    },
+    "project2_original_2500_plus2500_full_train_approved": false,
+    "project1_ai_approved_paired_count": 213,
+    "project1_cohorts": {
+      "new_batch500": 203,
+      "prior_v4_10": 10
+    },
+    "whole_native1500_approved": false,
+    "project3_grounded_training_targets_approved": 26,
+    "project3_approval_scope": "perception-only prototypes, not full VL reasoning data or all matched splits",
+    "training_approved": true,
+    "approval_scope": "Only rows in the five *ai_approved.jsonl training files; no other data. Original quotas not silently weakened; train sampling/domain mix needs a versioned config.",
+    "human_review_performed": false,
+    "limitations": "AI process judgments can err; sample counterexample shows reviewer false positive. No benchmark performance, full test coverage, global contamination, or visual-gold claim."
+  },
+  "budget": {
+    "cap_usd": 5,
+    "provider_dispatch_attempts": 6393,
+    "completed_requests": 6343,
+    "completed_usage_peak_estimate_usd": 2.7913447799999997,
+    "retained_unknown_error_reserve_usd": 0.123,
+    "committed_upper_usd": 2.91434478,
+    "not_actual_account_balance_delta": true,
+    "error_requests_not_assumed_free": true
+  },
+  "gpu_training_runs": 0,
+  "training_entries_implemented": [
+    "HF_SFT",
+    "TRL_GRPO",
+    "TRL_DrGRPO",
+    "sequential_teacher_OPD",
+    "VLM_perception_SFT",
+    "math_evaluation",
+    "paired_vision_diagnostic"
+  ],
+  "core_visual_perception_GRPO_approved": false,
+  "a100_smoke_completed": false
+}

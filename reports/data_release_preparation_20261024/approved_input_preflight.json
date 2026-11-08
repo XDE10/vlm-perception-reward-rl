@@ -1,0 +1,43 @@
+{
+  "files": {
+    "project2_math_train_ai_approved.jsonl": {
+      "rows": 2380,
+      "profile": "opd",
+      "actual_max_prompt_or_sft_tokens": 1055,
+      "visual_target_max_characters": null,
+      "checks_passed": true
+    },
+    "project2_code_train_ai_approved.jsonl": {
+      "rows": 1662,
+      "profile": "opd",
+      "actual_max_prompt_or_sft_tokens": 1701,
+      "visual_target_max_characters": null,
+      "checks_passed": true
+    },
+    "project1_raw_paired_ai_approved.jsonl": {
+      "rows": 213,
+      "profile": "math_sft",
+      "actual_max_prompt_or_sft_tokens": 3075,
+      "visual_target_max_characters": null,
+      "checks_passed": true
+    },
+    "project1_compact_paired_ai_approved.jsonl": {
+      "rows": 213,
+      "profile": "math_sft",
+      "actual_max_prompt_or_sft_tokens": 757,
+      "visual_target_max_characters": null,
+      "checks_passed": true
+    },
+    "project3_perception_prototype_ai_approved.jsonl": {
+      "rows": 26,
+      "profile": "perception_sft",
+      "actual_max_prompt_or_sft_tokens": null,
+      "visual_target_max_characters": 375,
+      "checks_passed": true
+    }
+  },
+  "no_gpu_model_loaded": true,
+  "no_optimizer_step": true,
+  "no_weights_downloaded": true,
+  "not_a_training_smoke": "CPU verified approval scope, real strings/tokenizer prefixes, masks and budgets; full model/vision processor/GPU forward-backward/resume remain separate acceptance."
+}

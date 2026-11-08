@@ -1,0 +1,4902 @@
+{
+  "status": "text_tokenizer_proxy_measured; actual_VL_assistant_labels_未验证",
+  "tokenizer": "data/tokenizers/Qwen2.5-7B-Instruct",
+  "tokenizer_files_sha256": {
+    "config.json": "7463bb0ea78315365e6c6b74de4e73bbcc8359dfb0c5a737584e077d42c0b03c",
+    "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+    "tokenizer.json": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+    "tokenizer_config.json": "5b5d4f65d0acd3b2d56a35b56d374a36cbc1c8fa5cf3b3febbbfabf22f359583",
+    "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+  },
+  "includes_template_end_tokens": false,
+  "counts": {
+    "answer_v1": {
+      "rows": 609,
+      "total": 9100,
+      "mean": 14.942528735632184,
+      "maximum": 31,
+      "per_sample": [
+        {
+          "sample_id": "train:10",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1000",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:1003",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1006",
+          "target_only_text_tokens": 27
+        },
+        {
+          "sample_id": "train:1010",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1011",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1013",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1019",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1022",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:1023",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1025",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1026",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1032",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1036",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1038",
+          "target_only_text_tokens": 24
+        },
+        {
+          "sample_id": "train:104",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1044",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1048",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1063",
+          "target_only_text_tokens": 17
+        },
+        {
+          "sample_id": "train:1066",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1067",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:107",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1072",
+          "target_only_text_tokens": 18
+        },
+        {
+          "sample_id": "train:1073",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1076",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1077",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1081",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1089",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:109",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1090",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1091",
+          "target_only_text_tokens": 17
+        },
+        {
+          "sample_id": "train:1094",
+          "target_only_text_tokens": 18
+        },
+        {
+          "sample_id": "train:1096",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:11",
+          "target_only_text_tokens": 17
+        },
+        {
+          "sample_id": "train:1101",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1109",
+          "target_only_text_tokens": 18
+        },
+        {
+          "sample_id": "train:111",
+          "target_only_text_tokens": 25
+        },
+        {
+          "sample_id": "train:1111",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1115",
+          "target_only_text_tokens": 20
+        },
+        {
+          "sample_id": "train:1116",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:1118",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:112",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1120",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1126",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1136",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1141",
+          "target_only_text_tokens": 18
+        },
+        {
+          "sample_id": "train:1144",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1146",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1148",
+          "target_only_text_tokens": 22
+        },
+        {
+          "sample_id": "train:115",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1150",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1151",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1153",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1165",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1166",
+          "target_only_text_tokens": 19
+        },
+        {
+          "sample_id": "train:1168",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:117",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1171",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1176",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1178",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1185",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1197",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:12",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1203",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:121",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1213",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1215",
+          "target_only_text_tokens": 18
+        },
+        {
+          "sample_id": "train:1218",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1222",
+          "target_only_text_tokens": 18
+        },
+        {
+          "sample_id": "train:1225",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1226",
+          "target_only_text_tokens": 17
+        },
+        {
+          "sample_id": "train:123",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1233",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1239",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:125",
+          "target_only_text_tokens": 19
+        },
+        {
+          "sample_id": "train:1251",
+          "target_only_text_tokens": 18
+        },
+        {
+          "sample_id": "train:1259",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1263",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1268",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1276",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1280",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1281",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1283",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1285",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1286",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1287",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1289",
+          "target_only_text_tokens": 18
+        },
+        {
+          "sample_id": "train:1295",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1296",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1298",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1300",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1301",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1308",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1319",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:132",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1322",
+          "target_only_text_tokens": 17
+        },
+        {
+          "sample_id": "train:1327",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1328",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1335",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1338",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:1341",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1343",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1345",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1346",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1347",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1348",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1355",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1356",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1358",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1366",
+          "target_only_text_tokens": 17
+        },
+        {
+          "sample_id": "train:1367",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:137",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1373",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1385",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1386",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1388",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1390",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1392",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1397",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:14",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1402",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1405",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1407",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1413",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1414",
+          "target_only_text_tokens": 18
+        },
+        {
+          "sample_id": "train:1418",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1419",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:142",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1420",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1422",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1425",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1432",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:1439",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1442",
+          "target_only_text_tokens": 18
+        },
+        {
+          "sample_id": "train:1444",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1447",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:145",
+          "target_only_text_tokens": 17
+        },
+        {
+          "sample_id": "train:1451",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1452",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:1456",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1457",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1458",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1459",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:146",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1461",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1465",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1466",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1468",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:147",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1471",
+          "target_only_text_tokens": 19
+        },
+        {
+          "sample_id": "train:1474",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1483",
+          "target_only_text_tokens": 27
+        },
+        {
+          "sample_id": "train:1484",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1488",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1489",
+          "target_only_text_tokens": 21
+        },
+        {
+          "sample_id": "train:149",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1491",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1496",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1499",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1502",
+          "target_only_text_tokens": 18
+        },
+        {
+          "sample_id": "train:151",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1516",
+          "target_only_text_tokens": 17
+        },
+        {
+          "sample_id": "train:152",
+          "target_only_text_tokens": 18
+        },
+        {
+          "sample_id": "train:1522",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1523",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1525",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1530",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1531",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1532",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1534",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1542",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1544",
+          "target_only_text_tokens": 18
+        },
+        {
+          "sample_id": "train:1548",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:155",
+          "target_only_text_tokens": 17
+        },
+        {
+          "sample_id": "train:1550",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1557",
+          "target_only_text_tokens": 18
+        },
+        {
+          "sample_id": "train:156",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1561",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1562",
+          "target_only_text_tokens": 17
+        },
+        {
+          "sample_id": "train:1566",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1571",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1575",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1581",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1583",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1584",
+          "target_only_text_tokens": 17
+        },
+        {
+          "sample_id": "train:1591",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1593",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1595",
+          "target_only_text_tokens": 18
+        },
+        {
+          "sample_id": "train:1596",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1597",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1598",
+          "target_only_text_tokens": 18
+        },
+        {
+          "sample_id": "train:160",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1605",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1606",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1607",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:1608",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1612",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1614",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1615",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:1624",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1625",
+          "target_only_text_tokens": 18
+        },
+        {
+          "sample_id": "train:1631",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1632",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1637",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1640",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:1641",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1642",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1650",
+          "target_only_text_tokens": 19
+        },
+        {
+          "sample_id": "train:1652",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:1660",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1664",
+          "target_only_text_tokens": 28
+        },
+        {
+          "sample_id": "train:1669",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1671",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1674",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1676",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1677",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:168",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1680",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1683",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1684",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1689",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1692",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1695",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:17",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1702",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1703",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:1705",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1707",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1709",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1711",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1714",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1716",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1718",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1719",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1720",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1722",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1728",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1729",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:173",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1730",
+          "target_only_text_tokens": 19
+        },
+        {
+          "sample_id": "train:1732",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1734",
+          "target_only_text_tokens": 17
+        },
+        {
+          "sample_id": "train:1735",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1743",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1745",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1749",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1751",
+          "target_only_text_tokens": 17
+        },
+        {
+          "sample_id": "train:1753",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1754",
+          "target_only_text_tokens": 20
+        },
+        {
+          "sample_id": "train:1765",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:177",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1774",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1779",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1781",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1783",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1788",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1789",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:179",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1792",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1795",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:1801",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1802",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1805",
+          "target_only_text_tokens": 18
+        },
+        {
+          "sample_id": "train:1808",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1809",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1811",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1813",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1814",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1816",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1818",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1819",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1821",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1827",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1828",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1832",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1834",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1836",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:184",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1845",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1846",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:1851",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1861",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1865",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1866",
+          "target_only_text_tokens": 17
+        },
+        {
+          "sample_id": "train:1867",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1872",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1875",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1877",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1878",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1879",
+          "target_only_text_tokens": 26
+        },
+        {
+          "sample_id": "train:1883",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1886",
+          "target_only_text_tokens": 26
+        },
+        {
+          "sample_id": "train:1887",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:1889",
+          "target_only_text_tokens": 18
+        },
+        {
+          "sample_id": "train:1890",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1892",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1894",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1896",
+          "target_only_text_tokens": 19
+        },
+        {
+          "sample_id": "train:1899",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:19",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1906",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1911",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1912",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:1916",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1917",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:192",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1924",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1928",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:193",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1932",
+          "target_only_text_tokens": 18
+        },
+        {
+          "sample_id": "train:1942",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1951",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1957",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1959",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:196",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1961",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1962",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1964",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1969",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1970",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1974",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1977",
+          "target_only_text_tokens": 17
+        },
+        {
+          "sample_id": "train:1979",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1980",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:1981",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1984",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:1985",
+          "target_only_text_tokens": 31
+        },
+        {
+          "sample_id": "train:1992",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1998",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:1999",
+          "target_only_text_tokens": 17
+        },
+        {
+          "sample_id": "train:20",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:2000",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:2002",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:2003",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:2004",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:2008",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:2009",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:201",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:2012",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:2016",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:2024",
+          "target_only_text_tokens": 17
+        },
+        {
+          "sample_id": "train:2025",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:2026",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:2031",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:2033",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:2037",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:2038",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:2041",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:2048",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:2049",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:2052",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:2054",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:2056",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:2057",
+          "target_only_text_tokens": 18
+        },
+        {
+          "sample_id": "train:2058",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:2063",
+          "target_only_text_tokens": 18
+        },
+        {
+          "sample_id": "train:2070",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:2078",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:2080",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:2082",
+          "target_only_text_tokens": 17
+        },
+        {
+          "sample_id": "train:2084",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:2085",
+          "target_only_text_tokens": 17
+        },
+        {
+          "sample_id": "train:2090",
+          "target_only_text_tokens": 19
+        },
+        {
+          "sample_id": "train:2092",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:2093",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:2096",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:21",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:212",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:216",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:218",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:22",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:221",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:227",
+          "target_only_text_tokens": 27
+        },
+        {
+          "sample_id": "train:230",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:233",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:234",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:237",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:238",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:24",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:242",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:249",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:250",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:252",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:254",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:255",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:256",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:261",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:270",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:276",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:28",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:280",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:281",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:282",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:287",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:291",
+          "target_only_text_tokens": 17
+        },
+        {
+          "sample_id": "train:299",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:302",
+          "target_only_text_tokens": 18
+        },
+        {
+          "sample_id": "train:305",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:307",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:314",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:316",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:327",
+          "target_only_text_tokens": 21
+        },
+        {
+          "sample_id": "train:329",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:333",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:335",
+          "target_only_text_tokens": 17
+        },
+        {
+          "sample_id": "train:338",
+          "target_only_text_tokens": 19
+        },
+        {
+          "sample_id": "train:343",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:346",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:348",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:35",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:350",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:357",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:359",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:367",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:369",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:372",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:38",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:380",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:384",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:386",
+          "target_only_text_tokens": 17
+        },
+        {
+          "sample_id": "train:392",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:393",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:394",
+          "target_only_text_tokens": 27
+        },
+        {
+          "sample_id": "train:395",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:396",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:4",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:402",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:405",
+          "target_only_text_tokens": 21
+        },
+        {
+          "sample_id": "train:406",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:409",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:41",
+          "target_only_text_tokens": 22
+        },
+        {
+          "sample_id": "train:411",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:412",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:42",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:425",
+          "target_only_text_tokens": 19
+        },
+        {
+          "sample_id": "train:427",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:434",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:435",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:436",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:447",
+          "target_only_text_tokens": 17
+        },
+        {
+          "sample_id": "train:454",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:457",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:458",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:46",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:466",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:475",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:479",
+          "target_only_text_tokens": 18
+        },
+        {
+          "sample_id": "train:489",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:49",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:491",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:496",
+          "target_only_text_tokens": 17
+        },
+        {
+          "sample_id": "train:499",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:506",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:507",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:509",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:523",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:526",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:527",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:529",
+          "target_only_text_tokens": 17
+        },
+        {
+          "sample_id": "train:530",
+          "target_only_text_tokens": 17
+        },
+        {
+          "sample_id": "train:535",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:536",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:537",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:538",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:539",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:54",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:542",
+          "target_only_text_tokens": 25
+        },
+        {
+          "sample_id": "train:554",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:559",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:560",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:569",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:570",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:575",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:577",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:578",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:580",
+          "target_only_text_tokens": 18
+        },
+        {
+          "sample_id": "train:584",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:586",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:593",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:598",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:60",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:612",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:618",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:621",
+          "target_only_text_tokens": 18
+        },
+        {
+          "sample_id": "train:624",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:630",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:631",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:637",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:64",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:640",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:642",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:646",
+          "target_only_text_tokens": 18
+        },
+        {
+          "sample_id": "train:647",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:648",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:65",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:652",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:658",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:66",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:660",
+          "target_only_text_tokens": 18
+        },
+        {
+          "sample_id": "train:664",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:668",
+          "target_only_text_tokens": 18
+        },
+        {
+          "sample_id": "train:670",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:672",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:678",
+          "target_only_text_tokens": 20
+        },
+        {
+          "sample_id": "train:689",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:690",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:692",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:693",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:695",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:697",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:703",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:704",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:708",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:709",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:71",
+          "target_only_text_tokens": 17
+        },
+        {
+          "sample_id": "train:712",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:713",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:717",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:719",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:721",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:729",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:730",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:734",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:738",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:74",
+          "target_only_text_tokens": 26
+        },
+        {
+          "sample_id": "train:741",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:747",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:748",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:749",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:75",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:753",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:754",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:755",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:757",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:759",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:763",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:769",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:77",
+          "target_only_text_tokens": 21
+        },
+        {
+          "sample_id": "train:773",
+          "target_only_text_tokens": 17
+        },
+        {
+          "sample_id": "train:779",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:78",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:780",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:785",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:787",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:789",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:790",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:791",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:793",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:799",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:810",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:811",
+          "target_only_text_tokens": 20
+        },
+        {
+          "sample_id": "train:814",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:820",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:822",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:829",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:831",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:834",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:84",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:841",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:847",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:848",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:849",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:850",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:852",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:854",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:860",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:865",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:866",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:870",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:875",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:88",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:883",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:884",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:892",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:893",
+          "target_only_text_tokens": 17
+        },
+        {
+          "sample_id": "train:895",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:900",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:901",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:904",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:912",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:914",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:919",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:922",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:924",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:926",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:927",
+          "target_only_text_tokens": 19
+        },
+        {
+          "sample_id": "train:928",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:94",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:945",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:946",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:948",
+          "target_only_text_tokens": 20
+        },
+        {
+          "sample_id": "train:95",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:951",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:952",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:953",
+          "target_only_text_tokens": 23
+        },
+        {
+          "sample_id": "train:957",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:961",
+          "target_only_text_tokens": 18
+        },
+        {
+          "sample_id": "train:963",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:964",
+          "target_only_text_tokens": 16
+        },
+        {
+          "sample_id": "train:967",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:971",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:973",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:976",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:980",
+          "target_only_text_tokens": 13
+        },
+        {
+          "sample_id": "train:984",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:985",
+          "target_only_text_tokens": 15
+        },
+        {
+          "sample_id": "train:988",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:994",
+          "target_only_text_tokens": 14
+        },
+        {
+          "sample_id": "train:996",
+          "target_only_text_tokens": 20
+        }
+      ]
+    },
+    "perception_answer_v2": {
+      "rows": 609,
+      "total": 34678,
+      "mean": 56.94252873563219,
+      "maximum": 130,
+      "per_sample": [
+        {
+          "sample_id": "train:10",
+          "target_only_text_tokens": 66
+        },
+        {
+          "sample_id": "train:1000",
+          "target_only_text_tokens": 75
+        },
+        {
+          "sample_id": "train:1003",
+          "target_only_text_tokens": 41
+        },
+        {
+          "sample_id": "train:1006",
+          "target_only_text_tokens": 52
+        },
+        {
+          "sample_id": "train:1010",
+          "target_only_text_tokens": 71
+        },
+        {
+          "sample_id": "train:1011",
+          "target_only_text_tokens": 34
+        },
+        {
+          "sample_id": "train:1013",
+          "target_only_text_tokens": 45
+        },
+        {
+          "sample_id": "train:1019",
+          "target_only_text_tokens": 85
+        },
+        {
+          "sample_id": "train:1022",
+          "target_only_text_tokens": 69
+        },
+        {
+          "sample_id": "train:1023",
+          "target_only_text_tokens": 46
+        },
+        {
+          "sample_id": "train:1025",
+          "target_only_text_tokens": 98
+        },
+        {
+          "sample_id": "train:1026",
+          "target_only_text_tokens": 47
+        },
+        {
+          "sample_id": "train:1032",
+          "target_only_text_tokens": 36
+        },
+        {
+          "sample_id": "train:1036",
+          "target_only_text_tokens": 46
+        },
+        {
+          "sample_id": "train:1038",
+          "target_only_text_tokens": 45
+        },
+        {
+          "sample_id": "train:104",
+          "target_only_text_tokens": 34
+        },
+        {
+          "sample_id": "train:1044",
+          "target_only_text_tokens": 55
+        },
+        {
+          "sample_id": "train:1048",
+          "target_only_text_tokens": 71
+        },
+        {
+          "sample_id": "train:1063",
+          "target_only_text_tokens": 44
+        },
+        {
+          "sample_id": "train:1066",
+          "target_only_text_tokens": 35
+        },
+        {
+          "sample_id": "train:1067",
+          "target_only_text_tokens": 37
+        },
+        {
+          "sample_id": "train:107",
+          "target_only_text_tokens": 60
+        },
+        {
+          "sample_id": "train:1072",
+          "target_only_text_tokens": 74
+        },
+        {
+          "sample_id": "train:1073",
+          "target_only_text_tokens": 81
+        },
+        {
+          "sample_id": "train:1076",
+          "target_only_text_tokens": 37
+        },
+        {
+          "sample_id": "train:1077",
+          "target_only_text_tokens": 63
+        },
+        {
+          "sample_id": "train:1081",
+          "target_only_text_tokens": 65
+        },
+        {
+          "sample_id": "train:1089",
+          "target_only_text_tokens": 40
+        },
+        {
+          "sample_id": "train:109",
+          "target_only_text_tokens": 81
+        },
+        {
+          "sample_id": "train:1090",
+          "target_only_text_tokens": 42
+        },
+        {
+          "sample_id": "train:1091",
+          "target_only_text_tokens": 48
+        },
+        {
+          "sample_id": "train:1094",
+          "target_only_text_tokens": 52
+        },
+        {
+          "sample_id": "train:1096",
+          "target_only_text_tokens": 95
+        },
+        {
+          "sample_id": "train:11",
+          "target_only_text_tokens": 54
+        },
+        {
+          "sample_id": "train:1101",
+          "target_only_text_tokens": 49
+        },
+        {
+          "sample_id": "train:1109",
+          "target_only_text_tokens": 48
+        },
+        {
+          "sample_id": "train:111",
+          "target_only_text_tokens": 44
+        },
+        {
+          "sample_id": "train:1111",
+          "target_only_text_tokens": 96
+        },
+        {
+          "sample_id": "train:1115",
+          "target_only_text_tokens": 51
+        },
+        {
+          "sample_id": "train:1116",
+          "target_only_text_tokens": 30
+        },
+        {
+          "sample_id": "train:1118",
+          "target_only_text_tokens": 40
+        },
+        {
+          "sample_id": "train:112",
+          "target_only_text_tokens": 19
+        },
+        {
+          "sample_id": "train:1120",
+          "target_only_text_tokens": 75
+        },
+        {
+          "sample_id": "train:1126",
+          "target_only_text_tokens": 55
+        },
+        {
+          "sample_id": "train:1136",
+          "target_only_text_tokens": 34
+        },
+        {
+          "sample_id": "train:1141",
+          "target_only_text_tokens": 59
+        },
+        {
+          "sample_id": "train:1144",
+          "target_only_text_tokens": 50
+        },
+        {
+          "sample_id": "train:1146",
+          "target_only_text_tokens": 43
+        },
+        {
+          "sample_id": "train:1148",
+          "target_only_text_tokens": 53
+        },
+        {
+          "sample_id": "train:115",
+          "target_only_text_tokens": 35
+        },
+        {
+          "sample_id": "train:1150",
+          "target_only_text_tokens": 35
+        },
+        {
+          "sample_id": "train:1151",
+          "target_only_text_tokens": 50
+        },
+        {
+          "sample_id": "train:1153",
+          "target_only_text_tokens": 64
+        },
+        {
+          "sample_id": "train:1165",
+          "target_only_text_tokens": 64
+        },
+        {
+          "sample_id": "train:1166",
+          "target_only_text_tokens": 32
+        },
+        {
+          "sample_id": "train:1168",
+          "target_only_text_tokens": 76
+        },
+        {
+          "sample_id": "train:117",
+          "target_only_text_tokens": 45
+        },
+        {
+          "sample_id": "train:1171",
+          "target_only_text_tokens": 53
+        },
+        {
+          "sample_id": "train:1176",
+          "target_only_text_tokens": 57
+        },
+        {
+          "sample_id": "train:1178",
+          "target_only_text_tokens": 77
+        },
+        {
+          "sample_id": "train:1185",
+          "target_only_text_tokens": 62
+        },
+        {
+          "sample_id": "train:1197",
+          "target_only_text_tokens": 46
+        },
+        {
+          "sample_id": "train:12",
+          "target_only_text_tokens": 66
+        },
+        {
+          "sample_id": "train:1203",
+          "target_only_text_tokens": 56
+        },
+        {
+          "sample_id": "train:121",
+          "target_only_text_tokens": 35
+        },
+        {
+          "sample_id": "train:1213",
+          "target_only_text_tokens": 81
+        },
+        {
+          "sample_id": "train:1215",
+          "target_only_text_tokens": 95
+        },
+        {
+          "sample_id": "train:1218",
+          "target_only_text_tokens": 53
+        },
+        {
+          "sample_id": "train:1222",
+          "target_only_text_tokens": 59
+        },
+        {
+          "sample_id": "train:1225",
+          "target_only_text_tokens": 66
+        },
+        {
+          "sample_id": "train:1226",
+          "target_only_text_tokens": 47
+        },
+        {
+          "sample_id": "train:123",
+          "target_only_text_tokens": 62
+        },
+        {
+          "sample_id": "train:1233",
+          "target_only_text_tokens": 50
+        },
+        {
+          "sample_id": "train:1239",
+          "target_only_text_tokens": 48
+        },
+        {
+          "sample_id": "train:125",
+          "target_only_text_tokens": 65
+        },
+        {
+          "sample_id": "train:1251",
+          "target_only_text_tokens": 60
+        },
+        {
+          "sample_id": "train:1259",
+          "target_only_text_tokens": 81
+        },
+        {
+          "sample_id": "train:1263",
+          "target_only_text_tokens": 34
+        },
+        {
+          "sample_id": "train:1268",
+          "target_only_text_tokens": 41
+        },
+        {
+          "sample_id": "train:1276",
+          "target_only_text_tokens": 74
+        },
+        {
+          "sample_id": "train:1280",
+          "target_only_text_tokens": 116
+        },
+        {
+          "sample_id": "train:1281",
+          "target_only_text_tokens": 41
+        },
+        {
+          "sample_id": "train:1283",
+          "target_only_text_tokens": 75
+        },
+        {
+          "sample_id": "train:1285",
+          "target_only_text_tokens": 47
+        },
+        {
+          "sample_id": "train:1286",
+          "target_only_text_tokens": 36
+        },
+        {
+          "sample_id": "train:1287",
+          "target_only_text_tokens": 36
+        },
+        {
+          "sample_id": "train:1289",
+          "target_only_text_tokens": 80
+        },
+        {
+          "sample_id": "train:1295",
+          "target_only_text_tokens": 59
+        },
+        {
+          "sample_id": "train:1296",
+          "target_only_text_tokens": 45
+        },
+        {
+          "sample_id": "train:1298",
+          "target_only_text_tokens": 35
+        },
+        {
+          "sample_id": "train:1300",
+          "target_only_text_tokens": 69
+        },
+        {
+          "sample_id": "train:1301",
+          "target_only_text_tokens": 34
+        },
+        {
+          "sample_id": "train:1308",
+          "target_only_text_tokens": 113
+        },
+        {
+          "sample_id": "train:1319",
+          "target_only_text_tokens": 53
+        },
+        {
+          "sample_id": "train:132",
+          "target_only_text_tokens": 77
+        },
+        {
+          "sample_id": "train:1322",
+          "target_only_text_tokens": 38
+        },
+        {
+          "sample_id": "train:1327",
+          "target_only_text_tokens": 36
+        },
+        {
+          "sample_id": "train:1328",
+          "target_only_text_tokens": 94
+        },
+        {
+          "sample_id": "train:1335",
+          "target_only_text_tokens": 36
+        },
+        {
+          "sample_id": "train:1338",
+          "target_only_text_tokens": 40
+        },
+        {
+          "sample_id": "train:1341",
+          "target_only_text_tokens": 41
+        },
+        {
+          "sample_id": "train:1343",
+          "target_only_text_tokens": 50
+        },
+        {
+          "sample_id": "train:1345",
+          "target_only_text_tokens": 74
+        },
+        {
+          "sample_id": "train:1346",
+          "target_only_text_tokens": 112
+        },
+        {
+          "sample_id": "train:1347",
+          "target_only_text_tokens": 68
+        },
+        {
+          "sample_id": "train:1348",
+          "target_only_text_tokens": 28
+        },
+        {
+          "sample_id": "train:1355",
+          "target_only_text_tokens": 130
+        },
+        {
+          "sample_id": "train:1356",
+          "target_only_text_tokens": 42
+        },
+        {
+          "sample_id": "train:1358",
+          "target_only_text_tokens": 73
+        },
+        {
+          "sample_id": "train:1366",
+          "target_only_text_tokens": 70
+        },
+        {
+          "sample_id": "train:1367",
+          "target_only_text_tokens": 58
+        },
+        {
+          "sample_id": "train:137",
+          "target_only_text_tokens": 56
+        },
+        {
+          "sample_id": "train:1373",
+          "target_only_text_tokens": 74
+        },
+        {
+          "sample_id": "train:1385",
+          "target_only_text_tokens": 93
+        },
+        {
+          "sample_id": "train:1386",
+          "target_only_text_tokens": 74
+        },
+        {
+          "sample_id": "train:1388",
+          "target_only_text_tokens": 45
+        },
+        {
+          "sample_id": "train:1390",
+          "target_only_text_tokens": 30
+        },
+        {
+          "sample_id": "train:1392",
+          "target_only_text_tokens": 54
+        },
+        {
+          "sample_id": "train:1397",
+          "target_only_text_tokens": 34
+        },
+        {
+          "sample_id": "train:14",
+          "target_only_text_tokens": 94
+        },
+        {
+          "sample_id": "train:1402",
+          "target_only_text_tokens": 53
+        },
+        {
+          "sample_id": "train:1405",
+          "target_only_text_tokens": 41
+        },
+        {
+          "sample_id": "train:1407",
+          "target_only_text_tokens": 24
+        },
+        {
+          "sample_id": "train:1413",
+          "target_only_text_tokens": 42
+        },
+        {
+          "sample_id": "train:1414",
+          "target_only_text_tokens": 35
+        },
+        {
+          "sample_id": "train:1418",
+          "target_only_text_tokens": 56
+        },
+        {
+          "sample_id": "train:1419",
+          "target_only_text_tokens": 34
+        },
+        {
+          "sample_id": "train:142",
+          "target_only_text_tokens": 64
+        },
+        {
+          "sample_id": "train:1420",
+          "target_only_text_tokens": 45
+        },
+        {
+          "sample_id": "train:1422",
+          "target_only_text_tokens": 66
+        },
+        {
+          "sample_id": "train:1425",
+          "target_only_text_tokens": 52
+        },
+        {
+          "sample_id": "train:1432",
+          "target_only_text_tokens": 52
+        },
+        {
+          "sample_id": "train:1439",
+          "target_only_text_tokens": 64
+        },
+        {
+          "sample_id": "train:1442",
+          "target_only_text_tokens": 93
+        },
+        {
+          "sample_id": "train:1444",
+          "target_only_text_tokens": 42
+        },
+        {
+          "sample_id": "train:1447",
+          "target_only_text_tokens": 62
+        },
+        {
+          "sample_id": "train:145",
+          "target_only_text_tokens": 60
+        },
+        {
+          "sample_id": "train:1451",
+          "target_only_text_tokens": 54
+        },
+        {
+          "sample_id": "train:1452",
+          "target_only_text_tokens": 69
+        },
+        {
+          "sample_id": "train:1456",
+          "target_only_text_tokens": 84
+        },
+        {
+          "sample_id": "train:1457",
+          "target_only_text_tokens": 39
+        },
+        {
+          "sample_id": "train:1458",
+          "target_only_text_tokens": 34
+        },
+        {
+          "sample_id": "train:1459",
+          "target_only_text_tokens": 40
+        },
+        {
+          "sample_id": "train:146",
+          "target_only_text_tokens": 70
+        },
+        {
+          "sample_id": "train:1461",
+          "target_only_text_tokens": 98
+        },
+        {
+          "sample_id": "train:1465",
+          "target_only_text_tokens": 42
+        },
+        {
+          "sample_id": "train:1466",
+          "target_only_text_tokens": 34
+        },
+        {
+          "sample_id": "train:1468",
+          "target_only_text_tokens": 48
+        },
+        {
+          "sample_id": "train:147",
+          "target_only_text_tokens": 34
+        },
+        {
+          "sample_id": "train:1471",
+          "target_only_text_tokens": 72
+        },
+        {
+          "sample_id": "train:1474",
+          "target_only_text_tokens": 24
+        },
+        {
+          "sample_id": "train:1483",
+          "target_only_text_tokens": 70
+        },
+        {
+          "sample_id": "train:1484",
+          "target_only_text_tokens": 71
+        },
+        {
+          "sample_id": "train:1488",
+          "target_only_text_tokens": 67
+        },
+        {
+          "sample_id": "train:1489",
+          "target_only_text_tokens": 50
+        },
+        {
+          "sample_id": "train:149",
+          "target_only_text_tokens": 52
+        },
+        {
+          "sample_id": "train:1491",
+          "target_only_text_tokens": 48
+        },
+        {
+          "sample_id": "train:1496",
+          "target_only_text_tokens": 71
+        },
+        {
+          "sample_id": "train:1499",
+          "target_only_text_tokens": 82
+        },
+        {
+          "sample_id": "train:1502",
+          "target_only_text_tokens": 71
+        },
+        {
+          "sample_id": "train:151",
+          "target_only_text_tokens": 105
+        },
+        {
+          "sample_id": "train:1516",
+          "target_only_text_tokens": 36
+        },
+        {
+          "sample_id": "train:152",
+          "target_only_text_tokens": 64
+        },
+        {
+          "sample_id": "train:1522",
+          "target_only_text_tokens": 46
+        },
+        {
+          "sample_id": "train:1523",
+          "target_only_text_tokens": 80
+        },
+        {
+          "sample_id": "train:1525",
+          "target_only_text_tokens": 24
+        },
+        {
+          "sample_id": "train:1530",
+          "target_only_text_tokens": 35
+        },
+        {
+          "sample_id": "train:1531",
+          "target_only_text_tokens": 40
+        },
+        {
+          "sample_id": "train:1532",
+          "target_only_text_tokens": 21
+        },
+        {
+          "sample_id": "train:1534",
+          "target_only_text_tokens": 53
+        },
+        {
+          "sample_id": "train:1542",
+          "target_only_text_tokens": 82
+        },
+        {
+          "sample_id": "train:1544",
+          "target_only_text_tokens": 64
+        },
+        {
+          "sample_id": "train:1548",
+          "target_only_text_tokens": 49
+        },
+        {
+          "sample_id": "train:155",
+          "target_only_text_tokens": 38
+        },
+        {
+          "sample_id": "train:1550",
+          "target_only_text_tokens": 78
+        },
+        {
+          "sample_id": "train:1557",
+          "target_only_text_tokens": 50
+        },
+        {
+          "sample_id": "train:156",
+          "target_only_text_tokens": 87
+        },
+        {
+          "sample_id": "train:1561",
+          "target_only_text_tokens": 35
+        },
+        {
+          "sample_id": "train:1562",
+          "target_only_text_tokens": 28
+        },
+        {
+          "sample_id": "train:1566",
+          "target_only_text_tokens": 46
+        },
+        {
+          "sample_id": "train:1571",
+          "target_only_text_tokens": 51
+        },
+        {
+          "sample_id": "train:1575",
+          "target_only_text_tokens": 61
+        },
+        {
+          "sample_id": "train:1581",
+          "target_only_text_tokens": 35
+        },
+        {
+          "sample_id": "train:1583",
+          "target_only_text_tokens": 52
+        },
+        {
+          "sample_id": "train:1584",
+          "target_only_text_tokens": 48
+        },
+        {
+          "sample_id": "train:1591",
+          "target_only_text_tokens": 63
+        },
+        {
+          "sample_id": "train:1593",
+          "target_only_text_tokens": 55
+        },
+        {
+          "sample_id": "train:1595",
+          "target_only_text_tokens": 55
+        },
+        {
+          "sample_id": "train:1596",
+          "target_only_text_tokens": 42
+        },
+        {
+          "sample_id": "train:1597",
+          "target_only_text_tokens": 83
+        },
+        {
+          "sample_id": "train:1598",
+          "target_only_text_tokens": 59
+        },
+        {
+          "sample_id": "train:160",
+          "target_only_text_tokens": 82
+        },
+        {
+          "sample_id": "train:1605",
+          "target_only_text_tokens": 52
+        },
+        {
+          "sample_id": "train:1606",
+          "target_only_text_tokens": 37
+        },
+        {
+          "sample_id": "train:1607",
+          "target_only_text_tokens": 52
+        },
+        {
+          "sample_id": "train:1608",
+          "target_only_text_tokens": 41
+        },
+        {
+          "sample_id": "train:1612",
+          "target_only_text_tokens": 51
+        },
+        {
+          "sample_id": "train:1614",
+          "target_only_text_tokens": 61
+        },
+        {
+          "sample_id": "train:1615",
+          "target_only_text_tokens": 39
+        },
+        {
+          "sample_id": "train:1624",
+          "target_only_text_tokens": 34
+        },
+        {
+          "sample_id": "train:1625",
+          "target_only_text_tokens": 66
+        },
+        {
+          "sample_id": "train:1631",
+          "target_only_text_tokens": 46
+        },
+        {
+          "sample_id": "train:1632",
+          "target_only_text_tokens": 35
+        },
+        {
+          "sample_id": "train:1637",
+          "target_only_text_tokens": 39
+        },
+        {
+          "sample_id": "train:1640",
+          "target_only_text_tokens": 27
+        },
+        {
+          "sample_id": "train:1641",
+          "target_only_text_tokens": 53
+        },
+        {
+          "sample_id": "train:1642",
+          "target_only_text_tokens": 105
+        },
+        {
+          "sample_id": "train:1650",
+          "target_only_text_tokens": 59
+        },
+        {
+          "sample_id": "train:1652",
+          "target_only_text_tokens": 27
+        },
+        {
+          "sample_id": "train:1660",
+          "target_only_text_tokens": 51
+        },
+        {
+          "sample_id": "train:1664",
+          "target_only_text_tokens": 95
+        },
+        {
+          "sample_id": "train:1669",
+          "target_only_text_tokens": 28
+        },
+        {
+          "sample_id": "train:1671",
+          "target_only_text_tokens": 60
+        },
+        {
+          "sample_id": "train:1674",
+          "target_only_text_tokens": 37
+        },
+        {
+          "sample_id": "train:1676",
+          "target_only_text_tokens": 41
+        },
+        {
+          "sample_id": "train:1677",
+          "target_only_text_tokens": 48
+        },
+        {
+          "sample_id": "train:168",
+          "target_only_text_tokens": 85
+        },
+        {
+          "sample_id": "train:1680",
+          "target_only_text_tokens": 52
+        },
+        {
+          "sample_id": "train:1683",
+          "target_only_text_tokens": 53
+        },
+        {
+          "sample_id": "train:1684",
+          "target_only_text_tokens": 36
+        },
+        {
+          "sample_id": "train:1689",
+          "target_only_text_tokens": 60
+        },
+        {
+          "sample_id": "train:1692",
+          "target_only_text_tokens": 65
+        },
+        {
+          "sample_id": "train:1695",
+          "target_only_text_tokens": 43
+        },
+        {
+          "sample_id": "train:17",
+          "target_only_text_tokens": 53
+        },
+        {
+          "sample_id": "train:1702",
+          "target_only_text_tokens": 54
+        },
+        {
+          "sample_id": "train:1703",
+          "target_only_text_tokens": 47
+        },
+        {
+          "sample_id": "train:1705",
+          "target_only_text_tokens": 96
+        },
+        {
+          "sample_id": "train:1707",
+          "target_only_text_tokens": 52
+        },
+        {
+          "sample_id": "train:1709",
+          "target_only_text_tokens": 59
+        },
+        {
+          "sample_id": "train:1711",
+          "target_only_text_tokens": 51
+        },
+        {
+          "sample_id": "train:1714",
+          "target_only_text_tokens": 32
+        },
+        {
+          "sample_id": "train:1716",
+          "target_only_text_tokens": 35
+        },
+        {
+          "sample_id": "train:1718",
+          "target_only_text_tokens": 64
+        },
+        {
+          "sample_id": "train:1719",
+          "target_only_text_tokens": 66
+        },
+        {
+          "sample_id": "train:1720",
+          "target_only_text_tokens": 35
+        },
+        {
+          "sample_id": "train:1722",
+          "target_only_text_tokens": 55
+        },
+        {
+          "sample_id": "train:1728",
+          "target_only_text_tokens": 64
+        },
+        {
+          "sample_id": "train:1729",
+          "target_only_text_tokens": 64
+        },
+        {
+          "sample_id": "train:173",
+          "target_only_text_tokens": 58
+        },
+        {
+          "sample_id": "train:1730",
+          "target_only_text_tokens": 42
+        },
+        {
+          "sample_id": "train:1732",
+          "target_only_text_tokens": 54
+        },
+        {
+          "sample_id": "train:1734",
+          "target_only_text_tokens": 57
+        },
+        {
+          "sample_id": "train:1735",
+          "target_only_text_tokens": 36
+        },
+        {
+          "sample_id": "train:1743",
+          "target_only_text_tokens": 35
+        },
+        {
+          "sample_id": "train:1745",
+          "target_only_text_tokens": 37
+        },
+        {
+          "sample_id": "train:1749",
+          "target_only_text_tokens": 55
+        },
+        {
+          "sample_id": "train:1751",
+          "target_only_text_tokens": 99
+        },
+        {
+          "sample_id": "train:1753",
+          "target_only_text_tokens": 25
+        },
+        {
+          "sample_id": "train:1754",
+          "target_only_text_tokens": 45
+        },
+        {
+          "sample_id": "train:1765",
+          "target_only_text_tokens": 76
+        },
+        {
+          "sample_id": "train:177",
+          "target_only_text_tokens": 34
+        },
+        {
+          "sample_id": "train:1774",
+          "target_only_text_tokens": 60
+        },
+        {
+          "sample_id": "train:1779",
+          "target_only_text_tokens": 71
+        },
+        {
+          "sample_id": "train:1781",
+          "target_only_text_tokens": 52
+        },
+        {
+          "sample_id": "train:1783",
+          "target_only_text_tokens": 100
+        },
+        {
+          "sample_id": "train:1788",
+          "target_only_text_tokens": 46
+        },
+        {
+          "sample_id": "train:1789",
+          "target_only_text_tokens": 41
+        },
+        {
+          "sample_id": "train:179",
+          "target_only_text_tokens": 36
+        },
+        {
+          "sample_id": "train:1792",
+          "target_only_text_tokens": 81
+        },
+        {
+          "sample_id": "train:1795",
+          "target_only_text_tokens": 53
+        },
+        {
+          "sample_id": "train:1801",
+          "target_only_text_tokens": 53
+        },
+        {
+          "sample_id": "train:1802",
+          "target_only_text_tokens": 72
+        },
+        {
+          "sample_id": "train:1805",
+          "target_only_text_tokens": 36
+        },
+        {
+          "sample_id": "train:1808",
+          "target_only_text_tokens": 42
+        },
+        {
+          "sample_id": "train:1809",
+          "target_only_text_tokens": 58
+        },
+        {
+          "sample_id": "train:1811",
+          "target_only_text_tokens": 42
+        },
+        {
+          "sample_id": "train:1813",
+          "target_only_text_tokens": 53
+        },
+        {
+          "sample_id": "train:1814",
+          "target_only_text_tokens": 52
+        },
+        {
+          "sample_id": "train:1816",
+          "target_only_text_tokens": 68
+        },
+        {
+          "sample_id": "train:1818",
+          "target_only_text_tokens": 39
+        },
+        {
+          "sample_id": "train:1819",
+          "target_only_text_tokens": 43
+        },
+        {
+          "sample_id": "train:1821",
+          "target_only_text_tokens": 78
+        },
+        {
+          "sample_id": "train:1827",
+          "target_only_text_tokens": 35
+        },
+        {
+          "sample_id": "train:1828",
+          "target_only_text_tokens": 71
+        },
+        {
+          "sample_id": "train:1832",
+          "target_only_text_tokens": 55
+        },
+        {
+          "sample_id": "train:1834",
+          "target_only_text_tokens": 43
+        },
+        {
+          "sample_id": "train:1836",
+          "target_only_text_tokens": 78
+        },
+        {
+          "sample_id": "train:184",
+          "target_only_text_tokens": 43
+        },
+        {
+          "sample_id": "train:1845",
+          "target_only_text_tokens": 51
+        },
+        {
+          "sample_id": "train:1846",
+          "target_only_text_tokens": 48
+        },
+        {
+          "sample_id": "train:1851",
+          "target_only_text_tokens": 110
+        },
+        {
+          "sample_id": "train:1861",
+          "target_only_text_tokens": 75
+        },
+        {
+          "sample_id": "train:1865",
+          "target_only_text_tokens": 49
+        },
+        {
+          "sample_id": "train:1866",
+          "target_only_text_tokens": 47
+        },
+        {
+          "sample_id": "train:1867",
+          "target_only_text_tokens": 80
+        },
+        {
+          "sample_id": "train:1872",
+          "target_only_text_tokens": 51
+        },
+        {
+          "sample_id": "train:1875",
+          "target_only_text_tokens": 31
+        },
+        {
+          "sample_id": "train:1877",
+          "target_only_text_tokens": 55
+        },
+        {
+          "sample_id": "train:1878",
+          "target_only_text_tokens": 52
+        },
+        {
+          "sample_id": "train:1879",
+          "target_only_text_tokens": 49
+        },
+        {
+          "sample_id": "train:1883",
+          "target_only_text_tokens": 26
+        },
+        {
+          "sample_id": "train:1886",
+          "target_only_text_tokens": 52
+        },
+        {
+          "sample_id": "train:1887",
+          "target_only_text_tokens": 77
+        },
+        {
+          "sample_id": "train:1889",
+          "target_only_text_tokens": 60
+        },
+        {
+          "sample_id": "train:1890",
+          "target_only_text_tokens": 66
+        },
+        {
+          "sample_id": "train:1892",
+          "target_only_text_tokens": 52
+        },
+        {
+          "sample_id": "train:1894",
+          "target_only_text_tokens": 51
+        },
+        {
+          "sample_id": "train:1896",
+          "target_only_text_tokens": 49
+        },
+        {
+          "sample_id": "train:1899",
+          "target_only_text_tokens": 56
+        },
+        {
+          "sample_id": "train:19",
+          "target_only_text_tokens": 36
+        },
+        {
+          "sample_id": "train:1906",
+          "target_only_text_tokens": 52
+        },
+        {
+          "sample_id": "train:1911",
+          "target_only_text_tokens": 42
+        },
+        {
+          "sample_id": "train:1912",
+          "target_only_text_tokens": 48
+        },
+        {
+          "sample_id": "train:1916",
+          "target_only_text_tokens": 53
+        },
+        {
+          "sample_id": "train:1917",
+          "target_only_text_tokens": 37
+        },
+        {
+          "sample_id": "train:192",
+          "target_only_text_tokens": 24
+        },
+        {
+          "sample_id": "train:1924",
+          "target_only_text_tokens": 104
+        },
+        {
+          "sample_id": "train:1928",
+          "target_only_text_tokens": 49
+        },
+        {
+          "sample_id": "train:193",
+          "target_only_text_tokens": 25
+        },
+        {
+          "sample_id": "train:1932",
+          "target_only_text_tokens": 66
+        },
+        {
+          "sample_id": "train:1942",
+          "target_only_text_tokens": 54
+        },
+        {
+          "sample_id": "train:1951",
+          "target_only_text_tokens": 79
+        },
+        {
+          "sample_id": "train:1957",
+          "target_only_text_tokens": 67
+        },
+        {
+          "sample_id": "train:1959",
+          "target_only_text_tokens": 116
+        },
+        {
+          "sample_id": "train:196",
+          "target_only_text_tokens": 52
+        },
+        {
+          "sample_id": "train:1961",
+          "target_only_text_tokens": 110
+        },
+        {
+          "sample_id": "train:1962",
+          "target_only_text_tokens": 45
+        },
+        {
+          "sample_id": "train:1964",
+          "target_only_text_tokens": 54
+        },
+        {
+          "sample_id": "train:1969",
+          "target_only_text_tokens": 39
+        },
+        {
+          "sample_id": "train:1970",
+          "target_only_text_tokens": 75
+        },
+        {
+          "sample_id": "train:1974",
+          "target_only_text_tokens": 65
+        },
+        {
+          "sample_id": "train:1977",
+          "target_only_text_tokens": 45
+        },
+        {
+          "sample_id": "train:1979",
+          "target_only_text_tokens": 54
+        },
+        {
+          "sample_id": "train:1980",
+          "target_only_text_tokens": 109
+        },
+        {
+          "sample_id": "train:1981",
+          "target_only_text_tokens": 115
+        },
+        {
+          "sample_id": "train:1984",
+          "target_only_text_tokens": 34
+        },
+        {
+          "sample_id": "train:1985",
+          "target_only_text_tokens": 49
+        },
+        {
+          "sample_id": "train:1992",
+          "target_only_text_tokens": 75
+        },
+        {
+          "sample_id": "train:1998",
+          "target_only_text_tokens": 50
+        },
+        {
+          "sample_id": "train:1999",
+          "target_only_text_tokens": 42
+        },
+        {
+          "sample_id": "train:20",
+          "target_only_text_tokens": 87
+        },
+        {
+          "sample_id": "train:2000",
+          "target_only_text_tokens": 22
+        },
+        {
+          "sample_id": "train:2002",
+          "target_only_text_tokens": 25
+        },
+        {
+          "sample_id": "train:2003",
+          "target_only_text_tokens": 23
+        },
+        {
+          "sample_id": "train:2004",
+          "target_only_text_tokens": 93
+        },
+        {
+          "sample_id": "train:2008",
+          "target_only_text_tokens": 49
+        },
+        {
+          "sample_id": "train:2009",
+          "target_only_text_tokens": 57
+        },
+        {
+          "sample_id": "train:201",
+          "target_only_text_tokens": 25
+        },
+        {
+          "sample_id": "train:2012",
+          "target_only_text_tokens": 109
+        },
+        {
+          "sample_id": "train:2016",
+          "target_only_text_tokens": 60
+        },
+        {
+          "sample_id": "train:2024",
+          "target_only_text_tokens": 55
+        },
+        {
+          "sample_id": "train:2025",
+          "target_only_text_tokens": 52
+        },
+        {
+          "sample_id": "train:2026",
+          "target_only_text_tokens": 21
+        },
+        {
+          "sample_id": "train:2031",
+          "target_only_text_tokens": 106
+        },
+        {
+          "sample_id": "train:2033",
+          "target_only_text_tokens": 53
+        },
+        {
+          "sample_id": "train:2037",
+          "target_only_text_tokens": 35
+        },
+        {
+          "sample_id": "train:2038",
+          "target_only_text_tokens": 94
+        },
+        {
+          "sample_id": "train:2041",
+          "target_only_text_tokens": 25
+        },
+        {
+          "sample_id": "train:2048",
+          "target_only_text_tokens": 48
+        },
+        {
+          "sample_id": "train:2049",
+          "target_only_text_tokens": 95
+        },
+        {
+          "sample_id": "train:2052",
+          "target_only_text_tokens": 64
+        },
+        {
+          "sample_id": "train:2054",
+          "target_only_text_tokens": 46
+        },
+        {
+          "sample_id": "train:2056",
+          "target_only_text_tokens": 47
+        },
+        {
+          "sample_id": "train:2057",
+          "target_only_text_tokens": 78
+        },
+        {
+          "sample_id": "train:2058",
+          "target_only_text_tokens": 63
+        },
+        {
+          "sample_id": "train:2063",
+          "target_only_text_tokens": 46
+        },
+        {
+          "sample_id": "train:2070",
+          "target_only_text_tokens": 21
+        },
+        {
+          "sample_id": "train:2078",
+          "target_only_text_tokens": 51
+        },
+        {
+          "sample_id": "train:2080",
+          "target_only_text_tokens": 50
+        },
+        {
+          "sample_id": "train:2082",
+          "target_only_text_tokens": 38
+        },
+        {
+          "sample_id": "train:2084",
+          "target_only_text_tokens": 53
+        },
+        {
+          "sample_id": "train:2085",
+          "target_only_text_tokens": 50
+        },
+        {
+          "sample_id": "train:2090",
+          "target_only_text_tokens": 72
+        },
+        {
+          "sample_id": "train:2092",
+          "target_only_text_tokens": 51
+        },
+        {
+          "sample_id": "train:2093",
+          "target_only_text_tokens": 43
+        },
+        {
+          "sample_id": "train:2096",
+          "target_only_text_tokens": 55
+        },
+        {
+          "sample_id": "train:21",
+          "target_only_text_tokens": 60
+        },
+        {
+          "sample_id": "train:212",
+          "target_only_text_tokens": 81
+        },
+        {
+          "sample_id": "train:216",
+          "target_only_text_tokens": 44
+        },
+        {
+          "sample_id": "train:218",
+          "target_only_text_tokens": 64
+        },
+        {
+          "sample_id": "train:22",
+          "target_only_text_tokens": 45
+        },
+        {
+          "sample_id": "train:221",
+          "target_only_text_tokens": 30
+        },
+        {
+          "sample_id": "train:227",
+          "target_only_text_tokens": 65
+        },
+        {
+          "sample_id": "train:230",
+          "target_only_text_tokens": 84
+        },
+        {
+          "sample_id": "train:233",
+          "target_only_text_tokens": 58
+        },
+        {
+          "sample_id": "train:234",
+          "target_only_text_tokens": 45
+        },
+        {
+          "sample_id": "train:237",
+          "target_only_text_tokens": 35
+        },
+        {
+          "sample_id": "train:238",
+          "target_only_text_tokens": 95
+        },
+        {
+          "sample_id": "train:24",
+          "target_only_text_tokens": 34
+        },
+        {
+          "sample_id": "train:242",
+          "target_only_text_tokens": 48
+        },
+        {
+          "sample_id": "train:249",
+          "target_only_text_tokens": 101
+        },
+        {
+          "sample_id": "train:250",
+          "target_only_text_tokens": 44
+        },
+        {
+          "sample_id": "train:252",
+          "target_only_text_tokens": 65
+        },
+        {
+          "sample_id": "train:254",
+          "target_only_text_tokens": 81
+        },
+        {
+          "sample_id": "train:255",
+          "target_only_text_tokens": 45
+        },
+        {
+          "sample_id": "train:256",
+          "target_only_text_tokens": 35
+        },
+        {
+          "sample_id": "train:261",
+          "target_only_text_tokens": 64
+        },
+        {
+          "sample_id": "train:270",
+          "target_only_text_tokens": 48
+        },
+        {
+          "sample_id": "train:276",
+          "target_only_text_tokens": 88
+        },
+        {
+          "sample_id": "train:28",
+          "target_only_text_tokens": 35
+        },
+        {
+          "sample_id": "train:280",
+          "target_only_text_tokens": 45
+        },
+        {
+          "sample_id": "train:281",
+          "target_only_text_tokens": 51
+        },
+        {
+          "sample_id": "train:282",
+          "target_only_text_tokens": 74
+        },
+        {
+          "sample_id": "train:287",
+          "target_only_text_tokens": 63
+        },
+        {
+          "sample_id": "train:291",
+          "target_only_text_tokens": 99
+        },
+        {
+          "sample_id": "train:299",
+          "target_only_text_tokens": 73
+        },
+        {
+          "sample_id": "train:302",
+          "target_only_text_tokens": 55
+        },
+        {
+          "sample_id": "train:305",
+          "target_only_text_tokens": 61
+        },
+        {
+          "sample_id": "train:307",
+          "target_only_text_tokens": 46
+        },
+        {
+          "sample_id": "train:314",
+          "target_only_text_tokens": 104
+        },
+        {
+          "sample_id": "train:316",
+          "target_only_text_tokens": 46
+        },
+        {
+          "sample_id": "train:327",
+          "target_only_text_tokens": 103
+        },
+        {
+          "sample_id": "train:329",
+          "target_only_text_tokens": 94
+        },
+        {
+          "sample_id": "train:333",
+          "target_only_text_tokens": 35
+        },
+        {
+          "sample_id": "train:335",
+          "target_only_text_tokens": 59
+        },
+        {
+          "sample_id": "train:338",
+          "target_only_text_tokens": 78
+        },
+        {
+          "sample_id": "train:343",
+          "target_only_text_tokens": 65
+        },
+        {
+          "sample_id": "train:346",
+          "target_only_text_tokens": 30
+        },
+        {
+          "sample_id": "train:348",
+          "target_only_text_tokens": 24
+        },
+        {
+          "sample_id": "train:35",
+          "target_only_text_tokens": 37
+        },
+        {
+          "sample_id": "train:350",
+          "target_only_text_tokens": 95
+        },
+        {
+          "sample_id": "train:357",
+          "target_only_text_tokens": 56
+        },
+        {
+          "sample_id": "train:359",
+          "target_only_text_tokens": 35
+        },
+        {
+          "sample_id": "train:367",
+          "target_only_text_tokens": 65
+        },
+        {
+          "sample_id": "train:369",
+          "target_only_text_tokens": 56
+        },
+        {
+          "sample_id": "train:372",
+          "target_only_text_tokens": 66
+        },
+        {
+          "sample_id": "train:38",
+          "target_only_text_tokens": 23
+        },
+        {
+          "sample_id": "train:380",
+          "target_only_text_tokens": 53
+        },
+        {
+          "sample_id": "train:384",
+          "target_only_text_tokens": 34
+        },
+        {
+          "sample_id": "train:386",
+          "target_only_text_tokens": 55
+        },
+        {
+          "sample_id": "train:392",
+          "target_only_text_tokens": 100
+        },
+        {
+          "sample_id": "train:393",
+          "target_only_text_tokens": 74
+        },
+        {
+          "sample_id": "train:394",
+          "target_only_text_tokens": 65
+        },
+        {
+          "sample_id": "train:395",
+          "target_only_text_tokens": 73
+        },
+        {
+          "sample_id": "train:396",
+          "target_only_text_tokens": 51
+        },
+        {
+          "sample_id": "train:4",
+          "target_only_text_tokens": 25
+        },
+        {
+          "sample_id": "train:402",
+          "target_only_text_tokens": 66
+        },
+        {
+          "sample_id": "train:405",
+          "target_only_text_tokens": 59
+        },
+        {
+          "sample_id": "train:406",
+          "target_only_text_tokens": 35
+        },
+        {
+          "sample_id": "train:409",
+          "target_only_text_tokens": 46
+        },
+        {
+          "sample_id": "train:41",
+          "target_only_text_tokens": 90
+        },
+        {
+          "sample_id": "train:411",
+          "target_only_text_tokens": 125
+        },
+        {
+          "sample_id": "train:412",
+          "target_only_text_tokens": 52
+        },
+        {
+          "sample_id": "train:42",
+          "target_only_text_tokens": 43
+        },
+        {
+          "sample_id": "train:425",
+          "target_only_text_tokens": 72
+        },
+        {
+          "sample_id": "train:427",
+          "target_only_text_tokens": 52
+        },
+        {
+          "sample_id": "train:434",
+          "target_only_text_tokens": 58
+        },
+        {
+          "sample_id": "train:435",
+          "target_only_text_tokens": 41
+        },
+        {
+          "sample_id": "train:436",
+          "target_only_text_tokens": 55
+        },
+        {
+          "sample_id": "train:447",
+          "target_only_text_tokens": 66
+        },
+        {
+          "sample_id": "train:454",
+          "target_only_text_tokens": 56
+        },
+        {
+          "sample_id": "train:457",
+          "target_only_text_tokens": 27
+        },
+        {
+          "sample_id": "train:458",
+          "target_only_text_tokens": 36
+        },
+        {
+          "sample_id": "train:46",
+          "target_only_text_tokens": 39
+        },
+        {
+          "sample_id": "train:466",
+          "target_only_text_tokens": 51
+        },
+        {
+          "sample_id": "train:475",
+          "target_only_text_tokens": 55
+        },
+        {
+          "sample_id": "train:479",
+          "target_only_text_tokens": 71
+        },
+        {
+          "sample_id": "train:489",
+          "target_only_text_tokens": 32
+        },
+        {
+          "sample_id": "train:49",
+          "target_only_text_tokens": 80
+        },
+        {
+          "sample_id": "train:491",
+          "target_only_text_tokens": 31
+        },
+        {
+          "sample_id": "train:496",
+          "target_only_text_tokens": 62
+        },
+        {
+          "sample_id": "train:499",
+          "target_only_text_tokens": 110
+        },
+        {
+          "sample_id": "train:506",
+          "target_only_text_tokens": 56
+        },
+        {
+          "sample_id": "train:507",
+          "target_only_text_tokens": 34
+        },
+        {
+          "sample_id": "train:509",
+          "target_only_text_tokens": 74
+        },
+        {
+          "sample_id": "train:523",
+          "target_only_text_tokens": 50
+        },
+        {
+          "sample_id": "train:526",
+          "target_only_text_tokens": 71
+        },
+        {
+          "sample_id": "train:527",
+          "target_only_text_tokens": 50
+        },
+        {
+          "sample_id": "train:529",
+          "target_only_text_tokens": 24
+        },
+        {
+          "sample_id": "train:530",
+          "target_only_text_tokens": 48
+        },
+        {
+          "sample_id": "train:535",
+          "target_only_text_tokens": 51
+        },
+        {
+          "sample_id": "train:536",
+          "target_only_text_tokens": 45
+        },
+        {
+          "sample_id": "train:537",
+          "target_only_text_tokens": 73
+        },
+        {
+          "sample_id": "train:538",
+          "target_only_text_tokens": 34
+        },
+        {
+          "sample_id": "train:539",
+          "target_only_text_tokens": 58
+        },
+        {
+          "sample_id": "train:54",
+          "target_only_text_tokens": 74
+        },
+        {
+          "sample_id": "train:542",
+          "target_only_text_tokens": 31
+        },
+        {
+          "sample_id": "train:554",
+          "target_only_text_tokens": 75
+        },
+        {
+          "sample_id": "train:559",
+          "target_only_text_tokens": 49
+        },
+        {
+          "sample_id": "train:560",
+          "target_only_text_tokens": 97
+        },
+        {
+          "sample_id": "train:569",
+          "target_only_text_tokens": 52
+        },
+        {
+          "sample_id": "train:570",
+          "target_only_text_tokens": 50
+        },
+        {
+          "sample_id": "train:575",
+          "target_only_text_tokens": 103
+        },
+        {
+          "sample_id": "train:577",
+          "target_only_text_tokens": 97
+        },
+        {
+          "sample_id": "train:578",
+          "target_only_text_tokens": 113
+        },
+        {
+          "sample_id": "train:580",
+          "target_only_text_tokens": 69
+        },
+        {
+          "sample_id": "train:584",
+          "target_only_text_tokens": 70
+        },
+        {
+          "sample_id": "train:586",
+          "target_only_text_tokens": 45
+        },
+        {
+          "sample_id": "train:593",
+          "target_only_text_tokens": 34
+        },
+        {
+          "sample_id": "train:598",
+          "target_only_text_tokens": 67
+        },
+        {
+          "sample_id": "train:60",
+          "target_only_text_tokens": 55
+        },
+        {
+          "sample_id": "train:612",
+          "target_only_text_tokens": 41
+        },
+        {
+          "sample_id": "train:618",
+          "target_only_text_tokens": 55
+        },
+        {
+          "sample_id": "train:621",
+          "target_only_text_tokens": 52
+        },
+        {
+          "sample_id": "train:624",
+          "target_only_text_tokens": 64
+        },
+        {
+          "sample_id": "train:630",
+          "target_only_text_tokens": 44
+        },
+        {
+          "sample_id": "train:631",
+          "target_only_text_tokens": 44
+        },
+        {
+          "sample_id": "train:637",
+          "target_only_text_tokens": 82
+        },
+        {
+          "sample_id": "train:64",
+          "target_only_text_tokens": 67
+        },
+        {
+          "sample_id": "train:640",
+          "target_only_text_tokens": 59
+        },
+        {
+          "sample_id": "train:642",
+          "target_only_text_tokens": 73
+        },
+        {
+          "sample_id": "train:646",
+          "target_only_text_tokens": 44
+        },
+        {
+          "sample_id": "train:647",
+          "target_only_text_tokens": 41
+        },
+        {
+          "sample_id": "train:648",
+          "target_only_text_tokens": 107
+        },
+        {
+          "sample_id": "train:65",
+          "target_only_text_tokens": 27
+        },
+        {
+          "sample_id": "train:652",
+          "target_only_text_tokens": 58
+        },
+        {
+          "sample_id": "train:658",
+          "target_only_text_tokens": 44
+        },
+        {
+          "sample_id": "train:66",
+          "target_only_text_tokens": 106
+        },
+        {
+          "sample_id": "train:660",
+          "target_only_text_tokens": 47
+        },
+        {
+          "sample_id": "train:664",
+          "target_only_text_tokens": 63
+        },
+        {
+          "sample_id": "train:668",
+          "target_only_text_tokens": 74
+        },
+        {
+          "sample_id": "train:670",
+          "target_only_text_tokens": 65
+        },
+        {
+          "sample_id": "train:672",
+          "target_only_text_tokens": 56
+        },
+        {
+          "sample_id": "train:678",
+          "target_only_text_tokens": 33
+        },
+        {
+          "sample_id": "train:689",
+          "target_only_text_tokens": 35
+        },
+        {
+          "sample_id": "train:690",
+          "target_only_text_tokens": 25
+        },
+        {
+          "sample_id": "train:692",
+          "target_only_text_tokens": 42
+        },
+        {
+          "sample_id": "train:693",
+          "target_only_text_tokens": 35
+        },
+        {
+          "sample_id": "train:695",
+          "target_only_text_tokens": 24
+        },
+        {
+          "sample_id": "train:697",
+          "target_only_text_tokens": 54
+        },
+        {
+          "sample_id": "train:703",
+          "target_only_text_tokens": 37
+        },
+        {
+          "sample_id": "train:704",
+          "target_only_text_tokens": 21
+        },
+        {
+          "sample_id": "train:708",
+          "target_only_text_tokens": 57
+        },
+        {
+          "sample_id": "train:709",
+          "target_only_text_tokens": 51
+        },
+        {
+          "sample_id": "train:71",
+          "target_only_text_tokens": 35
+        },
+        {
+          "sample_id": "train:712",
+          "target_only_text_tokens": 59
+        },
+        {
+          "sample_id": "train:713",
+          "target_only_text_tokens": 38
+        },
+        {
+          "sample_id": "train:717",
+          "target_only_text_tokens": 43
+        },
+        {
+          "sample_id": "train:719",
+          "target_only_text_tokens": 74
+        },
+        {
+          "sample_id": "train:721",
+          "target_only_text_tokens": 69
+        },
+        {
+          "sample_id": "train:729",
+          "target_only_text_tokens": 39
+        },
+        {
+          "sample_id": "train:730",
+          "target_only_text_tokens": 104
+        },
+        {
+          "sample_id": "train:734",
+          "target_only_text_tokens": 54
+        },
+        {
+          "sample_id": "train:738",
+          "target_only_text_tokens": 93
+        },
+        {
+          "sample_id": "train:74",
+          "target_only_text_tokens": 44
+        },
+        {
+          "sample_id": "train:741",
+          "target_only_text_tokens": 71
+        },
+        {
+          "sample_id": "train:747",
+          "target_only_text_tokens": 55
+        },
+        {
+          "sample_id": "train:748",
+          "target_only_text_tokens": 61
+        },
+        {
+          "sample_id": "train:749",
+          "target_only_text_tokens": 103
+        },
+        {
+          "sample_id": "train:75",
+          "target_only_text_tokens": 21
+        },
+        {
+          "sample_id": "train:753",
+          "target_only_text_tokens": 74
+        },
+        {
+          "sample_id": "train:754",
+          "target_only_text_tokens": 101
+        },
+        {
+          "sample_id": "train:755",
+          "target_only_text_tokens": 69
+        },
+        {
+          "sample_id": "train:757",
+          "target_only_text_tokens": 25
+        },
+        {
+          "sample_id": "train:759",
+          "target_only_text_tokens": 59
+        },
+        {
+          "sample_id": "train:763",
+          "target_only_text_tokens": 50
+        },
+        {
+          "sample_id": "train:769",
+          "target_only_text_tokens": 81
+        },
+        {
+          "sample_id": "train:77",
+          "target_only_text_tokens": 103
+        },
+        {
+          "sample_id": "train:773",
+          "target_only_text_tokens": 56
+        },
+        {
+          "sample_id": "train:779",
+          "target_only_text_tokens": 25
+        },
+        {
+          "sample_id": "train:78",
+          "target_only_text_tokens": 51
+        },
+        {
+          "sample_id": "train:780",
+          "target_only_text_tokens": 43
+        },
+        {
+          "sample_id": "train:785",
+          "target_only_text_tokens": 71
+        },
+        {
+          "sample_id": "train:787",
+          "target_only_text_tokens": 35
+        },
+        {
+          "sample_id": "train:789",
+          "target_only_text_tokens": 24
+        },
+        {
+          "sample_id": "train:790",
+          "target_only_text_tokens": 53
+        },
+        {
+          "sample_id": "train:791",
+          "target_only_text_tokens": 86
+        },
+        {
+          "sample_id": "train:793",
+          "target_only_text_tokens": 42
+        },
+        {
+          "sample_id": "train:799",
+          "target_only_text_tokens": 40
+        },
+        {
+          "sample_id": "train:810",
+          "target_only_text_tokens": 118
+        },
+        {
+          "sample_id": "train:811",
+          "target_only_text_tokens": 88
+        },
+        {
+          "sample_id": "train:814",
+          "target_only_text_tokens": 66
+        },
+        {
+          "sample_id": "train:820",
+          "target_only_text_tokens": 81
+        },
+        {
+          "sample_id": "train:822",
+          "target_only_text_tokens": 38
+        },
+        {
+          "sample_id": "train:829",
+          "target_only_text_tokens": 113
+        },
+        {
+          "sample_id": "train:831",
+          "target_only_text_tokens": 60
+        },
+        {
+          "sample_id": "train:834",
+          "target_only_text_tokens": 44
+        },
+        {
+          "sample_id": "train:84",
+          "target_only_text_tokens": 44
+        },
+        {
+          "sample_id": "train:841",
+          "target_only_text_tokens": 62
+        },
+        {
+          "sample_id": "train:847",
+          "target_only_text_tokens": 55
+        },
+        {
+          "sample_id": "train:848",
+          "target_only_text_tokens": 52
+        },
+        {
+          "sample_id": "train:849",
+          "target_only_text_tokens": 50
+        },
+        {
+          "sample_id": "train:850",
+          "target_only_text_tokens": 27
+        },
+        {
+          "sample_id": "train:852",
+          "target_only_text_tokens": 60
+        },
+        {
+          "sample_id": "train:854",
+          "target_only_text_tokens": 59
+        },
+        {
+          "sample_id": "train:860",
+          "target_only_text_tokens": 24
+        },
+        {
+          "sample_id": "train:865",
+          "target_only_text_tokens": 47
+        },
+        {
+          "sample_id": "train:866",
+          "target_only_text_tokens": 62
+        },
+        {
+          "sample_id": "train:870",
+          "target_only_text_tokens": 73
+        },
+        {
+          "sample_id": "train:875",
+          "target_only_text_tokens": 54
+        },
+        {
+          "sample_id": "train:88",
+          "target_only_text_tokens": 62
+        },
+        {
+          "sample_id": "train:883",
+          "target_only_text_tokens": 36
+        },
+        {
+          "sample_id": "train:884",
+          "target_only_text_tokens": 72
+        },
+        {
+          "sample_id": "train:892",
+          "target_only_text_tokens": 69
+        },
+        {
+          "sample_id": "train:893",
+          "target_only_text_tokens": 74
+        },
+        {
+          "sample_id": "train:895",
+          "target_only_text_tokens": 72
+        },
+        {
+          "sample_id": "train:900",
+          "target_only_text_tokens": 26
+        },
+        {
+          "sample_id": "train:901",
+          "target_only_text_tokens": 75
+        },
+        {
+          "sample_id": "train:904",
+          "target_only_text_tokens": 62
+        },
+        {
+          "sample_id": "train:912",
+          "target_only_text_tokens": 113
+        },
+        {
+          "sample_id": "train:914",
+          "target_only_text_tokens": 120
+        },
+        {
+          "sample_id": "train:919",
+          "target_only_text_tokens": 73
+        },
+        {
+          "sample_id": "train:922",
+          "target_only_text_tokens": 44
+        },
+        {
+          "sample_id": "train:924",
+          "target_only_text_tokens": 51
+        },
+        {
+          "sample_id": "train:926",
+          "target_only_text_tokens": 64
+        },
+        {
+          "sample_id": "train:927",
+          "target_only_text_tokens": 65
+        },
+        {
+          "sample_id": "train:928",
+          "target_only_text_tokens": 45
+        },
+        {
+          "sample_id": "train:94",
+          "target_only_text_tokens": 35
+        },
+        {
+          "sample_id": "train:945",
+          "target_only_text_tokens": 71
+        },
+        {
+          "sample_id": "train:946",
+          "target_only_text_tokens": 106
+        },
+        {
+          "sample_id": "train:948",
+          "target_only_text_tokens": 51
+        },
+        {
+          "sample_id": "train:95",
+          "target_only_text_tokens": 65
+        },
+        {
+          "sample_id": "train:951",
+          "target_only_text_tokens": 45
+        },
+        {
+          "sample_id": "train:952",
+          "target_only_text_tokens": 34
+        },
+        {
+          "sample_id": "train:953",
+          "target_only_text_tokens": 51
+        },
+        {
+          "sample_id": "train:957",
+          "target_only_text_tokens": 64
+        },
+        {
+          "sample_id": "train:961",
+          "target_only_text_tokens": 44
+        },
+        {
+          "sample_id": "train:963",
+          "target_only_text_tokens": 51
+        },
+        {
+          "sample_id": "train:964",
+          "target_only_text_tokens": 52
+        },
+        {
+          "sample_id": "train:967",
+          "target_only_text_tokens": 96
+        },
+        {
+          "sample_id": "train:971",
+          "target_only_text_tokens": 116
+        },
+        {
+          "sample_id": "train:973",
+          "target_only_text_tokens": 47
+        },
+        {
+          "sample_id": "train:976",
+          "target_only_text_tokens": 59
+        },
+        {
+          "sample_id": "train:980",
+          "target_only_text_tokens": 23
+        },
+        {
+          "sample_id": "train:984",
+          "target_only_text_tokens": 23
+        },
+        {
+          "sample_id": "train:985",
+          "target_only_text_tokens": 67
+        },
+        {
+          "sample_id": "train:988",
+          "target_only_text_tokens": 41
+        },
+        {
+          "sample_id": "train:994",
+          "target_only_text_tokens": 41
+        },
+        {
+          "sample_id": "train:996",
+          "target_only_text_tokens": 69
+        }
+      ]
+    }
+  }
+}

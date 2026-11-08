@@ -1,0 +1,6 @@
+{
+  "source_code_sha": "3e84635459e35c78c83bcba4eb24f14ed2b8b6fe9eb1e82275e5f4f48a203d0b",
+  "reason": "Integer phrases must bind the requested answer variable, otherwise unsupported. Existing frozen candidate inputs are preserved; quarantine prevents unsafe release.",
+  "already_frozen_source_manifest_unchanged": true,
+  "answer_verifier_changed": false
+}

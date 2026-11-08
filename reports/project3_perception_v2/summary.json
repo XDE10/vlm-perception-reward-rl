@@ -1,0 +1,44 @@
+{
+  "version": "intergps-perception-v2-20261024",
+  "same_train_topics": 200,
+  "v1_supported": 454,
+  "v2_supported": 1799,
+  "total_source_diagram_entries": 1922,
+  "v1_nonempty_visual_cases": 162,
+  "v2_nonempty_visual_cases": 199,
+  "v2_nonempty_nonisolated_visual_cases": 198,
+  "relations": {
+    "Length": 353,
+    "PointLiesOnLine": 891,
+    "Perpendicular": 109,
+    "Angle": 179,
+    "PointLiesOnCircle": 189,
+    "Parallel": 25,
+    "CongruentLength": 19,
+    "CongruentAngle": 21,
+    "ArcMeasure": 10,
+    "Area": 2,
+    "Tangent": 1
+  },
+  "categories": {
+    "visual_candidate": 1795,
+    "uncertain": 123,
+    "text_explicit": 4
+  },
+  "remaining_reasons": {
+    "unresolved_measure_label_requires_source_alias_mapping": 89,
+    "unresolved_or_invalid_point": 15,
+    "unsupported_arc": 4,
+    "empty_expression": 10,
+    "nonpositive_measure": 2,
+    "unsupported_area_shape": 2,
+    "degenerate_line": 1
+  },
+  "isolated_ids": [
+    "742"
+  ],
+  "gold_image_only_accuracy": null,
+  "human_reviewed_count": 0,
+  "training_approved": false,
+  "accuracy_boundary": "Tested schema semantics and selected image examples; no full 200-case image/prose adjudication; coverage is not precision."
+}

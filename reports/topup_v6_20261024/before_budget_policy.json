@@ -1,0 +1,19 @@
+{
+  "budget_usd": 5,
+  "max_requests": 6500,
+  "prices": {
+    "deepseek-flash": [
+      0.3,
+      0.006,
+      1.2
+    ],
+    "deepseek-v4-pro": [
+      1.32,
+      0.044,
+      3.96
+    ]
+  },
+  "date": "2026-10-24",
+  "model": "deepseek-flash",
+  "rule": "sum complete peak usage or unresolved worst reserve + inflight worst reserve <= cap; no retries"
+}

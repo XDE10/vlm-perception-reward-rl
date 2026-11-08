@@ -1,0 +1,5 @@
+{
+  "63a30858": "integer word describes x solutions, not real parameter a; automatic domain inference is unsafe; retain original and isolate",
+  "2e53c7ca": "Chinese editorial metadata tail remains; isolate this version rather than silently altering frozen prompt",
+  "rule": "These IDs may remain in frozen audit inputs but cannot appear in the release. No semantic API resampling."
+}

@@ -1,0 +1,1671 @@
+--- before/project_blueprints/两个后训练项目_完整设计与实施指南.md
++++ after/project_blueprints/两个后训练项目_完整设计与实施指南.md
+@@ -1,782 +1,782 @@
+-# 两个后训练项目：完整设计与实施指南
+-
+-## 阅读导航：当前配置与历史教学材料
+-
+-新增共用数据工程路线：[强模型合成数据与验证](共用规范_强模型合成数据与验证.md)。项目一增加同题解答蒸馏/训练侧定向增广，项目二保留在线 logits 教师并补充离线 API 对照，项目三增加符号引导语义过滤与可验证解答。三项目核心训练数量不变，新增数据消融单独计数；该设计尚未调用 API 或产出合成数据。
+-
+-本文件下方正文作为历史理论与学习路线保留，不再充当可执行配置总纲。当前统一配置为：项目一 `Qwen2.5-7B-Instruct`（E0～E4）；项目二 `Qwen2.5-1.5B-Instruct` 学生与 7B Math/Coder 教师（D0～D4）；项目三 `Qwen2.5-VL-3B-Instruct`（V0～V4）。各项目核心均为 4 次训练，不含复现与 smoke。
+-
+-模型、数据、训练预算与实验编号以三份分项方案为唯一配置来源。项目二当前默认从带验证信息的 Python 数据中构造训练/dev，最终代码评测为 HumanEval+/MBPP+；下面的 MBPP 374 条训练设置已退役。下面的 0.5B 学生、1.5B 教师、共同 SFT 学生起点和 P1/P2 编号均是历史教学设置，不应抄入新配置。
+-
+-建议继续阅读本文件第 5、8、9 节的原理、第 14、15 节的工程检查及第 18 节的视频路线；其中涉及具体模型、数据规模、训练起点或框架 API 的示例须按分项方案与锁定版本替换。旧公式与示意代码也需通过数值测试后使用，导航声明不等于全部历史内容已经重新验收。
+-
+-> **2026-10-22 新版设计入口：** 项目一主线已确定升级为 7B，以下旧正文保留为历史设计。新的模型、数据、核心工作量、实验数量与评测协议请阅读 [项目一：7B 数学后训练](项目一_7B数学后训练_详细实施方案.md)、[项目二：双教师在线蒸馏](项目二_双教师在线蒸馏_详细实施方案.md)、[项目三：多模态几何推理](项目三_多模态几何推理_详细实施方案.md)。新版是待实施方案，不能把下面历史状态当作最新运行状态。
+-
+-> **2026-10-20 实施版入口：项目一现采用 1.5B、Colab 单卡方案。** 已新增 [TinyPostTrain 代码与运行教程](../tiny_posttrain/README.md)、[CPU 资源准备 Notebook](../tiny_posttrain/notebooks/01_Prepare_Drive_CPU.ipynb) 和 [A100 训练恢复 Notebook](../tiny_posttrain/notebooks/02_Train_Resume_Colab.ipynb)。下面的 0.5B 描述保留为早期设计记录；项目一的实际模型、参数和运行步骤以新目录为准。CPU 接口测试已执行，真实 A100 训练尚待验证。
+-
+-**TinyPostTrain → MultiTeacher-DistillRL**  
+-版本：2026-10-19 · 面向学习、独立实现、实验报告与面试讲解
+-
+-> 推荐顺序：先完成项目一的可靠评测、SFT 和 GRPO，再完成项目二的单教师 OPD、双领域教师路由，最后按资源条件扩展多卡与教师融合。两个项目共用数据与评测基础设施，但各自有独立的问题、对照实验和验收结果。
+-
+-本文综合了两份项目设想附件、本仓库学习材料、已整理的视频标题与简介，以及 TRL、verl、数据集和模型的官方资料。附件是设计输入，其中的建议经过取舍。**本文交付的是项目设计和实施指南，尚未训练模型，也没有实测分数、速度或显存结果。** 视频映射依据标题、简介和对应文件，不代表已逐段观看视频。本文中的目录、配置和伪代码，除明确指向现有仓库的部分外，均是建议实现。
+-
+-## 1. 最终确定的两个项目
+-
+-### 1.1 项目一：TinyPostTrain
+-
+-**定位：小模型数学推理后训练与可复现实验。**
+-
+-以 Qwen2.5-0.5B-Instruct 为起点，在 GSM8K 上建立原始检查点、LoRA-SFT、SFT 后 GRPO 的完整比较。重点是理解并实现数据处理、监督信号、组内优势、奖励、评测与训练诊断。
+-
+-你最终要回答：
+-
+-1. SFT 对答案正确率、输出格式和回答长度分别有什么影响？
+-2. 相同 SFT 起点上，GRPO 能否在独立评测中继续改善数学能力？
+-3. 奖励提高但评测不提高时，是解析器、奖励设计、过拟合还是采样设置的问题？
+-4. 改变组大小、KL 约束或长度预算时，收益与计算成本怎样变化？
+-
+-**最低完整成果**：一套数据处理与评测程序、三个模型阶段的真实结果、至少一个控制变量实验、错误案例分析、可复现配置和训练记录。没有提升也可以形成合格的研究报告，但必须解释限制，不能把未验证的改进写成成果。
+-
+-### 1.2 项目二：MultiTeacher-DistillRL
+-
+-**定位：多教师 on-policy 蒸馏的双领域能力整合与训练系统分析。**
+-
+-学生先针对题目生成自己的回答。数学教师或代码教师在这些学生前缀上给出 token 分布，学生通过蒸馏损失更新。第一版采用已知领域标签路由：GSM8K 交给数学教师，MBPP 交给代码教师。
+-
+-你最终要回答：
+-
+-1. 与混合领域 SFT、单教师 OPD 相比，双教师路由能否兼顾数学和代码？
+-2. 收益来自教师专业性、数据覆盖、训练预算，还是路由方式？
+-3. 数学与代码之间是否出现遗忘或相互干扰？
+-4. 教师评分占多少时间，多卡或不同部署方式能解决什么瓶颈？
+-
+-**最低完整成果**：经过评测的两个领域教师、单教师 OPD 基线、按领域路由的双教师 OPD、分领域评测、教师调用与训练成本记录。多 GPU、动态融合、第三个教师都是扩展项，不作为第一版完成条件。
+-
+-### 1.3 两者如何衔接
+-
+-项目二直接复用项目一的数据版本管理、chat template 处理、数学答案提取、日志、检查点和评测框架；新增 MBPP 代码执行评测、教师评分、路由、分布损失以及训练与推理的资源协调。
+-
+-**项目一最好的数学检查点可以作为项目二的一种初始化实验，但不能让它只出现在某个实验组中。** 项目二主比较建议统一从同一个混合领域 SFT 学生开始。这样单教师、多教师之间的差别才主要来自教师指导方式。
+-
+-两个项目均围绕 LLM 后训练。代码执行用于评测，不构成让模型调用工具、与环境交互的 Agent 训练。
+-
+-## 2. 对原方案的取舍与修正
+-
+-### 2.1 保留的设计
+-
+-- 先掌握 SFT、LoRA、GRPO，再学习 OPD，避免同时处理过多新变量。
+-- 项目二采用数学与代码两个领域；第三个指令遵循教师推迟。
+-- 先按领域选一个教师，再考虑多个教师对同一前缀融合。
+-- 先证明算法与评测链路正确，再研究教师服务和多卡吞吐。
+-- 采用 TRL 建立小规模实验，采用 verl 学习已有教师调度与分布式训练实现。
+-
+-### 2.2 必须修正的理解
+-
+-**Instruct 检查点不应命名为 Base 模型。** 这里选择的是已经经过指令训练的 Qwen2.5-0.5B-Instruct。结果中将其写为 `original_instruct`；只有实际使用预训练 Base 权重，才写 Base。[模型卡](https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct)
+-
+-**两个“专家”是需要训练或挑选并验证的模型。** 使用同一个 Qwen2.5-1.5B-Instruct 分别进行数学和代码 SFT/LoRA，是候选方案。仅换系统提示词不能证明得到两个专家，也不能保证它们强于学生。
+-
+-**领域路由与概率融合是不同实验。** 路由对每个样本只采用一个教师；融合让多个教师对同一位置提供监督。领域路由无需解决所有教师的 token 级冲突，但共享学生仍可能发生跨领域梯度冲突。
+-
+-**模型家族相同不等于 token 分布一定可以直接比较。** 必须检查词表大小、每个 token 对应的 ID、特殊 token、chat template 与输入编码。词表不兼容时不能直接逐列 KL。
+-
+-**多教师研究存在，不代表本方案是论文复现。** MOPD 论文研究领域教师的 on-policy 能力整合；本方案的小模型、SFT 专家、任务和资源预算均需另行说明，应称“参考 MOPD 思路的小规模实验”，除非完整对齐了论文设置。[MOPD 论文](https://arxiv.org/abs/2606.30406)
+-
+-**多卡不是自动加速。** 小模型可能受通信、服务等待和 rollout 开销影响。只有同口径测量之后，才能写加速比或资源效率。
+-
+-## 3. 统一技术边界与实施环境
+-
+-### 3.1 建议技术栈
+-
+-- 项目一：Python、PyTorch、Transformers、Datasets、PEFT、TRL。
+-- 项目二算法原型：复用上述工具，先用单教师 DistillationTrainer 理解流程，再扩展教师选择与评分接口。
+-- 项目二系统扩展：verl、vLLM、Ray、FSDP。只有完成多卡实验时再引入相应组件；不要求同时掌握 DeepSpeed。
+-- 代码评测：隔离的 Linux 容器或等价沙箱，限制时间、内存、进程与网络。
+-
+-Windows 可作为阅读、编辑和结果分析环境。正式 GPU 训练建议放在已验证的 Linux CUDA 环境中；不要在未核验依赖的情况下承诺 Windows 原生可运行整套 verl/vLLM。
+-
+-### 3.2 版本必须落到实验记录
+-
+-每次正式实验保存：模型与 tokenizer revision、数据集 revision、训练脚本 Git commit、包版本、CUDA/驱动、GPU 型号和数量、随机种子、完整配置、命令、运行时间与产物路径。
+-
+-本文核验的是 2026-10-19 可见文档和源码。TRL、verl 接口会变化，因此下文给出的是实现契约和配置要点。**正式训练前，选定一组兼容版本并锁定，不能把滚动文档视为永远可运行的命令。**
+-
+-本目录 `sources/` 保存了部分 verl 源码快照及 SHA-256；GitHub commit 查询受到 HTTP 403 限制，未取得对应提交号。这些快照可用于核对本文，不构成已锁定的训练环境。
+-
+-## 4. 先建立统一的数据与评测协议
+-
+-### 4.1 GSM8K：数学任务
+-
+-使用 `openai/gsm8k` 的 `main` 配置。官方元数据为训练集 7,473 条、测试集 1,319 条。建议固定种子从训练集划出 500 条验证集，剩余 6,973 条训练；具体 ID 写入版本化文件。[GSM8K 数据集说明](https://huggingface.co/datasets/openai/gsm8k/blob/main/README.md)
+-
+-训练回答可以包含原数据的解题过程，但题目 prompt 不能拼入参考答案。统一最终答案约定，例如 `#### 42`。评测先提取最终答案，再做数值规范化；对负数、小数、分数、逗号、单位、多个候选答案和空输出建立测试。
+-
+-必须同时报告：答案正确率、解析失败率、平均回答长度、截断比例。格式有效但答案错误不是正确解答；没有成功解析也不能悄悄从分母剔除。
+-
+-### 4.2 MBPP：代码任务
+-
+-第一版建议明确采用 `google-research-datasets/mbpp` 的 `full` 配置。当前元数据中 train/test/validation/prompt 分别为 374/500/90/10；`sanitized` 对应 120/257/43/7。两种配置字段和规模不同，不能混用训练集、测试集或结果口径。运行准备阶段须实际打印 split 计数和字段验证。[MBPP 数据集说明](https://huggingface.co/datasets/google-research-datasets/mbpp/blob/main/README.md)
+-
+-MBPP 数据较小，因此第一版的定位是代码蒸馏原型。多次重复这几百个训练任务不能等价于获得大量新题。若教师在代码验证集没有优势，优先修正数据和教师，再考虑扩大训练数据；新增数据要记录来源、许可、去重与评测集排除规则。
+-
+-预先固定 prompt 协议：题目描述、必要函数签名、允许的 imports、是否展示公共示例。所有模型使用同样的信息。用于最终判分的测试不能进入训练 prompt 或被用来选择该测试题的教师权重。
+-
+-代码评测流程为：生成 → 固定规则提取代码 → 构造独立测试文件 → 在沙箱执行 → 记录结果。限制运行时间和内存，禁用网络，不挂载宿主机敏感目录，每题使用干净执行环境。记录 `pass / assertion_fail / syntax_error / timeout / runtime_error / extraction_fail`；基础设施故障单独记录并重试，不能伪装成模型错误。
+-
+-### 4.3 数据隔离与选择规则
+-
+-训练集用于参数更新；验证集用于选择超参数、检查点和路由规则；测试集只用于最终比较。先做 ID 和文本去重，再检查明显近重复与模板变体。评测数据可能已存在于模型预训练语料，这一点无法凭本项目消除，应在报告中注明公开基准污染风险。
+-
+-不要为了汇报较高分数反复挑选测试集最佳检查点。若已经看过测试表现并据此改方案，应披露该过程，并用额外保留集做补充验证。
+-
+-### 4.4 指标与统计口径
+-
+-主指标采用数学准确率与代码 pass@1，分别报告；可以附宏平均，但不允许只给一个总分掩盖单领域下降。默认主评测采用固定贪心解码，额外采样评测单列 temperature、top-p、最大输出长度与样本数。
+-
+-若每题生成 n 个样本，其中 c 个通过，可以用下面的标准估计量计算 pass@k：
+-
+-$$
+-\widehat{\mathrm{pass@k}}=1-\frac{\binom{n-c}{k}}{\binom{n}{k}},\qquad n\ge k.
+-$$
+-
+-只有生成了足够样本，才报告相应 k。不能将“每题只生成一次后的正确率”写成 pass@8。数学的多样本正确率与多数投票准确率也应分开命名。
+-
+-主结论至少报告固定评测样本上的成对差异；预算允许时用 3 个训练种子，并报告均值与波动。小预算可以先做一个种子探索，再对关键对照补充种子。只有单次实验时，结论必须限定为该配置的观察。
+-
+-## 5. 项目一：从张量到训练目标
+-
+-### 5.1 SFT 的数据流
+-
+-将题目与参考回答通过固定 chat template 编码，得到 `input_ids`、`attention_mask` 和 `labels`，形状均为 `[B,L]`。模型输出 logits 为 `[B,L,V]`。B 是 batch 大小，L 是序列长度，V 是词表大小。
+-
+-因果语言模型用前面的 token 预测下一个 token。概念上，`logits[:, :-1]` 对齐 `labels[:, 1:]`；如果框架内部已经做 shift，外部不能再做一次。仅在回答部分计算损失，prompt 和 padding 的 labels 设为忽略值，通常是 `-100`。
+-
+-$$
+-\mathcal L_{\mathrm{SFT}}=-\frac{1}{\sum_{i,t}m_{it}}\sum_{i,t}m_{it}\log\pi_\theta(y_{it}\mid x_i,y_{i,<t}).
+-$$
+-
+-这里 m 表示该 token 是否计入监督。`attention_mask` 控制有效输入位置，loss mask 控制哪些位置产生训练损失；题目需要被模型看到，但通常不要求模型重新预测题目。
+-
+-先做一个两样本实验，逐 token 打印标签和 mask，检查 EOS 是否被训练、padding 是否被忽略、截断是否截掉最终答案。再用几十条数据尝试过拟合，确认损失能下降且输出格式符合预期，最后才扩展数据量。
+-
+-TRL 的 prompt-completion 数据格式与 `completion_only_loss` 等接口须按锁定版本配置。不要同时套用旧版 collator 教程和新版 Trainer 参数而不检查实际 labels。[SFTTrainer 文档](https://huggingface.co/docs/trl/sft_trainer)
+-
+-### 5.2 LoRA：训练的是增量
+-
+-对于原权重 $W\in\mathbb R^{d_{out}\times d_{in}}$，LoRA 使用：
+-
+-$$
+-W'=W+\frac{\alpha}{r}BA,\quad A\in\mathbb R^{r\times d_{in}},\quad B\in\mathbb R^{d_{out}\times r}.
+-$$
+-
+-基础 W 冻结，训练低秩增量 BA。新增参数约为 $r(d_{in}+d_{out})$，不是把原 W 精确分解后只训练其中一部分。r 越大通常容量和资源开销越大，但效果需要实验。
+-
+-第一版只固定一套 target modules、rank、alpha、dropout。比较模型时保存这些参数。QLoRA 是可选的资源实验，应在普通 LoRA 链路稳定后引入；量化误差、计算 dtype 和显存节省必须分别记录。[PEFT LoRA 文档](https://huggingface.co/docs/peft/developer_guides/lora)
+-
+-### 5.3 GRPO：一题多答，构造相对优势
+-
+-对每道题 x 采样 G 个回答，由可验证奖励函数得到 $r_1,\ldots,r_G$。常见组内标准化形式为：
+-
+-$$
+-A_i=\frac{r_i-\overline r}{\operatorname{std}(r_1,\ldots,r_G)+\epsilon}.
+-$$
+-
+-把该回答的优势用于对应生成 token。当前策略与采样旧策略的概率比为：
+-
+-$$
+-\rho_{it}=\exp\left(\log\pi_\theta(y_{it}\mid s_{it})-\log\pi_{old}(y_{it}\mid s_{it})\right).
+-$$
+-
+-一个用于理解的裁剪目标写为：
+-
+-$$
+-\mathcal L_{\mathrm{GRPO}}=-\operatorname{Avg}_{i,t}\left[\min\left(\rho_{it}A_i,\operatorname{clip}(\rho_{it},1-\epsilon_c,1+\epsilon_c)A_i\right)-\beta D_{it}\right].
+-$$
+-
+-$s_{it}$ 是题目与已生成前缀；$D_{it}$ 是相对 reference policy 的 KL 项或其估计；$\epsilon_c$ 控制裁剪；$\beta$ 控制约束强度。具体 loss type、长度归一化、奖励标准化和 KL 估计以所选实现为准，不能把上式当作所有 GRPO 版本的逐行源码。
+-
+-旧策略用于重要性比率，参考策略用于约束漂移，二者角色不同。G 个回答奖励相同，组内优势往往为零，单靠这一组无法提供区分回答的奖励信号；记录这种组的比例，比只看平均奖励更有帮助。
+-
+-数学任务不要求训练独立奖励模型，可以直接依据答案正确性给奖励。当前 TRL 文档的默认 KL 系数为 0；是否加载 reference、采用何种 loss 不能凭旧教程推断，必须显式记录配置。[GRPOTrainer 文档](https://huggingface.co/docs/trl/grpo_trainer)
+-
+-### 5.4 奖励函数的第一版
+-
+-先用 `correct_answer ∈ {0,1}`，同时将格式正确性作为日志指标。若格式确实阻塞学习，再增加小权重格式奖励，并做去掉格式项的消融。
+-
+-不建议第一版奖励“推理越长越好”、特定关键词或表面思维链格式。它们容易让模型增加长度，而不提高答案正确率。不要通过输出包含任意一个正确数字就判对；最终答案抽取必须有明确位置和歧义处理。
+-
+-奖励函数与最终评测应共享规范化规则，但保留独立的测试用例和人工抽查，避免一个解析漏洞同时污染训练和评测。
+-
+-## 6. 项目一的实现步骤与实验
+-
+-### 6.1 分阶段实施
+-
+-1. **P1-A，数据和评测**：冻结 split 和模板；评测原始 Instruct；保存逐题输出、解析答案、标签、长度、耗时。
+-2. **P1-B，SFT**：完成两样本 mask 检查、几十样本过拟合，再训练 LoRA；依据验证集选择检查点，保存 adapter 和基础模型 revision。
+-3. **P1-C，GRPO**：从固定 SFT 检查点开始；先在少量训练题上验证采样、奖励和更新，再扩大规模。
+-4. **P1-D，分析**：统一解码评测三个阶段，检查奖励与准确率关系，归类错误，补充一个控制变量实验。
+-
+-每一步都必须能从保存的配置重新运行。不要等训练结束才补写数据版本和评价规则。
+-
+-### 6.2 必做实验编号
+-
+-- `P1-00`：原始 Instruct，不训练。
+-- `P1-01`：LoRA-SFT。
+-- `P1-02`：从 P1-01 开始 GRPO，正确性奖励。
+-- `P1-03`：从同一个 P1-01 开始，只改变一个因素，例如格式奖励开关，或 KL 系数。
+-
+-可选实验包括组大小、LoRA rank、QLoRA 和直接从原始 Instruct 做 GRPO。不要一次性做所有组合。改变组大小会改变 rollout 成本，应同时报告生成 token 数和墙钟时间，不能只按相同步数比较效率。
+-
+-### 6.3 项目一完成的标准
+-
+-你能解释一个 batch 的每个张量和 mask；能区分 old policy 与 reference policy；三个模型的评测使用同一协议；有真实训练曲线和逐题结果；至少分析 20 个有代表性的成功、失败或回退案例；能说明一个超参数变化为何产生观察到的现象，以及证据不能支持哪些结论。
+-
+-## 7. 项目二：教师与学生应该怎样准备
+-
+-### 7.1 推荐模型关系
+-
+-学生候选是 Qwen2.5-0.5B-Instruct。数学教师和代码教师候选都基于 Qwen2.5-1.5B-Instruct，分别训练领域 LoRA。教师训练和学生训练使用明确的数据划分，最终都在保留验证集上检查能力。
+-
+-另外保留一个通用教师基线：同一尺寸的原始 Instruct 或混合领域 SFT 教师。这样可以区分“两个专家的互补性”与“单纯用了更好的教师”。混合领域教师训练预算也要记录。
+-
+-### 7.2 教师准入检查
+-
+-在学生训练前完成以下检查：
+-
+-- 数学教师在数学验证集上的准确率、格式与长度表现。
+-- 代码教师在代码验证集上的 pass@1、可执行率和超时率。
+-- 两位教师各自的跨领域表现，用于识别互补性及弱项。
+-- 教师是否强于学生；若差异很小，先扩大验证证据或调整教师，不要直接进入昂贵训练。
+-- 同一学生前缀输入不同教师时，返回的分布、位置与词表是否正确对齐。
+-
+-教师作为独立生成器的分数只是必要参考。OPD 中教师要给学生错误前缀评分，可能遇到训练外状态，因此还要抽查这类前缀上的建议是否合理。
+-
+-### 7.3 项目二的共同学生起点
+-
+-先训练一个数学与代码混合领域 SFT 学生，作为 `P2-S0`。所有 OPD 主实验从同一个 `P2-S0` 开始；同时保留原始 Instruct 和 P2-S0 作为静态比较点。
+-
+-训练样本数的自然比例会使 GSM8K 占明显多数。建议第一版以明确的领域采样比例构建 batch，例如数学/代码各 50%，并记录每域重复轮数。由于代码回答通常更长，还需记录每域 token 占比和实际 loss 权重。50% 样本并不等于 50% 梯度贡献。
+-
+-固定领域采样与固定领域损失权重是两个不同旋钮。先固定两者，再分别做消融。
+-
+-## 8. OPD 到底学习什么
+-
+-### 8.1 离线教师回答与 on-policy 前缀
+-
+-离线序列蒸馏先让教师生成完整答案，再让学生对这些答案做 SFT。OPD 则先由当前学生生成回答，然后让教师评价**学生实际走到的前缀**。
+-
+-因此，学生生成了不理想的中间步骤时，教师仍在该前缀上提供下一 token 分布，而不是用自己的整段答案替换学生轨迹。这是项目二必须实现并验证的关键。
+-
+-### 8.2 第一版采用前向 KL 的局部蒸馏目标
+-
+-记学生采样前缀为 $s_t=(x,y_{<t})$，教师分布为 $p_T(v\mid s_t)$，可训练学生分布为 $q_\theta(v\mid s_t)$：
+-
+-$$
+-\mathcal L_{\mathrm{FKL}}=\frac{1}{\sum_t m_t}\sum_t m_t\sum_{v=1}^{V}p_T(v\mid s_t)\log\frac{p_T(v\mid s_t)}{q_\theta(v\mid s_t)}.
+-$$
+-
+-教师在该步骤冻结；rollout 和已采样前缀视为固定数据，学生训练 forward 保留梯度。去掉与学生参数无关的教师熵后，这个局部目标对学生的梯度等价于软标签交叉熵。
+-
+-这是一个在学生访问状态上训练的 surrogate objective。它没有对前缀采样过程反向传播，不应声称自己计算了整个轨迹分布目标的所有导数。
+-
+-### 8.3 反向 KL 与实现差异
+-
+-$$
+-\mathrm{KL}(q_\theta\Vert p_T)=\sum_v q_\theta(v)\log\frac{q_\theta(v)}{p_T(v)}.
+-$$
+-
+-前向 KL 与反向 KL 对覆盖教师分布、避开教师低概率区域的偏好不同。不能笼统说 OPD 只能使用反向 KL。若采用采样 token 的 logprob 差值估计，也不能把普通 `mean(logq-logp)` 的 autograd 结果直接当作完整反向 KL 梯度：采样分布本身也依赖学生参数，需要明确的估计器与更新方式。
+-
+-第一版先选一种目标并验证梯度，再对比另一种。不要把 KL 方向、top-k、policy-gradient 开关和任务奖励同时修改。
+-
+-### 8.4 温度与参数命名
+-
+-蒸馏温度作用于 logits，例如 $p=\operatorname{softmax}(z/T)$；它改变监督分布。若使用 $T^2$ 梯度缩放，必须在配置和实验中写明。生成 temperature 与蒸馏 temperature 是不同参数。
+-
+-TRL DistillationTrainer 当前文档中的 `beta` 用来选择散度：0 为前向 KL、1 为反向 KL、0.5 对应 JSD；这和 GRPO 中 KL 惩罚系数的含义不同。内部配置建议写成 `distill_divergence` 与 `reference_kl_coef`，在适配器中再映射到框架参数。[DistillationTrainer 文档](https://huggingface.co/docs/trl/distillation_trainer)
+-
+-## 9. 多教师：先路由，再考虑融合
+-
+-### 9.1 必做版本：固定领域路由
+-
+-定义 $r(x)$ 为样本领域，数学样本选 $T_m$，代码样本选 $T_c$：
+-
+-$$
+-p_T(\cdot\mid s_t)=p_{r(x)}(\cdot\mid s_t),\qquad r(x)\in\{m,c\}.
+-$$
+-
+-路由只依赖已知数据来源，不需要额外分类器，也不依赖测试题答案。训练时记录请求 sample ID、domain、teacher ID、token 数和耗时，确认没有静默错路由。
+-
+-该版本能够研究能力整合，但不直接研究同一个 token 上多个教师的冲突。跨领域干扰通过学生的共同参数发生，仍需分别检查两域成绩。
+-
+-### 9.2 扩展一：固定权重概率融合
+-
+-$$
+-M(v\mid s)=\sum_{k=1}^{K}\alpha_k p_k(v\mid s),\qquad \alpha_k\ge0,\quad\sum_k\alpha_k=1.
+-$$
+-
+-这里混合的是概率，不是 logits。用 logprob 实现算术混合，应使用 `logsumexp(log_alpha + logp)`。直接把 logprob 加权相加对应另一种分布组合，不能称为同一个算法。
+-
+-对于固定教师、固定权重和固定前缀，有：
+-
+-$$
+-\sum_k\alpha_k\mathrm{KL}(p_k\Vert q)=\mathrm{KL}(M\Vert q)+\sum_k\alpha_k\mathrm{KL}(p_k\Vert M).
+-$$
+-
+-右侧第二项与 q 无关，因此两种目标对学生的梯度相同，损失标量通常并不相等。**正确原因是可以分解出一个与学生无关的项，不能说“KL 对第一个参数线性”。** 本仓库 `mopd.ipynb` 开头有这一不准确表述，阅读时应以此处的展开为准。
+-
+-反向 KL 的加权和对应归一化几何平均：
+-
+-$$
+-g(v)=\frac{\prod_kp_k(v)^{\alpha_k}}{Z},\qquad \sum_k\alpha_k\mathrm{KL}(q\Vert p_k)=\mathrm{KL}(q\Vert g)-\log Z.
+-$$
+-
+-它与算术混合 M 不同。这也说明“先决定 KL 方向，再决定怎样融合”很重要。
+-
+-### 9.3 扩展二：动态权重
+-
+-只有固定路由和固定融合都稳定后，才考虑 $\alpha_k(x,s_t)$。先做样本级权重，再考虑 token 级权重。权重可以由已校准的领域置信度或独立路由器给出，但不能使用最终测试答案或隐含正确性标签。
+-
+-教师低熵表示自信，不一定表示正确。若用熵构造权重，需要在验证集检查其与正确率的关系。若权重可学习，还要定义路由器的训练数据、梯度是否截断，以及额外参数带来的对照；第一版融合建议权重冻结或 detach。
+-
+-### 9.4 top-k 分布是近似，不是免费精确计算
+-
+-完整 `[B,L,V]` 分布成本较高，可采用 chunking 或教师 top-k。但截断再归一化改变了目标，应报告教师 top-k 保留质量、截断位置和残余概率处理。
+-
+-多教师 top-k 融合还需要对齐 token ID，并明确并集之外的概率怎样处理。不同教师返回的第 j 列未必是同一个 token，不能直接逐列相加。不要使用“top-64 总能覆盖 99% 概率”作为默认事实。
+-
+-## 10. 项目二的实现接口与数据流
+-
+-### 10.1 每个训练样本应携带什么
+-
+-建议的逻辑记录如下；实际序列化为 JSONL、Parquet 或框架格式时，由适配层转换：
+-
+-```json
+-{
+-  "sample_id": "gsm8k/train/000123",
+-  "domain": "math",
+-  "data_source": "gsm8k",
+-  "prompt": "题目文本或结构化 messages",
+-  "reference": "仅用于监督训练或离线评测的标准答案",
+-  "split": "train",
+-  "dataset_revision": "运行前填写真实 revision"
+-}
+-```
+-
+-`reference` 不是 OPD 教师评分时默认可见的输入。教师只看与学生对应的题目和生成前缀。SFT 数据可以另外携带 completion，但必须避免字段串入 prompt。
+-
+-### 10.2 一个更新步骤
+-
+-```python
+-# 概念伪代码，非特定版本 Trainer 的可直接调用接口
+-batch = sample_prompts_with_domains()
+-with no_grad():
+-    rollout = student_generate(batch.prompts)
+-    # 保留原始 token IDs、长度、EOS、模型版本和生成配置
+-    routed = router.group_by_teacher(batch, rollout)
+-    teacher_targets = score_student_prefixes(routed)
+-    teacher_targets = restore_original_sample_order(teacher_targets)
+-
+-student_logits = student_forward_with_grad(rollout.input_ids)
+-loss = masked_distillation_loss(student_logits, teacher_targets,
+-                                rollout.response_mask)
+-loss.backward()
+-optimizer.step()
+-sync_rollout_weights_if_separate_engine()
+-```
+-
+-教师评分输入可以是完整序列，由因果 attention 保证每个位置只看到此前 token。必须正确 shift，不能让预测第 t 个 token 的教师看见该 token 本身。所有 logprob 使用生成时原始 IDs，不要先 decode 再 encode 后假定 IDs 相同。
+-
+-学生独立 rollout 引擎需要同步训练权重。若缓存旧轨迹复用，记录轨迹年龄与更新次数；长期使用初始学生轨迹就失去了持续 on-policy 的性质。
+-
+-### 10.3 单卡原型与 verl 扩展的区别
+-
+-单卡原型可按领域分组、顺序加载或切换两个教师 adapter，先计算教师目标，再训练学生。它需要自己管理显存、目标缓存和样本顺序。共享教师底座切换 adapter 时应串行评分或使用可靠的请求隔离，不能让并发请求误用另一个 adapter。
+-
+-verl 的标准多教师路径则采用教师服务与独立资源池。不要把顺序评分原型描述为已经验证的 verl 单卡多教师部署。两个实现可以共享数据和损失测试，但需要分别测量资源与结果。
+-
+-## 11. 如何正确对接 verl
+-
+-官方当前 OPD 文档包含多教师配置。`teacher_key` 默认是 `data_source`；每条样本的对应字段需进入非 tensor batch，并与配置的教师 `.key` 完全匹配。未知键应直接报错，不应默认退回任意教师。[verl OPD 文档](https://verl.readthedocs.io/en/latest/algo/opd.html)
+-
+-### 11.1 必须检查的配置契约
+-
+-- 数据键选择 `data_source` 时，数学数据写 `gsm8k`，代码数据写 `mbpp`，教师 key 也使用这两个值。
+-- 多教师条目使用明确名称，例如 `gsm8k_teacher` 与 `mbpp_teacher`。不要保留默认 `teacher_model` 再加第二个条目并假定两者都会生效；当前实现对默认条目有特殊处理。
+-- 教师与学生词表、token ID 和输入处理兼容。
+-- 若采用 `forward_kl_topk`，核查 `use_policy_gradient=False` 的路径；不要将 top-k 完整监督与只利用采样 token 的更新机制混为一谈。
+-- 算法实验阶段明确是否关闭额外任务奖励，避免同时加入 GRPO 式奖励后无法归因。
+-- 教师资源池容量满足各副本的 TP、DP、PP 需求，不能只看教师数量。
+-
+-教师池所需 GPU 数按当前文档关系检查：
+-
+-$$
+-N_{teacher\_gpu}=\sum_k replicas_k\times TP_k\times DP_k\times PP_k.
+-$$
+-
+-### 11.2 从哪里读源码
+-
+-按顺序读：
+-
+-1. `verl/trainer/config/distillation/distillation.yaml`：有哪些参数，默认值是什么。
+-2. `verl/workers/config/distillation.py`：配置验证与损失选项。
+-3. `verl/experimental/teacher_loop/teacher_manager.py`：教师选择与资源管理。
+-4. `verl/experimental/teacher_loop/teacher_model.py`：教师评分接口。
+-5. `verl/experimental/agent_loop/agent_loop.py`：样本字段怎样流入调用链。
+-6. `verl/trainer/distillation/fsdp/losses.py`：最终如何形成学生损失。
+-
+-实际官方示例是 `examples/on_policy_distillation_trainer/run_qwen3_8b_mopd_fsdp.sh`，其模型、数据和资源设置并非本项目的 0.5B 学生加 GSM8K/MBPP。应学习参数传递与资源组织方式，重新编写本项目配置，不要直接换两个路径便宣称可运行。[官方示例源码](https://github.com/verl-project/verl/blob/main/examples/on_policy_distillation_trainer/run_qwen3_8b_mopd_fsdp.sh)
+-
+-本文不提供未经锁定版本和实际 GPU 验证的“复制即跑”训练命令。第一项实施产物应是经过小 batch 验证的环境锁定文件和 smoke 配置，随后才扩展完整训练。
+-
+-## 12. 项目二的实验矩阵
+-
+-### 12.1 最少需要的比较组
+-
+-- `P2-00`：原始学生 Instruct；用于描述整体变化。
+-- `P2-01`：混合领域 SFT 学生 P2-S0；是所有 OPD 主实验共同起点。
+-- `P2-02`：通用单教师 OPD，学生从 P2-S0 开始。
+-- `P2-03`：数学教师指导全部领域，学生从 P2-S0 开始。
+-- `P2-04`：代码教师指导全部领域，学生从 P2-S0 开始。
+-- `P2-05`：数学/代码按领域路由，学生从 P2-S0 开始；这是升级项目的核心组。
+-
+-P2-03、P2-04 用于确认专家的局限及互补性。资源不足时先缩小训练规模完成这些组，再给关键组增加预算；不宜只保留一个弱单教师来衬托多教师。
+-
+-### 12.2 有余力再做的消融
+-
+-- `P2-A1`：随机或交换领域路由，验证正确匹配是否重要。
+-- `P2-A2`：改变领域采样比例，检查数学与代码的权衡。
+-- `P2-A3`：固定权重算术融合，对比领域路由。
+-- `P2-A4`：动态权重，对比最佳固定权重；只有前面成立才做。
+-- `P2-A5`：完整词表小实验与 top-k 近似，检查目标偏差和内存成本。
+-- `P2-A6`：固定算法与数据，比较教师部署和学生多卡方式。
+-
+-第一版不要求探索第三教师、复杂 MoE 路由器、大模型训练或自定义 CUDA kernel。
+-
+-### 12.3 怎样比较才公平
+-
+-主实验固定学生起点、题目池、领域比例、生成长度预算、优化器、更新计划和验证规则。记录实际生成 token 数、教师评分 token 数、学生训练 token 数、墙钟时间与 GPU 小时。
+-
+-至少提供两种视角：
+-
+-1. **近似相同学生训练预算**：比较监督方法能学到什么；说明教师成本可能不同。
+-2. **近似相同总计算预算**：比较单位资源带来的能力变化；可缩短更昂贵方法的训练量，但需清晰说明。
+-
+-路由每个样本通常只调用一个教师，完整融合通常调用两个，但实际成本还受加载、服务批处理和缓存影响。不能直接把理论调用次数写成实测速度。
+-
+-### 12.4 如何判断“能力整合成功”
+-
+-分别画出数学与代码指标随训练变化的曲线。若数学提高而代码显著下降，应写成任务权衡，不应只凭宏平均声称两域整合。比较单教师组、多教师组与 P2-S0 的成对差异，并检查长度和算力开销。
+-
+-如果多教师没有优于强单教师，仍可报告：专家不互补、学生容量受限、训练数据过少、分布近似误差或领域配比问题。结论应由对照支持，不要把所有失败都归因于“模型太小”。
+-
+-## 13. 资源规划与系统实验
+-
+-### 13.1 按资源选择完成层级
+-
+-**一张 GPU**：优先完成项目一和项目二顺序教师评分原型。先测短序列、小 batch 和 LoRA；必要时卸载教师或保存小批量目标。不要长期离线生成全部旧学生轨迹替代在线流程。
+-
+-**三张可用 GPU 的一种规划**：一张承担学生训练与分阶段 rollout，两张各服务一个教师。是否能稳定放下取决于模型、长度、服务框架和内存配置，需要 smoke 测试。
+-
+-**四张可用 GPU 的一种规划**：两张用于学生 FSDP，两张服务教师。只有学生训练确实是瓶颈或显存受限时，FSDP 才可能值得；小模型未必得到明显加速。
+-
+-这些是拓扑设计示例，不是已验证硬件最低要求。若仅有单卡，完成严谨算法实验比强行拼接未经验证的多服务部署更有价值。
+-
+-### 13.2 为什么权重能放下不代表能训练
+-
+-以 BF16 每参数 2 字节粗估，0.5B 学生权重约 1 GB，两份 1.5B 教师权重约 6 GB，合计约 7 GB，均为十进制近似。该估计不包含梯度、优化器状态、激活、KV cache、logits、运行时缓存和显存碎片；LoRA 也不会消除基础模型 forward 的成本。
+-
+-若 B=2、L=1024、V≈150,000，一份 FP32 `[B,L,V]` logits 就约 1.23 GB。多个教师和学生同时物化完整分布会快速增加峰值，实际反向传播还需要更多内存。优先考虑 token 分块、正确 mask、减少无效 padding、降低生成长度，随后再研究 top-k 近似。
+-
+-### 13.3 该记录哪些系统指标
+-
+-- rollout 时间、教师评分时间、学生 forward/backward 时间、权重同步时间。
+-- 各阶段有效 token/s，以及端到端样本/s。
+-- 各设备峰值显存、GPU 利用率、等待时间、教师队列长度。
+-- 总 GPU 小时、每千学生生成 token 的成本、达到指定验证分数的成本。
+-
+-比较多卡时固定模型、精度、样本与长度分布、有效 batch、评测频率，说明是否包括数据加载、初始化和 warmup。报告端到端与分阶段指标，避免只展示局部 kernel 或教师推理的峰值。
+-
+-## 14. 建议代码组织与产物
+-
+-以下是未来训练项目的建议结构，**当前并未创建或实现这些训练模块**：
+-
+-```text
+-posttrain-lab/
+-  configs/                 # 数据、模型、训练、评测、资源配置
+-  data/                    # 数据 manifest 与划分 ID，不随意提交原始大文件
+-  src/
+-    data/                  # GSM8K/MBPP 转换、模板、去重
+-    evaluation/            # 数学解析、代码沙箱、统一结果格式
+-    training/              # SFT、GRPO、单教师 OPD 入口
+-    teachers/              # 评分接口、路由、adapter 管理
+-    losses/                # 蒸馏损失与小词表参考实现
+-    systems/               # 后端适配、计时与资源采集
+-  tests/                   # 关键正确性检查
+-  scripts/                 # 实际验证后的启动与评测命令
+-  runs/<run_id>/           # manifest、日志、逐题预测、指标
+-  reports/                 # 项目一、项目二实验报告
+-```
+-
+-建议每个 run 的 manifest 包含：`run_id`、`parent_checkpoint`、`student_revision`、`teacher_revisions`、`tokenizer_hash`、`dataset_revision`、`split_hash`、`config_hash`、`git_commit`、`seed`、`hardware`、`start_time`、`status`。未运行的指标写 `null`，不要填示意分数。
+-
+-检查点除权重外，还应保留 adapter 配置、tokenizer、chat template、必要的优化器/调度器状态和断点进度。恢复训练后检查学习率、全局步数和随机状态，避免“成功加载权重”被误当作完整恢复。
+-
+-## 15. 必须通过的正确性检查
+-
+-### 15.1 共用检查
+-
+-- split 不重叠，题目与答案没有串入错误字段。
+-- prompt、padding、EOS、截断位置的 labels 与 mask 正确。
+-- 数学解析器对边界情况有明确行为，评测失败不被丢弃。
+-- 代码沙箱对正确程序、错误程序、死循环、超量内存程序给出预期状态。
+-- 检查点加载后的固定输入输出与保存前一致，允许的数值差异有解释。
+-
+-### 15.2 GRPO 检查
+-
+-构造奖励 `[1,0,0,0]`，检查优势正负和组内索引；构造全同奖励，检查无 NaN；验证旧 logprob 与新 logprob 的来源；确保只对生成位置计算目标；手工检查极端概率比的裁剪行为。
+-
+-### 15.3 OPD 与多教师检查
+-
+-先用三到五个 token 的小词表比较手算、参考实现和训练实现的损失及梯度。验证教师无梯度、学生有梯度、padding 无梯度、位置 shift 正确。
+-
+-K=1 时多教师接口应退化为单教师结果；两个教师完全相同时，路由与融合应在同一批固定前缀上得到相同目标；one-hot 权重的融合应等于选中教师；打乱 batch 后恢复顺序应保持每样本目标不变。
+-
+-固定前缀上检查“加权教师前向 KL”和“混合分布前向 KL”对学生梯度一致，同时验证其标量差是理论中的教师分歧项。这个测试直接防止把概率混合写成 logits 混合。
+-
+-再做少量真实数据端到端 smoke，确认模型更新、教师路由日志、checkpoint 与评测均工作；最后才启动长训练。
+-
+-## 16. 学习与实施安排
+-
+-以下按每周约 10–15 小时、已有基础 Python/PyTorch 能力估计。时间是规划区间，取决于基础、算力等待和调试，不能作为完成承诺。
+-
+-1. **第 1–2 周**：交叉熵、shift、mask、数据处理、统一评测；完成原始模型基线。
+-2. **第 3–4 周**：LoRA-SFT、保存恢复、错误分析；完成 P1-01。
+-3. **第 5–6 周**：GRPO、奖励、KL 与控制变量实验；完成项目一报告初稿。
+-4. **第 7–8 周**：MBPP 沙箱、领域教师、混合 SFT 学生；检查教师准入。
+-5. **第 9–10 周**：单教师 OPD、小词表损失验证、真实数据 smoke。
+-6. **第 11–13 周**：领域路由 OPD、单专家跨域对照、分领域分析。
+-7. **第 14–16 周**：补充关键种子、成本分析、复现文档与项目二报告。
+-8. **第 17–20 周，可选**：FSDP/教师服务优化，或固定/动态融合，二者优先选一个深入。
+-
+-如果只有 8–10 周，优先交付项目一和项目二单教师到领域路由的缩小版；削减扩展实验，不删评测和对照。如果目标更偏训练系统岗位，优先选多卡性能分析；更偏算法研究则优先选教师互补性与融合消融。
+-
+-## 17. 最终交付物与讲述方式
+-
+-### 17.1 项目一交付
+-
+-一份说明任务与方法的 README、一键可复现的已验证命令、数据 manifest、三个阶段的检查点或获取说明、训练配置、逐题预测、指标汇总、错误案例和实验报告。报告重点说明奖励设计与泛化的关系，而不仅是贴 loss 曲线。
+-
+-### 17.2 项目二交付
+-
+-教师能力矩阵、学生统一初始化说明、路由与评分实现、损失正确性证据、单教师和多教师的逐域结果、资源测量、失败案例，以及“哪些扩展没有做”的明确列表。只有真实跑通多卡并完成比较，才将分布式训练优化列为已完成能力。
+-
+-### 17.3 简历与面试中的准确表达
+-
+-未完成实验时，可以写正在实现的范围，不写提升比例。完成后按“任务—方法—受控比较—实测结果—限制”表达，例如：
+-
+-> 在固定数据划分和解码协议下，构建小模型 SFT/GRPO 数学后训练流程；通过答案解析、组内奖励诊断和控制变量实验，分析了……。实测结果见对应报告。
+-
+-> 实现按领域路由的双教师 on-policy 蒸馏，在相同学生初始化下比较单教师与多教师的数学、代码表现；记录教师评分、rollout 与更新开销，并分析了……。
+-
+-省略号必须由实际发现替换。不要提前写“提升 X%”“加速 Y 倍”“复现 MOPD SOTA”或“支持大规模分布式”这些尚未验证的结论。
+-
+-## 18. 视频与本地文件怎样配合学习
+-
+-先按下附八阶段路线学习，再补充本节的多教师专项内容。每一阶段都有具体阅读位置、动手练习和通过标准。看完视频不等于完成阶段，必须能完成对应练习。
+-
+-项目二新增必读：
+-
+-- [mopd.ipynb](../agentic_rl/distillation/mopd.ipynb)：多教师分布、混合交叉熵与熵关系。重点读分布展开和数值示例，结合第 9 节纠正“KL 线性”的表述。
+-- [opd-verl-slime.ipynb](../agentic_rl/distillation/opd-verl-slime.ipynb)：理解 rollout、teacher scoring、student update 的系统关系；实现细节以锁定的上游源码为准。
+-- [sft-rl-opd.ipynb](../agentic_rl/distillation/sft-rl-opd.ipynb)：对比数据分布与监督信号，而不是只记方法名称。
+-- [MOPD 论文](https://arxiv.org/abs/2606.30406)：阅读问题设定、教师构建、实验对照；列出与本项目的差异，不直接搬用论文结果。
+-- [verl OPD 文档](https://verl.readthedocs.io/en/latest/algo/opd.html)：配合第 11 节追踪配置、teacher key 与资源池。
+-
+-本地 `roadmaps/verl.md` 以及部分 monitoring/collapse 笔记内容较少，不应作为完整教程。`rlvr.ipynb` 的现有代码有特定任务、路径和调试设置，应借鉴评测结构并重写本项目入口。`trl_gkd_gold.ipynb` 的简化公式不能替代真实分布损失源码。八股速记可用于复习，但 LoRA、GRPO 等细节仍应回到公式和官方实现。
+-
+-<!-- LEARNING_APPENDIX_START -->
+-### 阶段 01：先懂一个 batch 怎么产生 SFT loss
+-
+-**视频**
+-
+-- [[数学基础与PyTorch] 02 梯度的视角回顾 Pretrain 和 SFT 的 Cross Entropy Loss，LLM如何更新 token emb](https://www.bilibili.com/video/BV1YN5d67ETR)
+-- [[veRL] fsdp sft trainer 补充，teacher forcing、shift labels shift logits、loss mask](https://www.bilibili.com/video/BV1eWjtzbEdP)
+-
+-**对应本地材料与阅读范围**
+-
+-- [math/pytorch/cross-entropy-loss-gradient-descent.ipynb](../math/pytorch/cross-entropy-loss-gradient-descent.ipynb)：cell 1–9：NTP、teacher forcing、交叉熵梯度和小词表 PyTorch 示例。先掌握 p−one_hot，不必先读完所有词嵌入分析。
+-- [agentic_rl/verl/训练及调参经验/sft.ipynb](../agentic_rl/verl/训练及调参经验/sft.ipynb)：cell 3–5：EOS、prompt/response 拼接、shift 与 loss mask；cell 7 的分布式 checkpoint 合并留到项目二。
+-- [agentic_rl/verl/tokenizer/encode-decode.ipynb](../agentic_rl/verl/tokenizer/encode-decode.ipynb)：cell 2、4–11：decode 后重新 encode 不一定还原原来的 token IDs；这是后面计算 rollout logprob 和 OPD 对齐的前提。
+-
+-**要学会的内容**：input_ids/attention_mask/labels 是 [B,L]，logits 是 [B,L,V]；next-token 对齐为 logits[:, :-1] 与 labels[:, 1:]。attention_mask 控制模型可见性，loss mask 决定哪些位置产生监督，两者不能混用。推理时生成回答，SFT 时用真实前缀预测下一个 token。
+-
+-**动手练习**：用 2 道题构造 batch，打印每个 token、标签、prompt/completion mask。手算和框架算出的 masked CE 应接近；padding 不产生 loss，EOS 可以被监督。检查框架是否已内部 shift，避免二次 shift。
+-
+-**通过标准**：能解释题目为何作为上下文输入却不一定计入 loss；能定位模型不停止、学会复述题目、loss 异常偏低的问题。
+-
+-### 阶段 02：做评测基线，再做 LoRA-SFT
+-
+-**视频**
+-
+-- [[LLMs 实践] 02 LoRA（Low Rank Adaption）基本原理与基本概念，fine-tune 大语言模型](https://www.bilibili.com/video/BV15T411477N)
+-- [[LLMs tuning] 01 trl SFTTrainer 中的 formatting_func 与 DataCollatorForCompletion](https://www.bilibili.com/video/BV1bn4y1f7wF)
+-
+-**对应本地材料与阅读范围**
+-
+-- [agentic_rl/trl/training_examples.ipynb](../agentic_rl/trl/training_examples.ipynb)：cell 1 只是官方示例入口；取其中 LoRA/QLoRA 的入口，不照搬视觉语言模型、14B 模型或工具调用配置。
+-- [agentic_rl/reasoning/utils.py](../agentic_rl/reasoning/utils.py)：读 extract_answer 和 strip_string 的处理思路；自己补 GSM8K 的 #### 标准答案解析及边界测试，不默认它已满足你的评测规范。
+-- [agentic_rl/infra/base_instruct.ipynb](../agentic_rl/infra/base_instruct.ipynb)：cell 1：Base/Instruct 与 chat template；其余含 7B 模型、作者绝对路径的分析先跳过。
+-
+-**要学会的内容**：LoRA 是冻结 W、学习 ΔW=(α/r)BA，不是对原始 W 做低秩分解。掌握 r、α、target_modules、可训练参数计数和 adapter 保存/加载。先用普通 LoRA，确认显存需要后再引入 QLoRA。SFT 的数据整理、labels 和 EOS 要先验证。
+-
+-**动手练习**：先对初始 Instruct 模型做固定协议的 GSM8K 基线；从 train 划分 train/validation，test 留到最终比较。先在 16–32 条训练样本上检查是否能过拟合，再训练正式子集。保存 adapter 后重新启动并加载评测，确认基座版本一致。
+-
+-**通过标准**：产出 eval.py、答案提取测试、sft_train.py、固定 split 与 config；能报告初始模型和 SFT 的准确率、无效答案率、平均输出长度。原视频源码在旧仓库，本地没有完整的对应 LoRA 项目，实施需配合官方 PEFT/TRL 文档。
+-
+-### 阶段 03：从策略梯度走到 GRPO
+-
+-**视频**
+-
+-- [[Agentic RL] 02 策略梯度基础，从 PG 到 TRPO 到 PPO-Clip 核心公式简单推导](https://www.bilibili.com/video/BV12NHJzTEoP)
+-- [[LLM+RL] 理解 GRPO 公式原理及 TRL GrpoTrainer 代码实现（advantage 与 loss 计算）](https://www.bilibili.com/video/BV1pXA5eyEEg)
+-- [[Agentic RL] 03 策略梯度补充，GRPO loss 分析，优势标准化，On Policy](https://www.bilibili.com/video/BV18hsFzbEKJ)
+-
+-**对应本地材料与阅读范围**
+-
+-- [agentic_rl/deep_RL/pg/from_pg_to_ppo-clip.ipynb](../agentic_rl/deep_RL/pg/from_pg_to_ppo-clip.ipynb)：cell 3–12：REINFORCE、baseline、importance sampling、PPO-clip；第一遍只理解 TRPO 的动机，不必推完约束优化。
+-- [agentic_rl/deep_RL/pg/policy_gradient.ipynb](../agentic_rl/deep_RL/pg/policy_gradient.ipynb)：优先读 pg vs. sl、loss curve or reward curve、优势标准化和 GRPO objective analysis。
+-- [agentic_rl/deep_RL/group_policy_optimization/overall.ipynb](../agentic_rl/deep_RL/group_policy_optimization/overall.ipynb)：cell 4–7：用两组奖励计算均值和标准差，观察 std 归一化对不同题目的权重影响。
+-
+-**要学会的内容**：同一个 prompt 采 G 个回答，每个回答一个结果奖励 R_i，A_i=(R_i−mean(R))/(std(R)+ε)，再广播到回答的有效 token。当前策略、采样旧策略和固定 reference 是不同角色。GRPO 不需要训练 critic；数学题也可以直接用规则验证奖励，无需先训练 reward model。
+-
+-**动手练习**：用奖励 [1,0,0,1] 手算优势，构造 [B,G,T] logprob/mask 的玩具 loss 并做一次 backward。再检查全 0、全 1 组：相对优势没有区分信号。接入 GRPOTrainer 前先单测奖励函数。
+-
+-**通过标准**：能独立画出 prompt → G 个回答 → 答案奖励 → 优势 → token loss → 参数更新。能解释为什么看到负 loss 或近零 loss 并不能直接判断训练好坏。
+-
+-### 阶段 04：把奖励、KL 和更新代码连起来
+-
+-**视频**
+-
+-- [[Agentic RL] 04 REINFORCE 4 LLM，设计 reward，如何维护和计算 PG/KL loss，KL loss 计算细节](https://www.bilibili.com/video/BV1Ya1LB1EDM)
+-- [[LLM+RL] GRPO 中的 KL div（散度），reverse vs. forward，以及无偏估计（Schulman）](https://www.bilibili.com/video/BV1rsAXe7EZs)
+-
+-**对应本地材料与阅读范围**
+-
+-- [agentic_rl/deep_RL/align/align_demo.ipynb](../agentic_rl/deep_RL/align/align_demo.ipynb)：读生成、reward、PG/KL loss 的讲解。这个演示不是 GSM8K GRPO 工程，借它理解闭环。
+-- [agentic_rl/deep_RL/scripts/reinforce_align.py](../agentic_rl/deep_RL/scripts/reinforce_align.py)：沿模型加载 → 生成 → reward → logprob → loss.backward → optimizer 的顺序读；不要直接把它叫作 GRPO。
+-- [agentic_rl/training_practices/review_kl.ipynb](../agentic_rl/training_practices/review_kl.ipynb)：cell 1–4 看 k1/k3，cell 5–8 看估计量，cell 9–10 进一步区分 KL 数值估计与梯度估计。
+-- [agentic_rl/verl/objectives/objectives_loss.ipynb](../agentic_rl/verl/objectives/objectives_loss.ipynb)：第二遍读 pg loss、KL 与 entropy 各项如何拼起来，暂不修改 verl trainer。
+-
+-**要学会的内容**：答案正确性奖励和格式奖励分别统计；格式正确不代表推理正确。区分 old policy 的 ratio clipping 与 reference KL。采样 KL 的值和它的梯度不是一回事；记录所用训练器版本、loss_type、β、num_generations 和 num_iterations。
+-
+-**动手练习**：对负数、带逗号数字、分数、多个数字、缺失最终答案、格式正确但答案错等输入编写奖励测试。对同一个样本单独打印 correctness_reward、format_reward 和 total_reward。先做纯正确性奖励，再把格式奖励作为消融因素。
+-
+-**通过标准**：SFT → GRPO 的小规模流程可重跑；能解释训练奖励上涨而验证准确率下降的至少两种原因，并用样本日志验证。
+-
+-### 阶段 05：完成评测与消融，才算项目一结束
+-
+-**视频**
+-
+-- [[Agentic RL] 07 limits of RLVR，base vs. RL, pass@k, ppl 基于 vLLM 计算细节以及采样效率](https://www.bilibili.com/video/BV1pWSvBtEAk)
+-- [[veRL] 从原理层面理解训练参数，PPO & GRPO，batch size，kl & entropy](https://www.bilibili.com/video/BV1DZL1zNEN2)
+-
+-**对应本地材料与阅读范围**
+-
+-- [agentic_rl/reasoning/rlvr.ipynb](../agentic_rl/reasoning/rlvr.ipynb)：cell 2–8：pass@k 定义和实现；cell 11–29：评测数据流；后面的 PPL、entropy 留作扩展。需要修正示例残留问题后再复用。
+-- [agentic_rl/verl/verl-algos-metrics.ipynb](../agentic_rl/verl/verl-algos-metrics.ipynb)：先读符号约定、score/reward、advantage 的定义；不要把笔记中某次 run 的数值当作自己的实验结果。
+-- [agentic_rl/verl/训练及调参经验/config-perf-tuning.ipynb](../agentic_rl/verl/训练及调参经验/config-perf-tuning.ipynb)：读 batch、micro-batch、梯度累积的关系；不同长度 micro-batch 的平均方式需要注意实际 token 权重。
+-
+-**要学会的内容**：训练 reward、验证准确率、格式合规率、截断率、输出长度和样本多样性要分开看。固定解码协议；greedy accuracy 与多次随机采样估计的 pass@1 不混称。KL 系数或 G 的消融必须说明预算变化。
+-
+-**动手练习**：至少两组单变量消融：β 或奖励设计一组，G 或训练步数一组。记录 train/validation 曲线，最终用同一 test 协议比较初始模型、SFT、SFT→GRPO。每种模型保存至少 20 个失败案例；数据只用于自己的结论，不能保证 GRPO 一定涨分。
+-
+-**通过标准**：交付独立评测、配置、训练日志、checkpoint/adapter 重载说明和第一份报告。做到这一步再开始项目二；不要把大规模超参搜索作为入门前置。
+-
+-### 阶段 06：理解并写出单卡 OPD 最小闭环
+-
+-**视频**
+-
+-- [[Agentic RL] 10 分布的视角理解 LLM 的 SFT 训练和 RL 训练，Forward/Reverse KL，分布与奖励](https://www.bilibili.com/video/BV1WvrGBGEbf)
+-- [[数学基础与PyTorch] 05 OPD-01 RKL/FKL, TopK, 为什么可以复用RL infra，seq level KL，verl/slime](https://www.bilibili.com/video/BV1WpGu6aEKo)
+-
+-**对应本地材料与阅读范围**
+-
+-- [agentic_rl/sft_rl_fkl_rkl.ipynb](../agentic_rl/sft_rl_fkl_rkl.ipynb)：读分布视角、FKL/RKL 和双峰分布例子；关注目标和采样分布，不把 mode seeking 当作所有任务的必然结论。
+-- [agentic_rl/distillation/opd-online-distillation.ipynb](../agentic_rl/distillation/opd-online-distillation.ipynb)：按 core questions → KD/OPD → token-level/sequence-level 读。
+-- [agentic_rl/distillation/opd-01.ipynb](../agentic_rl/distillation/opd-01.ipynb)：主读 cell 2–16：FKL/RKL、PyTorch 实现、top-k、复用 RL、序列层面；cell 19 之后等接入 verl 时再读。
+-- [agentic_rl/distillation/simple-codes.ipynb](../agentic_rl/distillation/simple-codes.ipynb)：先做 cell 3–4 的离散分类分布精确 KL 与梯度检查；连续高斯 rsample 不是离散 token 的直接实现。
+-- [agentic_rl/distillation/opd_02.ipynb](../agentic_rl/distillation/opd_02.ipynb)：单卡 full-vocab loss 正确后，再读 top-k gather 和 use_policy_gradient 的差异。
+-
+-**要学会的内容**：先区分两个问题：上下文/前缀由谁生成，以及固定前缀上的 token 分布按谁加权。OPD 的前缀来自学生，不代表只能用 RKL。教师必须在学生的同一前缀上评分；teacher/student token ID 语义要一致，不能只看词表长度。
+-
+-**动手练习**：从同一学生 checkpoint 开始，冻结教师：学生生成 → 保留原 token IDs → 教师 no_grad forward → 学生可导 forward → response-mask 后的 KL → 更新学生。先在短序列、小 batch 上验证 teacher 无梯度、student 有梯度、teacher=student 时 loss 接近 0、padding 不改变结果，再用官方 DistillationTrainer。
+-
+-**通过标准**：能区分离线教师回答 SFT、学生前缀上的 token FKL、采样 token 的 RKL/PG。完成离线蒸馏 vs OPD 的小规模对照；GOLD、跨 tokenizer、多教师先不做。
+-
+-### 阶段 07：先理解 DDP/FSDP，再考虑大模型并行
+-
+-**视频**
+-
+-- [[pytorch distributed] 02 DDP 基本概念（Ring AllReduce，node，world，rank，参数服务器）](https://www.bilibili.com/video/BV1Uo4y1K7wM)
+-- [[Pytorch 分布式] ring-allreduce 算法（scatter-reduce、allgather）以及 FSDP](https://www.bilibili.com/video/BV1biLHzAEzv)
+-
+-**对应本地材料与阅读范围**
+-
+-- [agentic_rl/3D/DDP_NCCL.ipynb](../agentic_rl/3D/DDP_NCCL.ipynb)：cell 6–11：bucket、AllReduce、DDP 的通信时间线。
+-- [agentic_rl/infra/fsdp/fsdp_basics.ipynb](../agentic_rl/infra/fsdp/fsdp_basics.ipynb)：cell 4–11：FSDP unit、参数 shard、all-gather、reduce-scatter、CPU offload。
+-- [agentic_rl/infra/fsdp/gpt2.py](../agentic_rl/infra/fsdp/gpt2.py)：先读 get_mem、run_distributed_scenario 和启动参数，作为独立的两卡通信/显存实验参考；不是 OPD 完整程序。
+-- [agentic_rl/3D/fsdp_fsdp2.ipynb](../agentic_rl/3D/fsdp_fsdp2.ipynb)：读 torchrun、FSDP1/FSDP2、offload；具体 API 对照使用版本的官方文档。
+-
+-**要学会的内容**：DDP 每卡保留模型副本并同步梯度；FSDP 分片参数/梯度/优化器状态，并在计算时通信。理解峰值显存、临时 all-gather、通信耗时，不能把分片后的常驻大小当作峰值。
+-
+-**动手练习**：有两卡后先独立做 tiny-model 单卡/两卡训练测试，固定 global batch 或明确说明变化，记录每步耗时、每卡峰值 allocated/reserved memory。区分首步初始化与稳态。
+-
+-**通过标准**：能解释为什么小模型上多卡可能更慢；没有多卡就只交付单卡实测与分布式设计，不写已验证的加速比。TP/PP/Megatron/DeepSpeed 留作后续拓展。
+-
+-### 阶段 08：接入 vLLM、Ray 和 verl 的教师资源池
+-
+-**视频**
+-
+-- [[Agentic RL] [Inference] 05 vllm 参数配置、显存分析与性能调优 max_num_batched_tokens](https://www.bilibili.com/video/BV1QnSFBkEZU)
+-- [[Agentic Infra] [Ray] 01 ray task与ray actor基础（Ray remote），分布式任务调度，并发控制，多进程多线程与协程](https://www.bilibili.com/video/BV1HuZcBEEyy)
+-- [[Agentic Infra]  02 RL post-training 训练框架，训练流程参数分析与指标监控，显存分配与性能调优](https://www.bilibili.com/video/BV1z6Mu6LE7i)
+-
+-**对应本地材料与阅读范围**
+-
+-- [agentic_rl/infra/inference/vllm/vllm_sglang.ipynb](../agentic_rl/infra/inference/vllm/vllm_sglang.ipynb)：读参数、max-model-len、KV cache、并发和 rollout 使用场景；不需要学习工具调用服务。
+-- [agentic_rl/verl/ray/ray_remote_get.ipynb](../agentic_rl/verl/ray/ray_remote_get.ipynb)：cell 5–13：remote task/actor、ActorHandle、ObjectRef、ray.get。Ray actor 是有状态进程概念，不是要求你做 Agent 应用。
+-- [agentic_rl/verl/basics/verl-arch.ipynb](../agentic_rl/verl/basics/verl-arch.ipynb)：读 gen → sleep → actor update → rollout 权重同步、hybrid colocate、worker group。
+-- [agentic_rl/distillation/opd-verl-slime.ipynb](../agentic_rl/distillation/opd-verl-slime.ipynb)：主读 cell 3–11：官方脚本、配置、teacher pool、完整数据流和两种 loss 路径；本次只追 verl，slime 对比先跳过。
+-
+-**要学会的内容**：学生更新后的权重必须同步给 rollout；教师在学生轨迹上算 logprob/top-k，通常不需要为该轨迹重新生成答案。把生成、教师评分、学生训练、权重同步分别计时。vLLM 的内存预算要与训练共存方式一致。
+-
+-**动手练习**：先画资源分配图，再使用固定版本官方小规模例子适配。对比两个开关组合：teacher-top-k FKL 直接反传，以及 sampled-token RKL/PG；不要只改 loss_mode 就认为其余训练语义完全相同。复用项目一的评测协议和数据 split。
+-
+-**通过标准**：交付离线蒸馏/OPD/GRPO 对照、至少一种 loss 消融，以及硬件允许时的吞吐/显存分析。若学生 FSDP 占两卡，教师还要独立 GPU，资源需求就不止两卡；两卡阶段可先独立验证 FSDP，再单独做教师—学生实验。
+-
+-<!-- LEARNING_APPENDIX_END -->
+-
+-## 19. 当前事实与后续待验证项
+-
+-**本次已核查**：两份附件的项目方向；已有视频映射和八阶段学习路线；多教师相关本地笔记；TRL 与 verl 当前文档；部分 verl 教师路由和配置源码；GSM8K 与 MBPP 数据集元数据。
+-
+-**本文尚未执行**：GPU 环境安装、教师训练、学生 SFT/GRPO/OPD、代码沙箱实现、分布式部署、任何基准或性能测量。模型能力、显存是否够用和所有训练增益都需要后续实测。
+-
+-开始实施时的第一批工作应是：锁定环境与数据 → 跑通原始模型评测 → 验证 SFT mask → 完成小规模 SFT。项目二则应等教师和评测准备好后，从小词表损失测试与单教师 smoke 开始。
+-
+-## 20. 主要来源与使用范围
+-
+-- [Qwen2.5-0.5B-Instruct 模型卡](https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct)：模型身份与使用前提。
+-- [TRL SFTTrainer](https://huggingface.co/docs/trl/sft_trainer)：监督训练接口与损失配置。
+-- [PEFT LoRA](https://huggingface.co/docs/peft/developer_guides/lora)：低秩适配实现。
+-- [TRL GRPOTrainer](https://huggingface.co/docs/trl/grpo_trainer)：奖励、KL 与不同损失选项。
+-- [TRL DistillationTrainer](https://huggingface.co/docs/trl/distillation_trainer)：单教师在线蒸馏与散度参数。
+-- [verl OPD](https://verl.readthedocs.io/en/latest/algo/opd.html)：教师路由、资源组织和 distillation 配置。
+-- [verl 多教师示例](https://github.com/verl-project/verl/blob/main/examples/on_policy_distillation_trainer/run_qwen3_8b_mopd_fsdp.sh)：系统入口参考，不是本项目已验证启动脚本。
+-- [MOPD](https://arxiv.org/abs/2606.30406)：多教师能力整合的研究背景。
+-- [GSM8K](https://huggingface.co/datasets/openai/gsm8k/blob/main/README.md)、[MBPP](https://huggingface.co/datasets/google-research-datasets/mbpp/blob/main/README.md)：数据结构和划分。
+-- [视频总索引](../video_mapping/index.html)、[此前学习路线](../video_mapping/learning_route.html)：视频简介与本地材料映射。此前路线描述单教师项目二，本指南是升级后的总设计。
+-
+-来源核查日期为 2026-10-19。框架默认值和接口属于版本相关事实；具体实验仍需记录所安装版本。本文的阶段划分、实验编号、验收项和时间安排是针对你的项目提出的设计，不是上游官方的效果承诺。
++# 两个后训练项目：完整设计与实施指南
++
++## 阅读导航：当前配置与历史教学材料
++
++新增共用数据工程路线：[强模型合成数据与验证](共用规范_强模型合成数据与验证.md)。项目一增加同题解答蒸馏/训练侧定向增广，项目二保留在线 logits 教师并补充离线 API 对照，项目三增加符号引导语义过滤与可验证解答。三项目核心训练数量不变，新增数据消融单独计数；该设计尚未调用 API 或产出合成数据。
++
++本文件下方正文作为历史理论与学习路线保留，不再充当可执行配置总纲。当前统一配置为：项目一 `Qwen2.5-7B-Instruct`（E0～E4）；项目二 `Qwen2.5-1.5B-Instruct` 学生与 7B Math/Coder 教师（D0～D4）；项目三 `Qwen2.5-VL-3B-Instruct`（V0～V4）。各项目核心均为 4 次训练，不含复现与 smoke。
++
++模型、数据、训练预算与实验编号以三份分项方案为唯一配置来源。项目二当前默认从带验证信息的 Python 数据中构造训练/dev，最终代码评测为 HumanEval+/MBPP+；下面的 MBPP 374 条训练设置已退役。下面的 0.5B 学生、1.5B 教师、共同 SFT 学生起点和 P1/P2 编号均是历史教学设置，不应抄入新配置。
++
++建议继续阅读本文件第 5、8、9 节的原理、第 14、15 节的工程检查及第 18 节的视频路线；其中涉及具体模型、数据规模、训练起点或框架 API 的示例须按分项方案与锁定版本替换。旧公式与示意代码也需通过数值测试后使用，导航声明不等于全部历史内容已经重新验收。
++
++> **2026-10-22 新版设计入口：** 项目一主线已确定升级为 7B，以下旧正文保留为历史设计。新的模型、数据、核心工作量、实验数量与评测协议请阅读 [项目一：7B 数学后训练](项目一_7B数学后训练_详细实施方案.md)、[项目二：双教师在线蒸馏](项目二_双教师在线蒸馏_详细实施方案.md)、[项目三：多模态几何推理](项目三_多模态几何推理_详细实施方案.md)。新版是待实施方案，不能把下面历史状态当作最新运行状态。
++
++> **2026-10-20 实施版入口：项目一现采用 1.5B、Colab 单卡方案。** 已新增 [TinyPostTrain 代码与运行教程](../tiny_posttrain/README.md)、[CPU 资源准备 Notebook](../tiny_posttrain/notebooks/01_Prepare_Drive_CPU.ipynb) 和 [A100 训练恢复 Notebook](../tiny_posttrain/notebooks/02_Train_Resume_Colab.ipynb)。下面的 0.5B 描述保留为早期设计记录；项目一的实际模型、参数和运行步骤以新目录为准。CPU 接口测试已执行，真实 A100 训练尚待验证。
++
++**TinyPostTrain → MultiTeacher-DistillRL**  
++版本：2026-10-19 · 面向学习、独立实现、实验报告与面试讲解
++
++> 推荐顺序：先完成项目一的可靠评测、SFT 和 GRPO，再完成项目二的单教师 OPD、双领域教师路由，最后按资源条件扩展多卡与教师融合。两个项目共用数据与评测基础设施，但各自有独立的问题、对照实验和验收结果。
++
++本文综合了两份项目设想附件、本仓库学习材料、已整理的视频标题与简介，以及 TRL、verl、数据集和模型的官方资料。附件是设计输入，其中的建议经过取舍。**本文交付的是项目设计和实施指南，尚未训练模型，也没有实测分数、速度或显存结果。** 视频映射依据标题、简介和对应文件，不代表已逐段观看视频。本文中的目录、配置和伪代码，除明确指向现有仓库的部分外，均是建议实现。
++
++## 1. 最终确定的两个项目
++
++### 1.1 项目一：TinyPostTrain
++
++**定位：小模型数学推理后训练与可复现实验。**
++
++以 Qwen2.5-0.5B-Instruct 为起点，在 GSM8K 上建立原始检查点、LoRA-SFT、SFT 后 GRPO 的完整比较。重点是理解并实现数据处理、监督信号、组内优势、奖励、评测与训练诊断。
++
++你最终要回答：
++
++1. SFT 对答案正确率、输出格式和回答长度分别有什么影响？
++2. 相同 SFT 起点上，GRPO 能否在独立评测中继续改善数学能力？
++3. 奖励提高但评测不提高时，是解析器、奖励设计、过拟合还是采样设置的问题？
++4. 改变组大小、KL 约束或长度预算时，收益与计算成本怎样变化？
++
++**最低完整成果**：一套数据处理与评测程序、三个模型阶段的真实结果、至少一个控制变量实验、错误案例分析、可复现配置和训练记录。没有提升也可以形成合格的研究报告，但必须解释限制，不能把未验证的改进写成成果。
++
++### 1.2 项目二：MultiTeacher-DistillRL
++
++**定位：多教师 on-policy 蒸馏的双领域能力整合与训练系统分析。**
++
++学生先针对题目生成自己的回答。数学教师或代码教师在这些学生前缀上给出 token 分布，学生通过蒸馏损失更新。第一版采用已知领域标签路由：GSM8K 交给数学教师，MBPP 交给代码教师。
++
++你最终要回答：
++
++1. 与混合领域 SFT、单教师 OPD 相比，双教师路由能否兼顾数学和代码？
++2. 收益来自教师专业性、数据覆盖、训练预算，还是路由方式？
++3. 数学与代码之间是否出现遗忘或相互干扰？
++4. 教师评分占多少时间，多卡或不同部署方式能解决什么瓶颈？
++
++**最低完整成果**：经过评测的两个领域教师、单教师 OPD 基线、按领域路由的双教师 OPD、分领域评测、教师调用与训练成本记录。多 GPU、动态融合、第三个教师都是扩展项，不作为第一版完成条件。
++
++### 1.3 两者如何衔接
++
++项目二直接复用项目一的数据版本管理、chat template 处理、数学答案提取、日志、检查点和评测框架；新增 MBPP 代码执行评测、教师评分、路由、分布损失以及训练与推理的资源协调。
++
++**项目一最好的数学检查点可以作为项目二的一种初始化实验，但不能让它只出现在某个实验组中。** 项目二主比较建议统一从同一个混合领域 SFT 学生开始。这样单教师、多教师之间的差别才主要来自教师指导方式。
++
++两个项目均围绕 LLM 后训练。代码执行用于评测，不构成让模型调用工具、与环境交互的 Agent 训练。
++
++## 2. 对原方案的取舍与修正
++
++### 2.1 保留的设计
++
++- 先掌握 SFT、LoRA、GRPO，再学习 OPD，避免同时处理过多新变量。
++- 项目二采用数学与代码两个领域；第三个指令遵循教师推迟。
++- 先按领域选一个教师，再考虑多个教师对同一前缀融合。
++- 先证明算法与评测链路正确，再研究教师服务和多卡吞吐。
++- 采用 TRL 建立小规模实验，采用 verl 学习已有教师调度与分布式训练实现。
++
++### 2.2 必须修正的理解
++
++**Instruct 检查点不应命名为 Base 模型。** 这里选择的是已经经过指令训练的 Qwen2.5-0.5B-Instruct。结果中将其写为 `original_instruct`；只有实际使用预训练 Base 权重，才写 Base。[模型卡](https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct)
++
++**两个“专家”是需要训练或挑选并验证的模型。** 使用同一个 Qwen2.5-1.5B-Instruct 分别进行数学和代码 SFT/LoRA，是候选方案。仅换系统提示词不能证明得到两个专家，也不能保证它们强于学生。
++
++**领域路由与概率融合是不同实验。** 路由对每个样本只采用一个教师；融合让多个教师对同一位置提供监督。领域路由无需解决所有教师的 token 级冲突，但共享学生仍可能发生跨领域梯度冲突。
++
++**模型家族相同不等于 token 分布一定可以直接比较。** 必须检查词表大小、每个 token 对应的 ID、特殊 token、chat template 与输入编码。词表不兼容时不能直接逐列 KL。
++
++**多教师研究存在，不代表本方案是论文复现。** MOPD 论文研究领域教师的 on-policy 能力整合；本方案的小模型、SFT 专家、任务和资源预算均需另行说明，应称“参考 MOPD 思路的小规模实验”，除非完整对齐了论文设置。[MOPD 论文](https://arxiv.org/abs/2606.30406)
++
++**多卡不是自动加速。** 小模型可能受通信、服务等待和 rollout 开销影响。只有同口径测量之后，才能写加速比或资源效率。
++
++## 3. 统一技术边界与实施环境
++
++### 3.1 建议技术栈
++
++- 项目一：Python、PyTorch、Transformers、Datasets、PEFT、TRL。
++- 项目二算法原型：复用上述工具，先用单教师 DistillationTrainer 理解流程，再扩展教师选择与评分接口。
++- 项目二系统扩展：verl、vLLM、Ray、FSDP。只有完成多卡实验时再引入相应组件；不要求同时掌握 DeepSpeed。
++- 代码评测：隔离的 Linux 容器或等价沙箱，限制时间、内存、进程与网络。
++
++Windows 可作为阅读、编辑和结果分析环境。正式 GPU 训练建议放在已验证的 Linux CUDA 环境中；不要在未核验依赖的情况下承诺 Windows 原生可运行整套 verl/vLLM。
++
++### 3.2 版本必须落到实验记录
++
++每次正式实验保存：模型与 tokenizer revision、数据集 revision、训练脚本 Git commit、包版本、CUDA/驱动、GPU 型号和数量、随机种子、完整配置、命令、运行时间与产物路径。
++
++本文核验的是 2026-10-19 可见文档和源码。TRL、verl 接口会变化，因此下文给出的是实现契约和配置要点。**正式训练前，选定一组兼容版本并锁定，不能把滚动文档视为永远可运行的命令。**
++
++本目录 `sources/` 保存了部分 verl 源码快照及 SHA-256；GitHub commit 查询受到 HTTP 403 限制，未取得对应提交号。这些快照可用于核对本文，不构成已锁定的训练环境。
++
++## 4. 先建立统一的数据与评测协议
++
++### 4.1 GSM8K：数学任务
++
++使用 `openai/gsm8k` 的 `main` 配置。官方元数据为训练集 7,473 条、测试集 1,319 条。建议固定种子从训练集划出 500 条验证集，剩余 6,973 条训练；具体 ID 写入版本化文件。[GSM8K 数据集说明](https://huggingface.co/datasets/openai/gsm8k/blob/main/README.md)
++
++训练回答可以包含原数据的解题过程，但题目 prompt 不能拼入参考答案。统一最终答案约定，例如 `#### 42`。评测先提取最终答案，再做数值规范化；对负数、小数、分数、逗号、单位、多个候选答案和空输出建立测试。
++
++必须同时报告：答案正确率、解析失败率、平均回答长度、截断比例。格式有效但答案错误不是正确解答；没有成功解析也不能悄悄从分母剔除。
++
++### 4.2 MBPP：代码任务
++
++第一版建议明确采用 `google-research-datasets/mbpp` 的 `full` 配置。当前元数据中 train/test/validation/prompt 分别为 374/500/90/10；`sanitized` 对应 120/257/43/7。两种配置字段和规模不同，不能混用训练集、测试集或结果口径。运行准备阶段须实际打印 split 计数和字段验证。[MBPP 数据集说明](https://huggingface.co/datasets/google-research-datasets/mbpp/blob/main/README.md)
++
++MBPP 数据较小，因此第一版的定位是代码蒸馏原型。多次重复这几百个训练任务不能等价于获得大量新题。若教师在代码验证集没有优势，优先修正数据和教师，再考虑扩大训练数据；新增数据要记录来源、许可、去重与评测集排除规则。
++
++预先固定 prompt 协议：题目描述、必要函数签名、允许的 imports、是否展示公共示例。所有模型使用同样的信息。用于最终判分的测试不能进入训练 prompt 或被用来选择该测试题的教师权重。
++
++代码评测流程为：生成 → 固定规则提取代码 → 构造独立测试文件 → 在沙箱执行 → 记录结果。限制运行时间和内存，禁用网络，不挂载宿主机敏感目录，每题使用干净执行环境。记录 `pass / assertion_fail / syntax_error / timeout / runtime_error / extraction_fail`；基础设施故障单独记录并重试，不能伪装成模型错误。
++
++### 4.3 数据隔离与选择规则
++
++训练集用于参数更新；验证集用于选择超参数、检查点和路由规则；测试集只用于最终比较。先做 ID 和文本去重，再检查明显近重复与模板变体。评测数据可能已存在于模型预训练语料，这一点无法凭本项目消除，应在报告中注明公开基准污染风险。
++
++不要为了汇报较高分数反复挑选测试集最佳检查点。若已经看过测试表现并据此改方案，应披露该过程，并用额外保留集做补充验证。
++
++### 4.4 指标与统计口径
++
++主指标采用数学准确率与代码 pass@1，分别报告；可以附宏平均，但不允许只给一个总分掩盖单领域下降。默认主评测采用固定贪心解码，额外采样评测单列 temperature、top-p、最大输出长度与样本数。
++
++若每题生成 n 个样本，其中 c 个通过，可以用下面的标准估计量计算 pass@k：
++
++$$
++\widehat{\mathrm{pass@k}}=1-\frac{\binom{n-c}{k}}{\binom{n}{k}},\qquad n\ge k.
++$$
++
++只有生成了足够样本，才报告相应 k。不能将“每题只生成一次后的正确率”写成 pass@8。数学的多样本正确率与多数投票准确率也应分开命名。
++
++主结论至少报告固定评测样本上的成对差异；预算允许时用 3 个训练种子，并报告均值与波动。小预算可以先做一个种子探索，再对关键对照补充种子。只有单次实验时，结论必须限定为该配置的观察。
++
++## 5. 项目一：从张量到训练目标
++
++### 5.1 SFT 的数据流
++
++将题目与参考回答通过固定 chat template 编码，得到 `input_ids`、`attention_mask` 和 `labels`，形状均为 `[B,L]`。模型输出 logits 为 `[B,L,V]`。B 是 batch 大小，L 是序列长度，V 是词表大小。
++
++因果语言模型用前面的 token 预测下一个 token。概念上，`logits[:, :-1]` 对齐 `labels[:, 1:]`；如果框架内部已经做 shift，外部不能再做一次。仅在回答部分计算损失，prompt 和 padding 的 labels 设为忽略值，通常是 `-100`。
++
++$$
++\mathcal L_{\mathrm{SFT}}=-\frac{1}{\sum_{i,t}m_{it}}\sum_{i,t}m_{it}\log\pi_\theta(y_{it}\mid x_i,y_{i,<t}).
++$$
++
++这里 m 表示该 token 是否计入监督。`attention_mask` 控制有效输入位置，loss mask 控制哪些位置产生训练损失；题目需要被模型看到，但通常不要求模型重新预测题目。
++
++先做一个两样本实验，逐 token 打印标签和 mask，检查 EOS 是否被训练、padding 是否被忽略、截断是否截掉最终答案。再用几十条数据尝试过拟合，确认损失能下降且输出格式符合预期，最后才扩展数据量。
++
++TRL 的 prompt-completion 数据格式与 `completion_only_loss` 等接口须按锁定版本配置。不要同时套用旧版 collator 教程和新版 Trainer 参数而不检查实际 labels。[SFTTrainer 文档](https://huggingface.co/docs/trl/sft_trainer)
++
++### 5.2 LoRA：训练的是增量
++
++对于原权重 $W\in\mathbb R^{d_{out}\times d_{in}}$，LoRA 使用：
++
++$$
++W'=W+\frac{\alpha}{r}BA,\quad A\in\mathbb R^{r\times d_{in}},\quad B\in\mathbb R^{d_{out}\times r}.
++$$
++
++基础 W 冻结，训练低秩增量 BA。新增参数约为 $r(d_{in}+d_{out})$，不是把原 W 精确分解后只训练其中一部分。r 越大通常容量和资源开销越大，但效果需要实验。
++
++第一版只固定一套 target modules、rank、alpha、dropout。比较模型时保存这些参数。QLoRA 是可选的资源实验，应在普通 LoRA 链路稳定后引入；量化误差、计算 dtype 和显存节省必须分别记录。[PEFT LoRA 文档](https://huggingface.co/docs/peft/developer_guides/lora)
++
++### 5.3 GRPO：一题多答，构造相对优势
++
++对每道题 x 采样 G 个回答，由可验证奖励函数得到 $r_1,\ldots,r_G$。常见组内标准化形式为：
++
++$$
++A_i=\frac{r_i-\overline r}{\operatorname{std}(r_1,\ldots,r_G)+\epsilon}.
++$$
++
++把该回答的优势用于对应生成 token。当前策略与采样旧策略的概率比为：
++
++$$
++\rho_{it}=\exp\left(\log\pi_\theta(y_{it}\mid s_{it})-\log\pi_{old}(y_{it}\mid s_{it})\right).
++$$
++
++一个用于理解的裁剪目标写为：
++
++$$
++\mathcal L_{\mathrm{GRPO}}=-\operatorname{Avg}_{i,t}\left[\min\left(\rho_{it}A_i,\operatorname{clip}(\rho_{it},1-\epsilon_c,1+\epsilon_c)A_i\right)-\beta D_{it}\right].
++$$
++
++$s_{it}$ 是题目与已生成前缀；$D_{it}$ 是相对 reference policy 的 KL 项或其估计；$\epsilon_c$ 控制裁剪；$\beta$ 控制约束强度。具体 loss type、长度归一化、奖励标准化和 KL 估计以所选实现为准，不能把上式当作所有 GRPO 版本的逐行源码。
++
++旧策略用于重要性比率，参考策略用于约束漂移，二者角色不同。G 个回答奖励相同，组内优势往往为零，单靠这一组无法提供区分回答的奖励信号；记录这种组的比例，比只看平均奖励更有帮助。
++
++数学任务不要求训练独立奖励模型，可以直接依据答案正确性给奖励。当前 TRL 文档的默认 KL 系数为 0；是否加载 reference、采用何种 loss 不能凭旧教程推断，必须显式记录配置。[GRPOTrainer 文档](https://huggingface.co/docs/trl/grpo_trainer)
++
++### 5.4 奖励函数的第一版
++
++先用 `correct_answer ∈ {0,1}`，同时将格式正确性作为日志指标。若格式确实阻塞学习，再增加小权重格式奖励，并做去掉格式项的消融。
++
++不建议第一版奖励“推理越长越好”、特定关键词或表面思维链格式。它们容易让模型增加长度，而不提高答案正确率。不要通过输出包含任意一个正确数字就判对；最终答案抽取必须有明确位置和歧义处理。
++
++奖励函数与最终评测应共享规范化规则，但保留独立的测试用例和人工抽查，避免一个解析漏洞同时污染训练和评测。
++
++## 6. 项目一的实现步骤与实验
++
++### 6.1 分阶段实施
++
++1. **P1-A，数据和评测**：冻结 split 和模板；评测原始 Instruct；保存逐题输出、解析答案、标签、长度、耗时。
++2. **P1-B，SFT**：完成两样本 mask 检查、几十样本过拟合，再训练 LoRA；依据验证集选择检查点，保存 adapter 和基础模型 revision。
++3. **P1-C，GRPO**：从固定 SFT 检查点开始；先在少量训练题上验证采样、奖励和更新，再扩大规模。
++4. **P1-D，分析**：统一解码评测三个阶段，检查奖励与准确率关系，归类错误，补充一个控制变量实验。
++
++每一步都必须能从保存的配置重新运行。不要等训练结束才补写数据版本和评价规则。
++
++### 6.2 必做实验编号
++
++- `P1-00`：原始 Instruct，不训练。
++- `P1-01`：LoRA-SFT。
++- `P1-02`：从 P1-01 开始 GRPO，正确性奖励。
++- `P1-03`：从同一个 P1-01 开始，只改变一个因素，例如格式奖励开关，或 KL 系数。
++
++可选实验包括组大小、LoRA rank、QLoRA 和直接从原始 Instruct 做 GRPO。不要一次性做所有组合。改变组大小会改变 rollout 成本，应同时报告生成 token 数和墙钟时间，不能只按相同步数比较效率。
++
++### 6.3 项目一完成的标准
++
++你能解释一个 batch 的每个张量和 mask；能区分 old policy 与 reference policy；三个模型的评测使用同一协议；有真实训练曲线和逐题结果；至少分析 20 个有代表性的成功、失败或回退案例；能说明一个超参数变化为何产生观察到的现象，以及证据不能支持哪些结论。
++
++## 7. 项目二：教师与学生应该怎样准备
++
++### 7.1 推荐模型关系
++
++学生候选是 Qwen2.5-0.5B-Instruct。数学教师和代码教师候选都基于 Qwen2.5-1.5B-Instruct，分别训练领域 LoRA。教师训练和学生训练使用明确的数据划分，最终都在保留验证集上检查能力。
++
++另外保留一个通用教师基线：同一尺寸的原始 Instruct 或混合领域 SFT 教师。这样可以区分“两个专家的互补性”与“单纯用了更好的教师”。混合领域教师训练预算也要记录。
++
++### 7.2 教师准入检查
++
++在学生训练前完成以下检查：
++
++- 数学教师在数学验证集上的准确率、格式与长度表现。
++- 代码教师在代码验证集上的 pass@1、可执行率和超时率。
++- 两位教师各自的跨领域表现，用于识别互补性及弱项。
++- 教师是否强于学生；若差异很小，先扩大验证证据或调整教师，不要直接进入昂贵训练。
++- 同一学生前缀输入不同教师时，返回的分布、位置与词表是否正确对齐。
++
++教师作为独立生成器的分数只是必要参考。OPD 中教师要给学生错误前缀评分，可能遇到训练外状态，因此还要抽查这类前缀上的建议是否合理。
++
++### 7.3 项目二的共同学生起点
++
++先训练一个数学与代码混合领域 SFT 学生，作为 `P2-S0`。所有 OPD 主实验从同一个 `P2-S0` 开始；同时保留原始 Instruct 和 P2-S0 作为静态比较点。
++
++训练样本数的自然比例会使 GSM8K 占明显多数。建议第一版以明确的领域采样比例构建 batch，例如数学/代码各 50%，并记录每域重复轮数。由于代码回答通常更长，还需记录每域 token 占比和实际 loss 权重。50% 样本并不等于 50% 梯度贡献。
++
++固定领域采样与固定领域损失权重是两个不同旋钮。先固定两者，再分别做消融。
++
++## 8. OPD 到底学习什么
++
++### 8.1 离线教师回答与 on-policy 前缀
++
++离线序列蒸馏先让教师生成完整答案，再让学生对这些答案做 SFT。OPD 则先由当前学生生成回答，然后让教师评价**学生实际走到的前缀**。
++
++因此，学生生成了不理想的中间步骤时，教师仍在该前缀上提供下一 token 分布，而不是用自己的整段答案替换学生轨迹。这是项目二必须实现并验证的关键。
++
++### 8.2 第一版采用前向 KL 的局部蒸馏目标
++
++记学生采样前缀为 $s_t=(x,y_{<t})$，教师分布为 $p_T(v\mid s_t)$，可训练学生分布为 $q_\theta(v\mid s_t)$：
++
++$$
++\mathcal L_{\mathrm{FKL}}=\frac{1}{\sum_t m_t}\sum_t m_t\sum_{v=1}^{V}p_T(v\mid s_t)\log\frac{p_T(v\mid s_t)}{q_\theta(v\mid s_t)}.
++$$
++
++教师在该步骤冻结；rollout 和已采样前缀视为固定数据，学生训练 forward 保留梯度。去掉与学生参数无关的教师熵后，这个局部目标对学生的梯度等价于软标签交叉熵。
++
++这是一个在学生访问状态上训练的 surrogate objective。它没有对前缀采样过程反向传播，不应声称自己计算了整个轨迹分布目标的所有导数。
++
++### 8.3 反向 KL 与实现差异
++
++$$
++\mathrm{KL}(q_\theta\Vert p_T)=\sum_v q_\theta(v)\log\frac{q_\theta(v)}{p_T(v)}.
++$$
++
++前向 KL 与反向 KL 对覆盖教师分布、避开教师低概率区域的偏好不同。不能笼统说 OPD 只能使用反向 KL。若采用采样 token 的 logprob 差值估计，也不能把普通 `mean(logq-logp)` 的 autograd 结果直接当作完整反向 KL 梯度：采样分布本身也依赖学生参数，需要明确的估计器与更新方式。
++
++第一版先选一种目标并验证梯度，再对比另一种。不要把 KL 方向、top-k、policy-gradient 开关和任务奖励同时修改。
++
++### 8.4 温度与参数命名
++
++蒸馏温度作用于 logits，例如 $p=\operatorname{softmax}(z/T)$；它改变监督分布。若使用 $T^2$ 梯度缩放，必须在配置和实验中写明。生成 temperature 与蒸馏 temperature 是不同参数。
++
++TRL DistillationTrainer 当前文档中的 `beta` 用来选择散度：0 为前向 KL、1 为反向 KL、0.5 对应 JSD；这和 GRPO 中 KL 惩罚系数的含义不同。内部配置建议写成 `distill_divergence` 与 `reference_kl_coef`，在适配器中再映射到框架参数。[DistillationTrainer 文档](https://huggingface.co/docs/trl/distillation_trainer)
++
++## 9. 多教师：先路由，再考虑融合
++
++### 9.1 必做版本：固定领域路由
++
++定义 $r(x)$ 为样本领域，数学样本选 $T_m$，代码样本选 $T_c$：
++
++$$
++p_T(\cdot\mid s_t)=p_{r(x)}(\cdot\mid s_t),\qquad r(x)\in\{m,c\}.
++$$
++
++路由只依赖已知数据来源，不需要额外分类器，也不依赖测试题答案。训练时记录请求 sample ID、domain、teacher ID、token 数和耗时，确认没有静默错路由。
++
++该版本能够研究能力整合，但不直接研究同一个 token 上多个教师的冲突。跨领域干扰通过学生的共同参数发生，仍需分别检查两域成绩。
++
++### 9.2 扩展一：固定权重概率融合
++
++$$
++M(v\mid s)=\sum_{k=1}^{K}\alpha_k p_k(v\mid s),\qquad \alpha_k\ge0,\quad\sum_k\alpha_k=1.
++$$
++
++这里混合的是概率，不是 logits。用 logprob 实现算术混合，应使用 `logsumexp(log_alpha + logp)`。直接把 logprob 加权相加对应另一种分布组合，不能称为同一个算法。
++
++对于固定教师、固定权重和固定前缀，有：
++
++$$
++\sum_k\alpha_k\mathrm{KL}(p_k\Vert q)=\mathrm{KL}(M\Vert q)+\sum_k\alpha_k\mathrm{KL}(p_k\Vert M).
++$$
++
++右侧第二项与 q 无关，因此两种目标对学生的梯度相同，损失标量通常并不相等。**正确原因是可以分解出一个与学生无关的项，不能说“KL 对第一个参数线性”。** 本仓库 `mopd.ipynb` 开头有这一不准确表述，阅读时应以此处的展开为准。
++
++反向 KL 的加权和对应归一化几何平均：
++
++$$
++g(v)=\frac{\prod_kp_k(v)^{\alpha_k}}{Z},\qquad \sum_k\alpha_k\mathrm{KL}(q\Vert p_k)=\mathrm{KL}(q\Vert g)-\log Z.
++$$
++
++它与算术混合 M 不同。这也说明“先决定 KL 方向，再决定怎样融合”很重要。
++
++### 9.3 扩展二：动态权重
++
++只有固定路由和固定融合都稳定后，才考虑 $\alpha_k(x,s_t)$。先做样本级权重，再考虑 token 级权重。权重可以由已校准的领域置信度或独立路由器给出，但不能使用最终测试答案或隐含正确性标签。
++
++教师低熵表示自信，不一定表示正确。若用熵构造权重，需要在验证集检查其与正确率的关系。若权重可学习，还要定义路由器的训练数据、梯度是否截断，以及额外参数带来的对照；第一版融合建议权重冻结或 detach。
++
++### 9.4 top-k 分布是近似，不是免费精确计算
++
++完整 `[B,L,V]` 分布成本较高，可采用 chunking 或教师 top-k。但截断再归一化改变了目标，应报告教师 top-k 保留质量、截断位置和残余概率处理。
++
++多教师 top-k 融合还需要对齐 token ID，并明确并集之外的概率怎样处理。不同教师返回的第 j 列未必是同一个 token，不能直接逐列相加。不要使用“top-64 总能覆盖 99% 概率”作为默认事实。
++
++## 10. 项目二的实现接口与数据流
++
++### 10.1 每个训练样本应携带什么
++
++建议的逻辑记录如下；实际序列化为 JSONL、Parquet 或框架格式时，由适配层转换：
++
++```json
++{
++  "sample_id": "gsm8k/train/000123",
++  "domain": "math",
++  "data_source": "gsm8k",
++  "prompt": "题目文本或结构化 messages",
++  "reference": "仅用于监督训练或离线评测的标准答案",
++  "split": "train",
++  "dataset_revision": "运行前填写真实 revision"
++}
++```
++
++`reference` 不是 OPD 教师评分时默认可见的输入。教师只看与学生对应的题目和生成前缀。SFT 数据可以另外携带 completion，但必须避免字段串入 prompt。
++
++### 10.2 一个更新步骤
++
++```python
++# 概念伪代码，非特定版本 Trainer 的可直接调用接口
++batch = sample_prompts_with_domains()
++with no_grad():
++    rollout = student_generate(batch.prompts)
++    # 保留原始 token IDs、长度、EOS、模型版本和生成配置
++    routed = router.group_by_teacher(batch, rollout)
++    teacher_targets = score_student_prefixes(routed)
++    teacher_targets = restore_original_sample_order(teacher_targets)
++
++student_logits = student_forward_with_grad(rollout.input_ids)
++loss = masked_distillation_loss(student_logits, teacher_targets,
++                                rollout.response_mask)
++loss.backward()
++optimizer.step()
++sync_rollout_weights_if_separate_engine()
++```
++
++教师评分输入可以是完整序列，由因果 attention 保证每个位置只看到此前 token。必须正确 shift，不能让预测第 t 个 token 的教师看见该 token 本身。所有 logprob 使用生成时原始 IDs，不要先 decode 再 encode 后假定 IDs 相同。
++
++学生独立 rollout 引擎需要同步训练权重。若缓存旧轨迹复用，记录轨迹年龄与更新次数；长期使用初始学生轨迹就失去了持续 on-policy 的性质。
++
++### 10.3 单卡原型与 verl 扩展的区别
++
++单卡原型可按领域分组、顺序加载或切换两个教师 adapter，先计算教师目标，再训练学生。它需要自己管理显存、目标缓存和样本顺序。共享教师底座切换 adapter 时应串行评分或使用可靠的请求隔离，不能让并发请求误用另一个 adapter。
++
++verl 的标准多教师路径则采用教师服务与独立资源池。不要把顺序评分原型描述为已经验证的 verl 单卡多教师部署。两个实现可以共享数据和损失测试，但需要分别测量资源与结果。
++
++## 11. 如何正确对接 verl
++
++官方当前 OPD 文档包含多教师配置。`teacher_key` 默认是 `data_source`；每条样本的对应字段需进入非 tensor batch，并与配置的教师 `.key` 完全匹配。未知键应直接报错，不应默认退回任意教师。[verl OPD 文档](https://verl.readthedocs.io/en/latest/algo/opd.html)
++
++### 11.1 必须检查的配置契约
++
++- 数据键选择 `data_source` 时，数学数据写 `gsm8k`，代码数据写 `mbpp`，教师 key 也使用这两个值。
++- 多教师条目使用明确名称，例如 `gsm8k_teacher` 与 `mbpp_teacher`。不要保留默认 `teacher_model` 再加第二个条目并假定两者都会生效；当前实现对默认条目有特殊处理。
++- 教师与学生词表、token ID 和输入处理兼容。
++- 若采用 `forward_kl_topk`，核查 `use_policy_gradient=False` 的路径；不要将 top-k 完整监督与只利用采样 token 的更新机制混为一谈。
++- 算法实验阶段明确是否关闭额外任务奖励，避免同时加入 GRPO 式奖励后无法归因。
++- 教师资源池容量满足各副本的 TP、DP、PP 需求，不能只看教师数量。
++
++教师池所需 GPU 数按当前文档关系检查：
++
++$$
++N_{teacher\_gpu}=\sum_k replicas_k\times TP_k\times DP_k\times PP_k.
++$$
++
++### 11.2 从哪里读源码
++
++按顺序读：
++
++1. `verl/trainer/config/distillation/distillation.yaml`：有哪些参数，默认值是什么。
++2. `verl/workers/config/distillation.py`：配置验证与损失选项。
++3. `verl/experimental/teacher_loop/teacher_manager.py`：教师选择与资源管理。
++4. `verl/experimental/teacher_loop/teacher_model.py`：教师评分接口。
++5. `verl/experimental/agent_loop/agent_loop.py`：样本字段怎样流入调用链。
++6. `verl/trainer/distillation/fsdp/losses.py`：最终如何形成学生损失。
++
++实际官方示例是 `examples/on_policy_distillation_trainer/run_qwen3_8b_mopd_fsdp.sh`，其模型、数据和资源设置并非本项目的 0.5B 学生加 GSM8K/MBPP。应学习参数传递与资源组织方式，重新编写本项目配置，不要直接换两个路径便宣称可运行。[官方示例源码](https://github.com/verl-project/verl/blob/main/examples/on_policy_distillation_trainer/run_qwen3_8b_mopd_fsdp.sh)
++
++本文不提供未经锁定版本和实际 GPU 验证的“复制即跑”训练命令。第一项实施产物应是经过小 batch 验证的环境锁定文件和 smoke 配置，随后才扩展完整训练。
++
++## 12. 项目二的实验矩阵
++
++### 12.1 最少需要的比较组
++
++- `P2-00`：原始学生 Instruct；用于描述整体变化。
++- `P2-01`：混合领域 SFT 学生 P2-S0；是所有 OPD 主实验共同起点。
++- `P2-02`：通用单教师 OPD，学生从 P2-S0 开始。
++- `P2-03`：数学教师指导全部领域，学生从 P2-S0 开始。
++- `P2-04`：代码教师指导全部领域，学生从 P2-S0 开始。
++- `P2-05`：数学/代码按领域路由，学生从 P2-S0 开始；这是升级项目的核心组。
++
++P2-03、P2-04 用于确认专家的局限及互补性。资源不足时先缩小训练规模完成这些组，再给关键组增加预算；不宜只保留一个弱单教师来衬托多教师。
++
++### 12.2 有余力再做的消融
++
++- `P2-A1`：随机或交换领域路由，验证正确匹配是否重要。
++- `P2-A2`：改变领域采样比例，检查数学与代码的权衡。
++- `P2-A3`：固定权重算术融合，对比领域路由。
++- `P2-A4`：动态权重，对比最佳固定权重；只有前面成立才做。
++- `P2-A5`：完整词表小实验与 top-k 近似，检查目标偏差和内存成本。
++- `P2-A6`：固定算法与数据，比较教师部署和学生多卡方式。
++
++第一版不要求探索第三教师、复杂 MoE 路由器、大模型训练或自定义 CUDA kernel。
++
++### 12.3 怎样比较才公平
++
++主实验固定学生起点、题目池、领域比例、生成长度预算、优化器、更新计划和验证规则。记录实际生成 token 数、教师评分 token 数、学生训练 token 数、墙钟时间与 GPU 小时。
++
++至少提供两种视角：
++
++1. **近似相同学生训练预算**：比较监督方法能学到什么；说明教师成本可能不同。
++2. **近似相同总计算预算**：比较单位资源带来的能力变化；可缩短更昂贵方法的训练量，但需清晰说明。
++
++路由每个样本通常只调用一个教师，完整融合通常调用两个，但实际成本还受加载、服务批处理和缓存影响。不能直接把理论调用次数写成实测速度。
++
++### 12.4 如何判断“能力整合成功”
++
++分别画出数学与代码指标随训练变化的曲线。若数学提高而代码显著下降，应写成任务权衡，不应只凭宏平均声称两域整合。比较单教师组、多教师组与 P2-S0 的成对差异，并检查长度和算力开销。
++
++如果多教师没有优于强单教师，仍可报告：专家不互补、学生容量受限、训练数据过少、分布近似误差或领域配比问题。结论应由对照支持，不要把所有失败都归因于“模型太小”。
++
++## 13. 资源规划与系统实验
++
++### 13.1 按资源选择完成层级
++
++**一张 GPU**：优先完成项目一和项目二顺序教师评分原型。先测短序列、小 batch 和 LoRA；必要时卸载教师或保存小批量目标。不要长期离线生成全部旧学生轨迹替代在线流程。
++
++**三张可用 GPU 的一种规划**：一张承担学生训练与分阶段 rollout，两张各服务一个教师。是否能稳定放下取决于模型、长度、服务框架和内存配置，需要 smoke 测试。
++
++**四张可用 GPU 的一种规划**：两张用于学生 FSDP，两张服务教师。只有学生训练确实是瓶颈或显存受限时，FSDP 才可能值得；小模型未必得到明显加速。
++
++这些是拓扑设计示例，不是已验证硬件最低要求。若仅有单卡，完成严谨算法实验比强行拼接未经验证的多服务部署更有价值。
++
++### 13.2 为什么权重能放下不代表能训练
++
++以 BF16 每参数 2 字节粗估，0.5B 学生权重约 1 GB，两份 1.5B 教师权重约 6 GB，合计约 7 GB，均为十进制近似。该估计不包含梯度、优化器状态、激活、KV cache、logits、运行时缓存和显存碎片；LoRA 也不会消除基础模型 forward 的成本。
++
++若 B=2、L=1024、V≈150,000，一份 FP32 `[B,L,V]` logits 就约 1.23 GB。多个教师和学生同时物化完整分布会快速增加峰值，实际反向传播还需要更多内存。优先考虑 token 分块、正确 mask、减少无效 padding、降低生成长度，随后再研究 top-k 近似。
++
++### 13.3 该记录哪些系统指标
++
++- rollout 时间、教师评分时间、学生 forward/backward 时间、权重同步时间。
++- 各阶段有效 token/s，以及端到端样本/s。
++- 各设备峰值显存、GPU 利用率、等待时间、教师队列长度。
++- 总 GPU 小时、每千学生生成 token 的成本、达到指定验证分数的成本。
++
++比较多卡时固定模型、精度、样本与长度分布、有效 batch、评测频率，说明是否包括数据加载、初始化和 warmup。报告端到端与分阶段指标，避免只展示局部 kernel 或教师推理的峰值。
++
++## 14. 建议代码组织与产物
++
++以下是未来训练项目的建议结构，**当前并未创建或实现这些训练模块**：
++
++```text
++posttrain-lab/
++  configs/                 # 数据、模型、训练、评测、资源配置
++  data/                    # 数据 manifest 与划分 ID，不随意提交原始大文件
++  src/
++    data/                  # GSM8K/MBPP 转换、模板、去重
++    evaluation/            # 数学解析、代码沙箱、统一结果格式
++    training/              # SFT、GRPO、单教师 OPD 入口
++    teachers/              # 评分接口、路由、adapter 管理
++    losses/                # 蒸馏损失与小词表参考实现
++    systems/               # 后端适配、计时与资源采集
++  tests/                   # 关键正确性检查
++  scripts/                 # 实际验证后的启动与评测命令
++  runs/<run_id>/           # manifest、日志、逐题预测、指标
++  reports/                 # 项目一、项目二实验报告
++```
++
++建议每个 run 的 manifest 包含：`run_id`、`parent_checkpoint`、`student_revision`、`teacher_revisions`、`tokenizer_hash`、`dataset_revision`、`split_hash`、`config_hash`、`git_commit`、`seed`、`hardware`、`start_time`、`status`。未运行的指标写 `null`，不要填示意分数。
++
++检查点除权重外，还应保留 adapter 配置、tokenizer、chat template、必要的优化器/调度器状态和断点进度。恢复训练后检查学习率、全局步数和随机状态，避免“成功加载权重”被误当作完整恢复。
++
++## 15. 必须通过的正确性检查
++
++### 15.1 共用检查
++
++- split 不重叠，题目与答案没有串入错误字段。
++- prompt、padding、EOS、截断位置的 labels 与 mask 正确。
++- 数学解析器对边界情况有明确行为，评测失败不被丢弃。
++- 代码沙箱对正确程序、错误程序、死循环、超量内存程序给出预期状态。
++- 检查点加载后的固定输入输出与保存前一致，允许的数值差异有解释。
++
++### 15.2 GRPO 检查
++
++构造奖励 `[1,0,0,0]`，检查优势正负和组内索引；构造全同奖励，检查无 NaN；验证旧 logprob 与新 logprob 的来源；确保只对生成位置计算目标；手工检查极端概率比的裁剪行为。
++
++### 15.3 OPD 与多教师检查
++
++先用三到五个 token 的小词表比较手算、参考实现和训练实现的损失及梯度。验证教师无梯度、学生有梯度、padding 无梯度、位置 shift 正确。
++
++K=1 时多教师接口应退化为单教师结果；两个教师完全相同时，路由与融合应在同一批固定前缀上得到相同目标；one-hot 权重的融合应等于选中教师；打乱 batch 后恢复顺序应保持每样本目标不变。
++
++固定前缀上检查“加权教师前向 KL”和“混合分布前向 KL”对学生梯度一致，同时验证其标量差是理论中的教师分歧项。这个测试直接防止把概率混合写成 logits 混合。
++
++再做少量真实数据端到端 smoke，确认模型更新、教师路由日志、checkpoint 与评测均工作；最后才启动长训练。
++
++## 16. 学习与实施安排
++
++以下按每周约 10–15 小时、已有基础 Python/PyTorch 能力估计。时间是规划区间，取决于基础、算力等待和调试，不能作为完成承诺。
++
++1. **第 1–2 周**：交叉熵、shift、mask、数据处理、统一评测；完成原始模型基线。
++2. **第 3–4 周**：LoRA-SFT、保存恢复、错误分析；完成 P1-01。
++3. **第 5–6 周**：GRPO、奖励、KL 与控制变量实验；完成项目一报告初稿。
++4. **第 7–8 周**：MBPP 沙箱、领域教师、混合 SFT 学生；检查教师准入。
++5. **第 9–10 周**：单教师 OPD、小词表损失验证、真实数据 smoke。
++6. **第 11–13 周**：领域路由 OPD、单专家跨域对照、分领域分析。
++7. **第 14–16 周**：补充关键种子、成本分析、复现文档与项目二报告。
++8. **第 17–20 周，可选**：FSDP/教师服务优化，或固定/动态融合，二者优先选一个深入。
++
++如果只有 8–10 周，优先交付项目一和项目二单教师到领域路由的缩小版；削减扩展实验，不删评测和对照。如果目标更偏训练系统岗位，优先选多卡性能分析；更偏算法研究则优先选教师互补性与融合消融。
++
++## 17. 最终交付物与讲述方式
++
++### 17.1 项目一交付
++
++一份说明任务与方法的 README、一键可复现的已验证命令、数据 manifest、三个阶段的检查点或获取说明、训练配置、逐题预测、指标汇总、错误案例和实验报告。报告重点说明奖励设计与泛化的关系，而不仅是贴 loss 曲线。
++
++### 17.2 项目二交付
++
++教师能力矩阵、学生统一初始化说明、路由与评分实现、损失正确性证据、单教师和多教师的逐域结果、资源测量、失败案例，以及“哪些扩展没有做”的明确列表。只有真实跑通多卡并完成比较，才将分布式训练优化列为已完成能力。
++
++### 17.3 简历与面试中的准确表达
++
++未完成实验时，可以写正在实现的范围，不写提升比例。完成后按“任务—方法—受控比较—实测结果—限制”表达，例如：
++
++> 在固定数据划分和解码协议下，构建小模型 SFT/GRPO 数学后训练流程；通过答案解析、组内奖励诊断和控制变量实验，分析了……。实测结果见对应报告。
++
++> 实现按领域路由的双教师 on-policy 蒸馏，在相同学生初始化下比较单教师与多教师的数学、代码表现；记录教师评分、rollout 与更新开销，并分析了……。
++
++省略号必须由实际发现替换。不要提前写“提升 X%”“加速 Y 倍”“复现 MOPD SOTA”或“支持大规模分布式”这些尚未验证的结论。
++
++## 18. 视频与本地文件怎样配合学习
++
++先按下附八阶段路线学习，再补充本节的多教师专项内容。每一阶段都有具体阅读位置、动手练习和通过标准。看完视频不等于完成阶段，必须能完成对应练习。
++
++项目二新增必读：
++
++- [mopd.ipynb](../agentic_rl/distillation/mopd.ipynb)：多教师分布、混合交叉熵与熵关系。重点读分布展开和数值示例，结合第 9 节纠正“KL 线性”的表述。
++- [opd-verl-slime.ipynb](../agentic_rl/distillation/opd-verl-slime.ipynb)：理解 rollout、teacher scoring、student update 的系统关系；实现细节以锁定的上游源码为准。
++- [sft-rl-opd.ipynb](../agentic_rl/distillation/sft-rl-opd.ipynb)：对比数据分布与监督信号，而不是只记方法名称。
++- [MOPD 论文](https://arxiv.org/abs/2606.30406)：阅读问题设定、教师构建、实验对照；列出与本项目的差异，不直接搬用论文结果。
++- [verl OPD 文档](https://verl.readthedocs.io/en/latest/algo/opd.html)：配合第 11 节追踪配置、teacher key 与资源池。
++
++本地 `roadmaps/verl.md` 以及部分 monitoring/collapse 笔记内容较少，不应作为完整教程。`rlvr.ipynb` 的现有代码有特定任务、路径和调试设置，应借鉴评测结构并重写本项目入口。`trl_gkd_gold.ipynb` 的简化公式不能替代真实分布损失源码。八股速记可用于复习，但 LoRA、GRPO 等细节仍应回到公式和官方实现。
++
++<!-- LEARNING_APPENDIX_START -->
++### 阶段 01：先懂一个 batch 怎么产生 SFT loss
++
++**视频**
++
++- [[数学基础与PyTorch] 02 梯度的视角回顾 Pretrain 和 SFT 的 Cross Entropy Loss，LLM如何更新 token emb](https://www.bilibili.com/video/BV1YN5d67ETR)
++- [[veRL] fsdp sft trainer 补充，teacher forcing、shift labels shift logits、loss mask](https://www.bilibili.com/video/BV1eWjtzbEdP)
++
++**对应本地材料与阅读范围**
++
++- [math/pytorch/cross-entropy-loss-gradient-descent.ipynb](../math/pytorch/cross-entropy-loss-gradient-descent.ipynb)：cell 1–9：NTP、teacher forcing、交叉熵梯度和小词表 PyTorch 示例。先掌握 p−one_hot，不必先读完所有词嵌入分析。
++- [agentic_rl/verl/训练及调参经验/sft.ipynb](../agentic_rl/verl/训练及调参经验/sft.ipynb)：cell 3–5：EOS、prompt/response 拼接、shift 与 loss mask；cell 7 的分布式 checkpoint 合并留到项目二。
++- [agentic_rl/verl/tokenizer/encode-decode.ipynb](../agentic_rl/verl/tokenizer/encode-decode.ipynb)：cell 2、4–11：decode 后重新 encode 不一定还原原来的 token IDs；这是后面计算 rollout logprob 和 OPD 对齐的前提。
++
++**要学会的内容**：input_ids/attention_mask/labels 是 [B,L]，logits 是 [B,L,V]；next-token 对齐为 logits[:, :-1] 与 labels[:, 1:]。attention_mask 控制模型可见性，loss mask 决定哪些位置产生监督，两者不能混用。推理时生成回答，SFT 时用真实前缀预测下一个 token。
++
++**动手练习**：用 2 道题构造 batch，打印每个 token、标签、prompt/completion mask。手算和框架算出的 masked CE 应接近；padding 不产生 loss，EOS 可以被监督。检查框架是否已内部 shift，避免二次 shift。
++
++**通过标准**：能解释题目为何作为上下文输入却不一定计入 loss；能定位模型不停止、学会复述题目、loss 异常偏低的问题。
++
++### 阶段 02：做评测基线，再做 LoRA-SFT
++
++**视频**
++
++- [[LLMs 实践] 02 LoRA（Low Rank Adaption）基本原理与基本概念，fine-tune 大语言模型](https://www.bilibili.com/video/BV15T411477N)
++- [[LLMs tuning] 01 trl SFTTrainer 中的 formatting_func 与 DataCollatorForCompletion](https://www.bilibili.com/video/BV1bn4y1f7wF)
++
++**对应本地材料与阅读范围**
++
++- [agentic_rl/trl/training_examples.ipynb](../agentic_rl/trl/training_examples.ipynb)：cell 1 只是官方示例入口；取其中 LoRA/QLoRA 的入口，不照搬视觉语言模型、14B 模型或工具调用配置。
++- [agentic_rl/reasoning/utils.py](../agentic_rl/reasoning/utils.py)：读 extract_answer 和 strip_string 的处理思路；自己补 GSM8K 的 #### 标准答案解析及边界测试，不默认它已满足你的评测规范。
++- [agentic_rl/infra/base_instruct.ipynb](../agentic_rl/infra/base_instruct.ipynb)：cell 1：Base/Instruct 与 chat template；其余含 7B 模型、作者绝对路径的分析先跳过。
++
++**要学会的内容**：LoRA 是冻结 W、学习 ΔW=(α/r)BA，不是对原始 W 做低秩分解。掌握 r、α、target_modules、可训练参数计数和 adapter 保存/加载。先用普通 LoRA，确认显存需要后再引入 QLoRA。SFT 的数据整理、labels 和 EOS 要先验证。
++
++**动手练习**：先对初始 Instruct 模型做固定协议的 GSM8K 基线；从 train 划分 train/validation，test 留到最终比较。先在 16–32 条训练样本上检查是否能过拟合，再训练正式子集。保存 adapter 后重新启动并加载评测，确认基座版本一致。
++
++**通过标准**：产出 eval.py、答案提取测试、sft_train.py、固定 split 与 config；能报告初始模型和 SFT 的准确率、无效答案率、平均输出长度。原视频源码在旧仓库，本地没有完整的对应 LoRA 项目，实施需配合官方 PEFT/TRL 文档。
++
++### 阶段 03：从策略梯度走到 GRPO
++
++**视频**
++
++- [[Agentic RL] 02 策略梯度基础，从 PG 到 TRPO 到 PPO-Clip 核心公式简单推导](https://www.bilibili.com/video/BV12NHJzTEoP)
++- [[LLM+RL] 理解 GRPO 公式原理及 TRL GrpoTrainer 代码实现（advantage 与 loss 计算）](https://www.bilibili.com/video/BV1pXA5eyEEg)
++- [[Agentic RL] 03 策略梯度补充，GRPO loss 分析，优势标准化，On Policy](https://www.bilibili.com/video/BV18hsFzbEKJ)
++
++**对应本地材料与阅读范围**
++
++- [agentic_rl/deep_RL/pg/from_pg_to_ppo-clip.ipynb](../agentic_rl/deep_RL/pg/from_pg_to_ppo-clip.ipynb)：cell 3–12：REINFORCE、baseline、importance sampling、PPO-clip；第一遍只理解 TRPO 的动机，不必推完约束优化。
++- [agentic_rl/deep_RL/pg/policy_gradient.ipynb](../agentic_rl/deep_RL/pg/policy_gradient.ipynb)：优先读 pg vs. sl、loss curve or reward curve、优势标准化和 GRPO objective analysis。
++- [agentic_rl/deep_RL/group_policy_optimization/overall.ipynb](../agentic_rl/deep_RL/group_policy_optimization/overall.ipynb)：cell 4–7：用两组奖励计算均值和标准差，观察 std 归一化对不同题目的权重影响。
++
++**要学会的内容**：同一个 prompt 采 G 个回答，每个回答一个结果奖励 R_i，A_i=(R_i−mean(R))/(std(R)+ε)，再广播到回答的有效 token。当前策略、采样旧策略和固定 reference 是不同角色。GRPO 不需要训练 critic；数学题也可以直接用规则验证奖励，无需先训练 reward model。
++
++**动手练习**：用奖励 [1,0,0,1] 手算优势，构造 [B,G,T] logprob/mask 的玩具 loss 并做一次 backward。再检查全 0、全 1 组：相对优势没有区分信号。接入 GRPOTrainer 前先单测奖励函数。
++
++**通过标准**：能独立画出 prompt → G 个回答 → 答案奖励 → 优势 → token loss → 参数更新。能解释为什么看到负 loss 或近零 loss 并不能直接判断训练好坏。
++
++### 阶段 04：把奖励、KL 和更新代码连起来
++
++**视频**
++
++- [[Agentic RL] 04 REINFORCE 4 LLM，设计 reward，如何维护和计算 PG/KL loss，KL loss 计算细节](https://www.bilibili.com/video/BV1Ya1LB1EDM)
++- [[LLM+RL] GRPO 中的 KL div（散度），reverse vs. forward，以及无偏估计（Schulman）](https://www.bilibili.com/video/BV1rsAXe7EZs)
++
++**对应本地材料与阅读范围**
++
++- [agentic_rl/deep_RL/align/align_demo.ipynb](../agentic_rl/deep_RL/align/align_demo.ipynb)：读生成、reward、PG/KL loss 的讲解。这个演示不是 GSM8K GRPO 工程，借它理解闭环。
++- [agentic_rl/deep_RL/scripts/reinforce_align.py](../agentic_rl/deep_RL/scripts/reinforce_align.py)：沿模型加载 → 生成 → reward → logprob → loss.backward → optimizer 的顺序读；不要直接把它叫作 GRPO。
++- [agentic_rl/training_practices/review_kl.ipynb](../agentic_rl/training_practices/review_kl.ipynb)：cell 1–4 看 k1/k3，cell 5–8 看估计量，cell 9–10 进一步区分 KL 数值估计与梯度估计。
++- [agentic_rl/verl/objectives/objectives_loss.ipynb](../agentic_rl/verl/objectives/objectives_loss.ipynb)：第二遍读 pg loss、KL 与 entropy 各项如何拼起来，暂不修改 verl trainer。
++
++**要学会的内容**：答案正确性奖励和格式奖励分别统计；格式正确不代表推理正确。区分 old policy 的 ratio clipping 与 reference KL。采样 KL 的值和它的梯度不是一回事；记录所用训练器版本、loss_type、β、num_generations 和 num_iterations。
++
++**动手练习**：对负数、带逗号数字、分数、多个数字、缺失最终答案、格式正确但答案错等输入编写奖励测试。对同一个样本单独打印 correctness_reward、format_reward 和 total_reward。先做纯正确性奖励，再把格式奖励作为消融因素。
++
++**通过标准**：SFT → GRPO 的小规模流程可重跑；能解释训练奖励上涨而验证准确率下降的至少两种原因，并用样本日志验证。
++
++### 阶段 05：完成评测与消融，才算项目一结束
++
++**视频**
++
++- [[Agentic RL] 07 limits of RLVR，base vs. RL, pass@k, ppl 基于 vLLM 计算细节以及采样效率](https://www.bilibili.com/video/BV1pWSvBtEAk)
++- [[veRL] 从原理层面理解训练参数，PPO & GRPO，batch size，kl & entropy](https://www.bilibili.com/video/BV1DZL1zNEN2)
++
++**对应本地材料与阅读范围**
++
++- [agentic_rl/reasoning/rlvr.ipynb](../agentic_rl/reasoning/rlvr.ipynb)：cell 2–8：pass@k 定义和实现；cell 11–29：评测数据流；后面的 PPL、entropy 留作扩展。需要修正示例残留问题后再复用。
++- [agentic_rl/verl/verl-algos-metrics.ipynb](../agentic_rl/verl/verl-algos-metrics.ipynb)：先读符号约定、score/reward、advantage 的定义；不要把笔记中某次 run 的数值当作自己的实验结果。
++- [agentic_rl/verl/训练及调参经验/config-perf-tuning.ipynb](../agentic_rl/verl/训练及调参经验/config-perf-tuning.ipynb)：读 batch、micro-batch、梯度累积的关系；不同长度 micro-batch 的平均方式需要注意实际 token 权重。
++
++**要学会的内容**：训练 reward、验证准确率、格式合规率、截断率、输出长度和样本多样性要分开看。固定解码协议；greedy accuracy 与多次随机采样估计的 pass@1 不混称。KL 系数或 G 的消融必须说明预算变化。
++
++**动手练习**：至少两组单变量消融：β 或奖励设计一组，G 或训练步数一组。记录 train/validation 曲线，最终用同一 test 协议比较初始模型、SFT、SFT→GRPO。每种模型保存至少 20 个失败案例；数据只用于自己的结论，不能保证 GRPO 一定涨分。
++
++**通过标准**：交付独立评测、配置、训练日志、checkpoint/adapter 重载说明和第一份报告。做到这一步再开始项目二；不要把大规模超参搜索作为入门前置。
++
++### 阶段 06：理解并写出单卡 OPD 最小闭环
++
++**视频**
++
++- [[Agentic RL] 10 分布的视角理解 LLM 的 SFT 训练和 RL 训练，Forward/Reverse KL，分布与奖励](https://www.bilibili.com/video/BV1WvrGBGEbf)
++- [[数学基础与PyTorch] 05 OPD-01 RKL/FKL, TopK, 为什么可以复用RL infra，seq level KL，verl/slime](https://www.bilibili.com/video/BV1WpGu6aEKo)
++
++**对应本地材料与阅读范围**
++
++- [agentic_rl/sft_rl_fkl_rkl.ipynb](../agentic_rl/sft_rl_fkl_rkl.ipynb)：读分布视角、FKL/RKL 和双峰分布例子；关注目标和采样分布，不把 mode seeking 当作所有任务的必然结论。
++- [agentic_rl/distillation/opd-online-distillation.ipynb](../agentic_rl/distillation/opd-online-distillation.ipynb)：按 core questions → KD/OPD → token-level/sequence-level 读。
++- [agentic_rl/distillation/opd-01.ipynb](../agentic_rl/distillation/opd-01.ipynb)：主读 cell 2–16：FKL/RKL、PyTorch 实现、top-k、复用 RL、序列层面；cell 19 之后等接入 verl 时再读。
++- [agentic_rl/distillation/simple-codes.ipynb](../agentic_rl/distillation/simple-codes.ipynb)：先做 cell 3–4 的离散分类分布精确 KL 与梯度检查；连续高斯 rsample 不是离散 token 的直接实现。
++- [agentic_rl/distillation/opd_02.ipynb](../agentic_rl/distillation/opd_02.ipynb)：单卡 full-vocab loss 正确后，再读 top-k gather 和 use_policy_gradient 的差异。
++
++**要学会的内容**：先区分两个问题：上下文/前缀由谁生成，以及固定前缀上的 token 分布按谁加权。OPD 的前缀来自学生，不代表只能用 RKL。教师必须在学生的同一前缀上评分；teacher/student token ID 语义要一致，不能只看词表长度。
++
++**动手练习**：从同一学生 checkpoint 开始，冻结教师：学生生成 → 保留原 token IDs → 教师 no_grad forward → 学生可导 forward → response-mask 后的 KL → 更新学生。先在短序列、小 batch 上验证 teacher 无梯度、student 有梯度、teacher=student 时 loss 接近 0、padding 不改变结果，再用官方 DistillationTrainer。
++
++**通过标准**：能区分离线教师回答 SFT、学生前缀上的 token FKL、采样 token 的 RKL/PG。完成离线蒸馏 vs OPD 的小规模对照；GOLD、跨 tokenizer、多教师先不做。
++
++### 阶段 07：先理解 DDP/FSDP，再考虑大模型并行
++
++**视频**
++
++- [[pytorch distributed] 02 DDP 基本概念（Ring AllReduce，node，world，rank，参数服务器）](https://www.bilibili.com/video/BV1Uo4y1K7wM)
++- [[Pytorch 分布式] ring-allreduce 算法（scatter-reduce、allgather）以及 FSDP](https://www.bilibili.com/video/BV1biLHzAEzv)
++
++**对应本地材料与阅读范围**
++
++- [agentic_rl/3D/DDP_NCCL.ipynb](../agentic_rl/3D/DDP_NCCL.ipynb)：cell 6–11：bucket、AllReduce、DDP 的通信时间线。
++- [agentic_rl/infra/fsdp/fsdp_basics.ipynb](../agentic_rl/infra/fsdp/fsdp_basics.ipynb)：cell 4–11：FSDP unit、参数 shard、all-gather、reduce-scatter、CPU offload。
++- [agentic_rl/infra/fsdp/gpt2.py](../agentic_rl/infra/fsdp/gpt2.py)：先读 get_mem、run_distributed_scenario 和启动参数，作为独立的两卡通信/显存实验参考；不是 OPD 完整程序。
++- [agentic_rl/3D/fsdp_fsdp2.ipynb](../agentic_rl/3D/fsdp_fsdp2.ipynb)：读 torchrun、FSDP1/FSDP2、offload；具体 API 对照使用版本的官方文档。
++
++**要学会的内容**：DDP 每卡保留模型副本并同步梯度；FSDP 分片参数/梯度/优化器状态，并在计算时通信。理解峰值显存、临时 all-gather、通信耗时，不能把分片后的常驻大小当作峰值。
++
++**动手练习**：有两卡后先独立做 tiny-model 单卡/两卡训练测试，固定 global batch 或明确说明变化，记录每步耗时、每卡峰值 allocated/reserved memory。区分首步初始化与稳态。
++
++**通过标准**：能解释为什么小模型上多卡可能更慢；没有多卡就只交付单卡实测与分布式设计，不写已验证的加速比。TP/PP/Megatron/DeepSpeed 留作后续拓展。
++
++### 阶段 08：接入 vLLM、Ray 和 verl 的教师资源池
++
++**视频**
++
++- [[Agentic RL] [Inference] 05 vllm 参数配置、显存分析与性能调优 max_num_batched_tokens](https://www.bilibili.com/video/BV1QnSFBkEZU)
++- [[Agentic Infra] [Ray] 01 ray task与ray actor基础（Ray remote），分布式任务调度，并发控制，多进程多线程与协程](https://www.bilibili.com/video/BV1HuZcBEEyy)
++- [[Agentic Infra]  02 RL post-training 训练框架，训练流程参数分析与指标监控，显存分配与性能调优](https://www.bilibili.com/video/BV1z6Mu6LE7i)
++
++**对应本地材料与阅读范围**
++
++- [agentic_rl/infra/inference/vllm/vllm_sglang.ipynb](../agentic_rl/infra/inference/vllm/vllm_sglang.ipynb)：读参数、max-model-len、KV cache、并发和 rollout 使用场景；不需要学习工具调用服务。
++- [agentic_rl/verl/ray/ray_remote_get.ipynb](../agentic_rl/verl/ray/ray_remote_get.ipynb)：cell 5–13：remote task/actor、ActorHandle、ObjectRef、ray.get。Ray actor 是有状态进程概念，不是要求你做 Agent 应用。
++- [agentic_rl/verl/basics/verl-arch.ipynb](../agentic_rl/verl/basics/verl-arch.ipynb)：读 gen → sleep → actor update → rollout 权重同步、hybrid colocate、worker group。
++- [agentic_rl/distillation/opd-verl-slime.ipynb](../agentic_rl/distillation/opd-verl-slime.ipynb)：主读 cell 3–11：官方脚本、配置、teacher pool、完整数据流和两种 loss 路径；本次只追 verl，slime 对比先跳过。
++
++**要学会的内容**：学生更新后的权重必须同步给 rollout；教师在学生轨迹上算 logprob/top-k，通常不需要为该轨迹重新生成答案。把生成、教师评分、学生训练、权重同步分别计时。vLLM 的内存预算要与训练共存方式一致。
++
++**动手练习**：先画资源分配图，再使用固定版本官方小规模例子适配。对比两个开关组合：teacher-top-k FKL 直接反传，以及 sampled-token RKL/PG；不要只改 loss_mode 就认为其余训练语义完全相同。复用项目一的评测协议和数据 split。
++
++**通过标准**：交付离线蒸馏/OPD/GRPO 对照、至少一种 loss 消融，以及硬件允许时的吞吐/显存分析。若学生 FSDP 占两卡，教师还要独立 GPU，资源需求就不止两卡；两卡阶段可先独立验证 FSDP，再单独做教师—学生实验。
++
++<!-- LEARNING_APPENDIX_END -->
++
++## 19. 当前事实与后续待验证项
++
++**本次已核查**：两份附件的项目方向；已有视频映射和八阶段学习路线；多教师相关本地笔记；TRL 与 verl 当前文档；部分 verl 教师路由和配置源码；GSM8K 与 MBPP 数据集元数据。
++
++**本文尚未执行**：GPU 环境安装、教师训练、学生 SFT/GRPO/OPD、代码沙箱实现、分布式部署、任何基准或性能测量。模型能力、显存是否够用和所有训练增益都需要后续实测。
++
++开始实施时的第一批工作应是：锁定环境与数据 → 跑通原始模型评测 → 验证 SFT mask → 完成小规模 SFT。项目二则应等教师和评测准备好后，从小词表损失测试与单教师 smoke 开始。
++
++## 20. 主要来源与使用范围
++
++- [Qwen2.5-0.5B-Instruct 模型卡](https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct)：模型身份与使用前提。
++- [TRL SFTTrainer](https://huggingface.co/docs/trl/sft_trainer)：监督训练接口与损失配置。
++- [PEFT LoRA](https://huggingface.co/docs/peft/developer_guides/lora)：低秩适配实现。
++- [TRL GRPOTrainer](https://huggingface.co/docs/trl/grpo_trainer)：奖励、KL 与不同损失选项。
++- [TRL DistillationTrainer](https://huggingface.co/docs/trl/distillation_trainer)：单教师在线蒸馏与散度参数。
++- [verl OPD](https://verl.readthedocs.io/en/latest/algo/opd.html)：教师路由、资源组织和 distillation 配置。
++- [verl 多教师示例](https://github.com/verl-project/verl/blob/main/examples/on_policy_distillation_trainer/run_qwen3_8b_mopd_fsdp.sh)：系统入口参考，不是本项目已验证启动脚本。
++- [MOPD](https://arxiv.org/abs/2606.30406)：多教师能力整合的研究背景。
++- [GSM8K](https://huggingface.co/datasets/openai/gsm8k/blob/main/README.md)、[MBPP](https://huggingface.co/datasets/google-research-datasets/mbpp/blob/main/README.md)：数据结构和划分。
++- [视频总索引](../video_mapping/index.html)、[此前学习路线](../video_mapping/learning_route.html)：视频简介与本地材料映射。此前路线描述单教师项目二，本指南是升级后的总设计。
++
++来源核查日期为 2026-10-19。框架默认值和接口属于版本相关事实；具体实验仍需记录所安装版本。本文的阶段划分、实验编号、验收项和时间安排是针对你的项目提出的设计，不是上游官方的效果承诺。
+--- before/project_blueprints/共用规范_强模型合成数据与验证.md
++++ after/project_blueprints/共用规范_强模型合成数据与验证.md
+@@ -1,6 +1,6 @@
+ # 共用规范：强模型合成数据、离线蒸馏与独立验证
+ 
+-版本：2026-10-22。状态：设计已补充，尚未调用付费 API、生成数据或验证收益。适用于三个项目；不替代各项目的原始基线。
++版本：2026-10-23（共用 dev 身份与训练种子隔离修订）。状态：设计已补充，尚未调用付费 API、生成数据或验证收益。适用于三个项目；不替代各项目的原始基线。
+ 
+ ## 1. 为什么加入这项工作
+ 
+@@ -25,6 +25,8 @@
+ 生成和验证分角色隔离：验证器不默认接收生成者的结论或评分理由。可用另一模型帮助发现争议，但多模型一致不等于真实正确，不能取代可执行判据和人工核查。核查源数据许可、输出使用条件和再分发要求后，确定数据发布范围。
+ 
+ ## 4. 共享流水线与可追溯字段
++
++2026-10-23 数据筛选执行约定：项目一、二复用同一封存数学 dev（256 题）及候选池文件哈希，不为某一项目重新随机划分；当前 dev 的任何具体题面、错题、换数题、改写题都禁止进入训练候选与 API 生成请求。筛选器可以只读评测内容排除重叠，但不得将命中题传给生成器“改写避重”。API 同题对照以两组共同接受题集合为准，不硬凑 1500 条；学生 tokenizer 计数、接口类型、真实通过数量与未完成验收项须写入 manifest。
+ 
+ 先划分并封存 dev/test → 从 train 建立种子 → 自动生成候选 → schema/长度/重复检查 → 独立验证 → 人工分层审计 → 接受/隔离/拒绝 → 封存数据版本 → 受控训练。
+ 
+--- before/project_blueprints/项目一_7B数学后训练_详细实施方案.md
++++ after/project_blueprints/项目一_7B数学后训练_详细实施方案.md
+@@ -1,6 +1,6 @@
+ # 项目一：7B 数学后训练——冷启动与 GRPO 归一化偏差研究
+ 
+-版本：2026-10-22。性质：待实施的学习与实验方案；参数是起始建议，不是已跑通配置。本文替代旧设计中项目一的模型规模与实验安排，不覆盖已有代码或历史结果。
++版本：2026-10-23（逐轨迹长度筛选与共用验证隔离修订）。性质：待实施的学习与实验方案；参数是起始建议，不是已跑通配置。本文替代旧设计中项目一的模型规模与实验安排，不覆盖已有代码或历史结果。
+ 
+ ## 1. 项目做什么，最后交付什么
+ 
+@@ -31,7 +31,8 @@
+ 
+ 处理顺序：固定快照 → 抽取题目/解答/标准答案 → 对评测集去重 → 题目级划分 → 挑选正确完整轨迹 → 目标 tokenizer 计数 → 人工抽查 → 封存。
+ 
+-- 回答长度建议 500～2500 token，作为第一轮覆盖范围，不代表质量标准。
++- 2026-10-23 修订：第一轮紧凑候选回答长度为 **500～1600 token（含边界）**，按固定 revision 的 Qwen2.5-7B tokenizer 对完整回答计数，包含 `<think>`、最终答案和实际输出内容。另检查题目＋chat template＋回答/EOS 的总长度不超过 SFT 4096。范围是资源与风格筛选条件，不是质量标准，也不保证 RL 2048 下不截断；按题型/来源/长度报告筛选偏差，pilot 实测后再冻结正式预算。
++- 筛选单位是轨迹索引 i：`generations[i]`、`is_reasoning_complete[i]`、`correctness_math_verify[i]` 必须严格对应，三列长度不一致或标记缺失则隔离，不能用整题 `correctness_count>0` 代替。`finish_reasons` 若存在须检查是否与轨迹一一对应及是否截断；字段缺失不伪造结束原因，另做文本结构/最终答案完整性检查。此轮仅接收 math-verify 明确为 true 的轨迹，不将 LLM judge 的通过等同于数学验证。
+ - 每题先保留一条轨迹，避免某题重复多次造成隐性加权。
+ - 不截断长回答后继续把它当完整正确样本；超长样本独立记录。
+ - 按题型、难度、长度分桶，报告筛选前后分布和实际通过数量。
+@@ -44,6 +45,8 @@
+ 
+ 建议预先划出 256 道 dev，仅用于选模；其余构成候选池。SFT 来源中与 dev、最终测试同题或近重复的记录一并移除。明确记录 SFT 与 RL train 之间允许多少重叠；如果允许，要报告数量与分析影响。
+ 
++2026-10-23 已封存的唯一数学 dev 为 `data/math/math_dev.jsonl`（256 题），候选池为 `data/math/math_train.jsonl`（7184 题），文件 SHA256 以 `data/math_manifest.json` 为准。项目二必须复用这两个文件及身份，不重新抽 dev；筛选脚本先验证哈希且不覆盖原文件。7184 是当前词法去重后的候选数，不代表逐题质量审核或零污染证明。
++
+ 用原始 7B 在候选池固定温度采样四次，优先取 1～3 次正确的题，目标最多 3000 道。这里是经验正确比例 25%～75%，不是 pass@4。四次全错不证明永远无法解决；未达到 3000 条时报告实际数量，不偷偷放宽标准。
+ 
+ 主比较共享同一候选池、题目列表和筛选模型。动态过滤只在单独实验中启用；记录被拒组、重采样次数、总生成 token 和采样开销。
+@@ -52,7 +55,11 @@
+ 
+ 每条记录含 `sample_id/source/source_revision/source_split/problem/reference_answer/solution/domain/token_count/filter_reason`，另存题目哈希、源 ID、划分清单、数据许可证和清洗版本。精确哈希、规范化文本相似度、人工核查联合去重；不宣称能消除基础模型预训练污染。
+ 
++本轮公开数据筛选已执行：`src/data/screen_openr1_sft.py` 从固定 OpenR1 快照扫描 28572 道源题，选出 1500 道唯一题，每题一条合格轨迹，完整回答 500～1600 token、总上下文不超过 4096。产物为 `data/project1_openr1/sft_train.jsonl`，来源、tokenizer、规则与哈希见同目录 `manifest.json`；逐轨迹拒绝原因见 `trajectory_audit.jsonl`。按 seed=42 调整 shard 顺序，达到目标停止，不能称全源随机样本。当前多数来自 olympiads，已导出 50 条人工抽检表但尚未人工审阅，仍是候选集；未训练或验证收益。完整命令和验收记录见 [本轮执行报告](../reports/data_screening_20261023.md)。
++
+ ### 3.4 强模型离线蒸馏与定向增广
++
++2026-10-23 复核：E7 的 1500 条是目标上限；若新教师仅有较少可信接受样本，两组都使用该相同题目交集，不补入不同题目凑数。换教师还可能改变正确性、长度与监督 token，不能只凭同题宣称纯风格因果。E8 禁止从当前 dev 错题直接换数/改写增广；可以据 dev 的题型级诊断，从 train 诊断池选择同类型种子，且所有后代继承 train。若改变旧 dev 用途，先迁移版本并另封存新 dev。
+ 
+ 新增明确的数据工程主线：公开 train 题作为种子，调用选定 GLM/DeepSeek 教师生成可见解答，再独立验证，形成自己的派生 SFT 数据。先小试 50 题，再扩大到最多 1500 条接受样本，不用 API 数量代替质量证据。
+ 
+--- before/project_blueprints/项目二_双教师在线蒸馏_详细实施方案.md
++++ after/project_blueprints/项目二_双教师在线蒸馏_详细实施方案.md
+@@ -1,6 +1,6 @@
+ # 项目二：数学与代码双教师在线策略蒸馏
+ 
+-版本：2026-10-22。性质：待实施方案。以原始 1.5B 学生为统一起点，研究能力迁移与领域保持，不把恢复旧 SFT 损失等同于超越原模型。
++版本：2026-10-23（代码接口分层筛选与共用数学 dev 修订）。性质：待实施方案。以原始 1.5B 学生为统一起点，研究能力迁移与领域保持，不把恢复旧 SFT 损失等同于超越原模型。
+ 
+ ## 1. 项目目标与边界
+ 
+@@ -46,15 +46,23 @@
+ 
+ 目标 2500 道：GSM8K train 1000 道＋MATH-lighteval train 1500 道。沿用项目一的题目 ID、来源、去重与 dev 排除机制。只给学生题目，不把标准答案放进生成 prompt。
+ 
++2026-10-23 修订：数学 dev 必须直接复用 `data/math/math_dev.jsonl` 的同一 256 个 ID 及文件哈希；MATH 训练抽样从 `data/math/math_train.jsonl` 的 7184 题候选池进行，不重新划 dev。GSM8K 也从已封存 train 取样并检查与共用 dev/test 的重叠。共享 dev 仅是共享开发协议，不是独立最终测试，也不代表 100% 无污染。当前 dev 题面、错题和改写不能成为训练或合成种子。
++
+ 标准答案用于能力评测和轨迹质量诊断，不默认用于筛除所有学生错误轨迹；错误轨迹上学习教师分布也是 OPD 的一部分。若增加正确性过滤，作为独立实验。
+ 
+ ### 4.2 代码 prompt 池
+ 
+ 默认选择带验证信息的 `open-r1/verifiable-coding-problems-python` 作为统一候选池。当前公开字段包括 `problem_statement`、`gold_standard_solution` 和 `verification_info.test_cases`。先核查测试类型与参考实现，再按原题/来源 ID 去重和分组划分，封存 200 道 dev，剩余候选中选最多 2500 道训练题。不能把含重复题的行随机切开当作独立划分。
+ 
+-先支持一种接口，优先普通 `stdin_stdout`；函数调用题需要另一适配器，交互题、自定义 checker、多合法输出、缺测试、依赖外部文件的题首轮排除。竞赛题可能比 HumanEval 风格更难，按学生/教师 pilot 通过率选择难度，并报告向函数补全基准迁移的局限。参考答案执行不通过、测试不足或判题歧义的题隔离，不能认为“附带测试”等于“自动可靠”。
++首版修订为显式分类 `stdin_stdout`、独立函数 `function`、`Solution` 实例方法 `solution_method`；不再只筛 stdin/stdout。分别核查所有测试用例的 type/fn_name、参数序列化、入口与参考代码 AST，不能只看第一条 fn_name，也不假设有顶层 starter_code。代码题中 def solve() 可能仍是 stdin 程序，不能用 def 正则代替接口判定。交互、自定义 checker、多合法输出、缺测试、复杂对象接口和外部文件依赖首轮隔离。
++
++训练目标仍为最多 2500 题，可先以函数调用题约 50% 为配比候选（独立函数与类方法分别报告）；实际数量不足则报告缺口，不重复少量题凑比例。代码 dev 的 200 题按接口分层封存，训练与 dev 都保留函数签名及输入/返回约定；HumanEval+/MBPP+ 严格沿用原工具函数协议，不把类方法和独立函数混为完全一致。参考代码只静态解析不执行时，产物必须标为结构候选；只有隔离沙箱运行和测试审核通过后才称执行验收。竞赛难度、训练接口和 EvalPlus 的差异都需报告，不预言一定零分或必然泛化。
+ 
+ `deepmind/code_contests` 可作为备选，它提供 public/private/generated tests，但存在不同来源、语言与判题约定，仍要适配和去重。AceCode、Code-Contests-Plus 留作候选，不在没有字段、许可和运行核验时宣称可直接替换。
++
++2026-10-23 首轮真实筛选：固定快照共 35735 行，其中 stdin/stdout 35537 行、标为 function_call 的仅 198 行。全部用例初筛仅 4 道独立函数候选；额外字面量诊断又隔离 1 道“整数输入被参考程序直接按字符串遍历”的明显冲突。重分组后训练 2500 道（stdin/stdout 2498、独立函数 2、Solution 方法 0），dev 200 道（stdin/stdout 199、独立函数 1、Solution 方法 0）。这证明当前来源无法支撑 50% callable 配比，不能宣称已经解决接口覆盖；后续补充函数题来源须另做许可、接口和去重审计。当前产物仍待隔离执行和抽检，不直接用于报告 dev 执行正确率。
++
++脚本入口为 `src/data/screen_code_interfaces.py`，附加窄范围诊断为 `scripts/quarantine_code_literal_conflicts.py`；产物位于 `data/project2_code/`，完整复现命令、来源版本、哈希和未通过原因见 [本轮执行报告](../reports/data_screening_20261023.md)。项目二数学池已从共用封存文件取 MATH 1500＋GSM8K 1000，数学 dev 未另划。
+ 
+ 保留低成本替代路线：从 Magicoder 或 CodeFeedback 自动筛选 Python prompt，OPD 训练本身不需要测试或标准答案；代码 dev 仍使用上述带测试来源，并明确训练/dev 分布差异。`def` 正则只能粗筛：可能漏掉 stdin 程序，也可能把解释文本当任务；再结合语言字段、结构检查和抽样审核，不能仅凭正则认定题目有效。
+ 
+@@ -166,7 +174,7 @@
+ ## 8. 在哪些基准与排行榜评测
+ 
+ - 数学：GSM8K-test 1319 题、MATH-500 500 题，协议与项目一相同，测试不用于选模。
+-- 代码：HumanEval+ 和 MBPP+，使用锁定版本 EvalPlus。当前排行榜说明的 MBPP+ 采用 399 道人工筛选任务；执行时保存工具实际 task ID 清单，不能把它与原版 MBPP 全集分数混写。
++- 代码：HumanEval+ 和 MBPP+，使用锁定版本 EvalPlus。2026-10-23 实际下载的官方发布文件 HumanEvalPlus v0.1.10 为 164 题、MbppPlus v0.2.0 为 378 题，HF 对应快照也是 164/378；旧版“399 题”叙述退役。保存实际 task ID 清单、文件 SHA256 和版本，未来更换发布版本时重新审计，不能与原版 MBPP 全集或不同任务子集分数混写。
+ - 首版代码主指标：固定模板贪心生成一个候选，报告执行通过率/pass@1。若采样多个候选，单独报告采样参数和正确的 pass@k 估计，不把一次最高分当 pass@1。
+ - 公开对照入口：[EvalPlus Leaderboard](https://evalplus.github.io/leaderboard.html)。本地使用 EvalPlus 不等于已经提交上榜。公开分数还需核对 chat/completion 模板及版本。
+ - 数学没有本项目自动参与的统一排行榜，交付本地可复现结果与模型卡即可。

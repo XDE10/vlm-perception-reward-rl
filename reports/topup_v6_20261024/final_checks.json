@@ -1,0 +1,14 @@
+{
+  "approved_file_sha_verified": true,
+  "current_report_local_links": 12,
+  "secret_pattern_scan_passed": true,
+  "tests": 201,
+  "api_owners_closed": true,
+  "no_gpu_execution": true,
+  "targets_met": {
+    "p1_800to1000": true,
+    "p2_math": true,
+    "p2_code": true,
+    "p3_500plus": true
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-24",
+  "python": "D:/anaconda3/envs/genai-test/python.exe",
+  "README_original_tests": "15 passed; original tests unchanged",
+  "final_combined_tests": "34 passed (15 original + 19 new cases)",
+  "final_log": "acceptance_final.log",
+  "pip_check": "No broken requirements found.",
+  "migration_full_hash": {
+    "project": "项目三_多模态几何推理",
+    "files": 4258,
+    "full_hash_check": true,
+    "release_rows": {
+      "project3_train_fact_pruned.jsonl": 609,
+      "project3_validation_fact_pruned.jsonl": 82
+    },
+    "errors": [],
+    "gpu_run": false
+  },
+  "frozen_source_files_unchanged": {
+    "src/data/perception_v4.py": "841ac3c3a15fb1ed11f6be35543ba1028b1ccca1574c5dd30881b0dbde77b5ea",
+    "src/training/approved_hf.py": "c5cb9e38317da57bc3df0692ad461790b2f6287fa5614233a6a1240679b0974d",
+    "src/data/approved_training_inputs.py": "236ba095002d723ae3b544e9159c930292bbc4ade1eefe5ba85e1ac72d10e2ac",
+    "scripts/diagnose_project3_vision.py": "0fb982fb8ee72627d0739f5a9ba5776ff75380835e7c76277b6cd6ffbed20f26",
+    "configs/project3_fact_sft_smoke.json": "35b1cc60c4cc5efc982a334351f3ef58e4141efb78f4f18fe851f1403b5d89d1",
+    "configs/project3_sparse_v4_grpo_smoke.json": "bad7f245ea35fa7ef8c8b4807ed1bcc09dadc3da790f732fa0c148c51bf8e42d",
+    "README.md": "c9d62e4cc17d14f41688fdb06462635064e4080c71306d3e74c2fe5cd3ebeba0",
+    "AGENTS.md": "6462ba3d599c31611f5a676bb6cbad7636ad0294b0db6fd4fa994529f30d313f",
+    "data/portable_release/manifest.json": "ce02856dc5c594d7899539fb67e5b0eac621def38103e91b3f822af4ceaff2ba",
+    "data/portable_release/project3_train_fact_pruned.jsonl": "49bed0b5a42db8e7051bd2f2a9e3731c84ff8421fe7af05f9ed0e645e5a37fd2",
+    "data/portable_release/project3_validation_fact_pruned.jsonl": "20908dd573d757992307f6685dc7c7df20e9d9011067272287c2a28ce8f977fd"
+  },
+  "sampling_sources_rechecked": {
+    "data/strict_v8_20261024/geometry/all_case_audit.jsonl": "4086f8e462d72a95e95d14c0183097d478489d3a11089892ac0a9018ae2c52f0",
+    "reports/strict_v8_20261024/geometry_funnel.json": "ef4a83f19398c681a89c57eaf1d0d36c5baf78395c227af9b8bb1ec95350075f",
+    "data/project3_audit/geometry3k_intergps_links.jsonl": "f738dd5517c4d09071389974362b0fd80cc77e41935b40567460c42e66efa422",
+    "data/project3_audit/intergps_annotations.jsonl": "d83517c40cfb5e864344b0221dcd1698d118e461b16c587822c0b6ee8c67c00b",
+    "reports/data_release_preparation_20261024/shared_api_cache.zip": "d023c448f462074db28b01d143c197a4cb6ad0b3342d8a16e65ff4493a064405",
+    "data/portable_release/manifest.json": "ce02856dc5c594d7899539fb67e5b0eac621def38103e91b3f822af4ceaff2ba",
+    "data/portable_release/project3_train_fact_pruned.jsonl": "49bed0b5a42db8e7051bd2f2a9e3731c84ff8421fe7af05f9ed0e645e5a37fd2",
+    "data/portable_release/project3_validation_fact_pruned.jsonl": "20908dd573d757992307f6685dc7c7df20e9d9011067272287c2a28ce8f977fd",
+    "data/project3_sources/intergps/data/geometry3k/train.zip": "e12ee4d2ad85117a4d4279ce46917ac5f2a3aaa2266d4413118b6087a151a95b",
+    "data/project3_sources/intergps/data/geometry3k/val.zip": "67b1b0a9b424cb5e6634d20a6494a554c529156a6cfd0492c636e047e13f314a"
+  },
+  "blind_only_zip_sha256": "34d538f5cfc2fb00dd04ba15d16db97b2c446d9ac9be3823dceb2fd4ee2cbac5",
+  "api_calls": 0,
+  "model_downloads": 0,
+  "GPU_training_runs": 0,
+  "unverified": [
+    "actual VL processor assistant-label token counts",
+    "actual Qwen trainable-module mapping",
+    "VL forward/backward and visual rollout",
+    "checkpoint optimizer/RNG recovery",
+    "Linux/CUDA/Colab installation",
+    "A100 memory peak",
+    "human blind reviews and error rates"
+  ]
+}

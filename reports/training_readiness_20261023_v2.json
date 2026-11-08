@@ -1,0 +1,195 @@
+{
+  "date": "2026-10-23",
+  "scope": "new project1 7B, project2 online distillation, project3 VL readiness; separate from old tiny_posttrain",
+  "overall_ready_for_a100_training_smoke": false,
+  "agents_md_found": [],
+  "operations": {
+    "paid_api_calls": 0,
+    "gpu_operations": 0,
+    "training_runs": 0,
+    "weights_downloaded": false,
+    "packages_installed": false
+  },
+  "environment": {
+    "python": "3.12.14",
+    "torch": "2.14.1+cpu",
+    "transformers": "4.57.6",
+    "trl": "1.16.0",
+    "peft": "0.19.0",
+    "datasets": "4.7.0",
+    "accelerate": "1.10.1",
+    "pytest": "8.4.2",
+    "cuda_available": false,
+    "cuda_runtime": null
+  },
+  "checks": [
+    {
+      "name": "selected module imports",
+      "passed": true,
+      "modules": [
+        "src.losses.reference",
+        "src.teachers.opd_contract",
+        "src.evaluation.math_verifier",
+        "src.evaluation.geometry_perception_parser",
+        "tiny_posttrain.training",
+        "tiny_posttrain.evaluation"
+      ]
+    },
+    {
+      "name": "old cli --help",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "name": "new CPU reference tests",
+      "command": "tiny_posttrain/.venv/Scripts/python.exe -m pytest tests/test_losses_and_masks.py tests/test_opd_contract.py tests/test_geometry_parser.py tests/test_math_verifier.py -q",
+      "exit_code": 0,
+      "passed_count": 72,
+      "seconds": 6.99
+    },
+    {
+      "name": "old nontraining mask config preflight tests",
+      "command": "tiny_posttrain/.venv/Scripts/python.exe -m pytest tiny_posttrain/tests/test_trainers.py::test_mask tiny_posttrain/tests/test_trainers.py::test_grpo_full_batch_contract tiny_posttrain/tests/test_sft_preflight.py -q",
+      "exit_code": 0,
+      "passed_count": 3,
+      "seconds": 18.52
+    }
+  ],
+  "projects": {
+    "project1": {
+      "ready": false,
+      "available": [
+        "reference SFT/GRPO/DrGRPO loss",
+        "data preparation and tokenizer audits",
+        "isolated Math-Verify pilot worker"
+      ],
+      "blockers": [
+        "new 7B SFT and RL entrypoints",
+        "unified model math evaluation",
+        "Linux CUDA dependency/config lock",
+        "new masks/EOS/reference/resume integration"
+      ]
+    },
+    "project2": {
+      "ready": false,
+      "available": [
+        "student-token teacher-input contract",
+        "shifted common-support reverse KL oracle"
+      ],
+      "blockers": [
+        "real student rollout teacher forward optimizer loop",
+        "generation support mask integration",
+        "domain switch and checkpoint resume",
+        "model code evaluation and target Linux sandbox",
+        "dev specification acceptance"
+      ]
+    },
+    "project3": {
+      "ready": false,
+      "available": [
+        "geometry facts parser and perception F1"
+      ],
+      "blockers": [
+        "verified visual-only supervision",
+        "processor image-token contract",
+        "EasyR1 pinned entrypoint/environment",
+        "visual diagnostics generator",
+        "VL update and resume"
+      ]
+    }
+  },
+  "old_tiny_posttrain": {
+    "real_training_entrypoint_exists": true,
+    "model": "Qwen/Qwen2.5-1.5B-Instruct",
+    "dataset": "GSM8K",
+    "new_projects_implemented": false,
+    "checkpoint_required_files": [
+      "optimizer.pt",
+      "scheduler.pt",
+      "trainer_state.json",
+      "rng_state.pth",
+      "resume.json",
+      "adapter_config.json"
+    ],
+    "resume_training_tests_rerun_this_audit": false
+  },
+  "entrypoint_existence": {
+    "scripts/train_project1_sft.py": false,
+    "scripts/train_project1_rl.py": false,
+    "scripts/train_project2_opd.py": false,
+    "scripts/evaluate_math.py": false
+  },
+  "evidence": {
+    "src/losses/reference.py": {
+      "sha256": "44f1b36b7d900bc8fc4b114f8aa490ee9b43f1a51f5efe7b28560a6b3f9f20f7"
+    },
+    "src/teachers/opd_contract.py": {
+      "sha256": "e95f0853c6345900c63bda2b6e49c31161c1c4e19d83ab6a4eb72aba967d7bc8"
+    },
+    "src/evaluation/math_verifier.py": {
+      "sha256": "bf043f92edcdac98747719c6d95d1f702380287fad62072236da94325cbb3fe7"
+    },
+    "src/evaluation/geometry_perception_parser.py": {
+      "sha256": "ef1ca9b1bfae904f89ef5076114c43df8ff393110ffac13f36211c59bf755d01"
+    },
+    "scripts/math_verify_pilot_worker.py": {
+      "sha256": "923e03a3b54d90b571431b03bc8cf52562bba3c0064b30f32e3a8981645aade3"
+    },
+    "scripts/audit_official_code_benchmarks.py": {
+      "sha256": "a7236c0c5e759c9eb324570bde63380f3c6f04e5e6a9f6d6ecfca2ac4c673cb6"
+    },
+    "tiny_posttrain/src/tiny_posttrain/training.py": {
+      "sha256": "220bd0bd2b58fc7555500b4d50f1a048131e029f8eb117365fcfde79ab7187bb"
+    },
+    "tiny_posttrain/src/tiny_posttrain/evaluation.py": {
+      "sha256": "e9902eb4d192459a49ecdb334823b908718b71d6dbca09daa67abd31c8238a19"
+    },
+    "tiny_posttrain/src/tiny_posttrain/data.py": {
+      "sha256": "8f6a3e749916b7759a7109bb784af90a99861be2fe70a1ba73a56b2285381a56"
+    },
+    "tiny_posttrain/src/tiny_posttrain/storage.py": {
+      "sha256": "a369aa8f3a8ca8ecb8b31a067aac56f1fee9bef640362eb3a2afc0c253c88cf5"
+    },
+    "tiny_posttrain/src/tiny_posttrain/resources.py": {
+      "sha256": "7f5f9633fbfe718b3862136687709759f3dbcaa593d8a446844ef5137d5918e9"
+    },
+    "tiny_posttrain/src/tiny_posttrain/cli.py": {
+      "sha256": "1e0ace4a1dd89b1a57070f7bedae0d41effa1eabf0c0bc22c17f96be6336b03c"
+    },
+    "tiny_posttrain/configs/smoke.json": {
+      "sha256": "21b5bb6d3036c7ef3354d83efc62a635907fd735aac736eadb6c4a30851d6fbb"
+    },
+    "tiny_posttrain/requirements.lock.txt": {
+      "sha256": "5252b9bae2466998fa5840dc835c521e22262a3d4f7e824c6a66ed2b5d5fb886"
+    },
+    "tiny_posttrain/pyproject.toml": {
+      "sha256": "ce418edd2a765d22c9ff90de1f0778a05cbe5c3aaf6f420534f474749c43729b"
+    },
+    "tests/test_losses_and_masks.py": {
+      "sha256": "b963a02d955656b7a98b8d466b26f4545ed1475aaf08bfb94a613abb1f00d0d3"
+    },
+    "tests/test_opd_contract.py": {
+      "sha256": "355030eba398800d65d8d0983fd7b95558d718a6a972b8f2f960605ed88678b0"
+    },
+    "tests/test_geometry_parser.py": {
+      "sha256": "71f4a886b53cc433eff5bfa162b00647d0862f3703a0c8392010cc597f5ee68a"
+    },
+    "tests/test_math_verifier.py": {
+      "sha256": "9b35c07f0c4815f216f00e7111e8dedfaff65f791ddbdec5e69ed68becf39722"
+    },
+    "tiny_posttrain/tests/test_trainers.py": {
+      "sha256": "b0711642d32bc4aa7a98ee5c882aa00dcabc2b4eeed830e4d049668d5e32aa4c"
+    },
+    "tiny_posttrain/tests/test_sft_preflight.py": {
+      "sha256": "a751c106ffae1e48083612bc5aa6449ef02eb216903437819e3b4c26d746f48b"
+    }
+  },
+  "not_verified": [
+    "A100 CUDA package compatibility",
+    "real 7B/VL model forward backward optimizer update",
+    "GPU memory/throughput",
+    "new project checkpoint resume",
+    "formal benchmark model results"
+  ],
+  "report": "reports/training_readiness_20261023_v2.md"
+}

@@ -1,0 +1,25 @@
+{
+  "old_version_files_unchanged": 99,
+  "historical_blueprints_backed_up": "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\reports\\data_release_preparation_20261024\\blueprints_before_delegated_release.zip",
+  "new_release_all_hashes_match": true,
+  "paired_ids_identical": 213,
+  "project2_fixed_dev_ids_preserved": 456,
+  "dev_not_train": true,
+  "visual_internal_ids_excluded": true,
+  "no_pending_api_requests": true,
+  "api_attempts": 6393,
+  "cost_upper_usd": 2.91434478,
+  "tests_passed": 193,
+  "entry_cli_help_checks": {
+    "train_project1_sft": true,
+    "train_project1_rl": true,
+    "train_project2_opd": true,
+    "train_project3": true,
+    "evaluate_approved_math": true,
+    "diagnose_project3_vision": true
+  },
+  "gpu_runs": 0,
+  "core_perception_GRPO_approved": false,
+  "current_report_local_links_checked": 28,
+  "secret_pattern_scan_passed": true
+}

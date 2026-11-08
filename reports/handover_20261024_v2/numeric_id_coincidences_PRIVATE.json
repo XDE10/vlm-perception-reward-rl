@@ -1,0 +1,12 @@
+{
+  "policy": "User approved identity leakage checks; unlabelled mathematical numerals are not treated as identity disclosure. Image-visible numeral coincidences were not OCR audited (未验证).",
+  "text_coincidences": [
+    {
+      "blind_id": "B011",
+      "numeric_original_id": "78",
+      "coincidence_counts": {
+        "batch_1.md": 2
+      }
+    }
+  ]
+}

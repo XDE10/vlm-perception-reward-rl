@@ -1,0 +1,12 @@
+{
+  "prototype_rows": 200,
+  "unique_original_ids": 200,
+  "only_train": true,
+  "manual_rows": 30,
+  "all_reviews_pending": true,
+  "all_training_unapproved": true,
+  "original_image_bytes_equal": true,
+  "frozen_artifact_hash_mismatches": [],
+  "test_result": "6 passed; tests/test_project3_perception_prototype.py",
+  "gpu_or_api_used": false
+}

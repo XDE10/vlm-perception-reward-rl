@@ -1,0 +1,27 @@
+{
+  "source_split_sizes": {
+    "train": 2101,
+    "validation": 300,
+    "test": 601
+  },
+  "unique_matched_split_sizes": {
+    "train": 2096,
+    "validation": 300,
+    "test": 600
+  },
+  "ambiguous_by_split": {
+    "train": 5,
+    "test": 1
+  },
+  "serialized_preview_without_source_radius_ids": 2989,
+  "training_ready_grounded_targets": 0,
+  "serialized_grounding_states": {
+    "pending_image_grounding": 2988,
+    "isolated": 7,
+    "isolated_direction_convention": 1
+  },
+  "rule": "Internal identities retained solely in audit JSON; stripped from diagnostic text. Unknown center/point labels and concentric circle identities require visible grounding; never collapse all circles.",
+  "training_approved": false,
+  "test_annotations_used_for_training": false,
+  "api_calls": 0
+}

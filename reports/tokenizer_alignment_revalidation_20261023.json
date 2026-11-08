@@ -1,0 +1,764 @@
+{
+  "date": "2026-10-23",
+  "offline": true,
+  "original_report_path": "reports/tokenizer_alignment_report.json",
+  "original_report_sha256": "496ceee2535d8aac26b5ec8c20a5ffa86d5b6d62a296ddfbd50be72d504883ba",
+  "models": [
+    {
+      "model": "Qwen/Qwen2.5-1.5B-Instruct",
+      "revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+      "config_output_rows": 151936,
+      "valid_token_ids": 151665,
+      "outside_common_support_rows": 271
+    },
+    {
+      "model": "Qwen/Qwen2.5-Math-7B-Instruct",
+      "revision": "ef9926d75ab1d54532f6a30dd5e760355eb9aa4d",
+      "config_output_rows": 152064,
+      "valid_token_ids": 151665,
+      "outside_common_support_rows": 399
+    },
+    {
+      "model": "Qwen/Qwen2.5-Coder-7B-Instruct",
+      "revision": "c03e6d358207e414f1eca0bb1891e29f1db0e242",
+      "config_output_rows": 152064,
+      "valid_token_ids": 151665,
+      "outside_common_support_rows": 399
+    },
+    {
+      "model": "Qwen/Qwen2.5-7B-Instruct",
+      "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "config_output_rows": 152064,
+      "valid_token_ids": 151665,
+      "outside_common_support_rows": 399
+    }
+  ],
+  "case_count": 64,
+  "case_categories": {
+    "math": 16,
+    "code": 16,
+    "unicode": 16,
+    "special": 16
+  },
+  "all_raw_encodings_identical": true,
+  "all_chat_encodings_identical": false,
+  "mapping_difference_count": 0,
+  "common_support_size": 151665,
+  "exclusive_upper_bound": 151665,
+  "cases": [
+    {
+      "category": "math",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        41,
+        40,
+        41,
+        41
+      ]
+    },
+    {
+      "category": "math",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        38,
+        37,
+        38,
+        38
+      ]
+    },
+    {
+      "category": "math",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        37,
+        36,
+        37,
+        37
+      ]
+    },
+    {
+      "category": "math",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        39,
+        38,
+        39,
+        39
+      ]
+    },
+    {
+      "category": "math",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        39,
+        38,
+        39,
+        39
+      ]
+    },
+    {
+      "category": "math",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        38,
+        37,
+        38,
+        38
+      ]
+    },
+    {
+      "category": "math",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        37,
+        36,
+        37,
+        37
+      ]
+    },
+    {
+      "category": "math",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        41,
+        40,
+        41,
+        41
+      ]
+    },
+    {
+      "category": "code",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        40,
+        39,
+        40,
+        40
+      ]
+    },
+    {
+      "category": "code",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        36,
+        35,
+        36,
+        36
+      ]
+    },
+    {
+      "category": "code",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        44,
+        43,
+        44,
+        44
+      ]
+    },
+    {
+      "category": "code",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        39,
+        38,
+        39,
+        39
+      ]
+    },
+    {
+      "category": "code",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        37,
+        36,
+        37,
+        37
+      ]
+    },
+    {
+      "category": "code",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        42,
+        41,
+        42,
+        42
+      ]
+    },
+    {
+      "category": "code",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        39,
+        38,
+        39,
+        39
+      ]
+    },
+    {
+      "category": "code",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        41,
+        40,
+        41,
+        41
+      ]
+    },
+    {
+      "category": "unicode",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        33,
+        32,
+        33,
+        33
+      ]
+    },
+    {
+      "category": "unicode",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        32,
+        31,
+        32,
+        32
+      ]
+    },
+    {
+      "category": "unicode",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        39,
+        38,
+        39,
+        39
+      ]
+    },
+    {
+      "category": "unicode",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        35,
+        34,
+        35,
+        35
+      ]
+    },
+    {
+      "category": "unicode",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        34,
+        33,
+        34,
+        34
+      ]
+    },
+    {
+      "category": "unicode",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        33,
+        32,
+        33,
+        33
+      ]
+    },
+    {
+      "category": "unicode",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        33,
+        32,
+        33,
+        33
+      ]
+    },
+    {
+      "category": "unicode",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        33,
+        32,
+        33,
+        33
+      ]
+    },
+    {
+      "category": "special",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        34,
+        33,
+        34,
+        34
+      ]
+    },
+    {
+      "category": "special",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        30,
+        29,
+        30,
+        30
+      ]
+    },
+    {
+      "category": "special",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        35,
+        34,
+        35,
+        35
+      ]
+    },
+    {
+      "category": "special",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        42,
+        41,
+        42,
+        42
+      ]
+    },
+    {
+      "category": "special",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        39,
+        38,
+        39,
+        39
+      ]
+    },
+    {
+      "category": "special",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        37,
+        36,
+        37,
+        37
+      ]
+    },
+    {
+      "category": "special",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        36,
+        35,
+        36,
+        36
+      ]
+    },
+    {
+      "category": "special",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        32,
+        31,
+        32,
+        32
+      ]
+    },
+    {
+      "category": "math",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        45,
+        44,
+        45,
+        45
+      ]
+    },
+    {
+      "category": "math",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        42,
+        41,
+        42,
+        42
+      ]
+    },
+    {
+      "category": "math",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        42,
+        41,
+        42,
+        42
+      ]
+    },
+    {
+      "category": "math",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        44,
+        43,
+        44,
+        44
+      ]
+    },
+    {
+      "category": "math",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        44,
+        43,
+        44,
+        44
+      ]
+    },
+    {
+      "category": "math",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        43,
+        42,
+        43,
+        43
+      ]
+    },
+    {
+      "category": "math",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        42,
+        41,
+        42,
+        42
+      ]
+    },
+    {
+      "category": "math",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        45,
+        44,
+        45,
+        45
+      ]
+    },
+    {
+      "category": "code",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        44,
+        43,
+        44,
+        44
+      ]
+    },
+    {
+      "category": "code",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        40,
+        39,
+        40,
+        40
+      ]
+    },
+    {
+      "category": "code",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        48,
+        47,
+        48,
+        48
+      ]
+    },
+    {
+      "category": "code",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        44,
+        43,
+        44,
+        44
+      ]
+    },
+    {
+      "category": "code",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        41,
+        40,
+        41,
+        41
+      ]
+    },
+    {
+      "category": "code",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        46,
+        45,
+        46,
+        46
+      ]
+    },
+    {
+      "category": "code",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        43,
+        42,
+        43,
+        43
+      ]
+    },
+    {
+      "category": "code",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        45,
+        44,
+        45,
+        45
+      ]
+    },
+    {
+      "category": "unicode",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        38,
+        37,
+        38,
+        38
+      ]
+    },
+    {
+      "category": "unicode",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        37,
+        36,
+        37,
+        37
+      ]
+    },
+    {
+      "category": "unicode",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        44,
+        43,
+        44,
+        44
+      ]
+    },
+    {
+      "category": "unicode",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        40,
+        39,
+        40,
+        40
+      ]
+    },
+    {
+      "category": "unicode",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        39,
+        38,
+        39,
+        39
+      ]
+    },
+    {
+      "category": "unicode",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        38,
+        37,
+        38,
+        38
+      ]
+    },
+    {
+      "category": "unicode",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        37,
+        36,
+        37,
+        37
+      ]
+    },
+    {
+      "category": "unicode",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        38,
+        37,
+        38,
+        38
+      ]
+    },
+    {
+      "category": "special",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        39,
+        38,
+        39,
+        39
+      ]
+    },
+    {
+      "category": "special",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        35,
+        34,
+        35,
+        35
+      ]
+    },
+    {
+      "category": "special",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        39,
+        38,
+        39,
+        39
+      ]
+    },
+    {
+      "category": "special",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        46,
+        45,
+        46,
+        46
+      ]
+    },
+    {
+      "category": "special",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        43,
+        42,
+        43,
+        43
+      ]
+    },
+    {
+      "category": "special",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        42,
+        41,
+        42,
+        42
+      ]
+    },
+    {
+      "category": "special",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        40,
+        39,
+        40,
+        40
+      ]
+    },
+    {
+      "category": "special",
+      "raw_identical": true,
+      "independent_chat_templates_identical": false,
+      "chat_token_counts": [
+        37,
+        36,
+        37,
+        37
+      ]
+    }
+  ],
+  "logits_rule": {
+    "effective_ids": "0 <= token_id < 151665",
+    "generation": "Mask output rows >=151665 BEFORE sampling/softmax for each model.",
+    "kl": "FP32 log_softmax(logits[..., :151665], dim=-1) independently for student and teacher; this is a KL conditioned on common support.",
+    "prefix": "Render once with the frozen student template; use identical token-ID prefixes for every teacher; do not independently apply the Math teacher template.",
+    "removed_mass": "Before masking, compute 1 - exp(logsumexp(valid_logits)-logsumexp(all_logits)); actual trained-model tail mass remains unmeasured.",
+    "temperature": "Same documented temperature for teacher/student; baseline T=1."
+  },
+  "scope": "Full cached token->ID maps and 64 examples replayed. No model forward, GPU compatibility or real-logit mass acceptance.",
+  "script_sha256": "845f6f8b40ddcd9af6bd28a855a26fbdb80817c9d5372f4e113e3f7fa9036277"
+}

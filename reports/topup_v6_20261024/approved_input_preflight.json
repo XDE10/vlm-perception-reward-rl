@@ -1,0 +1,38 @@
+{
+  "files": {
+    "project1_raw_paired.jsonl": {
+      "rows": 977,
+      "max_tokens": 3550,
+      "passed": true
+    },
+    "project1_compact_paired.jsonl": {
+      "rows": 977,
+      "max_tokens": 1443,
+      "passed": true
+    },
+    "project2_math_train.jsonl": {
+      "rows": 2500,
+      "max_tokens": 1055,
+      "passed": true
+    },
+    "project2_code_train.jsonl": {
+      "rows": 2500,
+      "max_tokens": 1888,
+      "passed": true
+    },
+    "project3_train_fact_pruned.jsonl": {
+      "rows": 531,
+      "max_tokens": null,
+      "passed": true
+    }
+  },
+  "paired_ids_equal": 977,
+  "old_artifacts_unchanged": 6433,
+  "intentional_changes": [
+    "reports/data_release_preparation_20261024/shared_api_cache/ledger.json",
+    "src/training/approved_hf.py"
+  ],
+  "original_ledger_prefix_unchanged": true,
+  "gpu_runs": 0,
+  "image_processor_and_A100_smoke_not_executed": true
+}

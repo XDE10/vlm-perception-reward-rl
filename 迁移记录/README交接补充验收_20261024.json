@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-24",
+  "purpose": "README project handoff and Codex entry guidance",
+  "modified_payload_files": [
+    "README.md"
+  ],
+  "added_payload_files": [
+    "AGENTS.md"
+  ],
+  "documentation_links_fences_and_config_references": "passed",
+  "sealed_training_data_and_release_manifest": "unchanged",
+  "code": "unchanged",
+  "full_integrity_verification": {
+    "project": "项目三_多模态几何推理",
+    "files": 4258,
+    "full_hash_check": true,
+    "release_rows": {
+      "project3_train_fact_pruned.jsonl": 609,
+      "project3_validation_fact_pruned.jsonl": 82
+    },
+    "errors": [],
+    "gpu_run": false
+  },
+  "model_tests_rerun": false,
+  "gpu_training_run": false,
+  "official_codex_instruction_reference": "https://learn.chatgpt.com/docs/agent-configuration/agents-md"
+}

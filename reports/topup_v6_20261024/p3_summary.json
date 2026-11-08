@@ -1,0 +1,14 @@
+{
+  "audited": 1300,
+  "accepted_by_split": {
+    "train": 238,
+    "validation": 73
+  },
+  "task_statuses": {
+    "uncertain": 823,
+    "pass": 463,
+    "transport_or_local_error": 1,
+    "isolate": 13
+  },
+  "scope": "AI-certified fact subsets; not perfect truth or whole-image precision"
+}

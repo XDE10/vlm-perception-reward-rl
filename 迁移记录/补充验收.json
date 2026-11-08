@@ -1,0 +1,31 @@
+{
+  "projects": [
+    {
+      "project": "项目一_7B数学后训练",
+      "markdown_files_checked": 47,
+      "missing_local_links": [],
+      "visual_rows_path_only_change_verified": 0,
+      "runtime_content_preserved": true
+    },
+    {
+      "project": "项目三_多模态几何推理",
+      "markdown_files_checked": 47,
+      "missing_local_links": [],
+      "visual_rows_path_only_change_verified": 691,
+      "runtime_content_preserved": true
+    },
+    {
+      "project": "项目二_双教师在线蒸馏",
+      "markdown_files_checked": 47,
+      "missing_local_links": [],
+      "visual_rows_path_only_change_verified": 0,
+      "runtime_content_preserved": true
+    }
+  ],
+  "archived_api_cache": {
+    "file_count": 15119,
+    "complete_source_name_match": true,
+    "crc_test_passed": true
+  },
+  "gpu_runs": 0
+}

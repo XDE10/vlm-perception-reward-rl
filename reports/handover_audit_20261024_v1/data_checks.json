@@ -1,0 +1,60 @@
+{
+  "splits": {
+    "train": {
+      "rows": 609,
+      "unique_sample_ids": 609,
+      "unique_original_ids": 609,
+      "unique_pixel_images": 458,
+      "split_guard_kept": 609,
+      "positive_fact_count": 2799,
+      "negative_fact_count": 0,
+      "relations": {
+        "Length": 921,
+        "PointLiesOnLine": 538,
+        "PointLiesOnCircle": 493,
+        "Angle": 427,
+        "Perpendicular": 264,
+        "CongruentLength": 91,
+        "Parallel": 19,
+        "CongruentAngle": 36,
+        "ArcMeasure": 5,
+        "ArcLength": 5
+      }
+    },
+    "validation": {
+      "rows": 82,
+      "unique_sample_ids": 82,
+      "unique_original_ids": 82,
+      "unique_pixel_images": 77,
+      "split_guard_kept": 82,
+      "positive_fact_count": 363,
+      "negative_fact_count": 0,
+      "relations": {
+        "Angle": 56,
+        "PointLiesOnCircle": 82,
+        "PointLiesOnLine": 87,
+        "Perpendicular": 31,
+        "Length": 92,
+        "CongruentLength": 8,
+        "CongruentAngle": 4,
+        "Parallel": 2,
+        "ArcMeasure": 1
+      }
+    }
+  },
+  "image_files_checked": 691,
+  "portable_only_image_path_changed": true,
+  "archive_image_bytes_checked": 691,
+  "cross_split_pixel_intersection": [],
+  "mathvista_archived_overlap_recount": {
+    "rows": 1000,
+    "geometry3k_source": 62,
+    "exact_image_train_overlap": 32,
+    "joint_image_question_train_overlap": 0,
+    "potential_text_train_overlap": 23,
+    "source_disjoint_no_exact_overlap": 938,
+    "exact_image_matches": 62
+  },
+  "errors": [],
+  "note": "No model execution; image archive bytes and current linkage were checked, not new human fact certification."
+}

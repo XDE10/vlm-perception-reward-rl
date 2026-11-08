@@ -1,0 +1,32 @@
+{
+  "project1_approved_pairs": 1500,
+  "project1_type_counts": {
+    "Algebra": 525,
+    "Geometry": 300,
+    "Number Theory": 300,
+    "Combinatorics": 225,
+    "Inequalities": 100,
+    "Logic and Puzzles": 50
+  },
+  "project1_exact_target_met": true,
+  "project1_new_approved": 523,
+  "project2_math_train": 2500,
+  "project2_math_dev": 256,
+  "project2_code_train": {
+    "function": 1250,
+    "stdin_stdout": 1250
+  },
+  "project2_code_dev": {
+    "function": 100,
+    "stdin_stdout": 100
+  },
+  "project3_train": 609,
+  "project3_validation": 82,
+  "project3_coverage": {
+    "train": 2096,
+    "validation": 300
+  },
+  "rl_priority_excluding_new_dev": 4810,
+  "gpu_runs": 0,
+  "approval": "itemwise delegated AI plus deterministic checks; not human gold"
+}

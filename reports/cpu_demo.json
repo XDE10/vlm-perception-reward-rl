@@ -1,0 +1,73 @@
+{
+  "provider": "local_mock",
+  "paid_api_calls": 0,
+  "gpu_operations": 0,
+  "synthesis": {
+    "state": "accepted",
+    "key": "6c5e1f2839b332d5a9a5c5b85eda1ef4a4e2af5eba50df4089638f5877984b9c",
+    "sample_id": "demo/train/1",
+    "attempts": [
+      {
+        "generation_attempt": 1,
+        "raw_output": "#### 3",
+        "verification_evidence": {
+          "accepted": false,
+          "math_verification": {
+            "correct": false,
+            "status": "incorrect",
+            "extracted": "3"
+          }
+        },
+        "response_metadata": {
+          "usage": {
+            "input_tokens": 10,
+            "output_tokens": 5
+          },
+          "cost_units": 1,
+          "provider": "local_mock",
+          "request_id": "mock-1"
+        },
+        "latency": 0.0
+      },
+      {
+        "generation_attempt": 2,
+        "raw_output": "#### 2",
+        "verification_evidence": {
+          "accepted": true,
+          "math_verification": {
+            "correct": true,
+            "status": "ok",
+            "extracted": "2"
+          }
+        },
+        "response_metadata": {
+          "usage": {
+            "input_tokens": 10,
+            "output_tokens": 5
+          },
+          "cost_units": 1,
+          "provider": "local_mock",
+          "request_id": "mock-2"
+        },
+        "latency": 0.0
+      }
+    ],
+    "generation_attempt": 3,
+    "transport_retry": 0
+  },
+  "geometry": {
+    "canonical": "Length(A,B)=5; Perpendicular(AB,CD)",
+    "score": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "mask": true,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "unscored_count": 0,
+      "status": "ok"
+    }
+  },
+  "scope": "Synthetic demo, not real generated or visually verified training data"
+}

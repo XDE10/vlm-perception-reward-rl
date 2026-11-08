@@ -1,0 +1,491 @@
+{
+  "release_row_line": 1,
+  "release_row": {
+    "sample_id": "train:10",
+    "original_id": "1670",
+    "split": "train",
+    "problem": "<image>Find x",
+    "reference_answer": "4",
+    "image_path": "data/topup_v6_20261024/project3/images/1670.png",
+    "image_sha256": "61af8d6da15b8e1f39a936e8a3f02da926dbf946c76043ec262b4264a17f9560",
+    "model_perception": "<perception>Length(A,C)=1; Length(B,C)=x + 3; Length(C,D)=6; Length(C,E)=11*x - 2; PointLiesOnLine(C,(A,D)); PointLiesOnLine(C,(B,E))</perception>",
+    "certified_positive_tokens": [
+      "Length(A,C)=1",
+      "Length(B,C)=x + 3",
+      "Length(C,D)=6",
+      "Length(C,E)=11*x - 2",
+      "PointLiesOnLine(C,(A,D))",
+      "PointLiesOnLine(C,(B,E))"
+    ],
+    "certified_negative_tokens": [],
+    "masked_uncertain_facts": [],
+    "certified_fact_evidence": [
+      {
+        "index": 0,
+        "fact": {
+          "relation": "Length",
+          "entities": [
+            "A",
+            "C"
+          ],
+          "value": "1",
+          "unit": "unspecified_source_unit",
+          "value_kind": "constant"
+        },
+        "evidence": "Printed '1' labels segment AC.",
+        "token": "Length(A,C)=1"
+      },
+      {
+        "index": 1,
+        "fact": {
+          "relation": "Length",
+          "entities": [
+            "B",
+            "C"
+          ],
+          "value": "x + 3",
+          "unit": "unspecified_source_unit",
+          "value_kind": "symbolic_expression"
+        },
+        "evidence": "Printed 'x + 3' labels segment BC.",
+        "token": "Length(B,C)=x + 3"
+      },
+      {
+        "index": 2,
+        "fact": {
+          "relation": "Length",
+          "entities": [
+            "C",
+            "D"
+          ],
+          "value": "6",
+          "unit": "unspecified_source_unit",
+          "value_kind": "constant"
+        },
+        "evidence": "Printed '6' labels segment CD.",
+        "token": "Length(C,D)=6"
+      },
+      {
+        "index": 3,
+        "fact": {
+          "relation": "Length",
+          "entities": [
+            "C",
+            "E"
+          ],
+          "value": "11*x - 2",
+          "unit": "unspecified_source_unit",
+          "value_kind": "symbolic_expression"
+        },
+        "evidence": "Printed '11x - 2' labels segment CE.",
+        "token": "Length(C,E)=11*x - 2"
+      },
+      {
+        "index": 4,
+        "fact": {
+          "relation": "PointLiesOnLine",
+          "entities": [
+            "C",
+            [
+              "A",
+              "D"
+            ]
+          ],
+          "value": "",
+          "unit": ""
+        },
+        "evidence": "C lies at the intersection of segments AD and BE, so C is on line AD.",
+        "token": "PointLiesOnLine(C,(A,D))"
+      },
+      {
+        "index": 5,
+        "fact": {
+          "relation": "PointLiesOnLine",
+          "entities": [
+            "C",
+            [
+              "B",
+              "E"
+            ]
+          ],
+          "value": "",
+          "unit": ""
+        },
+        "evidence": "C lies at the intersection of segments AD and BE, so C is on line BE.",
+        "token": "PointLiesOnLine(C,(B,E))"
+      }
+    ],
+    "training_approved": true,
+    "evaluation_approved": false,
+    "perception_reward_enabled": true,
+    "perception_reward_mode": "sparse_certified_v4",
+    "perception_reward_complete_categories": [],
+    "model_input_whitelist": [
+      "problem",
+      "image_path"
+    ],
+    "model_target_whitelist": [
+      "model_perception"
+    ],
+    "approval_request_id": "d43f8fa1-0180-4bec-84ac-aa37ddec8de0",
+    "human_review_performed": false,
+    "certification_scope": "delegated AI plus deterministic guards; partial visual supervision",
+    "independent_task_resolution": null,
+    "image_pixel_sha256": "983a9aa06399a34db78ec275e15c54587a899c89607d28c6db6beb25a0b596cd",
+    "image_split_guard_passed": true
+  },
+  "original_annotation": {
+    "original_id": "1670",
+    "split": "train",
+    "question": "Find x.",
+    "answer": "4",
+    "image_pixel_sha256": "983a9aa06399a34db78ec275e15c54587a899c89607d28c6db6beb25a0b596cd",
+    "original_data": {
+      "problem_text": "Find x.",
+      "choices": [
+        "3",
+        "4",
+        "6",
+        "7"
+      ],
+      "answer": "B",
+      "detailed_solution": " ",
+      "problem_type_graph": [
+        "Triangle"
+      ],
+      "problem_type_goal": [
+        "Length"
+      ],
+      "source": "textbook2_chapter6.pdf page 55",
+      "comment": "",
+      "id": 1670,
+      "annot_id": "Ran_2020-03-21_08_04_01",
+      "is_standard": false,
+      "compact_choices": [
+        "3",
+        "4",
+        "6",
+        "7"
+      ],
+      "precise_value": [
+        3.0,
+        4.0,
+        6.0,
+        7.0
+      ],
+      "rough_value": [
+        3,
+        4,
+        6,
+        7
+      ],
+      "compact_text": "Find x.",
+      "annotat_text": "Find x",
+      "unit": "",
+      "img_width": 446,
+      "img_height": 258,
+      "data_type": "train",
+      "date": "Fri Sep 18 22:23:14 2020",
+      "system": "linux"
+    },
+    "diagram_annotation": {
+      "annot_id": "Ran_2020-03-21_08_04_01",
+      "point_instances": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "line_instances": [
+        "BA",
+        "CA",
+        "CB",
+        "DA",
+        "DC",
+        "EB",
+        "EC",
+        "ED"
+      ],
+      "circle_instances": [
+        ""
+      ],
+      "diagram_logic_forms": [
+        "Equals(LengthOf(Line(C, B)), x+3)",
+        "Equals(LengthOf(Line(D, C)), 6)",
+        "Equals(LengthOf(Line(C, A)), 1)",
+        "Equals(LengthOf(Line(E, C)), 11x-2)",
+        "PointLiesOnLine(C, Line(E, B))",
+        "PointLiesOnLine(C, Line(D, A))"
+      ],
+      "point_positions": {
+        "A": [
+          14.0,
+          127.0
+        ],
+        "B": [
+          0.0,
+          0.0
+        ],
+        "C": [
+          118.0,
+          78.0
+        ],
+        "D": [
+          234.0,
+          23.0
+        ],
+        "E": [
+          250.0,
+          166.0
+        ]
+      },
+      "redundant_point_positions": {}
+    },
+    "text_annotation": {
+      "annot_id": "Ran_2020-03-21_08_04_01",
+      "text_logic_forms": [
+        "Find(x)"
+      ]
+    },
+    "dissolved_annotation": {
+      "annot_id": "Ran_2020-03-21_08_04_01",
+      "text_logic_forms": [
+        "Find(x)"
+      ]
+    },
+    "bundled_logic_form": {
+      "text_logic_form": [
+        "Find(x)"
+      ],
+      "dissolved_text_logic_form": [
+        "Find(x)"
+      ],
+      "diagram_logic_form": [
+        "Equals(LengthOf(Line(C, B)), x+3)",
+        "Equals(LengthOf(Line(D, C)), 6)",
+        "Equals(LengthOf(Line(C, A)), 1)",
+        "Equals(LengthOf(Line(E, C)), 11x-2)",
+        "PointLiesOnLine(C, Line(E, B))",
+        "PointLiesOnLine(C, Line(D, A))"
+      ],
+      "line_instances": [
+        "BA",
+        "CA",
+        "CB",
+        "DA",
+        "DC",
+        "EB",
+        "EC",
+        "ED"
+      ],
+      "point_positions": {
+        "A": [
+          14.0,
+          127.0
+        ],
+        "B": [
+          0.0,
+          0.0
+        ],
+        "C": [
+          118.0,
+          78.0
+        ],
+        "D": [
+          234.0,
+          23.0
+        ],
+        "E": [
+          250.0,
+          166.0
+        ]
+      },
+      "circle_instances": [
+        ""
+      ]
+    },
+    "annotation_provenance": "official human-annotation package *_annot.json; not parser predictions",
+    "diagram_bundle_agrees": true,
+    "text_bundle_agrees": true,
+    "original_locator": "train.zip::train/1670/data.json"
+  },
+  "audit_case": {
+    "sample_id": "train:10",
+    "split": "train",
+    "original_id": "1670",
+    "response_received": true,
+    "review": {
+      "task_status": "pass",
+      "task_issues": [],
+      "visible_labels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "circle_count": 0,
+      "facts": [
+        {
+          "index": 0,
+          "status": "certified",
+          "evidence": "Printed '1' labels segment AC."
+        },
+        {
+          "index": 1,
+          "status": "certified",
+          "evidence": "Printed 'x + 3' labels segment BC."
+        },
+        {
+          "index": 2,
+          "status": "certified",
+          "evidence": "Printed '6' labels segment CD."
+        },
+        {
+          "index": 3,
+          "status": "certified",
+          "evidence": "Printed '11x - 2' labels segment CE."
+        },
+        {
+          "index": 4,
+          "status": "certified",
+          "evidence": "C lies at the intersection of segments AD and BE, so C is on line AD."
+        },
+        {
+          "index": 5,
+          "status": "certified",
+          "evidence": "C lies at the intersection of segments AD and BE, so C is on line BE."
+        }
+      ],
+      "valid": true,
+      "normalization": [
+        "removed_redundant_type_json_object_metadata_only"
+      ]
+    },
+    "independent_task_resolution": null,
+    "pruning": {
+      "accepted": true,
+      "positive_tokens": [
+        "Length(A,C)=1",
+        "Length(B,C)=x + 3",
+        "Length(C,D)=6",
+        "Length(C,E)=11*x - 2",
+        "PointLiesOnLine(C,(A,D))",
+        "PointLiesOnLine(C,(B,E))"
+      ],
+      "negative_tokens": [],
+      "certified_facts": [
+        {
+          "index": 0,
+          "fact": {
+            "relation": "Length",
+            "entities": [
+              "A",
+              "C"
+            ],
+            "value": "1",
+            "unit": "unspecified_source_unit",
+            "value_kind": "constant"
+          },
+          "evidence": "Printed '1' labels segment AC.",
+          "token": "Length(A,C)=1"
+        },
+        {
+          "index": 1,
+          "fact": {
+            "relation": "Length",
+            "entities": [
+              "B",
+              "C"
+            ],
+            "value": "x + 3",
+            "unit": "unspecified_source_unit",
+            "value_kind": "symbolic_expression"
+          },
+          "evidence": "Printed 'x + 3' labels segment BC.",
+          "token": "Length(B,C)=x + 3"
+        },
+        {
+          "index": 2,
+          "fact": {
+            "relation": "Length",
+            "entities": [
+              "C",
+              "D"
+            ],
+            "value": "6",
+            "unit": "unspecified_source_unit",
+            "value_kind": "constant"
+          },
+          "evidence": "Printed '6' labels segment CD.",
+          "token": "Length(C,D)=6"
+        },
+        {
+          "index": 3,
+          "fact": {
+            "relation": "Length",
+            "entities": [
+              "C",
+              "E"
+            ],
+            "value": "11*x - 2",
+            "unit": "unspecified_source_unit",
+            "value_kind": "symbolic_expression"
+          },
+          "evidence": "Printed '11x - 2' labels segment CE.",
+          "token": "Length(C,E)=11*x - 2"
+        },
+        {
+          "index": 4,
+          "fact": {
+            "relation": "PointLiesOnLine",
+            "entities": [
+              "C",
+              [
+                "A",
+                "D"
+              ]
+            ],
+            "value": "",
+            "unit": ""
+          },
+          "evidence": "C lies at the intersection of segments AD and BE, so C is on line AD.",
+          "token": "PointLiesOnLine(C,(A,D))"
+        },
+        {
+          "index": 5,
+          "fact": {
+            "relation": "PointLiesOnLine",
+            "entities": [
+              "C",
+              [
+                "B",
+                "E"
+              ]
+            ],
+            "value": "",
+            "unit": ""
+          },
+          "evidence": "C lies at the intersection of segments AD and BE, so C is on line BE.",
+          "token": "PointLiesOnLine(C,(B,E))"
+        }
+      ],
+      "masked": [],
+      "reason": null,
+      "model_perception": "<perception>Length(A,C)=1; Length(B,C)=x + 3; Length(C,D)=6; Length(C,E)=11*x - 2; PointLiesOnLine(C,(A,D)); PointLiesOnLine(C,(B,E))</perception>"
+    },
+    "request_id": "d43f8fa1-0180-4bec-84ac-aa37ddec8de0",
+    "actual_finish_reason": "stop",
+    "image_split_guard_exclusion": null,
+    "release_approved": true
+  },
+  "image": {
+    "byte_sha256": "61af8d6da15b8e1f39a936e8a3f02da926dbf946c76043ec262b4264a17f9560",
+    "pixel_sha256": "983a9aa06399a34db78ec275e15c54587a899c89607d28c6db6beb25a0b596cd",
+    "size": [
+      446,
+      258
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "reviewed_prototype_count": 200,
+  "verdicts": {
+    "pass": 29,
+    "uncertain": 73,
+    "isolate": 98
+  },
+  "approved_grounded_train_prototypes": 26,
+  "full_geometry_train_approved": false,
+  "human_review_performed": false,
+  "shared_budget": {
+    "requests": 6393,
+    "committed_upper_usd": 2.91434478,
+    "hard_cap_usd": 5,
+    "unresolved_requests": 50
+  },
+  "interpretation": "AI-reviewed prototype subset, not 200-case human gold precision; source names are accepted only when returned as visible labels or reviewed single-circle binding"
+}

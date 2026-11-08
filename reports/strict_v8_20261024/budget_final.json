@@ -1,0 +1,9 @@
+{
+  "cap_total_usd": 11,
+  "dispatch_attempts": 15231,
+  "completed_peak_usage_usd": 8.122448388,
+  "unknown_error_retained_reserve_usd": 0.4122843,
+  "committed_upper_usd": 8.534732688,
+  "live_pending_requests": 0,
+  "actual_account_debit": false
+}

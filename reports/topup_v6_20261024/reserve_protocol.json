@@ -1,0 +1,13 @@
+{
+  "total_cap": 8,
+  "work": "Separate five-question P1 supplement, fresh code train/dev reserves, optional remaining Geometry train audit if below500",
+  "p2_quota_priority_before_extra_images": true,
+  "no_failed_semantic_verdict_resampling": true,
+  "same_source_tests_and_mutant_gates": true,
+  "hashes": {
+    "scripts/run_topup_reserves.py": "9c898eb02dc80dc491d45191feb0d8beb72a168d868c89446cf0997ce0caf0de",
+    "src/synthesis/topup_budget.py": "0243bffc8672f8bc1e1227916465ba8c7ee0c7a5f996b5885a384adb96408ba0",
+    "src/data/perception_v4.py": "cb95cdebbeae9832be8d705f55f2aa22ddcba07187b19321e61b814ab25dfe80",
+    "src/data/perception_text_guards.py": "107d20a61b3f6dfea917d260dcb9c5f29a8a23775ec790eed16c5a3864508d74"
+  }
+}

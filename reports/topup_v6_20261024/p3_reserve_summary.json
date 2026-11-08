@@ -1,0 +1,5 @@
+{
+  "audited": 200,
+  "strict_approved_train": 531,
+  "stop_rule": "100 fresh train images per round, final sidecar checks; stop once500 approved or total$8"
+}

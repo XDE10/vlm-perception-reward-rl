@@ -1,0 +1,18 @@
+{
+  "inputs": {
+    "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project3_perception_prototype\\prototype_200.jsonl": "19aaa8f1e9fa82ab72cbb8f035e4ed88323bf4137bdc36b0e732c9bd6d053452"
+  },
+  "scripts": {
+    "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\src\\data\\project3_perception_v2.py": "51b00daf3d9b1363754863ff9f0425e197eaaba5c54707604c378e7a298d3c86",
+    "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\scripts\\build_project3_perception_v2.py": "8e8cceb38600f20ac89b892de9433f71814b800f1a28c4bc2001182f6e98a3d6"
+  },
+  "artifacts": {
+    "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project3_perception_v2\\prototype_200.jsonl": "02bf209a3fdd34c697138a141bac70be822e9dabb1d6bda5fbdb4eda6f1304f4",
+    "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project3_perception_v2\\schema.json": "fa97e14660f81de3cce2e4c3c9e09f829d8d881915e69c0fb653fbdd800120d6",
+    "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\data\\project3_perception_v2\\uncertain.jsonl": "ee80f9dec8c7e9c5018a44fd8eea03674c1dc2883d24c83ce04b4de571186f98",
+    "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\reports\\project3_perception_v2\\200题预览.md": "01e8f014ab85f739786aa9910b848ef24849f211d293c94c027323796a10cab1",
+    "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\reports\\project3_perception_v2\\summary.json": "803acdfce6c29391c22998b8bb46e2466f78851b76518db579ac93a00abf1d63",
+    "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\reports\\project3_perception_v2\\执行报告.md": "18fe540c26feb05e165361f5305017cf31d482df3c63b72fdb1750e45b80df38",
+    "D:\\Users\\Mr.Z\\Desktop\\modern_genai\\reports\\project3_perception_v2\\accuracy_audit.json": "88343d8a37ef4ece46323b36326b7d5cbec264739c90eb4a25cb71d5ebebc7cd"
+  }
+}

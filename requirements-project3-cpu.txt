@@ -1,0 +1,6 @@
+# Optional CPU-only dataset audit environment. Validated on Python 3.11.4.
+# Install into a dedicated venv; no changes to training environments required.
+Pillow==11.2.1
+pyarrow==20.0.0
+requests==2.32.4
+pytest==8.3.5

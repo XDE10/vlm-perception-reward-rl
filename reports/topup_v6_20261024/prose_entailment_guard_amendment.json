@@ -1,0 +1,6 @@
+{
+  "reason": "Independent pixel/prose spot check found AI-certified ID265 diagonal incidence is directly entailed by named-rhombus diagonal-intersection prose; ID1053 E/N circle incidence follows named arc in named circle.",
+  "action": "Strengthen zero-cost fact-level text masking on all cached reviews, preserving other individually grounded facts; never resample a rejected semantic verdict.",
+  "rules_module": "src/data/perception_text_guards.py",
+  "human_review_performed": false
+}

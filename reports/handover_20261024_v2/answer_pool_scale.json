@@ -1,0 +1,22 @@
+{
+  "train_total": 2096,
+  "overlap_removed": 624,
+  "remaining": 1472,
+  "audit_parsed_task_status_counts": {
+    "pass": 1045,
+    "uncertain": 372,
+    "isolate": 33,
+    "格式失败": 22
+  },
+  "effective_recorded_resolution_counts": {
+    "pass": 1045,
+    "uncertain": 372,
+    "isolate": 33,
+    "格式失败": 22
+  },
+  "approval_unchanged": "609 train / 82 validation; this analysis grants no training approval",
+  "sources": {
+    "data/strict_v8_20261024/geometry/all_case_audit.jsonl": "4086f8e462d72a95e95d14c0183097d478489d3a11089892ac0a9018ae2c52f0",
+    "data/project3_audit/geometry3k_intergps_links.jsonl": "f738dd5517c4d09071389974362b0fd80cc77e41935b40567460c42e66efa422"
+  }
+}

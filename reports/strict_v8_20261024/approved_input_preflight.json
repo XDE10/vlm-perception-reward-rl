@@ -1,0 +1,32 @@
+{
+  "files": {
+    "project1_raw_paired.jsonl": {
+      "rows": 1500,
+      "max_tokens": 3876,
+      "passed": true
+    },
+    "project1_compact_paired.jsonl": {
+      "rows": 1500,
+      "max_tokens": 1443,
+      "passed": true
+    },
+    "project2_math_train.jsonl": {
+      "rows": 2500,
+      "max_tokens": null,
+      "passed": true
+    },
+    "project2_code_train.jsonl": {
+      "rows": 2500,
+      "max_tokens": null,
+      "passed": true
+    },
+    "project3_train_fact_pruned.jsonl": {
+      "rows": 609,
+      "max_tokens": null,
+      "passed": true
+    }
+  },
+  "old_release_all_hashes_unchanged": true,
+  "p2_all_files_byte_identical": true,
+  "gpu_runs": 0
+}

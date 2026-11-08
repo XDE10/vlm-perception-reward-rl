@@ -1,0 +1,8 @@
+{
+  "method": "Codex direct original PNG inspection after delegated AI review; nonrandom two-case spot check, not a precision estimate",
+  "human_review_performed": false,
+  "rows": [
+    {"original_id": "1826", "verdict": "consistent_for_exported_partial_target", "evidence": "A/B/C/D/E labels are printed. AD=10 inches, DC=4 inches, DE=5 inches are printed. Right-angle marker at E between DE and BE, and E is on BC. Exported partial target matches these pixels; no completeness claim."},
+    {"original_id": "498", "verdict": "consistent_for_exported_partial_target", "evidence": "C/D/E labels printed, D is center, C and E lie on the circle, angle CDE=57 degrees shown. Radius 3 inches is also printed but not included in the partial target. Missing this fact does not justify treating the partial labels as exhaustive perception reward ground truth."}
+  ]
+}

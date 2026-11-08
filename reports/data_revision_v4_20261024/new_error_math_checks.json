@@ -1,0 +1,13 @@
+{
+  "N": 1115370,
+  "N_mod_100": 70,
+  "divisor_count_N": 72,
+  "N_over_10_mod_7": 6,
+  "divisor_count_80N": 324,
+  "refutes": "7918f333 compact assumption: N/10 ending in7 must equal7*k",
+  "empty_denominator_case": "8704447d",
+  "raw_arithmetic_check": {
+    "1002_times_2_001": "2005.002",
+    "59_minus_lcm_2_3_4_5": -1
+  }
+}

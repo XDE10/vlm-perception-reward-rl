@@ -1,0 +1,20 @@
+{
+  "cap_total_usd": 8,
+  "includes_before_spending": "p3/visual_grounding/1860",
+  "global_concurrency": 8,
+  "p1_length": [
+    150,
+    1500
+  ],
+  "p1_no_semantic_resampling": true,
+  "p2_dev_tests_before_AI": true,
+  "p3_training_split_only": "train; validation never training",
+  "p3_metric": "sparse certified positive/explicit negative precision and recall; unknown masked",
+  "code_hashes": {
+    "scripts/run_topup_v6.py": "937fb0372c371d3c31b894f5fe0fbd3e93ce2b77c6e1ff353817ac90af9e87c5",
+    "src/synthesis/compact_v4.py": "5fafda75996f9e9b60f60ece56fccfc2cda2bf505a6c2f895e9f54bb731adb16",
+    "src/synthesis/data_review_contract.py": "da33500c51292ebfd383e03c45cd9ed062f124a6a37d7a9444ca2358c56d60f6",
+    "src/data/perception_v4.py": "46742c34b273174f0736ff237503800ac3bae640d4e8cb53317a6d661197fa87",
+    "src/synthesis/topup_budget.py": "0243bffc8672f8bc1e1227916465ba8c7ee0c7a5f996b5885a384adb96408ba0"
+  }
+}

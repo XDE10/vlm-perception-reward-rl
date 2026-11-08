@@ -1,0 +1,19 @@
+{
+  "records": 1500,
+  "accepted_by_split": {
+    "train": 531,
+    "validation": 123
+  },
+  "task_statuses": {
+    "uncertain": 428,
+    "pass": 1034,
+    "not_reviewed": 1,
+    "isolate": 37
+  },
+  "positive_facts": 3571,
+  "explicit_negative_facts": 0,
+  "api_calls": 0,
+  "raw_source_sha": "38260329b30d6ff43de55253abecf86ca8dcc4a78ebf3fc114c3b2f6834e6931",
+  "extra_raw_source_sha": "6efa4ed3dafb7f8599d65c6bd6b73b0d9984dd3c606a4a31785645fd2de9c3cf",
+  "parser_sha": "841ac3c3a15fb1ed11f6be35543ba1028b1ccca1574c5dd30881b0dbde77b5ea"
+}

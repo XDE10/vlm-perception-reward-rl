@@ -1,0 +1,23 @@
+{
+  "rollouts": 2,
+  "mean_facts_raw": 2.5,
+  "mean_certified_recall": 0.5,
+  "masked_fact_fraction": 0.4,
+  "no_predictions": false,
+  "answer_accuracy_by_F1": {
+    "0.5<F1<1": {
+      "n": 1,
+      "answer_accuracy_all": 1.0,
+      "verification_status": {
+        "equivalent": 1
+      }
+    },
+    "F1=0": {
+      "n": 1,
+      "answer_accuracy_all": 0.0,
+      "verification_status": {
+        "mismatch": 1
+      }
+    }
+  }
+}

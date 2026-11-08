@@ -1,0 +1,48 @@
+{
+  "parameters": [
+    {
+      "name": "visual.encoder.weight",
+      "numel": 4,
+      "requires_grad": false
+    },
+    {
+      "name": "visual.encoder.bias",
+      "numel": 2,
+      "requires_grad": false
+    },
+    {
+      "name": "visual.merger.weight",
+      "numel": 4,
+      "requires_grad": false
+    },
+    {
+      "name": "visual.merger.bias",
+      "numel": 2,
+      "requires_grad": false
+    },
+    {
+      "name": "language_lora.weight",
+      "numel": 4,
+      "requires_grad": true
+    },
+    {
+      "name": "language_lora.bias",
+      "numel": 2,
+      "requires_grad": true
+    }
+  ],
+  "trainable_full_names": [
+    "language_lora.weight",
+    "language_lora.bias"
+  ],
+  "trainable_count": 6,
+  "visual_parameter_tensors": 4,
+  "visual_encoder_tensors": 2,
+  "merger_tensors": 2,
+  "visual_frozen": true,
+  "encoder_frozen": true,
+  "merger_frozen": true,
+  "formal_VL_verification": "未验证",
+  "sha256": "8046c684c8809a749b06c985fcff335632fc7bb88eca91a9fb52a5bb576aacf5",
+  "context": "tiny_structure_only; formal_VL_未验证"
+}

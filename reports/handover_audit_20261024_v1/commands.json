@@ -1,0 +1,54 @@
+[
+  {
+    "name": "verify_migration",
+    "argv": [
+      "D:\\Python\\Python311\\python.exe",
+      "tools/verify_migration.py"
+    ],
+    "exit_code": 0,
+    "log": "verify_migration.log"
+  },
+  {
+    "name": "verify_migration_full",
+    "argv": [
+      "D:\\Python\\Python311\\python.exe",
+      "tools/verify_migration.py",
+      "--full"
+    ],
+    "exit_code": 0,
+    "log": "verify_migration_full.log"
+  },
+  {
+    "name": "readme_tests",
+    "argv": [
+      "D:\\Python\\Python311\\python.exe",
+      "-m",
+      "pytest",
+      "tests/test_approved_training_inputs.py",
+      "tests/test_training_entries_cpu.py",
+      "tests/test_perception_v4.py",
+      "tests/test_geometry_model_serialization.py",
+      "-q"
+    ],
+    "exit_code": 1,
+    "log": "readme_tests.log"
+  },
+  {
+    "name": "data_tests",
+    "argv": [
+      "D:\\Python\\Python311\\python.exe",
+      "-m",
+      "pytest",
+      "tests/test_approved_training_inputs.py",
+      "tests/test_perception_v4.py",
+      "tests/test_geometry_model_serialization.py",
+      "tests/test_geometry_split_guard.py",
+      "tests/test_geometry_parser.py",
+      "tests/test_project3_perception_v2.py",
+      "tests/test_project3_audit.py",
+      "-q"
+    ],
+    "exit_code": 0,
+    "log": "data_tests.log"
+  }
+]

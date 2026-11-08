@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-24",
+  "validation_environment": "Existing Windows Python 3.12 CPU virtual environment; not a fresh installation or GPU acceptance",
+  "checks": [
+    {
+      "project": "项目一_7B数学后训练",
+      "full_integrity": {
+        "project": "项目一_7B数学后训练",
+        "files": 4213,
+        "full_hash_check": true,
+        "release_rows": {
+          "project1_raw_paired.jsonl": 1500,
+          "project1_compact_paired.jsonl": 1500
+        },
+        "errors": [],
+        "gpu_run": false
+      },
+      "cpu_tests": {
+        "exit_code": 0,
+        "output": ".................                                                        [100%]\r\n17 passed in 60.50s (0:01:00)"
+      }
+    },
+    {
+      "project": "项目二_双教师在线蒸馏",
+      "full_integrity": {
+        "project": "项目二_双教师在线蒸馏",
+        "files": 4214,
+        "full_hash_check": true,
+        "release_rows": {
+          "project2_math_train.jsonl": 2500,
+          "project2_code_train.jsonl": 2500,
+          "project2_math_dev.jsonl": 256,
+          "project2_code_dev.jsonl": 200
+        },
+        "errors": [],
+        "gpu_run": false
+      },
+      "cpu_tests": {
+        "exit_code": 0,
+        "output": "................                                                     [100%]\r\n20 passed in 51.17s"
+      }
+    },
+    {
+      "project": "项目三_多模态几何推理",
+      "full_integrity": {
+        "project": "项目三_多模态几何推理",
+        "files": 4257,
+        "full_hash_check": true,
+        "release_rows": {
+          "project3_train_fact_pruned.jsonl": 609,
+          "project3_validation_fact_pruned.jsonl": 82
+        },
+        "errors": [],
+        "gpu_run": false
+      },
+      "cpu_tests": {
+        "exit_code": 0,
+        "output": "...............                                                          [100%]\r\n15 passed in 30.10s"
+      }
+    }
+  ]
+}

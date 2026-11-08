@@ -1,0 +1,10 @@
+{
+  "markdown_local_links_broken": [],
+  "python_syntax_parsed": [
+    "reports\\handover_audit_20261024_v1\\audit_offline.py",
+    "reports\\handover_audit_20261024_v1\\gpu_acceptance_probe.py",
+    "reports\\handover_audit_20261024_v1\\reward_probes.py"
+  ],
+  "audited_existing_sources_unchanged": true,
+  "gpu_probe_executed": false
+}
