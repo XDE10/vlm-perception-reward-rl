@@ -223,3 +223,15 @@ pro6000.ipynb
 /backups/
 *.tmp
 *.log.tmp
+
+# OS generated files & Windows NTFS Alternate Data Streams
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+[Dd]esktop.ini
+*:Zone.Identifier
+*Zone.Identifier*
