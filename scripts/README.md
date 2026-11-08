@@ -43,7 +43,8 @@
 
 | 脚本 | 用途 | 状态 | 典型入口 |
 | --- | --- | --- | --- |
-| `train_project3.py` | 项目三训练入口，委托 `src.training.approved_hf.cli(expected_vision=True)` | 主线 | `python -m scripts.training.train_project3 --config configs/...` |
+| `train_rl.py` | 统一 GRPO 入口（协议 v3，所有实验组共用）：`configs/experiments/` 基础配置 + 组别 + 种子，委托 `src.training.rl_entry.run` | 主线 | `python -m scripts.training.train_rl --arm rl_v5 --seed 1` |
+| `train_project3.py` | 旧训练入口（感知 SFT → 稀疏 GRPO），委托 `src.training.approved_hf.cli(expected_vision=True)`；2026-11-09 只修复 LoRA 误入 ViT 与 transformers 5 兼容，新实验不再使用 | 历史归档 | `python -m scripts.training.train_project3 --config configs/...` |
 | `diagnose_project3_vision.py` | 同题原图/黑图/无图/遮挡成对视觉依赖诊断 | 主线 | `python -m scripts.training.diagnose_project3_vision` |
 | `configure_topup_training.py` | 为已批准 V6 行生成版本化 smoke 配置（明确不是 GPU 验收） | 历史归档 | `python -m scripts.training.configure_topup_training` |
 | `write_approved_training_configs.py` | 写入初始 A100 smoke 配置，不下载权重、不执行训练 | 历史归档 | `python -m scripts.training.write_approved_training_configs` |
