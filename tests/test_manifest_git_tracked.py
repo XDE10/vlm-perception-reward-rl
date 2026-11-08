@@ -42,3 +42,10 @@ def test_git_tracked_mode_refreshes_code_and_keeps_data_entries(tmp_path):
     update = manifest["documentation_updates"][-1]
     assert update["dropped_tracked_paths"] == ["src/deleted.py"] and update["untracked_entries_kept_verbatim"] == 1
     assert stats == {"files": 5, "git_visible": 4, "changed": 1, "added": 1, "kept_untracked": 1, "dropped": 1}
+    # a second refresh in the same stage accumulates into one ledger entry
+    manifest_path.write_text(json.dumps(manifest), encoding="utf8")
+    (tmp_path / "src/later.py").write_text("later", encoding="utf8")
+    again, _ = build_git_tracked(manifest_path, "2026-11-09", "stage1", "test", root=tmp_path)
+    entry_paths = [c["path"] for c in again["documentation_updates"][-1]["changes"]]
+    assert entry_paths == ["src/a.py", "src/later.py", "src/new.py"]
+    assert again["documentation_updates"][-1]["dropped_tracked_paths"] == ["src/deleted.py"]

@@ -329,7 +329,18 @@ def build_git_tracked(previous_path, manifest_date, label, purpose, root=ROOT):
     kept = [previous_by_path[p] for p in others if p in ignored]
     dropped = sorted(p for p in others if p not in ignored)
     files.extend(dict(entry) for entry in kept)
-    updates = [u for u in previous.get("documentation_updates", []) if u.get("date") != manifest_date]
+    updates = list(previous.get("documentation_updates", []))
+    same = [u for u in updates if u.get("date") == manifest_date and u.get("label") == label
+            and u.get("mode") == "git_tracked_only"]
+    if same:
+        # Repeated refreshes within one stage accumulate into a single ledger entry.
+        merged = {c["path"]: c for c in same[-1].get("changes", [])}
+        for change in changes:
+            earlier = merged.get(change["path"])
+            merged[change["path"]] = {**change, "previous_sha256": earlier["previous_sha256"]} if earlier else change
+        changes = [merged[p] for p in sorted(merged)]
+        dropped = sorted(set(dropped) | set(same[-1].get("dropped_tracked_paths", [])))
+    updates = [u for u in updates if u.get("date") != manifest_date]
     updates.append({
         "date": manifest_date,
         "label": label,
