@@ -1,0 +1,73 @@
+# scripts/ 脚本目录
+
+本目录按职责分为 5 个子包：`common/`（共享路径常量与 I/O 辅助）、`data/`（数据构建、导出与审计）、
+`training/`（训练与诊断入口）、`reporting/`（交付报告与发布）、`migration/`（历史迁移打包）。
+所有脚本的仓库根均由自身位置向上两级推导：
+`ROOT = Path(__file__).resolve().parents[2]`（`scripts/<group>/<name>.py`），因此
+**命令一律从仓库根目录执行**，统一入口形式为 `python -m scripts.<group>.<name>`。
+组内共享代码放 `common/`，跨组引用使用绝对导入（如 `from scripts.common.topup_common import *`），
+不再存在平铺的 `scripts/<name>.py`，旧命令 `python -m scripts.<name>` 已改为 `python -m scripts.<group>.<name>`。
+
+状态说明：**主线** = 当前仍可复现、与现行入口/测试相关；**历史归档** = 2026-10 数据流水线、封板交付或
+迁移快照的一次性脚本，仅作溯源保留，不要重跑——输出已冻结（多数脚本在输出存在时拒绝覆盖）、
+引用已清理的路径/缓存，或会改写冻结报告的哈希清单。
+
+## common/ — 共享辅助
+
+| 脚本 | 用途 | 状态 | 典型入口 |
+| --- | --- | --- | --- |
+| `topup_common.py` | 仓库根/数据/报告路径常量与 `read/rows/sha/dump/write/stable` 等 I/O 辅助（导入时创建 `data/topup_v6_20261024`、`reports/topup_v6_20261024`） | 主线 | `import scripts.common.topup_common` |
+| `finalfill_common.py` | finalfill 指纹册路径与首次快照辅助，复用 `topup_common` | 主线 | `import scripts.common.finalfill_common` |
+| `strict_v8_common.py` | strict v8 封板路径常量，复用 `finalfill_common` | 主线 | `import scripts.common.strict_v8_common` |
+
+## data/ — 数据构建、导出与审计
+
+| 脚本 | 用途 | 状态 | 典型入口 |
+| --- | --- | --- | --- |
+| `audit_project3_overlap.py` | 本地 CPU 数据关联/重叠审计，写出 `reports/project3_cpu_20261023/`；可选依赖见 `requirements/project3-cpu.txt` | 主线 | `python -m scripts.data.audit_project3_overlap`（先运行 `python scripts/data/prepare_project3_sources.py`） |
+| `build_geometry_funnel_v8.py` | 只读：几何出口互斥分类与全池图像重叠统计；`classify` 被 `tests/test_geometry_funnel.py` 直接导入 | 主线 | `python -m scripts.data.build_geometry_funnel_v8` |
+| `build_project3_all_split_candidates.py` | 生成全量唯一匹配 split 候选并隔离模型文本（train/诊断分离） | 历史归档 | `python -m scripts.data.build_project3_all_split_candidates` |
+| `build_project3_perception_preview.py` | 冻结 200 题原型的增量预览补充；输出已存在时拒绝覆盖 | 历史归档 | `python -m scripts.data.build_project3_perception_preview` |
+| `build_project3_perception_prototype.py` | 构建冻结的 train-only 200 题感知原型与待审工作单 | 历史归档 | `python -m scripts.data.build_project3_perception_prototype` |
+| `build_project3_perception_v2.py` | 按冻结 200 题重跑 schema v2，保留全部原始记录 | 历史归档 | `python -m scripts.data.build_project3_perception_v2` |
+| `check_topup_source_integrity.py` | 校验 pin 住的代码/数据/数学源文件大小与 SHA256 | 历史归档 | `python -m scripts.data.check_topup_source_integrity` |
+| `download_project3_train_ranges.py` | 官方源 ranged 回退下载；使用前校验 Git blob 身份 | 历史归档 | `python -m scripts.data.download_project3_train_ranges` |
+| `export_strict_geometry_v8.py` | 不新增 API 调用，重解析原始像素响应并导出 strict v8 几何 | 历史归档 | `python -m scripts.data.export_strict_geometry_v8` |
+| `prepare_project3_sources.py` | 下载固定 revision 的公共标注/数据文件，保留 license 与 SHA256 | 历史归档 | `python scripts/data/prepare_project3_sources.py` |
+| `prepare_topup_geometry_reserve.py` | 为第二轮事实审计准备 train-only 备用池 | 历史归档 | `python -m scripts.data.prepare_topup_geometry_reserve` |
+| `prepare_topup_p3.py` | 组装 topup v6 感知题目集与图片 | 历史归档 | `python -m scripts.data.prepare_topup_p3` |
+| `reparse_topup_geometry.py` | zero-call 侧车解析：保留原始响应、实际 finish 与 fact guard | 历史归档 | `python -m scripts.data.reparse_topup_geometry` |
+| `resolve_geometry_uncertain_v7.py` | 单题（1683）记录式像素 + 精确证明裁决，无新 API | 历史归档 | `python -m scripts.data.resolve_geometry_uncertain_v7` |
+
+## training/ — 训练与诊断入口
+
+| 脚本 | 用途 | 状态 | 典型入口 |
+| --- | --- | --- | --- |
+| `train_project3.py` | 项目三训练入口，委托 `src.training.approved_hf.cli(expected_vision=True)` | 主线 | `python -m scripts.training.train_project3 --config configs/...` |
+| `diagnose_project3_vision.py` | 同题原图/黑图/无图/遮挡成对视觉依赖诊断 | 主线 | `python -m scripts.training.diagnose_project3_vision` |
+| `configure_topup_training.py` | 为已批准 V6 行生成版本化 smoke 配置（明确不是 GPU 验收） | 历史归档 | `python -m scripts.training.configure_topup_training` |
+| `write_approved_training_configs.py` | 写入初始 A100 smoke 配置，不下载权重、不执行训练 | 历史归档 | `python -m scripts.training.write_approved_training_configs` |
+| `math_verify_pilot_worker.py` | 隔离的有界 Math-Verify worker，stdout 只输出 JSON；需 pip 安装 `math_verify`（已不再使用已删除的 `.pilot_deps/`） | 主线 | 由 `src/training/approved_hf.py` 以 `python -m` 子进程调用 |
+| `math_verify_v3_strict_worker.py` | 更严格的有界 typed 准入补充，隔离关系型答案供任务感知复核；需 pip 安装 `math_verify` | 主线 | 由 `src/training/approved_hf.py:check_math` 以 `python -m` 子进程调用 |
+
+## reporting/ — 交付报告与发布
+
+| 脚本 | 用途 | 状态 | 典型入口 |
+| --- | --- | --- | --- |
+| `publish_strict_v8_report.py` | 仅从封板产物生成人类可读交付说明与 `delivery_manifest.json` | 历史归档 | `python -m scripts.reporting.publish_strict_v8_report` |
+| `report_data_revision_v4.py` | 只从版本化产物构建 review-only 交付报告，无 API、无训练 | 历史归档 | `python -m scripts.reporting.report_data_revision_v4` |
+| `report_delegated_release.py` | 汇报实测的委托审核与范围明确的数据 release | 历史归档 | `python -m scripts.reporting.report_delegated_release` |
+| `finalize_delegated_release.py` | 保护旧产物、刷新入口提示并哈希新交付；仍引用项目一/项目二入口与旧目录名，重构后不能原样重跑 | 历史归档 | `python -m scripts.reporting.finalize_delegated_release` |
+| `finalize_overnight_report.py` | 校验必需证据并汇总 2026-10-23 CPU 通宵交付报告与 artifact inventory；`read_json` 被 `tests/test_delivery_artifacts.py` 导入 | 历史归档 | `python -m scripts.reporting.finalize_overnight_report` |
+
+## migration/ — 历史迁移打包
+
+| 脚本 | 用途 | 状态 | 典型入口 |
+| --- | --- | --- | --- |
+| `prepare_internship_migration.py` | 生成三份自包含迁移副本；内部打包清单与 README 按 2026-10-24 重构前目录树编写，不能原样重跑 | 历史归档 | `python -m scripts.migration.prepare_internship_migration` |
+
+## 环境与依赖
+
+- CPU 检查环境见 `requirements/cpu-snapshot.txt`；项目三审计的可选依赖见 `requirements/project3-cpu.txt`。
+- 运行依赖不在 `pyproject.toml` 声明；GPU/PyTorch 版本按目标驱动单独固定。
+- 测试：从仓库根目录执行 `python -m pytest -q`（需要 Python 3.10+；`python -m` 会把仓库根放入 `sys.path`，从而可导入 `src.*` 与 `scripts.*`）。

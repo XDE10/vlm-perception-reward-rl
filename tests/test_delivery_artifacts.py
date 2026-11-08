@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-from scripts.finalize_overnight_report import read_json
+from scripts.reporting.finalize_overnight_report import read_json
 
 
 def test_offline_demo_and_cpu_environment():

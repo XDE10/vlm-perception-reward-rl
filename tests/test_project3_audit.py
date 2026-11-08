@@ -3,8 +3,8 @@ import pytest
 
 # Project 3 is an optional CPU audit module with its own pinned dependencies.
 # The training-only venv may omit image/parquet tooling; do not break collection.
-pytest.importorskip('PIL', reason='Install requirements-project3-cpu.txt in a dedicated audit venv')
-pytest.importorskip('pyarrow', reason='Install requirements-project3-cpu.txt in a dedicated audit venv')
+pytest.importorskip('PIL', reason='Install requirements/project3-cpu.txt in a dedicated audit venv')
+pytest.importorskip('pyarrow', reason='Install requirements/project3-cpu.txt in a dedicated audit venv')
 from PIL import Image
 from src.data.project3_audit import image_hash, norm, question_forms
 

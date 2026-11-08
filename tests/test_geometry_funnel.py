@@ -1,4 +1,4 @@
-from scripts.build_geometry_funnel_v8 import classify
+from scripts.data.build_geometry_funnel_v8 import classify
 
 def sample():
     return {'split':'train','response_received':True,'review':{'valid':True,'task_status':'pass','facts':[{'index':0}]},'pruning':{'accepted':False,'positive_tokens':[],'masked':[]},'release_approved':False}
