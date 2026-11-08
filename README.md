@@ -13,7 +13,7 @@ GPU 验收后的训练产物**。
 | 模型 | `Qwen/Qwen2.5-VL-3B-Instruct` revision `66285546d2b821cf421d4f5eb2576359d3770cd3` |
 | 训练阶段 | 已实现感知 SFT 入口与稀疏 GRPO 入口；`configs/` 只有 2 步工程 smoke |
 | GPU | 未验收：没有真实 VL 前后向、视觉 rollout、显存/恢复记录 |
-| 测试 | Python 3.11.4 下 68 passed / 2 failed（缺 `math_verify`、`trl`，见 [docs/verification.md](docs/verification.md)） |
+| 测试 | Python 3.11.4 下 74 passed / 2 failed（缺 `math_verify`、`trl`，见 [docs/verification.md](docs/verification.md)） |
 | 历史 | 2026-10-24 迁移（Python 3.12 时代记录 15 passed）、2026-11-08 清理与结构整理，均记录在 [CHANGELOG.md](CHANGELOG.md) |
 
 “已实现代码”“CPU 测试通过”“真实 GPU 跑通”“能力提升”是四种不同结论，报告

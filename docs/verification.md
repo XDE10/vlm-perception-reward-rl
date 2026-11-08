@@ -36,11 +36,13 @@
 
 ## 测试基线
 
-2026-11-08 在 Python 3.11.4 上实测：
+2026-11-08 在 Python 3.11.4 上实测（重构前基线与目录整理后复跑一致）：
 
 ```text
 python -m pytest -q
-68 passed, 2 failed in 39.91s
+68 passed, 2 failed in 39.91s   # 重构前基线
+68 passed, 2 failed in 41.89s   # 2026-11-08 整理后复跑
+74 passed, 2 failed in 15.94s   # 追加仓库结构回归测试后（同日）
 ```
 
 两个失败均为环境缺包，不是代码回归：
@@ -55,7 +57,10 @@ python -m pytest -q
 15 passed，本次未在 3.12 复验。
 
 测试覆盖：数据准入与白名单、几何序列化、split 守卫、感知奖励与文本蕴含、
-几何解析/评分、tokenizer 审计、交付物与 funnel 脚本。GPU 行为不在测试范围内。
+几何解析/评分、tokenizer 审计、交付物与 funnel 脚本，以及
+[tests/test_repo_layout.py](../tests/test_repo_layout.py) 的仓库结构回归
+（平铺脚本、分组包、README 目录覆盖、入口文件、pytest 配置、configs 相对路径）。
+GPU 行为不在测试范围内。
 
 ## 人工检查建议
 

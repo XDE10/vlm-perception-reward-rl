@@ -15,8 +15,13 @@
 
 1. `AGENTS.md`、`README.md`、`审查说明.md`、`CHECKSUMS.sha256`。
 2. `configs/`、`data/portable_release/manifest.json`，抽查训练和验证 JSONL 与图片，确认模型可见字段、奖励私有字段、路径和数据身份。
-3. `scripts/train_project3.py`、`src/training/approved_hf.py`、`src/data/approved_training_inputs.py`、`src/data/perception_v4.py`、`src/training/perception_reward_v4.py`、`src/data/geometry_model_serialization.py`、`src/data/geometry_split_guard.py`、`src/evaluation/geometry_perception_parser.py`、`scripts/diagnose_project3_vision.py` 及对应测试。
-4. `project_blueprints/项目三_多模态几何推理_详细实施方案.md`、`reports/strict_v8_20261024/执行报告.md`、`reports/project3_cpu_20261023/审计报告.md`、`迁移记录/迁移验收.md`。当历史方案与现行配置或源码冲突时，标明版本和证据，不能把旧方案当作已实现事实。
+3. `scripts/training/train_project3.py`、`src/training/approved_hf.py`、`src/data/approved_training_inputs.py`、`src/data/perception_v4.py`、`src/training/perception_reward_v4.py`、`src/data/geometry_model_serialization.py`、`src/data/geometry_split_guard.py`、`src/evaluation/geometry_perception_parser.py`、`scripts/training/diagnose_project3_vision.py` 及对应测试。
+4. `docs/blueprints/项目三_多模态几何推理_详细实施方案.md`、`reports/strict_v8_20261024/执行报告.md`、`reports/project3_cpu_20261023/审计报告.md`、`docs/migration/迁移验收.md`。当历史方案与现行配置或源码冲突时，标明版本和证据，不能把旧方案当作已实现事实。
+
+> 路径说明：以上是 2026-11-08 目录整理后的路径。若审查的是 2026-11-03 精简
+> `project3_external_review_20261103.zip`，包内仍是旧平铺布局
+> （`scripts/train_project3.py`、`project_blueprints/`、`迁移记录/`、
+> `requirements-cpu-snapshot.txt`），请按包内 README 对照本仓库当前布局。
 
 先给一张“证据地图”：研究主张、当前支持证据、尚缺证据、对应文件。所有关键结论请引用**文件路径和行号，或 JSON 字段 / sample_id**。若你的工具无法提供精确行号，给出文件路径、函数名及可定位的短片段；不要编造行号、实验结果或运行日志。
 

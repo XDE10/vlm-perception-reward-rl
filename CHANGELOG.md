@@ -35,9 +35,14 @@
 
 校验与事实：
 
-- 本机 Python 3.11.4：`pytest -q` 68 passed / 2 failed，两个失败都是环境缺包
+- 本机 Python 3.11.4：`pytest -q` 74 passed / 2 failed，两个失败都是环境缺包
   （`math_verify`、`trl`），不是代码回归；项目文档记载的 Python 3.12 环境
   本次未复验。
+- 追加 [tests/test_repo_layout.py](tests/test_repo_layout.py) 结构回归测试（6 项），
+  固定“scripts/ 无平铺脚本、分组均为包、README 覆盖全部脚本、当前入口文件存在、
+  pytest 配置指向 tests/、configs 相对路径+固定 revision”；更新
+  [docs/guides/argon_review_prompt.md](docs/guides/argon_review_prompt.md) 中
+  的审查阅读路径到整理后布局。
 - `python tools/verify_migration.py --full`：见
   [整理记录](docs/migration/整理记录_20261108.md) 的实测记录。
 - 没有 GPU 训练产物；`runs/` 不存在，2 步 smoke 仍只是工程配置。
