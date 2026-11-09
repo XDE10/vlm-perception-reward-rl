@@ -20029,11 +20029,12 @@
   },
   {
    "path": "docs/plan/阶段报告_S2.2_20261109.md",
-   "bytes": 11059,
-   "sha256": "6d9a26e85f889ec7807f9b7677d5e2421a4cd6e72064cf0ac6b5ba62c4cb294f",
+   "bytes": 11227,
+   "sha256": "85bb84eca5a7b7726d2ef7aecf6ba370d1be987cb729f699bfb1b9b375236553",
    "source_sha256": "6d9a26e85f889ec7807f9b7677d5e2421a4cd6e72064cf0ac6b5ba62c4cb294f",
-   "changed_for_portability": false,
-   "added_in": "2026-11-09_stage2.2"
+   "changed_for_portability": true,
+   "added_in": "2026-11-09_stage2.2",
+   "updated_in": "2026-11-09_stage2.2"
   },
   {
    "path": "docs/plan/阶段报告_S2_20261110.md",
@@ -23956,7 +23957,7 @@
     {
      "path": "docs/plan/阶段报告_S2.2_20261109.md",
      "previous_sha256": null,
-     "current_sha256": "6d9a26e85f889ec7807f9b7677d5e2421a4cd6e72064cf0ac6b5ba62c4cb294f"
+     "current_sha256": "85bb84eca5a7b7726d2ef7aecf6ba370d1be987cb729f699bfb1b9b375236553"
     },
     {
      "path": "docs/verification.md",
