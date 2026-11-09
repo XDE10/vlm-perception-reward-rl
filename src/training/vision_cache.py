@@ -21,8 +21,11 @@ def _inner_vl_model(model):
     for candidate in list(candidates):
         if hasattr(candidate, "model"):
             candidates.append(candidate.model)
+    # Prefer the module that *owns* the vision tower as a registered submodule: wrappers (PeftModel, or a
+    # ForConditionalGeneration exposing a ``visual`` property in some versions) delegate to it, so patching
+    # them would never be called by forward().
     for candidate in candidates:
-        if hasattr(candidate, "visual") and hasattr(candidate, "get_image_features"):
+        if "visual" in getattr(candidate, "_modules", {}) and hasattr(candidate, "get_image_features"):
             return candidate
     raise ValueError("Could not locate the vision-language core model with .visual and .get_image_features")
 

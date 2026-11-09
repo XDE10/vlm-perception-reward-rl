@@ -21,8 +21,31 @@ python -m scripts.training.train_rl --arm rl_v5 --seed 1 \
 - 已有 checkpoint 的目录拒绝重跑；`--resume` 要求运行身份完全一致，否则失败。
 - `--smoke` 只用于工程检查（例如 `max_steps=2,num_generations=2,prompts_per_step=2,per_device_train_batch_size=2`），
   会记录在运行身份里，不能用于报告结果。
-- CPU 开发与测试环境见 [requirements/dev-cpu.txt](../requirements/dev-cpu.txt)；GPU 环境与
-  Colab 运行器在执行计划 S2 阶段提供。
+- `--runtime` 指向预检冻结的 `frozen_runtime.json`。其中只有不改变算法的选项（生成后端、微批切分、
+  梯度检查点、ViT 缓存）；出现其他键时入口直接报错。
+- CPU 开发与测试环境见 [requirements/dev-cpu.txt](../requirements/dev-cpu.txt)。
+
+## 在 Colab 上运行（S2 起）
+
+在 WSL2 中运行 `bash colab/launch.sh check`，然后 `bash colab/launch.sh preflight`，详见
+[colab/README.md](../colab/README.md)。运行器会建 VM，上传当前提交的代码和经过校验的私有数据，按驱动的 CUDA
+版本从 [requirements/locks/](../requirements/locks/) 选锁文件建隔离环境，下载固定 revision 的模型，运行任务，
+取回结果并释放 VM，最后把结果推到 `results/<run_id>` 分支。
+
+预检（`preflight`）依次执行：
+
+1. 环境报告与私有数据复核。
+2. 完整 CPU 测试套件（在 VM 上运行，隐藏 GPU）。
+3. 在全部认证事实上做 v5 阈值校准。
+4. 真实 3B 权重的 GPU 探针：LoRA 范围、提示长度、峰值显存、生成吞吐、ViT 缓存等价性。
+5. V0 小探针：16 道 validation，有图与无图各一遍。
+6. 五个实验组各跑 1 步 GRPO。
+7. 按正式形状（8 题 × 8 条）跑 3 步，测步时与显存。
+8. 断点恢复。
+9. 可选的 vLLM 对比。
+10. 冻结运行时决策（`frozen_runtime.json`）。
+
+决策规则见 [决策记录](plan/决策记录.md) D20–D27。
 
 以下是旧入口（感知 SFT → 稀疏 GRPO）的说明，作为历史保留。
 

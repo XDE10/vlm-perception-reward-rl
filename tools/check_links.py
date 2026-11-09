@@ -35,6 +35,9 @@ CURRENT_TARGETS = [
     "reports/README.md",
     "requirements/README.md",
     "scripts/README.md",
+    "colab/README.md",
+    "docs/plan/执行计划_20261108.md",
+    "docs/plan/决策记录.md",
 ]
 LINK = re.compile(r"!?\[[^\]]*\]\(\s*(?:<([^>]+)>|([^)\s]+))\s*\)")
 
