@@ -72,7 +72,9 @@ def attach_language_lora(model, r=16, alpha=32, dropout=0.0):
         param.requires_grad_(False)
     config = lora_config(model, r, alpha, dropout)
     peft_model = get_peft_model(model, config)
-    return peft_model, list(config.target_modules), parameter_identity(peft_model)
+    # PEFT stores target_modules as a set, whose iteration order follows PYTHONHASHSEED: sorted, the run identity
+    # is the same in every process (resume_b of preflight-20261109T064716Z-0589 failed on this, D34).
+    return peft_model, sorted(config.target_modules), parameter_identity(peft_model)
 
 
 __all__ = ["LANGUAGE_SUFFIXES", "VISION_MARKERS", "attach_language_lora", "is_vision_name", "language_lora_targets",
