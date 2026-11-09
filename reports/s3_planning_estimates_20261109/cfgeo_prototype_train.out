@@ -1,0 +1,11 @@
+train problems                                        2101  (100.0% of train)
+vision-needed (VN)                                    1539  (73.3% of train)
+VN with length goal                                    634  (30.2% of train)
+VN with area goal                                      188  (8.9% of train)
+CF-Geo candidate (strict)                              551  (26.2% of train)
+numeric length labels to edit (in CF candidates)      1156  (55.0% of train)
+sampled 40 strict candidates
+  accepted (k=1 and k=2 verified)                          36
+  rejected: labels not found exactly / unexplained number   3
+  rejected at verification (k=1)                            1
+saved: ['1393_k1.png', '1393_k2.png', '1393_orig.png', '2045_k1.png', '2045_k2.png', '2045_orig.png', '2076_k1.png', '2076_k2.png', '2076_orig.png', '373_k1.png', '373_k2.png', '373_orig.png']
