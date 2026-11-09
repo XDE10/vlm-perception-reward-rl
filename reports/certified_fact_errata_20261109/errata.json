@@ -1,0 +1,420 @@
+{
+ "schema": "p3-certified-fact-errata-v1",
+ "date": "2026-11-09",
+ "source_run": "preflight-20261109T122305Z-e6cd (calibration/calibration.json, commit 7afad4a42150)",
+ "method": "Kiro viewed each image (public pinned Geometry3K wrapper rows) next to the certified fact and the measured coordinates. This is an AI visual check, not a human gold label; the approved release is unchanged (D42).",
+ "entries": [
+  {
+   "sample_ids": [
+    "train:425",
+    "train:598",
+    "train:1471",
+    "train:1488",
+    "train:1957",
+    "train:2090"
+   ],
+   "image_pixel_sha256": "bb5f8a09d4c2f2ca5f7a02ac1e4f06c009a00fe23ad431bf5d02431c39294384",
+   "intergps_ids": [
+    386,
+    561,
+    652,
+    716,
+    1738,
+    1943
+   ],
+   "certified_fact": "Perpendicular((A,C),(C,E))",
+   "class": "certified_fact_error",
+   "drawn": "Right triangle ABC with the right angle marked at C (between CA and CB) and the altitude CE to AB marked at E. CE is not perpendicular to AC; the drawn angle ACE is 60 degrees (angle A is printed as 30).",
+   "likely_intended": "Perpendicular((A,C),(B,C))",
+   "oracle_reason": "not_perpendicular",
+   "measured": {
+    "angle_between_deg": 60.4304,
+    "deviation_deg": 29.5696,
+    "segment_relative_lengths": [
+     0.4337,
+     0.8678
+    ]
+   },
+   "loo_residual": true,
+   "intergps_diagram_forms": [
+    "PointLiesOnLine(E, Line(A, B))",
+    "Perpendicular(Line(E, A), Line(E, C))",
+    "Perpendicular(Line(E, C), Line(A, C))"
+   ]
+  },
+  {
+   "sample_ids": [
+    "train:1598"
+   ],
+   "image_pixel_sha256": "7111fdb120d8830799e0ab6c08ae40848077c80ec69e736ad3f5bc573cef90f0",
+   "intergps_ids": [
+    1209
+   ],
+   "certified_fact": "Perpendicular((B,C),(C,D))",
+   "class": "certified_fact_error",
+   "drawn": "Right triangle with the right angle marked at C (between CA and CB) and the altitude CD to AB marked at D. CD is not perpendicular to CB.",
+   "likely_intended": "Perpendicular((A,C),(B,C))",
+   "oracle_reason": "not_perpendicular",
+   "measured": {
+    "angle_between_deg": 60.7762,
+    "deviation_deg": 29.2238,
+    "segment_relative_lengths": [
+     0.438,
+     0.8563
+    ]
+   },
+   "loo_residual": true,
+   "intergps_diagram_forms": [
+    "PointLiesOnLine(D, Line(B, A))",
+    "Perpendicular(Line(B, D), Line(C, D))",
+    "Perpendicular(Line(C, D), Line(C, B))"
+   ]
+  },
+  {
+   "sample_ids": [
+    "train:1251"
+   ],
+   "image_pixel_sha256": "727fe49c8024ebab020b05225ba01c18137bf1d252c024c54d39102ba91282b6",
+   "intergps_ids": [
+    1122
+   ],
+   "certified_fact": "Perpendicular((K,L),(L,M))",
+   "class": "certified_fact_error",
+   "drawn": "Right angle marked at L (between LJ and LK) and the altitude LM to JK marked at M. LM is not perpendicular to LK.",
+   "likely_intended": "Perpendicular((J,L),(K,L))",
+   "oracle_reason": "not_perpendicular",
+   "measured": {
+    "angle_between_deg": 54.4293,
+    "deviation_deg": 35.5707,
+    "segment_relative_lengths": [
+     0.4248,
+     0.7332
+    ]
+   },
+   "loo_residual": true,
+   "intergps_diagram_forms": [
+    "PointLiesOnLine(M, Line(J, K))",
+    "Perpendicular(Line(K, M), Line(L, M))",
+    "Perpendicular(Line(L, M), Line(L, K))"
+   ]
+  },
+  {
+   "sample_ids": [
+    "train:335"
+   ],
+   "image_pixel_sha256": "9d75e68d93cec89df48638ab70955dd5112a8f9e0f870a23d7aa4ae117ecec6d",
+   "intergps_ids": [
+    1656
+   ],
+   "certified_fact": "Perpendicular((T,U),(U,W))",
+   "class": "certified_fact_error",
+   "drawn": "Right angle marked at U (between UV and UT) and the altitude UW to VT marked at W. UW is not perpendicular to UT.",
+   "likely_intended": "Perpendicular((T,U),(U,V))",
+   "oracle_reason": "not_perpendicular",
+   "measured": {
+    "angle_between_deg": 67.8548,
+    "deviation_deg": 22.1452,
+    "segment_relative_lengths": [
+     0.339,
+     0.9273
+    ]
+   },
+   "loo_residual": true,
+   "intergps_diagram_forms": [
+    "PointLiesOnLine(W, Line(T, V))",
+    "Perpendicular(Line(T, W), Line(U, W))",
+    "Perpendicular(Line(U, W), Line(T, U))"
+   ]
+  },
+  {
+   "sample_ids": [
+    "train:1729"
+   ],
+   "image_pixel_sha256": "44988b1b51eaea926fcd385ce6e37d61b3d0035d1f7dda3c10d338d21c48f49c",
+   "intergps_ids": [
+    913
+   ],
+   "certified_fact": "Perpendicular((A,F),(F,H))",
+   "class": "certified_fact_error",
+   "drawn": "Two separate right triangles: ABC (right angle at A) and GFH (right angle at F). A and F belong to different triangles and no segment AF is drawn; the right angle at F is between FG and FH.",
+   "likely_intended": "Perpendicular((F,G),(F,H))",
+   "oracle_reason": "not_perpendicular",
+   "measured": {
+    "angle_between_deg": 65.609,
+    "deviation_deg": 24.391,
+    "segment_relative_lengths": [
+     0.4122,
+     0.9982
+    ]
+   },
+   "loo_residual": true,
+   "intergps_diagram_forms": [
+    "Perpendicular(Line(H, F), Line(A, F))",
+    "Perpendicular(Line(A, C), Line(A, B))"
+   ]
+  },
+  {
+   "sample_ids": [
+    "train:919"
+   ],
+   "image_pixel_sha256": "c4f8a0959f64df46f606b29e25684be29428b33c8f8c794d0a950355575081c6",
+   "intergps_ids": [
+    1217,
+    1557
+   ],
+   "certified_fact": "Perpendicular((Q,T),(R,S))",
+   "class": "certified_fact_error",
+   "drawn": "RS and QT carry matching arrowheads (parallel marks); the drawn angle between them is 0.75 degrees.",
+   "likely_intended": "Parallel((R,S),(Q,T))",
+   "oracle_reason": "not_perpendicular",
+   "measured": {
+    "angle_between_deg": 0.7544,
+    "deviation_deg": 89.2456,
+    "segment_relative_lengths": [
+     0.3509,
+     0.5052
+    ]
+   },
+   "loo_residual": true,
+   "intergps_diagram_forms": [
+    "PointLiesOnLine(T, Line(S, P))",
+    "PointLiesOnLine(Q, Line(R, P))",
+    "Perpendicular(Line(R, S), Line(Q, T))"
+   ]
+  },
+  {
+   "sample_ids": [
+    "train:1783"
+   ],
+   "image_pixel_sha256": "74212918f3c8c23cb951b2e0f51acc53a4a43977188488a3b7f4067136047818",
+   "intergps_ids": [
+    80
+   ],
+   "certified_fact": "PointLiesOnCircle(A,Circle(B))",
+   "class": "certified_fact_error",
+   "drawn": "Chords AC and DE intersect at B inside the circle; B is not the centre (the centre is not labelled). The same holds for the certified facts with C, D and E on Circle(B).",
+   "likely_intended": null,
+   "oracle_reason": "off_circle",
+   "measured": {
+    "relative_deviation": 0.5323,
+    "reference_points": 3,
+    "radius_relative": 0.5383
+   },
+   "loo_residual": false,
+   "intergps_diagram_forms": [
+    "PointLiesOnLine(B, Line(D, E))",
+    "PointLiesOnLine(B, Line(A, C))",
+    "PointLiesOnCircle(D, Circle(B, radius_1_0))",
+    "PointLiesOnCircle(A, Circle(B, radius_1_0))",
+    "PointLiesOnCircle(C, Circle(B, radius_1_0))",
+    "PointLiesOnCircle(E, Circle(B, radius_1_0))"
+   ]
+  },
+  {
+   "sample_ids": [
+    "train:1218",
+    "train:380"
+   ],
+   "image_pixel_sha256": "bfaef55510f6226e02f611e723a6ac0576a3f9629c8ca79ce4ca0b0a00ec3846",
+   "intergps_ids": [
+    1048,
+    1826
+   ],
+   "certified_fact": "PointLiesOnLine(E,(B,C))",
+   "class": "coordinate_error",
+   "drawn": "Parallelogram ABCD with the height DE drawn to side BC; E is on BC as certified. InterGPS coordinates put E at normalised distance 0.0707 from line BC (threshold 0.06).",
+   "likely_intended": null,
+   "oracle_reason": "not_collinear",
+   "measured": {
+    "line_distance": 0.0707,
+    "position_on_segment": 0.8086,
+    "segment_relative_length": 0.8116
+   },
+   "loo_residual": true,
+   "intergps_diagram_forms": [
+    "PointLiesOnLine(E, Line(C, B))",
+    "Perpendicular(Line(D, E), Line(B, E))"
+   ]
+  },
+  {
+   "sample_ids": [
+    "train:2049",
+    "train:329"
+   ],
+   "image_pixel_sha256": "6278707f33e10cac313ceaae1fa8f3ce7ad70145497a2b3dfe4b8c59d5434d1e",
+   "intergps_ids": [
+    392,
+    917
+   ],
+   "certified_fact": "PointLiesOnCircle(G,Circle(B))",
+   "class": "coordinate_error",
+   "drawn": "G is where line AC meets circle B, so it lies on circle B as certified (consistent with the printed diameters and the answer FG = 14). InterGPS coordinates disagree by 40 percent of the radius.",
+   "likely_intended": null,
+   "oracle_reason": "off_circle",
+   "measured": {
+    "relative_deviation": 0.4031,
+    "reference_points": 1,
+    "radius_relative": 0.4161
+   },
+   "loo_residual": true,
+   "intergps_diagram_forms": [
+    "PointLiesOnLine(F, Line(A, C))",
+    "PointLiesOnLine(B, Line(A, C))",
+    "PointLiesOnLine(F, Line(A, G))",
+    "PointLiesOnLine(C, Line(A, G))",
+    "PointLiesOnLine(B, Line(A, G))",
+    "PointLiesOnLine(F, Line(A, B))",
+    "PointLiesOnLine(B, Line(F, C))",
+    "PointLiesOnLine(B, Line(F, G))",
+    "PointLiesOnCircle(A, Circle(B, radius_0_1))",
+    "PointLiesOnCircle(G, Circle(B, radius_0_1))",
+    "PointLiesOnCircle(F, Circle(A, radius_0_0))"
+   ]
+  },
+  {
+   "sample_ids": [
+    "train:523"
+   ],
+   "image_pixel_sha256": "78c49f75c4d4088ae781426afaf5fe477a909fed24bbb2c8fb465bd5a69b21b6",
+   "intergps_ids": [
+    192
+   ],
+   "certified_fact": "PointLiesOnCircle(U,Circle)",
+   "class": "coordinate_error",
+   "drawn": "U is drawn on the circle as certified; the coordinates deviate by 0.155 of the radius (threshold 0.15).",
+   "likely_intended": null,
+   "oracle_reason": "off_circle",
+   "measured": {
+    "relative_deviation": 0.1555,
+    "reference_points": 2,
+    "radius_relative": 0.5384
+   },
+   "loo_residual": true,
+   "intergps_diagram_forms": [
+    "PointLiesOnCircle(V, Circle(D, radius_0_0))",
+    "PointLiesOnCircle(T, Circle(D, radius_0_0))",
+    "PointLiesOnCircle(U, Circle(D, radius_0_0))"
+   ]
+  },
+  {
+   "sample_ids": [
+    "train:1542"
+   ],
+   "image_pixel_sha256": "b481790db684780f2d9f30cb89060681e25b89d3a239f2a6443963cdda62fa3d",
+   "intergps_ids": [
+    1877
+   ],
+   "certified_fact": "Parallel((A,B),(C,D))",
+   "class": "coordinate_error",
+   "drawn": "AB and CD carry matching arrowheads and E-H-G, F on CD and H-F-I are drawn as certified; the InterGPS coordinates of this diagram are inconsistent with all four certified facts (gated).",
+   "likely_intended": null,
+   "oracle_reason": "not_parallel",
+   "measured": {
+    "angle_between_deg": 39.0402,
+    "deviation_deg": 39.0402,
+    "segment_relative_lengths": [
+     0.6567,
+     0.8372
+    ]
+   },
+   "loo_residual": false,
+   "intergps_diagram_forms": [
+    "PointLiesOnLine(E, Line(A, B))",
+    "PointLiesOnLine(F, Line(C, D))",
+    "PointLiesOnLine(F, Line(H, I))",
+    "PointLiesOnLine(E, Line(G, H))",
+    "Parallel(Line(A,B), Line(C,D))"
+   ]
+  },
+  {
+   "sample_ids": [
+    "train:1593"
+   ],
+   "image_pixel_sha256": "d6a4e12adae97162ea1123370edf54ea05255b51f5e732188bb8bbab9a60478b",
+   "intergps_ids": [
+    573
+   ],
+   "certified_fact": "PointLiesOnCircle(A,Circle(D))",
+   "class": "coordinate_error",
+   "drawn": "BA and BC are tangent to circle D at A and C; both points are drawn on the circle as certified (gated).",
+   "likely_intended": null,
+   "oracle_reason": "off_circle",
+   "measured": {
+    "relative_deviation": 0.5277,
+    "reference_points": 2,
+    "radius_relative": 0.7386
+   },
+   "loo_residual": false,
+   "intergps_diagram_forms": [
+    "PointLiesOnCircle(B, Circle(D, radius_1_0))",
+    "PointLiesOnCircle(C, Circle(D, radius_1_0))",
+    "PointLiesOnCircle(A, Circle(D, radius_1_0))"
+   ]
+  },
+  {
+   "sample_ids": [
+    "train:1878"
+   ],
+   "image_pixel_sha256": "783a432017c5458926899b38940388ab5cb9ac93a8cdc4f8be6691005eb91889",
+   "intergps_ids": [
+    1422
+   ],
+   "certified_fact": "PointLiesOnCircle(J,Circle(K))",
+   "class": "coordinate_error",
+   "drawn": "J and L are drawn on circle K as certified; the coordinates deviate by 0.17 and 0.20 of the radius (gated).",
+   "likely_intended": null,
+   "oracle_reason": "off_circle",
+   "measured": {
+    "relative_deviation": 0.1686,
+    "reference_points": 1,
+    "radius_relative": 0.5646
+   },
+   "loo_residual": false,
+   "intergps_diagram_forms": [
+    "PointLiesOnCircle(L, Circle(K, radius_1_0))",
+    "PointLiesOnCircle(J, Circle(K, radius_1_0))"
+   ]
+  },
+  {
+   "sample_ids": [
+    "validation:165"
+   ],
+   "image_pixel_sha256": "973c09b87e211786c48c21ed5916de245545465dcc02d621a0a40497e794ca66",
+   "intergps_ids": [],
+   "certified_fact": "Perpendicular((B,D),(C,D))",
+   "class": "unverifiable_no_point_labels",
+   "drawn": "The diagram prints no point letters (only x, y, z, 12 and 4), so the certified point names cannot be read from the image. The coordinates put BD and CD on one line (0.22 degrees) and AC at 47 degrees to BC.",
+   "likely_intended": null,
+   "oracle_reason": "not_perpendicular",
+   "measured": {
+    "angle_between_deg": 0.22,
+    "deviation_deg": 89.78,
+    "segment_relative_lengths": [
+     0.454,
+     0.546
+    ]
+   },
+   "loo_residual": false,
+   "intergps_diagram_forms": null
+  },
+  {
+   "sample_ids": [
+    "validation:179"
+   ],
+   "image_pixel_sha256": "00b37f943dc68280f540bcafee359a4e8121a1754c46daf7538ec83f5ab98fcf",
+   "intergps_ids": [],
+   "certified_fact": "PointLiesOnCircle(N,Circle)",
+   "class": "coordinate_error",
+   "drawn": "N is drawn on the circle as certified; the coordinates deviate by 0.65 of the radius (gated).",
+   "likely_intended": null,
+   "oracle_reason": "off_circle",
+   "measured": {
+    "relative_deviation": 0.6489,
+    "reference_points": 3,
+    "radius_relative": 0.2355
+   },
+   "loo_residual": false,
+   "intergps_diagram_forms": null
+  }
+ ]
+}
