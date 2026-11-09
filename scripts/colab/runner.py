@@ -5,8 +5,10 @@ subprocess in its own process group with a timeout; its output goes to
 ``<out>/logs/<step>.log``. ``<out>/status.json`` is rewritten atomically after
 every step and every heartbeat so the launcher can poll it through the Jupyter
 contents API even while the kernel is busy. At the end the run directory is
-packaged (weights and checkpoints excluded) and split into parts; the part list
-is written to ``<root>/out/<run_id>.done.json`` and ``JOB_DONE`` is printed.
+packaged (weights and checkpoints excluded) and split into parts; if the request
+asks for it and rclone can reach the user's Drive, a verified copy goes to Drive
+(``persist_to_drive``); the part list and the Drive outcome are written to
+``<root>/out/<run_id>.done.json`` and ``JOB_DONE`` is printed.
 """
 import gzip
 import os
@@ -18,7 +20,8 @@ import tarfile
 import time
 from pathlib import Path
 
-from scripts.colab.common import format_seconds, log, read_json, sha256_file, split_file, tail, write_json
+from scripts.colab.common import (PART_BYTES, Heartbeat, format_seconds, log, read_json, sha256_file, split_file, tail,
+                                  write_json)
 
 STATUS_SCHEMA = "p3-job-status-v1"
 HEARTBEAT_SECONDS = 60.0
@@ -28,6 +31,8 @@ EXCLUDED_DIR_NAMES = {"final", "__pycache__"}
 EXCLUDED_SUFFIXES = (".safetensors", ".bin", ".pt", ".pth", ".ckpt", ".tmp")
 GZIP_ABOVE_BYTES = 20 * 1024 * 1024
 SKIP_ABOVE_BYTES = 200 * 1024 * 1024
+DRIVE_TIMEOUTS = {"results": 1800, "full": 4 * 3600}
+DRIVE_SUMMARY_KEYS = ["ok", "attempted", "verified", "target", "files", "bytes", "copy_seconds", "check_seconds", "reason"]
 
 
 def _now():
@@ -150,9 +155,55 @@ class Job(object):
         with tarfile.open(str(archive), "w:gz") as tar:
             tar.add(str(stage), arcname=self.run_id)
         shutil.rmtree(str(stage))
-        parts = split_file(archive)
+        # the launcher downloads these parts through the same proxy that limits uploads: keep them small
+        parts = split_file(archive, int(self.request.get("part_bytes") or PART_BYTES))
         return {"name": archive.name, "sha256": sha256_file(archive), "bytes": archive.stat().st_size, "parts": parts,
                 "skipped": len(skipped), "gzipped": gzipped}
+
+    def persist_to_drive(self, package):
+        """Optional verified copy to the user's Google Drive (rclone). Never raises, never fails the job.
+
+        ``drive_persist``: "results" copies the results archive (small, no weights); "full" copies the whole
+        run directory including checkpoints and adapters; anything else does nothing."""
+        options = self.request.get("options") or {}
+        mode = options.get("drive_persist") or "none"
+        if mode not in DRIVE_TIMEOUTS:
+            return {"mode": mode, "ok": False, "attempted": False, "reason": "not requested for this run"}
+        staging = None
+        try:
+            from scripts.colab import drive
+
+            if mode == "results":
+                staging = self.root / "out" / (self.run_id + ".drive")
+                if staging.exists():
+                    shutil.rmtree(str(staging))
+                staging.mkdir(parents=True)
+                archive = self.root / "out" / package["name"]
+                try:
+                    os.link(str(archive), str(staging / archive.name))
+                except OSError:
+                    shutil.copy2(str(archive), str(staging / archive.name))
+                write_json(staging / "package.json", dict(package, run_id=self.run_id, overall=self.status.get("overall")))
+                source = staging
+            else:
+                source = self.out
+            with Heartbeat("copying %s to Google Drive" % mode, HEARTBEAT_SECONDS):
+                result = drive.persist(source, "runs/" + self.run_id, remote=options.get("drive_remote"),
+                                       base_dir=options.get("drive_dir"), mount=options.get("drive_mount"),
+                                       timeout=DRIVE_TIMEOUTS[mode])
+            summary = {key: result.get(key) for key in DRIVE_SUMMARY_KEYS}
+        except Exception as exc:  # Drive is a convenience copy; GitHub results stay the record of the run
+            summary = {"ok": False, "attempted": True, "reason": "%s: %s" % (type(exc).__name__, str(exc)[:300])}
+        finally:
+            if staging is not None:
+                shutil.rmtree(str(staging), ignore_errors=True)
+        summary["mode"] = mode
+        if summary.get("attempted"):
+            log("Drive copy (%s): %s %s" % (mode, "verified" if summary.get("ok") else "FAILED",
+                                            summary.get("target") or summary.get("reason") or ""))
+        else:
+            log("Drive copy (%s) skipped: %s" % (mode, (summary.get("reason") or "")[:200]))
+        return summary
 
     def overall(self):
         required = [s for s in self.status["steps"] if s.get("required", True)]
@@ -209,13 +260,16 @@ def run_job(root, request):
         job.status["state"] = "packaging"
         job.save()
         package = job.package()
+        job.status["package"] = package
+        job.status["state"] = "drive_copy"
+        job.save()
+        job.status["drive"] = job.persist_to_drive(package)
         job.status["state"] = "done"
         job.status["finished_utc"] = _now()
-        job.status["package"] = package
         job.save()
         write_json(Path(root) / "out" / (job.run_id + ".done.json"),
                    {"run_id": job.run_id, "overall": job.status["overall"], "package": package,
-                    "finished_utc": job.status["finished_utc"]})
+                    "drive": job.status["drive"], "finished_utc": job.status["finished_utc"]})
         log("JOB_DONE overall=%s package=%s (%d parts, %.1f MB)" % (job.status["overall"], package["name"],
                                                                      len(package["parts"]), package["bytes"] / 1e6))
     return job.status

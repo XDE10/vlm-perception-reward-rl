@@ -12,7 +12,9 @@ import time
 from pathlib import Path
 
 REMOTE_ROOT_DEFAULT = "/content/p3"
-PART_BYTES = 8 * 1024 * 1024
+# `colab upload`/`download` move a whole file as one base64 JSON body through the runtime proxy; 8 MiB parts
+# failed after ~150 s on a slow uplink (preflight-20261109T014903Z-9e57), so parts are 2 MiB (D29).
+PART_BYTES = 2 * 1024 * 1024
 REQUEST_SCHEMA = "p3-colab-request-v1"
 
 

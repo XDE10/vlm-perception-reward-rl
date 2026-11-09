@@ -85,11 +85,12 @@
 | `common.py` | 本地与 VM 共用的标准库辅助：原子 JSON、分片/拼接校验、心跳输出 | 主线 | 被其余脚本导入 |
 | `pack_private_data.py` | 本地：按 release / 行内 SHA / 迁移清单三类锚点逐个校验后，打包运行所需的私有数据；VM：解包与复核 | 主线 | `python3 -m scripts.colab.pack_private_data --data-root <data 目录> --check-only` |
 | `verify_pack.py` | VM：复核解包后的数据与锚点一致 | 主线 | 预检步骤 `verify_pack` |
-| `local_tools.py` | 本地：生成请求与上传清单、读取远端状态、拼接并解压结果 | 主线 | 由 `colab/launch.sh` 调用 |
-| `bootstrap.py` | VM：解包数据、按驱动 CUDA 版本选择锁文件建隔离 venv、下载固定 revision 模型；可选建 vLLM venv | 主线 | 由 `colab/kernel_bootstrap.py` 调用；`python -m scripts.colab.bootstrap vllm-env --root ...` |
+| `local_tools.py` | 本地：生成请求与上传清单（含提交的 git 文件清单）、比对 VM 上已收到的分片、读取远端状态、拼接并解压结果、发布前去除凭据 | 主线 | 由 `colab/launch.sh` 调用 |
+| `drive.py` | VM：可选的 Google Drive 持久化，只经 `rclone copy` + `rclone check` 写入并核对，不经 FUSE 挂载；探针只删除自己写的文件 | 主线（可选） | 预检步骤 `drive_probe`、任务 `drive-check`；`python -m scripts.colab.drive probe --out <json>` |
+| `bootstrap.py` | VM：解包数据、按驱动 CUDA 版本选择锁文件建隔离 venv、下载固定 revision 模型（不需要 GPU 的任务跳过 venv 与模型）；可选建 vLLM venv | 主线 | 由 `colab/kernel_bootstrap.py` 调用；`python -m scripts.colab.bootstrap vllm-env --root ...` |
 | `fetch_model.py` | VM：下载固定 revision 的模型快照并记录每个文件的 SHA256 | 主线 | 由 `bootstrap.py` 调用 |
-| `runner.py` | VM：逐步运行任务（独立进程组、超时、心跳、状态文件），打包并分片结果 | 主线 | 由 `colab/kernel_job.py` 调用 |
-| `tasks.py` | 各任务的步骤定义（当前：`preflight`，含 dry-run 版本） | 主线 | 被 `runner.py` 导入 |
+| `runner.py` | VM：逐步运行任务（独立进程组、超时、心跳、状态文件），打包并分片结果；可选把结果复制到 Drive 并核对 | 主线 | 由 `colab/kernel_job.py` 调用 |
+| `tasks.py` | 各任务的步骤定义（当前：`preflight`（含 dry-run 版本）与 `drive-check`） | 主线 | 被 `runner.py` 导入 |
 | `env_report.py` | VM：记录实际软件版本、GPU、内存、磁盘、环境锁与模型文件 SHA | 主线 | 预检步骤 `env_report` |
 | `gpu_probe.py` | VM：真实 3B 权重下的 LoRA 范围、提示长度、峰值显存、生成吞吐、ViT 缓存等价性 | 主线 | 预检步骤 `gpu_probe` |
 | `v0_probe.py` | VM：V0 在 16 道 validation 上的协议 v3 贪心生成（有图/无图），工程信号 | 主线 | 预检步骤 `v0_probe` |

@@ -94,6 +94,27 @@ v5 校准脚本，以及 manifest 的 `--git-tracked-only` 模式。依赖固定
 
 还没有在真实 Colab GPU 上运行，这要靠 `bash colab/launch.sh preflight` 的结果来确认。
 
+### 2026-11-09（S2.1，上传修复与可选 Google Drive）
+
+上面 S2 小节标注的 2026-11-10 实为 2026-11-09（见决策 D28）。同一沙箱环境：
+
+```text
+python -m pytest -q
+205 passed, 2 failed            # git 工作树
+199 passed, 6 skipped, 2 failed # git archive 导出副本（与 VM 上相同；运行器端到端测试需要 git，跳过）
+```
+
+失败的仍是上面两项依赖 `data/` 的测试。新增或扩展的测试：
+
+- `tests/test_colab_launcher.py`：在 stub `colab` CLI 上注入故障。覆盖上传卡死被时间上限结束、504 报错重试、
+  写入不完整被远端 SHA256 核对发现并补传；从 file:// 源码包取代码，以及源码包被篡改时自动改为上传；
+  推送前脱敏（stub 报错里的 token 不进结果分支）；CPU VM 上的 `drive-check`（Drive 入口的输出只留在本机）。
+- `tests/test_colab_drive.py`：用 stub `rclone` 测试 Drive 检测、探针、持久化。覆盖损坏副本被 `rclone check` 拒绝、
+  沿用正在运行的 `rclone mount` 的配置文件、runner 复制结果包，以及 Drive 失败不影响运行。
+- `tests/test_colab_local_tools.py`：脱敏规则、分片比对、`git ls-tree -z` 解析（含中文路径）、分片大小上下限。
+
+真实 Colab 上的上传、GitHub 源码下载和 Drive 仍未验证，要看下一次 `preflight` 和 `drive-check` 的结果。
+
 ### 历史覆盖范围
 
 测试覆盖：数据准入与白名单、几何序列化、split 守卫、感知奖励与文本蕴含、

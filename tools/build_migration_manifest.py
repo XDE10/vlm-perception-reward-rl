@@ -340,7 +340,9 @@ def build_git_tracked(previous_path, manifest_date, label, purpose, root=ROOT):
             merged[change["path"]] = {**change, "previous_sha256": earlier["previous_sha256"]} if earlier else change
         changes = [merged[p] for p in sorted(merged)]
         dropped = sorted(set(dropped) | set(same[-1].get("dropped_tracked_paths", [])))
-    updates = [u for u in updates if u.get("date") != manifest_date]
+    # replace only this stage's own entry; other stages' entries on the same date are history and must stay
+    updates = [u for u in updates if not (u.get("date") == manifest_date and u.get("label") == label
+                                          and u.get("mode") == "git_tracked_only")]
     updates.append({
         "date": manifest_date,
         "label": label,
