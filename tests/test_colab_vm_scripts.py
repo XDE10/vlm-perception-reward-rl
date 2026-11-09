@@ -39,7 +39,9 @@ def fake_preflight(out, vllm_step=None, micro_peaks=(30.0, 18.0, 12.0), total=80
     for name, step in [("smoke_full_hf", 60.0), ("smoke_full_vllm", vllm_step)]:
         if step is None:
             continue
-        write(out / name / "train_summary.json", {"global_step": 3, "wall_seconds": 3 * step, "peak_gpu_memory_gb": 40.0})
+        write(out / name / "train_summary.json", {"global_step": 3, "wall_seconds": 3 * step, "peak_gpu_memory_gb": 40.0,
+                                                  "mm_alignment": {"checked_forwards": 24, "left_padded_rows": 160,
+                                                                   "max_left_padding": 412}})
         write(out / name / "log_history.json", [{"step_time": step * 1.5}, {"step_time": step}, {"step_time": step}])
 
 
@@ -85,12 +87,26 @@ def test_summary_renders_all_sections(tmp_path):
                                                "download_blob": {"seconds": 2.0, "mb_per_s": 8.0, "md5_matches": True},
                                                "rclone_check": {"identical": True},
                                                "mount_write": {"visible_on_remote": True, "seconds_until_visible": 35.0}}})
+    from scripts.data.calibrate_perception_v5 import main as calibrate_main
+
+    make_release(tmp_path / "release")
+    calibrate_main(["--root", str(tmp_path / "release"), "--output", str(out / "calibration")])
     summary = build(out)
     text = markdown(summary)
-    for heading in ["## 步骤", "## GPU 探针", "## V0 探针", "## GRPO 冒烟", "## Google Drive", "## 未通过的步骤"]:
+    for heading in ["## 步骤", "## GPU 探针", "## V0 探针", "## GRPO 冒烟", "## Google Drive", "## 未通过的步骤",
+                    "## v5 几何证伪校准", "一致性门控（D35）", "关系（留一法，train）"]:
         assert heading in text, heading
     assert "在 35.0 秒后出现在远端" in text and "上传 4.0 秒（4.0 MB/s）" in text
+    checks = {c["check"]: c["ok"] for c in summary["checks"]}
+    assert checks["评分前向的图像 token 类型与 input_ids 一致，且检查覆盖了左填充的行（D33）"] is True
+    assert "| smoke_full_hf | 3 |" in text and "24 / 160" in text
+    assert checks["门控后奖励不证伪任何认证正例（train 与 validation）"] is True
+    assert checks["门控后每类默认开启的几何检验，留一法残余误杀率不超过 5%（由 α、β 推出，D35）"] is True
     assert summary["overall"] == "passed"  # the only failed step is optional; Drive never gates a preflight
+    # an old-format calibration (before the gate existed) must not pass silently
+    write(out / "calibration" / "calibration.json", {"train": {"sweep": {}}, "validation": {"sweep": {}}})
+    stale = {c["check"]: c["ok"] for c in build(out)["checks"]}
+    assert stale["校准输出为新版格式（含门控与留一法）"] is False
 
 
 @pytest.mark.skipif(not HAS_MODEL_DEPS, reason="needs pinned processor files, trl, peft, math_verify")
@@ -107,6 +123,8 @@ def test_gpu_probe_code_path_on_cpu_with_tiny_model(tmp_path):
     assert report["micro_batch"]["2"]["grads_finite"] and report["micro_batch"]["2"]["nonzero_grad_tensors"] > 0
     assert report["generation"]["sequences"] == 4 and report["generation"]["new_tokens"] == 8
     assert report["vit"]["cache_hits"] > 0 and report["vit"]["cache_logprob_max_abs_diff"] < 1e-4
+    # in fp32 batching images through the ViT changes nothing measurable: a GPU gap is rounding, not leakage
+    assert report["vit"]["batched_vs_single_image_max_rel_diff"] < 1e-5 and report["vit"]["image_feature_max_abs"] > 0
 
 
 @pytest.mark.skipif(not HAS_MODEL_DEPS, reason="needs pinned processor files, trl, peft, math_verify")
@@ -127,3 +145,16 @@ def test_v0_probe_code_path_on_cpu_with_tiny_model(tmp_path):
         verifier.close()
     assert result["summary"]["with_image"]["n"] == 2 and result["summary"]["blind"]["n"] == 2
     assert all(r["has_image"] for r in result["with_image"]) and not any(r["has_image"] for r in result["blind"])
+
+
+def test_decide_runtime_waits_for_the_hf_smoke(tmp_path):
+    """Preflight #2 reported decide_runtime as a second failure although it only lacked the HF smoke's numbers."""
+    from scripts.colab.tasks import Context, steps_for
+
+    request = {"run_id": "preflight-x", "task": "preflight", "options": {"vllm_probe": True}}
+    bootstrap = {"envs": {"base": {"python": "/env/bin/python"}}, "model": {"local_dir": "/models/q"}}
+    steps = {s["name"]: s for s in steps_for(Context(tmp_path, request, bootstrap, kernel_python="/usr/bin/python3"))}
+    assert steps["decide_runtime"]["depends_on"] == ["smoke_full_hf"]
+    assert steps["resume_b"]["depends_on"] == ["resume_a"]
+    dry = steps_for(Context(tmp_path, dict(request, options={"dry_run": True}), bootstrap, "/usr/bin/python3"))
+    assert [s["depends_on"] for s in dry if s["name"] == "decide_runtime"] == [[]]  # dry runs have no smoke step

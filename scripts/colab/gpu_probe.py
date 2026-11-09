@@ -182,6 +182,10 @@ def vit_probe(model, processor, rows, root, completion_len, device, repeats=3):
         singles = [inner.get_image_features(chunk, batch["image_grid_thw"][i:i + 1]).pooler_output[0]
                    for i, chunk in enumerate(chunks)]
         image_diff = max(float((a.float() - b.float()).abs().max()) for a, b in zip(batched, singles))
+        # a max-abs gap alone cannot tell bf16 rounding on large activations from a real batching difference
+        image_rel = max(float((a.float() - b.float()).norm() / b.float().norm().clamp_min(1e-12))
+                        for a, b in zip(batched, singles))
+        image_scale = max(float(b.float().abs().max()) for b in singles)
         cache = FrozenVisionCache(model)
         try:
             for i, chunk in enumerate(chunks):  # fill the cache image by image, as reuse across batches would
@@ -190,8 +194,11 @@ def vit_probe(model, processor, rows, root, completion_len, device, repeats=3):
         finally:
             cache.remove()
         logp_diff = float((cached - reference).abs().max())
+        logp_mean = float((cached - reference).abs().mean())
     return {"vit_seconds": round(vit, 4), "forward_seconds": round(forward, 4), "vit_fraction_of_forward": round(vit / forward, 4),
-            "batched_vs_single_image_max_abs_diff": image_diff, "cache_logprob_max_abs_diff": logp_diff,
+            "batched_vs_single_image_max_abs_diff": image_diff, "batched_vs_single_image_max_rel_diff": round(image_rel, 6),
+            "image_feature_max_abs": round(image_scale, 2), "cache_logprob_max_abs_diff": logp_diff,
+            "cache_logprob_mean_abs_diff": round(logp_mean, 6),
             "equivalent": logp_diff <= 0.02, "cache_hits": cache.hits, "cache_misses": cache.misses}
 
 
