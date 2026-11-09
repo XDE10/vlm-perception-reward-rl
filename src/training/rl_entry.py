@@ -23,8 +23,13 @@ from src.training.rl_rewards import RewardBank
 
 ROOT = Path(__file__).resolve().parents[2]
 IDENTITY_SCHEMA = "rl-run-identity-v1"
-DEFAULT_RUNTIME = {"generation_backend": "hf", "vllm_gpu_memory_utilization": 0.3, "vision_cache": False,
+DEFAULT_RUNTIME = {"generation_backend": "hf", "vllm_gpu_memory_utilization": 0.3, "vllm_max_model_length": 4096,
+                   "vision_cache": False, "per_device_train_batch_size": None, "gradient_checkpointing": None,
                    "source": "default (no preflight decision file)"}
+# Runtime keys only change memory/speed, never the optimisation problem: per_device_train_batch_size
+# re-splits the same 64 completions per step (DAPO normalises over the whole accumulated batch).
+ALGORITHM_NEUTRAL_RUNTIME_KEYS = {"generation_backend", "vllm_gpu_memory_utilization", "vllm_max_model_length",
+                                  "vision_cache", "per_device_train_batch_size", "gradient_checkpointing"}
 SOURCE_FILES = [
     "src/rewards/answer.py", "src/rewards/attacks.py", "src/rewards/claims.py", "src/rewards/geometry_oracle.py",
     "src/rewards/perception_v5.py", "src/training/hf_compat.py", "src/training/lora_language.py",
@@ -75,6 +80,20 @@ def load_runtime(path):
     return {**DEFAULT_RUNTIME, **runtime}
 
 
+def apply_runtime(config, runtime):
+    """Apply algorithm-neutral runtime choices (micro-batch split) to a resolved config."""
+    micro = runtime.get("per_device_train_batch_size")
+    if micro and not config.get("smoke", {}).get("per_device_train_batch_size"):
+        train = config["train"]
+        completions = train["prompts_per_step"] * train["num_generations"]
+        if completions % int(micro):
+            raise ValueError(f"runtime per_device_train_batch_size={micro} does not divide {completions} completions/step")
+        train["per_device_train_batch_size"] = int(micro)
+        train["gradient_accumulation_steps"] = completions // int(micro)
+        train["generation_batch_size"] = completions
+    return config
+
+
 def finalize_budget(config, n_rows):
     train = config["train"]
     rows = min(n_rows, config.get("smoke", {}).get("limit_rows", n_rows))
@@ -87,6 +106,8 @@ def grpo_args(config, runtime, output_dir, cuda, weights):
     from trl import GRPOConfig
 
     t = config["train"]
+    checkpointing = runtime.get("gradient_checkpointing")
+    checkpointing = bool(cuda) if checkpointing is None else bool(checkpointing)
     options = dict(
         output_dir=str(output_dir), max_steps=t["max_steps"], learning_rate=t["learning_rate"],
         lr_scheduler_type=t["lr_scheduler_type"], warmup_steps=t["warmup_steps"], max_grad_norm=t["max_grad_norm"],
@@ -97,14 +118,15 @@ def grpo_args(config, runtime, output_dir, cuda, weights):
         epsilon=t["epsilon"], epsilon_high=t["epsilon_high"], scale_rewards=t["scale_rewards"],
         mask_truncated_completions=t["mask_truncated_completions"], reward_weights=weights,
         num_iterations=1, disable_dropout=True, bf16=bool(cuda), use_cpu=not cuda,
-        gradient_checkpointing=bool(cuda), gradient_checkpointing_kwargs={"use_reentrant": False},
+        gradient_checkpointing=checkpointing, gradient_checkpointing_kwargs={"use_reentrant": False},
         logging_steps=t["logging_steps"], save_strategy="steps", save_steps=t["save_steps"], save_only_model=False,
         seed=config["seed"], data_seed=config["seed"], report_to="none", remove_unused_columns=False,
         log_completions=False, dataloader_num_workers=0,
         use_vllm=runtime["generation_backend"] == "vllm",
     )
     if options["use_vllm"]:
-        options.update(vllm_mode="colocate", vllm_gpu_memory_utilization=runtime["vllm_gpu_memory_utilization"])
+        options.update(vllm_mode="colocate", vllm_gpu_memory_utilization=runtime["vllm_gpu_memory_utilization"],
+                       vllm_max_model_length=runtime["vllm_max_model_length"])
     return GRPOConfig(**options)
 
 
@@ -139,6 +161,11 @@ def run(config, root=ROOT, runtime=None, model_path=None, resume=None, model=Non
         raise RuntimeError("Exactly one visible GPU is supported")
     set_seed(config["seed"])
     rows, index = load_training_rows(config, root)
+    unknown = set(runtime) - ALGORITHM_NEUTRAL_RUNTIME_KEYS - {"source", "measured", "notes", "decided_utc", "rationale",
+                                                               "gpu", "torch_backend", "env_lock_sha256", "schema"}
+    if unknown:
+        raise ValueError(f"runtime file has keys that could change the algorithm: {sorted(unknown)}")
+    apply_runtime(config, runtime)
     finalize_budget(config, len(rows))
     out = Path(config["output_dir"])
     if not out.is_absolute():
@@ -174,7 +201,8 @@ def run(config, root=ROOT, runtime=None, model_path=None, resume=None, model=Non
         "prompt_report": prompt_report,
         "lora_targets_sha256": canonical_sha256(targets),
         "parameters": {k: v for k, v in params.items() if k != "trainable_names"},
-        "model_source": model_path or f"{config['model']['id']}@{config['model']['revision']}",
+        "model_source": f"{config['model']['id']}@{config['model']['revision']}",
+        "model_local_path": str(model_path) if model_path else None,
     }
     identity_path = out / "run_identity.json"
     if resume:
@@ -206,7 +234,7 @@ def run(config, root=ROOT, runtime=None, model_path=None, resume=None, model=Non
     class ProgressCallback(TrainerCallback):
         def on_log(self, args, state, control, logs=None, **kwargs):
             keep = {k: round(v, 4) if isinstance(v, float) else v for k, v in (logs or {}).items()
-                    if k.startswith(("p3/", "reward", "kl", "loss", "completions/mean_length", "entropy"))}
+                    if k.startswith(("p3/", "reward", "kl", "loss", "completions/", "entropy", "step_time", "grad_norm"))}
             print(json.dumps({"event": "train_log", "step": state.global_step, "max_steps": state.max_steps, **keep}),
                   flush=True)
 
@@ -238,4 +266,5 @@ def run(config, root=ROOT, runtime=None, model_path=None, resume=None, model=Non
     return summary
 
 
-__all__ = ["DEFAULT_RUNTIME", "finalize_budget", "grpo_args", "load_model_and_processor", "load_runtime", "run"]
+__all__ = ["ALGORITHM_NEUTRAL_RUNTIME_KEYS", "DEFAULT_RUNTIME", "apply_runtime", "finalize_budget", "grpo_args",
+           "load_model_and_processor", "load_runtime", "run"]
