@@ -4,6 +4,21 @@
 [README](README.md) 和版本化报告为准；历史细节见
 [docs/migration/](docs/migration/)。
 
+## 2026-11-09 — S2.1：修复预检上传失败，加可选 Google Drive
+
+决策见 [决策记录](docs/plan/决策记录.md) D28–D32，阶段报告见
+[docs/plan/阶段报告_S2.1_20261109.md](docs/plan/阶段报告_S2.1_20261109.md)。下面 S2 条目标注的 2026-11-10
+实为 2026-11-09（D28）。没有 GPU 运行，没有改动已批准数据。
+
+- 首次真实预检在上传第 4 个 8 MiB 分片时连续 3 次约 150 秒后失败。上传与结果下载改为 2 MiB 分片；
+  每片最多 6 次尝试、有退避，每次 CLI 调用有墙钟上限，CLI 输出保存到 `upload.log`；
+  传完后在 VM 上逐片核对大小与 SHA256，只补传有问题的分片（新增 `colab/kernel_inbox.py`）。
+- 提交已在 GitHub 上时，VM 自己下载源码包并逐文件比对 git blob SHA-1，失败时自动改为上传代码（部分取代 D18）。
+- 新增可选 Google Drive 持久化 `scripts/colab/drive.py`（只用 `rclone copy` + `rclone check`，不经 FUSE 挂载写入），
+  新命令 `bash colab/launch.sh drive-check`，预检新增不计入结论的 `drive_probe` 步骤，结束时可把结果包复制到 Drive。
+- 推送结果分支前对日志做凭据脱敏（CLI 报错网址里带运行时代理 token），记录在 `_local/REDACTIONS.txt`。
+- 测试：204 passed / 2 failed，两项失败依赖本机 `data/`。
+
 ## 2026-11-10 — S2：Colab 运行器
 
 决策见 [决策记录](docs/plan/决策记录.md) D18–D27，阶段报告见
