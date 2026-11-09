@@ -19,8 +19,18 @@ import pytest
 from tests._mini_release import make_release
 
 ROOT = Path(__file__).resolve().parents[1]
-pytestmark = pytest.mark.skipif(shutil.which("git") is None or shutil.which("bash") is None,
-                                reason="needs git and bash")
+
+
+def _is_git_work_tree():
+    if shutil.which("git") is None:
+        return False
+    probe = subprocess.run(["git", "rev-parse", "--is-inside-work-tree"], cwd=ROOT, capture_output=True, text=True)
+    return probe.returncode == 0 and probe.stdout.strip() == "true"
+
+
+# On the Colab VM the code arrives as a `git archive` export (no .git), so the world-building step cannot run there.
+pytestmark = pytest.mark.skipif(shutil.which("bash") is None or not _is_git_work_tree(),
+                                reason="needs bash and a git work tree of this repository")
 pytest.importorskip("PIL")
 
 

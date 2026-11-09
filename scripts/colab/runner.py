@@ -65,6 +65,9 @@ class Job(object):
         env = dict(os.environ)
         env.update({k: str(v) for k, v in step.get("env", {}).items()})
         env.setdefault("PYTHONUNBUFFERED", "1")
+        code = self.request.get("code", {})
+        if code.get("commit"):  # the VM checkout is a git-archive export; run identities still record the commit
+            env["P3_GIT_COMMIT"] = code["commit"] + ("-dirty" if code.get("dirty") else "")
         started = time.time()
         record.update(state="running", started_utc=_now(), log="logs/%s.log" % step["name"])
         self.status["current"] = {"step": step["name"], "elapsed": "0m00s", "last": ""}
