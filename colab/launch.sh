@@ -2,12 +2,15 @@
 # Project 3 Colab launcher (WSL2 / Linux / macOS). Usage:
 #   bash colab/launch.sh check                     # verify local prerequisites, data, Colab auth, git push access
 #   bash colab/launch.sh preflight [options]       # run the GPU preflight on a fresh Colab VM
+#   bash colab/launch.sh drive-check [--gpu X]     # cheap CPU-VM test of the optional Google Drive (rclone) setup
 #   bash colab/launch.sh collect <run_id>          # reattach after a disconnect: wait, fetch, stop VM, push
 #   bash colab/launch.sh push <run_id>             # (re)push fetched results to the results/<run_id> branch
 #   bash colab/launch.sh stop <run_id>             # release the VM of a run
 #   bash colab/launch.sh list                      # local runs and their last known state
 # Options: --gpu A100|H100|G4|L4  --keep (do not stop the VM)  --no-vllm  --allow-dirty  --dry-run
-# Settings (environment or .colab_local.env): P3_DATA_ROOT, P3_GPU, COLAB_GLOBAL_FLAGS, P3_POLL_SECONDS.
+# Settings (environment or .colab_local.env): P3_DATA_ROOT, P3_GPU, COLAB_GLOBAL_FLAGS, P3_POLL_SECONDS,
+#   P3_PART_MB, P3_UPLOAD_TRIES, P3_UPLOAD_BACKOFF, P3_UPLOAD_TIMEOUT, P3_CODE_SOURCE (auto|upload),
+#   Drive: P3_DRIVE_MOUNT_CMD, P3_DRIVE_SETUP_FILE, P3_DRIVE_REMOTE, P3_DRIVE_DIR, P3_DRIVE_MOUNT.
 # See colab/README.md.
 set -euo pipefail
 
@@ -26,6 +29,10 @@ POLL="${P3_POLL_SECONDS:-120}"
 PY="${P3_PYTHON:-python3}"
 DATA_ROOT="${P3_DATA_ROOT:-$ROOT/data}"
 GPU="${P3_GPU:-A100}"
+PART_MB="${P3_PART_MB:-2}"
+UPLOAD_TRIES="${P3_UPLOAD_TRIES:-6}"
+UPLOAD_BACKOFF="${P3_UPLOAD_BACKOFF:-10}"
+UPLOAD_TIMEOUT="${P3_UPLOAD_TIMEOUT:-600}"
 RUN_LOG=/dev/null
 SESSION=""
 RUN_ID=""
@@ -37,8 +44,25 @@ KEEP=0
 
 log() { printf '[launch %s] %s\n' "$(date +%H:%M:%S)" "$*" | tee -a "$RUN_LOG" >&2; }
 die() { log "ERROR: $*"; exit 1; }
-colab_() { "$COLAB_BIN" ${COLAB_FLAGS[@]+"${COLAB_FLAGS[@]}"} "$@"; }
 need() { command -v "$1" >/dev/null 2>&1 || die "missing command '$1' (see colab/README.md)"; }
+
+# The Colab CLI sends uploads/downloads with no client timeout and does not enforce `exec --timeout` after the
+# deadline, so every call gets a wall-clock limit from coreutils `timeout` when it is available (--foreground keeps
+# Ctrl-C working). colab_t SECONDS args... ; colab_ args... uses 30 minutes.
+TIMEOUT_CMD=()
+if command -v timeout >/dev/null 2>&1 && timeout --foreground 5 true >/dev/null 2>&1; then
+  TIMEOUT_CMD=(timeout --foreground)
+fi
+colab_t() {
+  local seconds=$1
+  shift
+  if [[ ${#TIMEOUT_CMD[@]} -gt 0 ]]; then
+    "${TIMEOUT_CMD[@]}" "$seconds" "$COLAB_BIN" ${COLAB_FLAGS[@]+"${COLAB_FLAGS[@]}"} "$@"
+  else
+    "$COLAB_BIN" ${COLAB_FLAGS[@]+"${COLAB_FLAGS[@]}"} "$@"
+  fi
+}
+colab_() { colab_t 1800 "$@"; }
 
 retry() {
   local tries=$1 i
@@ -55,7 +79,9 @@ repo_web_url() {
   local url
   url="$(git remote get-url origin 2>/dev/null || true)"
   url="${url%.git}"
-  url="$(printf '%s' "$url" | sed -E 's#^git@github.com:#https://github.com/#; s#^ssh://git@github.com/#https://github.com/#')"
+  # drop any user:token@ part so credentials embedded in the remote URL are never printed or logged
+  url="$(printf '%s' "$url" | sed -E 's#^git@github.com:#https://github.com/#; s#^ssh://git@github.com/#https://github.com/#;
+    s#^(https?://)[^/@]+@#\1#')"
   printf '%s' "$url"
 }
 
@@ -66,7 +92,7 @@ check_python() {
 stop_session() {
   if [[ -n "$SESSION" && "$SESSION_STOPPED" != 1 ]]; then
     log "releasing VM $SESSION"
-    colab_ stop -s "$SESSION" </dev/null >/dev/null 2>&1 || log "colab stop failed; check 'colab sessions' and stop it manually"
+    colab_t 300 stop -s "$SESSION" </dev/null >/dev/null 2>&1 || log "colab stop failed; check 'colab sessions' and stop it manually"
     SESSION_STOPPED=1
     printf 'stopped\n' > "$RUN_DIR/state" 2>/dev/null || true
   fi
@@ -85,9 +111,80 @@ on_exit() {
   exit "$rc"
 }
 
+# --- uploads: small parts, captured CLI errors, backoff, then a remote SHA256 check of every part --------------
+upload_part() {
+  local local_path=$1 name=$2 attempt start rc last out="$RUN_DIR/upload_attempt.out"
+  for ((attempt = 1; attempt <= UPLOAD_TRIES; attempt++)); do
+    start=$(date +%s)
+    rc=0
+    colab_t "$UPLOAD_TIMEOUT" upload -s "$SESSION" "$local_path" "$REMOTE/inbox/$name" </dev/null > "$out" 2>&1 || rc=$?
+    { printf '\n[%s] upload %s attempt %d (exit %s, %ss)\n' "$(date +%H:%M:%S)" "$name" "$attempt" "$rc" \
+        "$(($(date +%s) - start))"; cat "$out"; } >> "$RUN_DIR/upload.log"
+    if [[ "$rc" == 0 ]]; then
+      printf '%s\t%s\n' "$name" "$(($(date +%s) - start))" >> "$RUN_DIR/upload_times.tsv"
+      return 0
+    fi
+    if [[ "$rc" == 124 && ${#TIMEOUT_CMD[@]} -gt 0 ]]; then
+      last="no answer within the ${UPLOAD_TIMEOUT}s limit, call ended (P3_UPLOAD_TIMEOUT)"
+    else
+      last="$(tail -n 2 "$out" | tr '\n' ' ' | "$PY" -m scripts.colab.local_tools redact-stdin | cut -c1-300)"
+    fi
+    log "upload of $name failed (attempt $attempt/$UPLOAD_TRIES after $(($(date +%s) - start))s): $last"
+    ((attempt < UPLOAD_TRIES)) && sleep $((attempt < 4 ? attempt * UPLOAD_BACKOFF : 6 * UPLOAD_BACKOFF))
+  done
+  return 1
+}
+
+upload_list() {
+  local tsv=$1 label=$2 n=0 total local_path name bytes started
+  total="$(grep -c . "$tsv" || true)"
+  [[ "$total" -gt 0 ]] || return 0
+  started=$(date +%s)
+  bytes=0
+  while IFS=$'\t' read -r local_path name; do
+    [[ -n "$name" ]] || continue
+    n=$((n + 1))
+    bytes=$((bytes + $(wc -c < "$local_path")))
+    log "upload $label $n/$total $name ($(($(wc -c < "$local_path") / 1024)) KiB)"
+    upload_part "$local_path" "$name" || die "upload of $name failed $UPLOAD_TRIES times (CLI output in $RUN_DIR/upload.log)"
+  done < "$tsv"
+  local seconds=$(($(date +%s) - started))
+  log "uploaded $label: $((bytes / 1024)) KiB in ${seconds}s (~$((bytes / 1024 / (seconds > 0 ? seconds : 1))) KiB/s)"
+}
+
+inbox_listing() {
+  # a failed listing must not look like "every part is missing" (that would re-upload everything)
+  local i
+  for ((i = 1; i <= 3; i++)); do
+    colab_t 1200 exec -s "$SESSION" -f "$RUN_DIR/kernel/kernel_inbox.py" --timeout 900 </dev/null > "$RUN_DIR/inbox.log" 2>&1 || true
+    grep -q '^\[p3\] INBOX ' "$RUN_DIR/inbox.log" && return 0
+    log "could not list the uploaded files on the VM (attempt $i/3): $(tail -n 2 "$RUN_DIR/inbox.log" | tr '\n' ' ' |
+      "$PY" -m scripts.colab.local_tools redact-stdin | cut -c1-200)"
+    sleep $((i * 10))
+  done
+  return 1
+}
+
+verify_inbox() {
+  local tsv=$1 round stale
+  for round in 0 1 2 3; do
+    inbox_listing || die "could not list the uploaded files on the VM (see $RUN_DIR/inbox.log)"
+    stale="$("$PY" -m scripts.colab.local_tools inbox-diff "$tsv" "$RUN_DIR/inbox.log")"
+    if [[ -z "$stale" ]]; then
+      log "all uploaded parts verified on the VM (size and SHA256)"
+      return 0
+    fi
+    ((round < 3)) || break
+    log "re-uploading $(printf '%s\n' "$stale" | grep -c .) part(s) that are missing or damaged on the VM (repair round $((round + 1))/3)"
+    printf '%s\n' "$stale" > "$RUN_DIR/stale.tsv"
+    upload_list "$RUN_DIR/stale.tsv" "repair"
+  done
+  die "uploaded parts still differ on the VM after 3 repair rounds (see $RUN_DIR/upload.log)"
+}
+
 remote_status_line() {
   local target="$RUN_DIR/remote_status.json"
-  if colab_ download -s "$SESSION" "$REMOTE/out/$RUN_ID/status.json" "$target" </dev/null >/dev/null 2>&1; then
+  if colab_t 600 download -s "$SESSION" "$REMOTE/out/$RUN_ID/status.json" "$target" </dev/null >/dev/null 2>&1; then
     "$PY" -m scripts.colab.local_tools status-line "$target"
     return 0
   fi
@@ -114,7 +211,7 @@ poll_until_done() {
 wait_bootstrap() {
   local fails=0 target="$RUN_DIR/bootstrap.json"
   while true; do
-    if colab_ download -s "$SESSION" "$REMOTE/state/bootstrap.json" "$target" </dev/null >/dev/null 2>&1 &&
+    if colab_t 600 download -s "$SESSION" "$REMOTE/state/bootstrap.json" "$target" </dev/null >/dev/null 2>&1 &&
       [[ "$("$PY" -m scripts.colab.local_tools field "$target" run_id)" == "$RUN_ID" ]]; then
       [[ "$("$PY" -m scripts.colab.local_tools field "$target" ok)" == "True" ]] && return 0
       log "bootstrap failed: $("$PY" -m scripts.colab.local_tools field "$target" error | head -c 600)"
@@ -127,26 +224,52 @@ wait_bootstrap() {
   done
 }
 
+run_bootstrap() {
+  # each attempt gets its own log so a marker from an earlier attempt never decides a later one
+  local attempt_log=$1
+  : > "$attempt_log"
+  colab_t 15000 exec -s "$SESSION" -f "$RUN_DIR/kernel/kernel_bootstrap.py" --timeout 14400 </dev/null 2>&1 |
+    tee "$attempt_log" || true
+  cat "$attempt_log" >> "$RUN_DIR/bootstrap.log"
+}
+
+download_file() {
+  local remote_path=$1 local_path=$2
+  printf '\n[%s] download %s\n' "$(date +%H:%M:%S)" "$remote_path" >> "$RUN_DIR/download.log"
+  colab_t "$UPLOAD_TIMEOUT" download -s "$SESSION" "$remote_path" "$local_path" </dev/null >> "$RUN_DIR/download.log" 2>&1
+}
+
 fetch_results() {
   log "fetching results"
-  retry 5 colab_ download -s "$SESSION" "$REMOTE/out/$RUN_ID.done.json" "$RUN_DIR/done.json" </dev/null >/dev/null ||
-    die "could not download done.json"
+  retry 5 download_file "$REMOTE/out/$RUN_ID.done.json" "$RUN_DIR/done.json" ||
+    die "could not download done.json (CLI output in $RUN_DIR/download.log)"
   mkdir -p "$RUN_DIR/parts"
   local part
   for part in $("$PY" -m scripts.colab.local_tools parts "$RUN_DIR/done.json"); do
-    retry 5 colab_ download -s "$SESSION" "$REMOTE/out/$part" "$RUN_DIR/parts/$part" </dev/null >/dev/null ||
-      die "could not download $part"
+    retry 5 download_file "$REMOTE/out/$part" "$RUN_DIR/parts/$part" ||
+      die "could not download $part (CLI output in $RUN_DIR/download.log)"
   done
   "$PY" -m scripts.colab.local_tools join "$RUN_DIR/done.json" "$RUN_DIR/parts" "$RUN_DIR/results.tar.gz" >/dev/null
   rm -rf "$RUN_DIR/results"
   "$PY" -m scripts.colab.local_tools extract "$RUN_DIR/results.tar.gz" "$RUN_DIR/results"
-  colab_ download -s "$SESSION" "$REMOTE/out/$RUN_ID/status.json" "$RUN_DIR/results/$RUN_ID/status.json" \
+  colab_t 600 download -s "$SESSION" "$REMOTE/out/$RUN_ID/status.json" "$RUN_DIR/results/$RUN_ID/status.json" \
     </dev/null >/dev/null 2>&1 || true
   rm -rf "$RUN_DIR/parts"
   RESULTS_FETCHED=1
   printf 'fetched\n' > "$RUN_DIR/state"
   log "results in $RUN_DIR/results/$RUN_ID (overall: $("$PY" -m scripts.colab.local_tools field "$RUN_DIR/done.json" overall))"
+  if [[ "$(done_field drive.attempted)" == "True" ]]; then
+    if [[ "$(done_field drive.ok)" == "True" ]]; then
+      log "Drive copy verified: $(done_field drive.target)"
+    else
+      log "WARNING: Drive copy failed: $(done_field drive.reason | head -c 300) (the results branch is unaffected)"
+    fi
+  elif [[ -n "$(done_field drive.mode)" && "$(done_field drive.mode)" != "none" ]]; then
+    log "Drive copy skipped: $(done_field drive.reason | head -c 200)"
+  fi
 }
+
+done_field() { "$PY" -m scripts.colab.local_tools field "$RUN_DIR/done.json" "$1"; }
 
 push_results() {
   local run_id=$1 run_dir="$RUNS/$1"
@@ -164,9 +287,15 @@ push_results() {
   dest="$wt/reports/colab_runs_${day}/$run_id"
   mkdir -p "$dest/_local"
   cp -R "$src/." "$dest/"
-  for f in launch.log bootstrap.log job.log usage_before.txt usage_after.txt local.json dirty.diff colab_version.txt; do
+  # drive_mount.log stays local: the user's Drive tooling may print credentials
+  for f in launch.log bootstrap.log job.log upload.log upload_times.tsv inbox.log download.log usage_before.txt \
+    usage_after.txt local.json dirty.diff colab_version.txt done.json; do
     [[ -f "$run_dir/$f" ]] && cp "$run_dir/$f" "$dest/_local/"
   done
+  # CLI error messages contain request URLs with the runtime proxy token: never publish them unredacted
+  local redacted
+  redacted="$("$PY" -m scripts.colab.local_tools redact "$dest" --report "$dest/_local/REDACTIONS.txt")"
+  [[ "$redacted" == 0 ]] || log "redacted $redacted credential-like string(s) before publishing (see _local/REDACTIONS.txt)"
   local large
   large="$(find "$dest" -type f -size +25M -print)"
   if [[ -n "$large" ]]; then
@@ -208,8 +337,8 @@ cmd_check() {
   need "$PY"
   check_python
   if command -v "$COLAB_BIN" >/dev/null 2>&1; then
-    log "colab CLI: $(colab_ version 2>/dev/null | tail -n 1)"
-    if colab_ sessions </dev/null >/dev/null 2>&1; then log "colab auth: OK"; else log "colab auth: FAILED (run 'colab sessions' to see why)"; ok=0; fi
+    log "colab CLI: $(colab_t 120 version 2>/dev/null | tail -n 1)"
+    if colab_t 300 sessions </dev/null >/dev/null 2>&1; then log "colab auth: OK"; else log "colab auth: FAILED (run 'colab sessions' to see why)"; ok=0; fi
     colab_ usage </dev/null 2>/dev/null | tail -n 5 || true
   else
     log "colab CLI not found on PATH"
@@ -226,12 +355,62 @@ cmd_check() {
     log "git push access: FAILED (configure credentials, e.g. 'gh auth login' or a credential helper)"
     ok=0
   fi
+  if commit_is_published "$(git rev-parse HEAD)"; then
+    log "code source: the VM will download commit $(git rev-parse --short=12 HEAD) from GitHub (no code upload)"
+  else
+    log "code source: HEAD is not on origin yet, so the code archive will be uploaded (push to avoid that)"
+  fi
+  if [[ -n "${P3_DRIVE_MOUNT_CMD:-}${P3_DRIVE_SETUP_FILE:-}" ]]; then
+    log "Google Drive (optional): a Drive hook is configured; test it with: bash colab/launch.sh drive-check"
+  else
+    log "Google Drive (optional): no Drive hook configured; results still go to the results/<run_id> branch"
+  fi
   if [[ "$ok" == 1 ]]; then log "all checks passed"; else die "some checks failed (see above)"; fi
 }
 
+commit_is_published() {
+  # never prompt for credentials here: a failed fetch just means "upload the code instead"
+  local limit=()
+  command -v timeout >/dev/null 2>&1 && limit=(timeout 120)
+  GIT_TERMINAL_PROMPT=0 GIT_SSH_COMMAND="${GIT_SSH_COMMAND:-ssh -o BatchMode=yes}" \
+    ${limit[@]+"${limit[@]}"} git fetch -q origin </dev/null >/dev/null 2>&1 || return 1
+  [[ -n "$(git branch -r --contains "$1" 2>/dev/null)" ]]
+}
+
+drive_hooks() {
+  # optional: let the user's own tooling mount Drive / configure rclone on the fresh VM. Output stays local
+  # (drive_mount.log is never pushed) and the command text is not logged, since either may carry credentials.
+  local task=$1 failed=0
+  if [[ -n "${P3_DRIVE_MOUNT_CMD:-}" ]]; then
+    log "running the Drive hook P3_DRIVE_MOUNT_CMD on this machine (output: $RUN_DIR/drive_mount.log, kept local)"
+    P3_SESSION="$SESSION" bash -c "${P3_DRIVE_MOUNT_CMD//\{session\}/$SESSION}" </dev/null >> "$RUN_DIR/drive_mount.log" 2>&1 ||
+      failed=1
+  fi
+  if [[ -n "${P3_DRIVE_SETUP_FILE:-}" ]]; then
+    if [[ ! -f "$P3_DRIVE_SETUP_FILE" ]]; then
+      log "P3_DRIVE_SETUP_FILE does not exist: $P3_DRIVE_SETUP_FILE"
+      failed=1
+    else
+      log "running P3_DRIVE_SETUP_FILE on the VM (output: $RUN_DIR/drive_mount.log, kept local)"
+      colab_t 1200 exec -s "$SESSION" -f "$P3_DRIVE_SETUP_FILE" --timeout 900 </dev/null >> "$RUN_DIR/drive_mount.log" 2>&1 ||
+        failed=1
+    fi
+  fi
+  if [[ "$failed" == 1 ]]; then
+    [[ "$task" == "drive-check" ]] && die "the Drive hook failed (see $RUN_DIR/drive_mount.log)"
+    log "WARNING: the Drive hook failed; continuing without Drive (see $RUN_DIR/drive_mount.log)"
+  fi
+}
+
 cmd_run() {
-  local task=$1 vllm=1 dirty_ok=0 dry=0
+  local task=$1 vllm=1 dirty_ok=0 dry=0 needs_data=1 env_mode=gpu drive_persist=results
   shift
+  if [[ "$task" == "drive-check" ]]; then
+    needs_data=0
+    env_mode=none
+    drive_persist=none
+    GPU="${P3_DRIVE_CHECK_GPU:-}"
+  fi
   while [[ $# -gt 0 ]]; do
     case "$1" in
       --gpu) GPU="$2"; shift 2 ;;
@@ -250,13 +429,15 @@ cmd_run() {
   mkdir -p "$CACHE" "$RUNS"
   RUN_ID="${task}-$(date -u +%Y%m%dT%H%M%SZ)-$(od -An -N2 -tx1 /dev/urandom | tr -d ' \n')"
   RUN_DIR="$RUNS/$RUN_ID"
-  mkdir -p "$RUN_DIR"
+  mkdir -p "$RUN_DIR/kernel"
   RUN_LOG="$RUN_DIR/launch.log"
+  # snapshot the kernel-side scripts: later git checkouts must not change what this run executes
+  cp colab/kernel_bootstrap.py colab/kernel_job.py colab/kernel_inbox.py "$RUN_DIR/kernel/"
   SESSION="p3-${task}-$(date -u +%m%d%H%M)-${RUN_ID##*-}"
   printf '%s\n' "$SESSION" > "$RUN_DIR/session"
   printf '%s\n' "$task" > "$RUN_DIR/task"
   printf 'preparing\n' > "$RUN_DIR/state"
-  local commit dirty=0 code
+  local commit dirty=0 code code_mode=upload tarball=""
   commit="$(git rev-parse HEAD)"
   printf '%s\n' "$commit" > "$RUN_DIR/commit"
   local watched=(src scripts configs colab tests tools requirements)
@@ -272,58 +453,92 @@ cmd_run() {
     git diff HEAD -- "${watched[@]}" > "$RUN_DIR/dirty.diff" || true
     log "running with uncommitted changes (diff saved to the results)"
   fi
-  log "run $RUN_ID (task $task, commit ${commit:0:12}, GPU $GPU)"
+  log "run $RUN_ID (task $task, commit ${commit:0:12}, GPU ${GPU:-none (CPU VM)})"
   if [[ "$dirty" == 1 ]]; then
     code="$CACHE/code_${commit:0:12}_dirty.tar.gz"
     git ls-files -co --exclude-standard -z | tar --null -czf "$code" -T -
   else
     code="$CACHE/code_${commit:0:12}.tar.gz"
     [[ -f "$code" ]] || git archive --format=tar.gz -o "$code" HEAD
+    if [[ "${P3_CODE_SOURCE:-auto}" != "upload" ]]; then
+      local web
+      web="$(repo_web_url)"
+      if [[ -n "${P3_CODE_TARBALL_URL:-}" ]]; then
+        tarball="${P3_CODE_TARBALL_URL//\{commit\}/$commit}"
+      elif [[ "$web" =~ ^https://github\.com/([^/]+)/([^/]+)$ ]]; then
+        tarball="https://codeload.github.com/${BASH_REMATCH[1]}/${BASH_REMATCH[2]}/tar.gz/$commit"
+      fi
+      if [[ -n "$tarball" ]] && commit_is_published "$commit"; then
+        code_mode=github
+        git ls-tree -r -z "$commit" > "$RUN_DIR/tree.bin"
+      fi
+    fi
   fi
-  log "building private data pack from $DATA_ROOT"
-  "$PY" -m scripts.colab.pack_private_data --data-root "$DATA_ROOT" --out "$CACHE" > "$RUN_DIR/pack.json" ||
-    die "data pack failed: $(tail -c 800 "$RUN_DIR/pack.json")"
-  log "data pack: $(head -c 300 "$RUN_DIR/pack.json")"
+  if [[ "$code_mode" == github ]]; then
+    log "code: the VM downloads commit ${commit:0:12} from GitHub and verifies every file against its git blob SHA-1"
+  else
+    log "code: uploading the archive (commit not on the remote, uncommitted changes, or P3_CODE_SOURCE=upload)"
+  fi
+  local pack_json=""
+  if [[ "$needs_data" == 1 ]]; then
+    log "building private data pack from $DATA_ROOT"
+    "$PY" -m scripts.colab.pack_private_data --data-root "$DATA_ROOT" --out "$CACHE" > "$RUN_DIR/pack.json" ||
+      die "data pack failed: $(tail -c 800 "$RUN_DIR/pack.json")"
+    log "data pack: $(head -c 300 "$RUN_DIR/pack.json")"
+    pack_json="$RUN_DIR/pack.json"
+  fi
   local colab_version options local_json
   colab_version="$(colab_ version 2>/dev/null | tail -n 1 || true)"
   printf '%s\n' "$colab_version" > "$RUN_DIR/colab_version.txt"
-  options="$("$PY" -c 'import json,sys; print(json.dumps({"vllm_probe": sys.argv[1] == "1", "dry_run": sys.argv[2] == "1", "gpu_requested": sys.argv[3]}))' "$vllm" "$dry" "$GPU")"
+  options="$("$PY" -c 'import json,sys; a=sys.argv; print(json.dumps({"vllm_probe": a[1] == "1", "dry_run": a[2] == "1", "gpu_requested": a[3], "env": a[4], "drive_persist": a[5], "drive_remote": a[6], "drive_dir": a[7], "drive_mount": a[8]}))' \
+    "$vllm" "$dry" "${GPU:-none}" "$env_mode" "$drive_persist" "${P3_DRIVE_REMOTE:-mydrive:}" \
+    "${P3_DRIVE_DIR:-ColabProjects/vlm-perception-reward-rl}" "${P3_DRIVE_MOUNT:-/content/mydrive}")"
   local_json="$("$PY" -c 'import json,platform,sys; print(json.dumps({"colab_version": sys.argv[1], "data_root": sys.argv[2], "host": platform.platform(), "python": platform.python_version()}))' "$colab_version" "$DATA_ROOT")"
   printf '%s\n' "$local_json" > "$RUN_DIR/local.json"
   "$PY" -m scripts.colab.local_tools make-request --task "$task" --run-id "$RUN_ID" --code "$code" --commit "$commit" \
-    --dirty "$dirty" --pack-json "$RUN_DIR/pack.json" --staging "$RUN_DIR/upload" --uploads "$RUN_DIR/uploads.tsv" \
-    --options "$options" --local "$local_json" >/dev/null
+    --dirty "$dirty" --pack-json "$pack_json" --staging "$RUN_DIR/upload" --uploads "$RUN_DIR/uploads.tsv" \
+    --code-uploads "$RUN_DIR/code_uploads.tsv" --code-mode "$code_mode" --tarball-url "$tarball" \
+    --tree-file "$RUN_DIR/tree.bin" --part-mb "$PART_MB" --options "$options" --local "$local_json" >/dev/null
   colab_ usage </dev/null > "$RUN_DIR/usage_before.txt" 2>&1 || true
 
   trap on_exit EXIT
   trap 'log "interrupted"; exit 130' INT TERM
-  log "allocating Colab VM $SESSION ($GPU)"
-  retry 3 colab_ new -s "$SESSION" --gpu "$GPU" </dev/null >> "$RUN_LOG" 2>&1 ||
-    die "could not allocate a $GPU VM (quota or availability). Try later or with --gpu H100."
+  log "allocating Colab VM $SESSION (${GPU:-CPU})"
+  local gpu_args=()
+  [[ -n "$GPU" ]] && gpu_args=(--gpu "$GPU")
+  retry 3 colab_ new -s "$SESSION" ${gpu_args[@]+"${gpu_args[@]}"} </dev/null >> "$RUN_LOG" 2>&1 ||
+    die "could not allocate a ${GPU:-CPU} VM (quota or availability). Try later or with --gpu H100."
   printf 'allocated\n' > "$RUN_DIR/state"
-  printf 'import os\nos.makedirs(os.path.join(os.environ.get("P3_REMOTE_ROOT", "/content/p3"), "inbox"), exist_ok=True)\nprint("[p3] inbox ready")\n' |
-    colab_ exec -s "$SESSION" --timeout 600 >> "$RUN_LOG" 2>&1 || die "could not prepare the VM"
-  local n=0 total local_path remote_name
-  total="$(wc -l < "$RUN_DIR/uploads.tsv" | tr -d ' ')"
-  while IFS=$'\t' read -r local_path remote_name; do
-    n=$((n + 1))
-    log "upload $n/$total $remote_name"
-    retry 3 colab_ upload -s "$SESSION" "$local_path" "$REMOTE/inbox/$remote_name" </dev/null >/dev/null ||
-      die "upload of $remote_name failed"
-  done < "$RUN_DIR/uploads.tsv"
-  rm -rf "$RUN_DIR/upload"
+  inbox_listing || die "could not run code on the new VM (see $RUN_DIR/inbox.log)"
+  drive_hooks "$task"
+  upload_list "$RUN_DIR/uploads.tsv" "inputs"
+  verify_inbox "$RUN_DIR/uploads.tsv"
 
-  log "bootstrap on the VM (environment install and model download; ~10-20 min)"
-  colab_ exec -s "$SESSION" -f colab/kernel_bootstrap.py --timeout 14400 </dev/null 2>&1 | tee "$RUN_DIR/bootstrap.log" || true
-  if ! grep -q "BOOTSTRAP_OK" "$RUN_DIR/bootstrap.log"; then
-    if grep -q "BOOTSTRAP_FAILED" "$RUN_DIR/bootstrap.log" || ! wait_bootstrap; then
+  if [[ "$env_mode" == none ]]; then
+    log "bootstrap on the VM (code only; this task needs no GPU environment)"
+  else
+    log "bootstrap on the VM (code, environment install and model download; ~10-20 min)"
+  fi
+  : > "$RUN_DIR/bootstrap.log"
+  local attempt_log="$RUN_DIR/bootstrap_1.log"
+  run_bootstrap "$attempt_log"
+  if grep -q "CODE_DOWNLOAD_FAILED" "$attempt_log"; then
+    log "the VM could not fetch or verify the code from GitHub; uploading the code archive instead"
+    upload_list "$RUN_DIR/code_uploads.tsv" "code"
+    verify_inbox "$RUN_DIR/code_uploads.tsv"
+    attempt_log="$RUN_DIR/bootstrap_2.log"
+    run_bootstrap "$attempt_log"
+  fi
+  if ! grep -q "BOOTSTRAP_OK" "$attempt_log"; then
+    if grep -q -E "BOOTSTRAP_FAILED|CODE_DOWNLOAD_FAILED" "$attempt_log" || ! wait_bootstrap; then
       die "bootstrap failed on the VM (see $RUN_DIR/bootstrap.log)"
     fi
   fi
+  rm -rf "$RUN_DIR/upload"
   JOB_STARTED=1
   printf 'running\n' > "$RUN_DIR/state"
   log "job running on the VM; progress lines follow (Ctrl-C detaches, the job keeps running)"
-  colab_ exec -s "$SESSION" -f colab/kernel_job.py --timeout 86400 </dev/null 2>&1 | tee "$RUN_DIR/job.log" || true
+  colab_t 87000 exec -s "$SESSION" -f "$RUN_DIR/kernel/kernel_job.py" --timeout 86400 </dev/null 2>&1 | tee "$RUN_DIR/job.log" || true
   if ! grep -q "JOB_DONE" "$RUN_DIR/job.log"; then
     log "lost the live connection; polling the VM every ${POLL}s"
     poll_until_done || die "the VM stopped answering; reattach later with: bash colab/launch.sh collect $RUN_ID"
@@ -368,16 +583,17 @@ cmd_list() {
 
 main() {
   local command="${1:-}"
-  [[ -n "$command" ]] || { sed -n '2,12p' "$0"; exit 2; }
+  [[ -n "$command" ]] || { sed -n '2,14p' "$0"; exit 2; }
   shift
   case "$command" in
     check) cmd_check ;;
     preflight) cmd_run preflight "$@" ;;
+    drive-check) cmd_run drive-check "$@" ;;
     collect) cmd_collect "$@" ;;
     push) need git; check_python; load_run "$1"; push_results "$RUN_ID" ;;
     stop) load_run "$1"; need "$COLAB_BIN"; stop_session ;;
     list) cmd_list ;;
-    *) sed -n '2,12p' "$0"; exit 2 ;;
+    *) sed -n '2,14p' "$0"; exit 2 ;;
   esac
 }
 
