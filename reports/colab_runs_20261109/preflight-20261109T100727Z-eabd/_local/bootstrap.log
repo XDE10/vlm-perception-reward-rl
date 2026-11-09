@@ -1,0 +1,10 @@
+[p3] code a189e4a53a92 from GitHub, verified, extracted to /content/p3/repo
+[p3] 10:18:19 data pack verified: 716 files, anchors ledger,release,row
+[p3] 10:18:20 GPU: NVIDIA A100-SXM4-40GB, 40960.0 MiB, driver 580.82.07 (CUDA [13, 0])
+[p3] 10:18:55 installing base (cu130) ... 0m30s elapsed |  Downloaded nvidia-nvjitlink
+[p3] 10:19:25 installing base (cu130) ... 1m00s elapsed |  Downloaded nvidia-cuda-nvrtc
+[p3] 10:19:55 installing base (cu130) ... 1m30s elapsed |  Downloaded nvidia-cufft
+[p3] 10:20:07 base env ready: torch 2.13.0+cu130, backend cu130
+[p3] 10:20:37 downloading Qwen/Qwen2.5-VL-3B-Instruct@66285546 ... 0m30s elapsed | Fetching 11 files: 100%|██████████| 11/11 [00:19<00:00,  1.79s/it]
+[p3] 10:20:50 model ready: /content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8 (11 files)
+[p3] 10:20:50 BOOTSTRAP_OK in 152s

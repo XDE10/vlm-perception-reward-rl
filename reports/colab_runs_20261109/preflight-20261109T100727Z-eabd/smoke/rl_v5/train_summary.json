@@ -1,0 +1,17 @@
+{
+  "run": "rl_v5/seed1_smoke",
+  "config_sha256": "85d1cce8e3b1b9de931673888bdead8d3b958190953ef01dea37968c5d15207c",
+  "global_step": 1,
+  "max_steps": 1,
+  "wall_seconds": 33.36600995063782,
+  "peak_gpu_memory_gb": 8.841887744,
+  "vision_cache": null,
+  "mm_alignment": {
+    "version": "mm-alignment-guard-v1-20261109",
+    "checked_forwards": 5,
+    "left_padded_rows": 6,
+    "max_left_padding": 133
+  },
+  "generation_backend": "hf",
+  "python": "3.12.3"
+}

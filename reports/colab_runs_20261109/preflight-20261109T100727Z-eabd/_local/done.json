@@ -1,0 +1,31 @@
+{
+  "run_id": "preflight-20261109T100727Z-eabd",
+  "overall": "passed",
+  "package": {
+    "name": "preflight-20261109T100727Z-eabd.results.tar.gz",
+    "sha256": "b0b0bb52ca6b3c91404450fadc543e6782775f23813dd1199b304700627884f6",
+    "bytes": 204994,
+    "parts": [
+      {
+        "name": "preflight-20261109T100727Z-eabd.results.tar.gz.part000",
+        "bytes": 204994,
+        "sha256": "b0b0bb52ca6b3c91404450fadc543e6782775f23813dd1199b304700627884f6"
+      }
+    ],
+    "skipped": 0,
+    "gzipped": []
+  },
+  "drive": {
+    "ok": false,
+    "attempted": false,
+    "verified": null,
+    "target": null,
+    "files": null,
+    "bytes": null,
+    "copy_seconds": null,
+    "check_seconds": null,
+    "reason": "rclone is not on PATH (Drive persistence needs the rclone CLI, not only the mount)",
+    "mode": "results"
+  },
+  "finished_utc": "2026-11-09T10:50:32Z"
+}

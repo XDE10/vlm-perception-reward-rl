@@ -1,0 +1,6 @@
+{
+  "generation_backend": "vllm",
+  "vllm_gpu_memory_utilization": 0.3,
+  "vllm_max_model_length": 4096,
+  "source": "preflight smoke (vllm)"
+}

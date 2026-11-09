@@ -1,0 +1,59 @@
+[p3] 10:20:53 job preflight-20261109T100727Z-eabd: 18 steps
+[p3] 10:20:53 step env_report started: /content/p3/env/base/bin/python -m scripts.colab.env_report --root /content/p3 --out /content/p3/out/preflight-20261109T100727Z-eabd/env.json
+[p3] 10:20:55 step env_report PASSED in 0m02s
+[p3] 10:20:55 step verify_pack started: /content/p3/env/base/bin/python -m scripts.colab.verify_pack --repo /content/p3/repo --out /content/p3/out/preflight-20261109T100727Z-eabd/pack_verification.json
+[p3] 10:20:56 step verify_pack PASSED in 0m00s
+[p3] 10:20:56 step drive_probe started: /usr/bin/python3 -m scripts.colab.drive probe --out /content/p3/out/preflight-20261109T100727Z-eabd/drive_probe.json --run-id preflight-20261109T100727Z-eabd --scratch /content/p3/out/preflight-20261109T100727Z-eabd/.drive_scratch --remote mydrive: --dir ColabProjects/vlm-perception-reward-rl --moun
+[p3] 10:20:56 step drive_probe PASSED in 0m00s
+[p3] 10:20:56 step pytest started: /content/p3/env/base/bin/python -m pytest -q -p no:cacheprovider --junitxml=/content/p3/out/preflight-20261109T100727Z-eabd/pytest.xml
+[p3] 10:21:56 pytest running 1m00s | .......................................................
+[p3] 10:22:56 pytest running 2m00s | ..........................................................
+[p3] 10:23:41 step pytest PASSED in 2m44s
+[p3] 10:23:41 step calibration started: /content/p3/env/base/bin/python -m scripts.data.calibrate_perception_v5 --output /content/p3/out/preflight-20261109T100727Z-eabd/calibration
+[p3] 10:24:41 calibration running 1m00s | 
+[p3] 10:25:41 calibration running 2m00s | 
+[p3] 10:26:22 step calibration PASSED in 2m41s
+[p3] 10:26:22 step gpu_probe started: /content/p3/env/base/bin/python -m scripts.colab.gpu_probe --model-path /content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8 --out /content/p3/out/preflight-20261109T100727Z-eabd/gpu_probe.json
+[p3] 10:27:22 gpu_probe running 1m00s |   warnings.warn(
+[p3] 10:28:22 gpu_probe running 2m00s |   warnings.warn(
+[p3] 10:29:22 gpu_probe running 3m00s |   warnings.warn(
+[p3] 10:29:27 step gpu_probe PASSED in 3m05s
+[p3] 10:29:27 step v0_probe started: /content/p3/env/base/bin/python -m scripts.colab.v0_probe --model-path /content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8 --out /content/p3/out/preflight-20261109T100727Z-eabd/v0_probe --n 16
+[p3] 10:30:27 v0_probe running 1m00s | [transformers] The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+[p3] 10:31:22 step v0_probe PASSED in 1m54s
+[p3] 10:31:22 step smoke_rl_ans started: /content/p3/env/base/bin/python -m scripts.training.train_rl --arm rl_ans --seed 1 --smoke max_steps=1,num_generations=2,prompts_per_step=2,per_device_train_batch_size=2,max_completion_length=256,save_steps=1 --output-dir /content/p3/out/preflight-20261109T100727Z-eabd/smoke/rl_ans --model-path /con
+[p3] 10:32:19 step smoke_rl_ans PASSED in 0m56s
+[p3] 10:32:19 step smoke_rl_v4 started: /content/p3/env/base/bin/python -m scripts.training.train_rl --arm rl_v4 --seed 1 --smoke max_steps=1,num_generations=2,prompts_per_step=2,per_device_train_batch_size=2,max_completion_length=256,save_steps=1 --output-dir /content/p3/out/preflight-20261109T100727Z-eabd/smoke/rl_v4 --model-path /conte
+[p3] 10:33:16 step smoke_rl_v4 PASSED in 0m56s
+[p3] 10:33:16 step smoke_rl_v5 started: /content/p3/env/base/bin/python -m scripts.training.train_rl --arm rl_v5 --seed 1 --smoke max_steps=1,num_generations=2,prompts_per_step=2,per_device_train_batch_size=2,max_completion_length=256,save_steps=1 --output-dir /content/p3/out/preflight-20261109T100727Z-eabd/smoke/rl_v5 --model-path /conte
+[p3] 10:34:13 step smoke_rl_v5 PASSED in 0m56s
+[p3] 10:34:13 step smoke_rl_v5_placebo started: /content/p3/env/base/bin/python -m scripts.training.train_rl --arm rl_v5_placebo --seed 1 --smoke max_steps=1,num_generations=2,prompts_per_step=2,per_device_train_batch_size=2,max_completion_length=256,save_steps=1 --output-dir /content/p3/out/preflight-20261109T100727Z-eabd/smoke/rl_v5_placebo --m
+[p3] 10:35:10 step smoke_rl_v5_placebo PASSED in 0m57s
+[p3] 10:35:10 step smoke_rl_blind started: /content/p3/env/base/bin/python -m scripts.training.train_rl --arm rl_blind --seed 1 --smoke max_steps=1,num_generations=2,prompts_per_step=2,per_device_train_batch_size=2,max_completion_length=256,save_steps=1 --output-dir /content/p3/out/preflight-20261109T100727Z-eabd/smoke/rl_blind --model-path 
+[p3] 10:35:56 step smoke_rl_blind PASSED in 0m45s
+[p3] 10:35:56 step smoke_full_hf started: /content/p3/env/base/bin/python -m scripts.training.train_rl --arm rl_v5 --seed 1 --smoke max_steps=3 --output-dir /content/p3/out/preflight-20261109T100727Z-eabd/smoke_full_hf --model-path /content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8 --runtime /content/p3/out/preflight-20261109T100727Z-ea
+[p3] 10:36:56 smoke_full_hf running 1m00s |   warnings.warn(
+[p3] 10:37:56 smoke_full_hf running 2m00s | Timeout is disabled as timeout_seconds is None or <= 0, you must provide                         the logic for timeout interuption yourself to prevent code getting stuck.
+[p3] 10:38:56 smoke_full_hf running 3m00s |   warnings.warn(
+[p3] 10:39:56 smoke_full_hf running 4m00s |   warnings.warn(
+[p3] 10:40:56 smoke_full_hf running 5m00s |  67%|██████▋   | 2/3 [04:31<02:17, 137.77s/it]
+[p3] 10:41:56 smoke_full_hf running 6m00s |  67%|██████▋   | 2/3 [04:31<02:17, 137.77s/it]
+[p3] 10:42:39 step smoke_full_hf PASSED in 6m43s
+[p3] 10:42:39 step resume_a started: /content/p3/env/base/bin/python -m scripts.training.train_rl --arm rl_v5 --seed 1 --smoke max_steps=2,num_generations=2,prompts_per_step=2,per_device_train_batch_size=2,max_completion_length=128,save_steps=1 --output-dir /content/p3/out/preflight-20261109T100727Z-eabd/resume --model-path /content/p3
+[p3] 10:43:39 step resume_a PASSED in 0m59s
+[p3] 10:43:39 step resume_b started: /content/p3/env/base/bin/python -m scripts.training.train_rl --arm rl_v5 --seed 1 --smoke max_steps=2,num_generations=2,prompts_per_step=2,per_device_train_batch_size=2,max_completion_length=128,save_steps=1 --output-dir /content/p3/out/preflight-20261109T100727Z-eabd/resume --model-path /content/p3
+[p3] 10:44:23 step resume_b PASSED in 0m43s
+[p3] 10:44:23 step vllm_env started: /usr/bin/python3 -m scripts.colab.bootstrap vllm-env --root /content/p3
+[p3] 10:45:23 vllm_env running 1m00s | [p3] 10:44:53 installing vllm (cu130) ... 0m30s elapsed |  Downloaded opencv-python-headless
+[p3] 10:45:31 step vllm_env PASSED in 1m07s
+[p3] 10:45:31 step smoke_full_vllm started: /content/p3/env/vllm/bin/python -m scripts.training.train_rl --arm rl_v5 --seed 1 --smoke max_steps=3 --output-dir /content/p3/out/preflight-20261109T100727Z-eabd/smoke_full_vllm --model-path /content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8 --runtime /content/p3/out/preflight-20261109T100727Z-
+[p3] 10:46:31 smoke_full_vllm running 1m00s |   warnings.warn(
+[p3] 10:47:31 smoke_full_vllm running 2m00s | Capturing CUDA graphs (FULL): 100%|██████████| 2/2 [00:00<00:00, 18.21it/s]
+[p3] 10:48:31 smoke_full_vllm running 3m00s | Timeout is disabled as timeout_seconds is None or <= 0, you must provide                         the logic for timeout interuption yourself to prevent code getting stuck.
+[p3] 10:49:31 smoke_full_vllm running 4m00s |  67%|██████▋   | 2/3 [01:28<00:44, 44.55s/it]
+[p3] 10:50:31 smoke_full_vllm running 5m00s | {"event": "train_done", "run": "rl_v5/seed1_smoke", "config_sha256": "b37e7a8582f379c91010b09ebac2541f0258626fd6ec85d6b7b4908c8b85bf43", "global_step": 3, "max_steps": 3, "wall_seconds": 147.283855676
+[p3] 10:50:32 step smoke_full_vllm PASSED in 5m01s
+[p3] 10:50:32 step decide_runtime started: /content/p3/env/base/bin/python -m scripts.colab.decide_runtime --out-dir /content/p3/out/preflight-20261109T100727Z-eabd
+[p3] 10:50:32 step decide_runtime PASSED in 0m00s
+[p3] 10:50:32 Drive copy (results) skipped: rclone is not on PATH (Drive persistence needs the rclone CLI, not only the mount)
+[p3] 10:50:32 JOB_DONE overall=passed package=preflight-20261109T100727Z-eabd.results.tar.gz (1 parts, 0.2 MB)

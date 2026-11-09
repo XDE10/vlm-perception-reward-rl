@@ -1,0 +1,84 @@
+[launch 18:07:27] run preflight-20261109T100727Z-eabd (task preflight, commit a189e4a53a92, GPU A100)
+[launch 18:07:30] code: the VM downloads commit a189e4a53a92 from GitHub and verifies every file against its git blob SHA-1
+[launch 18:07:30] building private data pack from /home/xde10/projects/vlm-perception-reward-rl/data
+[launch 18:07:30] data pack: {"pack": "/home/xde10/projects/vlm-perception-reward-rl/.colab_cache/p3_private_082210c90d5b3834.tar.gz", "sha256": "8f571a49c40d45a8226245d4dee0715d05c94e518b64496a2d731b9cb926f5e2", "bytes": 21164679, "content_sha256": "082210c90d5b3834539380c37bb5a43deab0f4354b5ff630910a6c06be06f1a1", "files": 71
+[launch 18:07:35] allocating Colab VM p3-preflight-11091007-eabd (A100)
+[colab] Creating session 'p3-preflight-11091007-eabd'...
+╭───────────────────── Traceback (most recent call last) ──────────────────────╮
+│ /home/xde10/.local/share/uv/tools/google-colab-cli/lib/python3.12/site-packa │
+│ ges/colab_cli/commands/session.py:141 in new                                 │
+│                                                                              │
+│   138 │                                                                      │
+│   139 │   typer.echo(f"[colab] Creating session '{name}'...")                │
+│   140 │   try:                                                               │
+│ ❱ 141 │   │   res = state.client.assign(                                     │
+│   142 │   │   │   uuid.uuid4(), variant=variant, accelerator=accelerator,    │
+│       shape=shape                                                            │
+│   143 │   │   )                                                              │
+│   144 │   except TooManyAssignmentsError:                                    │
+│                                                                              │
+│ /home/xde10/.local/share/uv/tools/google-colab-cli/lib/python3.12/site-packa │
+│ ges/colab_cli/client.py:289 in assign                                        │
+│                                                                              │
+│   286 │   │   backoff = max(0.0, float(os.getenv("COLAB_CLI_RETRY_BACKOFF",  │
+│       "10")))                                                                │
+│   287 │   │   for attempt in range(retries + 1):                             │
+│   288 │   │   │   try:                                                       │
+│ ❱ 289 │   │   │   │   res = self._post_assignment(                           │
+│   290 │   │   │   │   │   notebook_hash, assignment.token, variant,          │
+│       accelerator, shape                                                     │
+│   291 │   │   │   │   )                                                      │
+│   292 │   │   │   │   break                                                  │
+│                                                                              │
+│ /home/xde10/.local/share/uv/tools/google-colab-cli/lib/python3.12/site-packa │
+│ ges/colab_cli/client.py:358 in _post_assignment                              │
+│                                                                              │
+│   355 │   ) -> PostAssignmentResponse:                                       │
+│   356 │   │   url = self._build_assign_url(notebook_hash, variant,           │
+│       accelerator, shape)                                                    │
+│   357 │   │   headers = {COLAB_XSRF_TOKEN_HEADER["key"]: xsrf_token}         │
+│ ❱ 358 │   │   return self._issue_request(                                    │
+│   359 │   │   │   url, method="POST", headers=headers,                       │
+│       schema=PostAssignmentResponse                                          │
+│   360 │   │   )                                                              │
+│   361                                                                        │
+│                                                                              │
+│ /home/xde10/.local/share/uv/tools/google-colab-cli/lib/python3.12/site-packa │
+│ ges/colab_cli/client.py:238 in _issue_request                                │
+│                                                                              │
+│   235 │   │   self.logger.debug(f"Response Headers: {response.headers}")     │
+│   236 │   │   self.logger.debug(f"Response Body: {response.text}")           │
+│   237 │   │   if not response.ok:                                            │
+│ ❱ 238 │   │   │   raise ColabRequestError(                                   │
+│   239 │   │   │   │   f"Failed to issue request {method} {endpoint}:         │
+│       {response.reason}",                                                    │
+│   240 │   │   │   │   request=response.request,                              │
+│   241 │   │   │   │   response=response,                                     │
+╰──────────────────────────────────────────────────────────────────────────────╯
+ColabRequestError: Failed to issue request POST 
+https://colab.research.google.com/tun/m/assign?nbh=eaa6defc_0650_4b93_af0e_11775
+85f4446........&variant=GPU&accelerator=A100: Service Unavailable
+[launch 18:12:55] attempt 1/3 failed: colab_ new -s p3-preflight-11091007-eabd --gpu A100
+[launch 18:12:55] attempt 1/3 failed: colab_ new -s p3-preflight-11091007-eabd --gpu A100
+[colab] Creating session 'p3-preflight-11091007-eabd'...
+[colab] Session READY.
+[launch 18:16:45] upload inputs 1/12 p3_private_082210c90d5b3834.tar.gz.part000 (2048 KiB)
+[launch 18:17:05] upload inputs 2/12 p3_private_082210c90d5b3834.tar.gz.part001 (2048 KiB)
+[launch 18:17:08] upload inputs 3/12 p3_private_082210c90d5b3834.tar.gz.part002 (2048 KiB)
+[launch 18:17:18] upload inputs 4/12 p3_private_082210c90d5b3834.tar.gz.part003 (2048 KiB)
+[launch 18:17:22] upload inputs 5/12 p3_private_082210c90d5b3834.tar.gz.part004 (2048 KiB)
+[launch 18:17:37] upload inputs 6/12 p3_private_082210c90d5b3834.tar.gz.part005 (2048 KiB)
+[launch 18:17:43] upload inputs 7/12 p3_private_082210c90d5b3834.tar.gz.part006 (2048 KiB)
+[launch 18:17:55] upload inputs 8/12 p3_private_082210c90d5b3834.tar.gz.part007 (2048 KiB)
+[launch 18:17:59] upload inputs 9/12 p3_private_082210c90d5b3834.tar.gz.part008 (2048 KiB)
+[launch 18:18:02] upload inputs 10/12 p3_private_082210c90d5b3834.tar.gz.part009 (2048 KiB)
+[launch 18:18:05] upload inputs 11/12 p3_private_082210c90d5b3834.tar.gz.part010 (188 KiB)
+[launch 18:18:07] upload inputs 12/12 request.json (66 KiB)
+[launch 18:18:09] uploaded inputs: 20734 KiB in 84s (~246 KiB/s)
+[launch 18:18:14] all uploaded parts verified on the VM (size and SHA256)
+[launch 18:18:14] bootstrap on the VM (code, environment install and model download; ~10-20 min)
+[launch 18:20:50] job running on the VM; progress lines follow (Ctrl-C detaches, the job keeps running)
+[launch 18:50:31] fetching results
+[launch 18:50:35] results in /home/xde10/projects/vlm-perception-reward-rl/.colab_runs/preflight-20261109T100727Z-eabd/results/preflight-20261109T100727Z-eabd (overall: passed)
+[launch 18:50:35] Drive copy skipped: rclone is not on PATH (Drive persistence needs the rclone CLI, not only the mount)
+[launch 18:50:35] releasing VM p3-preflight-11091007-eabd

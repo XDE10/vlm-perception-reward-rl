@@ -1,0 +1,169 @@
+{
+  "schema": "rl-run-identity-v1",
+  "config_sha256": "a304daba3dbdfbaa09165fa955b98d72469331c552be0132af6bde6f000f92c4",
+  "config": {
+    "schema": "rl-experiment-v1",
+    "name": "rl_v3_20261109",
+    "protocol": "perception-think-answer-v3-20261109",
+    "data": {
+      "manifest": "data/portable_release/manifest.json",
+      "train_file": "project3_train_fact_pruned.jsonl",
+      "intergps_annotations": "data/project3_audit/intergps_annotations.jsonl"
+    },
+    "model": {
+      "id": "Qwen/Qwen2.5-VL-3B-Instruct",
+      "revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+      "max_pixels": 802816,
+      "min_pixels": 3136,
+      "attn_implementation": "sdpa"
+    },
+    "lora": {
+      "r": 16,
+      "alpha": 32,
+      "dropout": 0.0
+    },
+    "train": {
+      "epochs": 3,
+      "prompts_per_step": 2,
+      "num_generations": 2,
+      "per_device_train_batch_size": 2,
+      "learning_rate": 1e-05,
+      "lr_scheduler_type": "constant_with_warmup",
+      "warmup_steps": 10,
+      "max_grad_norm": 1.0,
+      "beta": 0.01,
+      "loss_type": "dapo",
+      "scale_rewards": "batch",
+      "epsilon": 0.2,
+      "epsilon_high": 0.28,
+      "temperature": 1.0,
+      "top_p": 1.0,
+      "max_completion_length": 128,
+      "max_prompt_tokens": 1600,
+      "mask_truncated_completions": true,
+      "save_steps": 1,
+      "logging_steps": 1,
+      "gradient_accumulation_steps": 2,
+      "generation_batch_size": 4,
+      "max_steps": 2
+    },
+    "rewards": {
+      "answer_weight": 1.0,
+      "format_weight": 0.05,
+      "verifier_workers": 4,
+      "verifier_timeout": 10.0
+    },
+    "perception_v5": {
+      "alpha": 1.0,
+      "beta": 0.1,
+      "max_claims": 24,
+      "consistency_gate": true,
+      "oracle": {
+        "line_distance": 0.06,
+        "parallel_deg": 15.0,
+        "perpendicular_deg": 15.0,
+        "circle_relative": 0.15,
+        "check_point_existence": true,
+        "check_circle_existence": true,
+        "check_angle_value": false,
+        "angle_value_deg": 35.0,
+        "check_congruent_length": false,
+        "congruent_length_ratio": 1.5,
+        "check_congruent_angle": false,
+        "congruent_angle_deg": 25.0
+      }
+    },
+    "placebo_seed": 20261109,
+    "output_root": "runs/rl_v3_20261109",
+    "arm": {
+      "name": "rl_v5",
+      "perception_reward": "v5",
+      "perception_weight": 0.1,
+      "train_with_image": true,
+      "metadata": "own"
+    },
+    "seed": 1,
+    "smoke": {
+      "max_steps": 2,
+      "num_generations": 2,
+      "prompts_per_step": 2,
+      "per_device_train_batch_size": 2,
+      "max_completion_length": 128,
+      "save_steps": 1
+    },
+    "run_name": "rl_v5/seed1_smoke",
+    "output_dir": "/content/p3/out/preflight-20261109T100727Z-eabd/resume",
+    "config_sha256": "a304daba3dbdfbaa09165fa955b98d72469331c552be0132af6bde6f000f92c4"
+  },
+  "runtime": {
+    "generation_backend": "hf",
+    "vllm_gpu_memory_utilization": 0.3,
+    "vllm_max_model_length": 4096,
+    "vision_cache": false,
+    "per_device_train_batch_size": null,
+    "gradient_checkpointing": null,
+    "source": "default (no preflight decision file)"
+  },
+  "versions": {
+    "torch": "2.13.0+cu130",
+    "transformers": "5.19.0",
+    "trl": "1.17.1",
+    "peft": "0.21.2",
+    "accelerate": "1.15.0",
+    "datasets": "4.8.5",
+    "math-verify": "0.9.0",
+    "sympy": "1.14.0",
+    "vllm": null,
+    "pillow": "13.0.0"
+  },
+  "git_commit": "a189e4a53a9245817b20673012f866ea733eba6c",
+  "source_sha256": {
+    "src/rewards/answer.py": "cb6dc6be4992a605e35591f4696a8a926abe1978c7251465531dc94d522c0adf",
+    "src/rewards/attacks.py": "2457f206b5d707533ae90370ed44e06e03c5ffe0a472dcd3372c74e2122b7540",
+    "src/rewards/claims.py": "675427118c48e7d3a8ac96933ff40495cb30e0258bc2255945e142990f4bdd57",
+    "src/rewards/geometry_oracle.py": "0741399cd53c4e5c5e44abe52a5f33ba729337f5d82a5f471eb7276f446bb6f3",
+    "src/rewards/perception_v5.py": "2b079214c7dd2c032f1329576fd34fb0f3c99aa32879a2e2664a7cb326038986",
+    "src/training/hf_compat.py": "42389d329355d3d76726560b201e145c8c620c13fe755eade56f96a2307dc41e",
+    "src/training/lora_language.py": "fa247ff5700b08eb915a3c8472aedc7624b692d75c092b63976bf0c22cfb8138",
+    "src/training/multimodal_guard.py": "9b3ab6ed2a1746bbc6205e6662c420efccfa354afe362c2bcb319a087d3ae7f7",
+    "src/training/protocol_v3.py": "57f1aabb3b4a6536c59367299f8dd78d4965cd1f0a89afdb0a4565121c22c5c5",
+    "src/training/rl_config.py": "d477fcadc60f39e4125f771ae0dbba7d9d4fb8b07e1a8647177290a8f5547c38",
+    "src/training/rl_data.py": "ef3df1c40dfc09168cf0614f8c27f51177872df6aa5401558ddfc918d2f19e32",
+    "src/training/rl_entry.py": "a114a1bea09e428316593c7280e942c218f533b94e61147ed3b6fa3e69342675",
+    "src/training/rl_rewards.py": "b653a46582539da5f46e5195bb4ea3687a8c29e41b911d0a1d4f5f39c48c7fbb",
+    "src/training/vision_cache.py": "363b932b40e55af497fdead5c57f52d801de65b9b9a0cd4447a416e6f30d5885",
+    "src/data/approved_training_inputs.py": "236ba095002d723ae3b544e9159c930292bbc4ade1eefe5ba85e1ac72d10e2ac",
+    "src/data/intergps_index.py": "45b286111594331a12e714d08bf5ab1e08ca12c2624ae51540c8a2ecacbf9b9d",
+    "src/data/perception_v4.py": "841ac3c3a15fb1ed11f6be35543ba1028b1ccca1574c5dd30881b0dbde77b5ea",
+    "src/data/project3_perception_v2.py": "51b00daf3d9b1363754863ff9f0425e197eaaba5c54707604c378e7a298d3c86",
+    "src/data/project3_perception_prototype.py": "986f06c64d89dfbca6ced1204b094614d13213bfa9457dd0ec98e242c366ef82",
+    "src/training/perception_reward_v4.py": "d05fc197c5303621ad27c5ee5f0c63b8408669d9ed49419efd2411c44a1f9d68",
+    "scripts/training/math_verify_v3_strict_worker.py": "af68188e5d710c796b31bcbc16edd1649d983a306eef6f184057ae8221ea61e8",
+    "scripts/training/math_verify_pilot_worker.py": "6a427decd4481126546d2d3c46a24ac19b0be4e81954237dc56de420b23ccb0a"
+  },
+  "data_sha256": {
+    "manifest": "ce02856dc5c594d7899539fb67e5b0eac621def38103e91b3f822af4ceaff2ba",
+    "train_file": "49bed0b5a42db8e7051bd2f2a9e3731c84ff8421fe7af05f9ed0e645e5a37fd2",
+    "intergps_annotations": "d83517c40cfb5e864344b0221dcd1698d118e461b16c587822c0b6ee8c67c00b"
+  },
+  "rows": 609,
+  "placebo_mapping_sha256": "5078dd8332337be5ede01a4655537849fb219863607ad5f4fd1bae085c328378",
+  "prompt_report": {
+    "prompts": 609,
+    "max_tokens": 1153,
+    "mean_tokens": 453.3464696223317,
+    "limit": 1600
+  },
+  "lora_targets_sha256": "595ee3feaf919bb4d7173b96183c94547ed026fa499c3fbdd78b4596b1267e16",
+  "parameters": {
+    "trainable_tensors": 504,
+    "trainable_parameters": 29933568,
+    "total_parameters": 3784556544,
+    "vision_tensors": 390,
+    "vision_parameters": 668684288,
+    "vision_frozen": true,
+    "trainable_names_sha256": "f1752f3acb59d5beab27990fae3e4ae85936b7a91f9665c23cdd8e1fff68b472"
+  },
+  "model_source": "Qwen/Qwen2.5-VL-3B-Instruct@66285546d2b821cf421d4f5eb2576359d3770cd3",
+  "model_local_path": "/content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8"
+}
