@@ -1,15 +1,18 @@
 #!/usr/bin/env bash
-# Project 3 Colab launcher (WSL2 / Linux / macOS). Usage:
-#   bash colab/launch.sh check                     # verify local prerequisites, data, Colab auth, git push access
-#   bash colab/launch.sh preflight [options]       # run the GPU preflight on a fresh Colab VM
-#   bash colab/launch.sh drive-check [--gpu X]     # cheap CPU-VM test of the optional Google Drive (rclone) setup
-#   bash colab/launch.sh collect <run_id>          # reattach after a disconnect: wait, fetch, stop VM, push
-#   bash colab/launch.sh push <run_id>             # (re)push fetched results to the results/<run_id> branch
-#   bash colab/launch.sh stop <run_id>             # release the VM of a run
-#   bash colab/launch.sh list                      # local runs and their last known state
-# Options: --gpu A100|H100|G4|L4  --keep (do not stop the VM)  --no-vllm  --allow-dirty  --dry-run
+# Project 3 Colab launcher (WSL2 / Linux / macOS; run it with bash, also from zsh). Usage:
+#   bash colab/launch.sh check                 verify local prerequisites, data, Colab auth, git push access
+#   bash colab/launch.sh preflight [options]   run the GPU preflight (fresh VM, or --session NAME)
+#   bash colab/launch.sh drive-check [options] cheap test of the optional Google Drive (rclone) setup
+#   bash colab/launch.sh collect RUN_ID        reattach after a disconnect: wait, fetch, push (from GitHub if the VM is gone)
+#   bash colab/launch.sh push RUN_ID           (re)push a run to its results/RUN_ID branch
+#   bash colab/launch.sh stop RUN_ID           release the VM of a run
+#   bash colab/launch.sh list                  local runs and their last known state
+# Options: --gpu A100|H100|G4|L4   --session NAME (use a VM you prepared, see colab/README.md section 8)
+#   --keep (do not release a VM this run created)   --release (also release a --session VM at the end)
+#   --no-vm-push   --no-vllm   --allow-dirty   --dry-run
 # Settings (environment or .colab_local.env): P3_DATA_ROOT, P3_GPU, COLAB_GLOBAL_FLAGS, P3_POLL_SECONDS,
-#   P3_PART_MB, P3_UPLOAD_TRIES, P3_UPLOAD_BACKOFF, P3_UPLOAD_TIMEOUT, P3_CODE_SOURCE (auto|upload),
+#   P3_PART_MB, P3_UPLOAD_TRIES, P3_UPLOAD_BACKOFF, P3_UPLOAD_TIMEOUT, P3_RETRY_SLEEP, P3_CODE_SOURCE (auto|upload),
+#   P3_VM_GH_CREDENTIALS (credential file on the VM, default /content/gh_credentials),
 #   Drive: P3_DRIVE_MOUNT_CMD, P3_DRIVE_SETUP_FILE, P3_DRIVE_REMOTE, P3_DRIVE_DIR, P3_DRIVE_MOUNT.
 # See colab/README.md.
 set -euo pipefail
@@ -33,6 +36,7 @@ PART_MB="${P3_PART_MB:-2}"
 UPLOAD_TRIES="${P3_UPLOAD_TRIES:-6}"
 UPLOAD_BACKOFF="${P3_UPLOAD_BACKOFF:-10}"
 UPLOAD_TIMEOUT="${P3_UPLOAD_TIMEOUT:-600}"
+RETRY_SLEEP="${P3_RETRY_SLEEP:-15}"
 RUN_LOG=/dev/null
 SESSION=""
 RUN_ID=""
@@ -40,11 +44,26 @@ RUN_DIR=""
 JOB_STARTED=0
 RESULTS_FETCHED=0
 SESSION_STOPPED=0
+SESSION_HANDLED=0
+PUSH_ON_FAILURE=0
 KEEP=0
+ATTACHED=0
+RELEASE=0
 
 log() { printf '[launch %s] %s\n' "$(date +%H:%M:%S)" "$*" | tee -a "$RUN_LOG" >&2; }
 die() { log "ERROR: $*"; exit 1; }
 need() { command -v "$1" >/dev/null 2>&1 || die "missing command '$1' (see colab/README.md)"; }
+usage() { awk 'NR > 1 && /^#/ { sub(/^# ?/, ""); print; next } NR > 1 { exit }' "$0"; }
+run_day() { printf '%s' "$1" | sed -E 's/^.*-([0-9]{8})T[0-9]{6}Z-.*$/\1/'; }
+
+git_quiet() {
+  # git calls that touch the network: never prompt for credentials, never hang longer than 5 minutes
+  local limit=()
+  command -v timeout >/dev/null 2>&1 && limit=(timeout 300)
+  GIT_TERMINAL_PROMPT=0 GIT_SSH_COMMAND="${GIT_SSH_COMMAND:-ssh -o BatchMode=yes}" \
+    ${limit[@]+"${limit[@]}"} git "$@" </dev/null
+}
+remote_branch_exists() { git_quiet ls-remote --exit-code -q origin "refs/heads/$1" >/dev/null 2>&1; }
 
 # The Colab CLI sends uploads/downloads with no client timeout and does not enforce `exec --timeout` after the
 # deadline, so every call gets a wall-clock limit from coreutils `timeout` when it is available (--foreground keeps
@@ -70,7 +89,7 @@ retry() {
   for ((i = 1; i <= tries; i++)); do
     if "$@"; then return 0; fi
     log "attempt $i/$tries failed: $*"
-    sleep $((i * 15))
+    ((i < tries)) && sleep $((i * RETRY_SLEEP))
   done
   return 1
 }
@@ -94,19 +113,44 @@ stop_session() {
     log "releasing VM $SESSION"
     colab_t 300 stop -s "$SESSION" </dev/null >/dev/null 2>&1 || log "colab stop failed; check 'colab sessions' and stop it manually"
     SESSION_STOPPED=1
+    SESSION_HANDLED=1
     printf 'stopped\n' > "$RUN_DIR/state" 2>/dev/null || true
   fi
 }
 
+# a VM this run created is released at the end (unless --keep); a VM you prepared (--session) only with --release
+should_release() { [[ "$KEEP" != 1 && ( "$ATTACHED" != 1 || "$RELEASE" == 1 ) ]]; }
+
+release_or_remind() {
+  if should_release; then
+    stop_session
+  elif [[ "$ATTACHED" == 1 ]]; then
+    log "your session $SESSION stays up and keeps using compute units; when you are done: colab stop -s $SESSION"
+  else
+    log "--keep: VM $SESSION left running (release it with: bash colab/launch.sh stop $RUN_ID)"
+  fi
+  SESSION_HANDLED=1
+}
+
 on_exit() {
   local rc=$?
-  if [[ -n "$SESSION" && "$SESSION_STOPPED" != 1 && "$KEEP" != 1 ]]; then
+  trap - EXIT
+  # remember how far the run got before releasing the VM overwrites the state
+  if [[ -n "$RUN_DIR" && -f "$RUN_DIR/state" ]]; then cp "$RUN_DIR/state" "$RUN_DIR/exit_state" 2>/dev/null || true; fi
+  if [[ -n "$SESSION" && "$SESSION_HANDLED" != 1 ]]; then
     if [[ "$JOB_STARTED" == 1 && "$RESULTS_FETCHED" != 1 ]]; then
       log "the job keeps running on the VM; reattach with: bash colab/launch.sh collect $RUN_ID"
-      log "to release the VM instead: bash colab/launch.sh stop $RUN_ID"
+      [[ "$ATTACHED" == 1 ]] || log "to release the VM instead: bash colab/launch.sh stop $RUN_ID"
     else
-      stop_session
+      release_or_remind
     fi
+  fi
+  if [[ "$rc" != 0 && "$JOB_STARTED" != 1 && "$PUSH_ON_FAILURE" == 1 ]]; then
+    # the run died before the job started (VM allocation, upload, bootstrap): publish the logs so they can be read
+    # on GitHub instead of being copied out of the terminal (D39)
+    printf '%s\n' "$rc" > "$RUN_DIR/exit_code"
+    log "the run stopped before the job started; publishing its logs to results/$RUN_ID"
+    ( push_results "$RUN_ID" ) || log "could not publish the logs; they are in $RUN_DIR"
   fi
   exit "$rc"
 }
@@ -239,25 +283,74 @@ download_file() {
   colab_t "$UPLOAD_TIMEOUT" download -s "$SESSION" "$remote_path" "$local_path" </dev/null >> "$RUN_DIR/download.log" 2>&1
 }
 
-fetch_results() {
-  log "fetching results"
-  retry 5 download_file "$REMOTE/out/$RUN_ID.done.json" "$RUN_DIR/done.json" ||
-    die "could not download done.json (CLI output in $RUN_DIR/download.log)"
-  mkdir -p "$RUN_DIR/parts"
-  local part
-  for part in $("$PY" -m scripts.colab.local_tools parts "$RUN_DIR/done.json"); do
-    retry 5 download_file "$REMOTE/out/$part" "$RUN_DIR/parts/$part" ||
-      die "could not download $part (CLI output in $RUN_DIR/download.log)"
-  done
-  "$PY" -m scripts.colab.local_tools join "$RUN_DIR/done.json" "$RUN_DIR/parts" "$RUN_DIR/results.tar.gz" >/dev/null
+mirror_branch_results() {
+  # local copy of a run that is already on GitHub (pushed by the VM): no download through the Colab proxy
+  local branch="results/$RUN_ID" tmp
+  git_quiet fetch -q origin "+refs/heads/$branch:refs/remotes/origin/$branch" >/dev/null 2>&1 || return 1
+  tmp="$RUN_DIR/results.mirror"
+  rm -rf "$tmp"
+  mkdir -p "$tmp"
+  git archive "refs/remotes/origin/$branch" "reports/colab_runs_$(run_day "$RUN_ID")/$RUN_ID" | tar -x -C "$tmp" ||
+    return 1
+  [[ -d "$tmp/reports/colab_runs_$(run_day "$RUN_ID")/$RUN_ID" ]] || return 1
   rm -rf "$RUN_DIR/results"
-  "$PY" -m scripts.colab.local_tools extract "$RUN_DIR/results.tar.gz" "$RUN_DIR/results"
-  colab_t 600 download -s "$SESSION" "$REMOTE/out/$RUN_ID/status.json" "$RUN_DIR/results/$RUN_ID/status.json" \
-    </dev/null >/dev/null 2>&1 || true
-  rm -rf "$RUN_DIR/parts"
+  mkdir -p "$RUN_DIR/results"
+  mv "$tmp/reports/colab_runs_$(run_day "$RUN_ID")/$RUN_ID" "$RUN_DIR/results/$RUN_ID"
+  rm -rf "$tmp"
+}
+
+finish_from_github() {
+  # the VM does not answer (reclaimed, or this machine lost the connection); a VM-side push may have published the run
+  remote_branch_exists "results/$RUN_ID" || return 1
+  log "the VM is not reachable, but results/$RUN_ID is on GitHub; using that copy"
+  mirror_branch_results || return 1
   RESULTS_FETCHED=1
   printf 'fetched\n' > "$RUN_DIR/state"
-  log "results in $RUN_DIR/results/$RUN_ID (overall: $("$PY" -m scripts.colab.local_tools field "$RUN_DIR/done.json" overall))"
+  log "results in $RUN_DIR/results/$RUN_ID (overall: $(run_overall))"
+}
+
+run_overall() {
+  local value=""
+  [[ -f "$RUN_DIR/done.json" ]] && value="$(done_field overall 2>/dev/null || true)"
+  [[ -z "$value" && -f "$RUN_DIR/results/$RUN_ID/summary.json" ]] &&
+    value="$("$PY" -m scripts.colab.local_tools field "$RUN_DIR/results/$RUN_ID/summary.json" overall 2>/dev/null || true)"
+  printf '%s' "${value:-unknown}"
+}
+
+fetch_results() {
+  log "fetching results"
+  if ! retry 5 download_file "$REMOTE/out/$RUN_ID.done.json" "$RUN_DIR/done.json"; then
+    finish_from_github && return 0
+    die "could not download done.json (CLI output in $RUN_DIR/download.log)"
+  fi
+  local from_branch=0
+  if [[ "$(done_field github.ok)" == "True" ]]; then
+    log "the VM pushed the results itself: $(repo_web_url)/tree/results/$RUN_ID"
+    if mirror_branch_results; then
+      from_branch=1
+    else
+      log "could not read that branch from here; downloading the results from the VM instead"
+    fi
+  elif [[ "$(done_field github.attempted)" == "True" ]]; then
+    log "WARNING: the VM could not push the results ($(done_field github.reason | head -c 300)); pushing them from here"
+  fi
+  if [[ "$from_branch" != 1 ]]; then
+    mkdir -p "$RUN_DIR/parts"
+    local part
+    for part in $("$PY" -m scripts.colab.local_tools parts "$RUN_DIR/done.json"); do
+      retry 5 download_file "$REMOTE/out/$part" "$RUN_DIR/parts/$part" ||
+        die "could not download $part (CLI output in $RUN_DIR/download.log)"
+    done
+    "$PY" -m scripts.colab.local_tools join "$RUN_DIR/done.json" "$RUN_DIR/parts" "$RUN_DIR/results.tar.gz" >/dev/null
+    rm -rf "$RUN_DIR/results"
+    "$PY" -m scripts.colab.local_tools extract "$RUN_DIR/results.tar.gz" "$RUN_DIR/results"
+    rm -rf "$RUN_DIR/parts"
+  fi
+  colab_t 600 download -s "$SESSION" "$REMOTE/out/$RUN_ID/status.json" "$RUN_DIR/results/$RUN_ID/status.json" \
+    </dev/null >/dev/null 2>&1 || true
+  RESULTS_FETCHED=1
+  printf 'fetched\n' > "$RUN_DIR/state"
+  log "results in $RUN_DIR/results/$RUN_ID (overall: $(run_overall))"
   if [[ "$(done_field drive.attempted)" == "True" ]]; then
     if [[ "$(done_field drive.ok)" == "True" ]]; then
       log "Drive copy verified: $(done_field drive.target)"
@@ -272,24 +365,48 @@ fetch_results() {
 done_field() { "$PY" -m scripts.colab.local_tools field "$RUN_DIR/done.json" "$1"; }
 
 push_results() {
+  # Three cases, all on results/RUN_ID: (1) the branch is already on GitHub (the VM pushed it): add this machine's
+  # logs as _local/ on top; (2) results were fetched: push results plus _local/; (3) the run stopped before the
+  # job started: push _local/ and RUN_STOPPED_EARLY.txt so the failure can be read on GitHub.
   local run_id=$1 run_dir="$RUNS/$1"
   local src="$run_dir/results/$run_id"
-  [[ -d "$src" ]] || die "no fetched results for $run_id in $run_dir"
-  local commit day task branch wt dest overall
+  local commit day task branch wt dest overall mode
   commit="$(cat "$run_dir/commit")"
-  day="$(printf '%s' "$run_id" | sed -E 's/^.*-([0-9]{8})T[0-9]{6}Z-.*$/\1/')"
+  day="$(run_day "$run_id")"
   task="$(cat "$run_dir/task")"
-  overall="$("$PY" -m scripts.colab.local_tools field "$run_dir/done.json" overall)"
+  overall="unknown"
+  if [[ -f "$run_dir/done.json" ]]; then
+    overall="$("$PY" -m scripts.colab.local_tools field "$run_dir/done.json" overall 2>/dev/null || printf 'unknown')"
+  fi
   branch="results/$run_id"
   wt="$CACHE/worktree-$run_id"
   git worktree remove --force "$wt" >/dev/null 2>&1 || true
-  git worktree add -q -B "$branch" "$wt" "$commit"
+  if remote_branch_exists "$branch" && git_quiet fetch -q origin "+refs/heads/$branch:refs/remotes/origin/$branch"; then
+    mode=append
+    git worktree add -q -B "$branch" "$wt" "refs/remotes/origin/$branch"
+  elif [[ -d "$src" ]]; then
+    mode=full
+    git worktree add -q -B "$branch" "$wt" "$commit"
+  else
+    mode=early
+    git worktree add -q -B "$branch" "$wt" "$commit"
+  fi
   dest="$wt/reports/colab_runs_${day}/$run_id"
   mkdir -p "$dest/_local"
-  cp -R "$src/." "$dest/"
+  [[ "$mode" == full ]] && cp -R "$src/." "$dest/"
+  if [[ "$mode" == early ]]; then
+    {
+      printf 'Run %s stopped before its job started.\n' "$run_id"
+      printf 'stage reached: %s; exit code: %s\n' \
+        "$(cat "$run_dir/exit_state" 2>/dev/null || cat "$run_dir/state" 2>/dev/null || printf '?')" \
+        "$(cat "$run_dir/exit_code" 2>/dev/null || printf '?')"
+      printf 'last errors from _local/launch.log:\n'
+      grep 'ERROR' "$run_dir/launch.log" 2>/dev/null | tail -n 5 || true
+    } > "$dest/RUN_STOPPED_EARLY.txt"
+  fi
   # drive_mount.log stays local: the user's Drive tooling may print credentials
   for f in launch.log bootstrap.log job.log upload.log upload_times.tsv inbox.log download.log usage_before.txt \
-    usage_after.txt local.json dirty.diff colab_version.txt done.json; do
+    usage_after.txt local.json dirty.diff colab_version.txt done.json bootstrap.json pack.json; do
     [[ -f "$run_dir/$f" ]] && cp "$run_dir/$f" "$dest/_local/"
   done
   # CLI error messages contain request URLs with the runtime proxy token: never publish them unredacted
@@ -307,14 +424,23 @@ push_results() {
   if [[ -z "$(git config user.email || true)" ]]; then
     who=(-c user.name="p3-colab-launcher" -c user.email="p3-colab-launcher@users.noreply.github.com")
   fi
+  local message="results($task): $run_id overall=$overall"
+  [[ "$mode" == append ]] && message="results($task): $run_id launcher logs (_local/)"
+  [[ "$mode" == early ]] && message="results($task): $run_id stopped before the job (logs only)"
   # -f: the repository ignores *.log globally, but run logs are evidence and must travel with the results
   git -C "$wt" add -f "reports/colab_runs_${day}/$run_id"
-  git -C "$wt" ${who[@]+"${who[@]}"} commit -q -m "results($task): $run_id overall=$overall"
-  if git -C "$wt" push -q -u origin "$branch"; then
+  if git -C "$wt" diff --cached --quiet; then
+    log "results/$run_id on GitHub is already up to date"
+    git worktree remove --force "$wt" >/dev/null 2>&1 || true
     printf 'pushed\n' > "$run_dir/state"
-    log "pushed results: $(repo_web_url)/tree/$branch"
+    return 0
+  fi
+  git -C "$wt" ${who[@]+"${who[@]}"} commit -q --no-verify -m "$message"
+  if GIT_TERMINAL_PROMPT=0 git -C "$wt" push -q -u origin "$branch" </dev/null; then
+    if [[ "$mode" == early ]]; then printf 'failed (logs on GitHub)\n' > "$run_dir/state"; else printf 'pushed\n' > "$run_dir/state"; fi
+    log "pushed $([[ "$mode" == append ]] && printf 'launcher logs ' || true)to $(repo_web_url)/tree/$branch"
   else
-    log "git push failed. Results are safe in $src. Fix git credentials, then: bash colab/launch.sh push $run_id"
+    log "git push failed. Everything is in $run_dir. Fix git credentials, then: bash colab/launch.sh push $run_id"
     git worktree remove --force "$wt" >/dev/null 2>&1 || true
     return 1
   fi
@@ -403,7 +529,7 @@ drive_hooks() {
 }
 
 cmd_run() {
-  local task=$1 vllm=1 dirty_ok=0 dry=0 needs_data=1 env_mode=gpu drive_persist=results
+  local task=$1 vllm=1 dirty_ok=0 dry=0 needs_data=1 env_mode=gpu drive_persist=results vm_push=auto attach=""
   shift
   if [[ "$task" == "drive-check" ]]; then
     needs_data=0
@@ -413,14 +539,21 @@ cmd_run() {
   fi
   while [[ $# -gt 0 ]]; do
     case "$1" in
-      --gpu) GPU="$2"; shift 2 ;;
+      --gpu) GPU="${2:?--gpu needs a value}"; shift 2 ;;
+      --session) attach="${2:?--session needs the name of a session you created with colab new}"; shift 2 ;;
       --keep) KEEP=1; shift ;;
+      --release) RELEASE=1; shift ;;
+      --no-vm-push) vm_push=off; shift ;;
       --no-vllm) vllm=0; shift ;;
       --allow-dirty) dirty_ok=1; shift ;;
       --dry-run) dry=1; shift ;;
-      *) die "unknown option $1" ;;
+      *) die "unknown option '$1' (in zsh, do not put a # comment after the command)" ;;
     esac
   done
+  if [[ -n "$attach" ]]; then
+    [[ "$attach" =~ ^[A-Za-z0-9._-]+$ ]] || die "session names contain only letters, digits, '.', '_' and '-'"
+    ATTACHED=1
+  fi
   need git
   need tar
   need "$PY"
@@ -433,7 +566,12 @@ cmd_run() {
   RUN_LOG="$RUN_DIR/launch.log"
   # snapshot the kernel-side scripts: later git checkouts must not change what this run executes
   cp colab/kernel_bootstrap.py colab/kernel_job.py colab/kernel_inbox.py "$RUN_DIR/kernel/"
-  SESSION="p3-${task}-$(date -u +%m%d%H%M)-${RUN_ID##*-}"
+  if [[ "$ATTACHED" == 1 ]]; then
+    SESSION="$attach"
+    printf 'yes\n' > "$RUN_DIR/attached"
+  else
+    SESSION="p3-${task}-$(date -u +%m%d%H%M)-${RUN_ID##*-}"
+  fi
   printf '%s\n' "$SESSION" > "$RUN_DIR/session"
   printf '%s\n' "$task" > "$RUN_DIR/task"
   printf 'preparing\n' > "$RUN_DIR/state"
@@ -453,7 +591,11 @@ cmd_run() {
     git diff HEAD -- "${watched[@]}" > "$RUN_DIR/dirty.diff" || true
     log "running with uncommitted changes (diff saved to the results)"
   fi
-  log "run $RUN_ID (task $task, commit ${commit:0:12}, GPU ${GPU:-none (CPU VM)})"
+  if [[ "$ATTACHED" == 1 ]]; then
+    log "run $RUN_ID (task $task, commit ${commit:0:12}) on your session $SESSION (its hardware decides the GPU)"
+  else
+    log "run $RUN_ID (task $task, commit ${commit:0:12}, GPU ${GPU:-none (CPU VM)})"
+  fi
   if [[ "$dirty" == 1 ]]; then
     code="$CACHE/code_${commit:0:12}_dirty.tar.gz"
     git ls-files -co --exclude-standard -z | tar --null -czf "$code" -T -
@@ -495,23 +637,55 @@ cmd_run() {
     "${P3_DRIVE_DIR:-ColabProjects/vlm-perception-reward-rl}" "${P3_DRIVE_MOUNT:-/content/mydrive}")"
   local_json="$("$PY" -c 'import json,platform,sys; print(json.dumps({"colab_version": sys.argv[1], "data_root": sys.argv[2], "host": platform.platform(), "python": platform.python_version()}))' "$colab_version" "$DATA_ROOT")"
   printf '%s\n' "$local_json" > "$RUN_DIR/local.json"
+  # VM-side push (D37): only the target and the path of a credential file the user put on the VM travel in the
+  # request; the VM pushes only if that file exists there, otherwise this machine pushes as before.
+  local push_url="" github_json="{}" web_url
+  web_url="$(repo_web_url)"
+  if [[ "$vm_push" != off ]]; then
+    if [[ -n "${P3_VM_PUSH_URL:-}" ]]; then
+      push_url="$P3_VM_PUSH_URL"
+    elif [[ "$web_url" =~ ^https://github\.com/[^/]+/[^/]+$ ]]; then
+      push_url="$web_url.git"
+    fi
+  fi
+  if [[ -n "$push_url" ]]; then
+    github_json="$("$PY" -c 'import json,sys; a=sys.argv; print(json.dumps({"mode": "auto", "url": a[1], "branch": a[2], "base_commit": a[3], "day": a[4], "credentials": a[5], "task": a[6], "max_file_mb": 25}))' \
+      "$push_url" "results/$RUN_ID" "$commit" "$(run_day "$RUN_ID")" "${P3_VM_GH_CREDENTIALS:-/content/gh_credentials}" "$task")"
+  fi
   "$PY" -m scripts.colab.local_tools make-request --task "$task" --run-id "$RUN_ID" --code "$code" --commit "$commit" \
     --dirty "$dirty" --pack-json "$pack_json" --staging "$RUN_DIR/upload" --uploads "$RUN_DIR/uploads.tsv" \
     --code-uploads "$RUN_DIR/code_uploads.tsv" --code-mode "$code_mode" --tarball-url "$tarball" \
-    --tree-file "$RUN_DIR/tree.bin" --part-mb "$PART_MB" --options "$options" --local "$local_json" >/dev/null
+    --tree-file "$RUN_DIR/tree.bin" --part-mb "$PART_MB" --options "$options" --local "$local_json" \
+    --github "$github_json" >/dev/null
   colab_ usage </dev/null > "$RUN_DIR/usage_before.txt" 2>&1 || true
 
   trap on_exit EXIT
   trap 'log "interrupted"; exit 130' INT TERM
-  log "allocating Colab VM $SESSION (${GPU:-CPU})"
-  local gpu_args=()
-  [[ -n "$GPU" ]] && gpu_args=(--gpu "$GPU")
-  retry 3 colab_ new -s "$SESSION" ${gpu_args[@]+"${gpu_args[@]}"} </dev/null >> "$RUN_LOG" 2>&1 ||
-    die "could not allocate a ${GPU:-CPU} VM (quota or availability). Try later or with --gpu H100."
+  PUSH_ON_FAILURE=1
+  if [[ "$ATTACHED" == 1 ]]; then
+    log "using your session $SESSION; it is not released at the end unless you pass --release"
+    inbox_listing || die "could not run code on session $SESSION (does it exist? check with: colab sessions)"
+  else
+    log "allocating Colab VM $SESSION (${GPU:-CPU})"
+    local gpu_args=()
+    [[ -n "$GPU" ]] && gpu_args=(--gpu "$GPU")
+    retry 3 colab_ new -s "$SESSION" ${gpu_args[@]+"${gpu_args[@]}"} </dev/null >> "$RUN_LOG" 2>&1 ||
+      die "could not allocate a ${GPU:-CPU} VM (quota or availability). Try later or with --gpu H100."
+    inbox_listing || die "could not run code on the new VM (see $RUN_DIR/inbox.log)"
+  fi
   printf 'allocated\n' > "$RUN_DIR/state"
-  inbox_listing || die "could not run code on the new VM (see $RUN_DIR/inbox.log)"
-  drive_hooks "$task"
-  upload_list "$RUN_DIR/uploads.tsv" "inputs"
+  if [[ "$ATTACHED" == 1 ]]; then
+    [[ -z "${P3_DRIVE_MOUNT_CMD:-}${P3_DRIVE_SETUP_FILE:-}" ]] ||
+      log "Drive hooks skipped: you prepared session $SESSION yourself"
+  else
+    drive_hooks "$task"
+  fi
+  # a session you reuse may already hold identical parts (same SHA256): send only what is missing or different
+  "$PY" -m scripts.colab.local_tools inbox-diff "$RUN_DIR/uploads.tsv" "$RUN_DIR/inbox.log" > "$RUN_DIR/uploads_todo.tsv"
+  local reused
+  reused=$(( $(grep -c . "$RUN_DIR/uploads.tsv" || true) - $(grep -c . "$RUN_DIR/uploads_todo.tsv" || true) ))
+  ((reused == 0)) || log "$reused part(s) are already on the VM with the right SHA256; not sending them again"
+  upload_list "$RUN_DIR/uploads_todo.tsv" "inputs"
   verify_inbox "$RUN_DIR/uploads.tsv"
 
   if [[ "$env_mode" == none ]]; then
@@ -539,16 +713,24 @@ cmd_run() {
   printf 'running\n' > "$RUN_DIR/state"
   log "job running on the VM; progress lines follow (Ctrl-C detaches, the job keeps running)"
   colab_t 87000 exec -s "$SESSION" -f "$RUN_DIR/kernel/kernel_job.py" --timeout 86400 </dev/null 2>&1 | tee "$RUN_DIR/job.log" || true
-  if ! grep -q "JOB_DONE" "$RUN_DIR/job.log"; then
-    log "lost the live connection; polling the VM every ${POLL}s"
-    poll_until_done || die "the VM stopped answering; reattach later with: bash colab/launch.sh collect $RUN_ID"
-  fi
-  fetch_results
-  if [[ "$KEEP" != 1 ]]; then stop_session; else log "--keep: VM $SESSION left running (stop it with: bash colab/launch.sh stop $RUN_ID)"; fi
+  wait_and_fetch "the VM stopped answering; reattach later with: bash colab/launch.sh collect $RUN_ID"
+  release_or_remind
   colab_ usage </dev/null > "$RUN_DIR/usage_after.txt" 2>&1 || true
   push_results "$RUN_ID" || true
   print_summary
-  [[ "$("$PY" -m scripts.colab.local_tools field "$RUN_DIR/done.json" overall)" == "passed" ]] || exit 3
+  [[ "$(run_overall)" == "passed" ]] || exit 3
+}
+
+wait_and_fetch() {
+  local message=$1
+  if ! grep -q "JOB_DONE" "$RUN_DIR/job.log" 2>/dev/null; then
+    log "no live connection to the job; polling the VM every ${POLL}s"
+    if ! poll_until_done; then
+      finish_from_github || die "$message"
+      return 0
+    fi
+  fi
+  fetch_results
 }
 
 load_run() {
@@ -557,20 +739,38 @@ load_run() {
   [[ -d "$RUN_DIR" ]] || die "unknown run $RUN_ID"
   RUN_LOG="$RUN_DIR/launch.log"
   SESSION="$(cat "$RUN_DIR/session")"
+  [[ -f "$RUN_DIR/attached" ]] && ATTACHED=1
+  return 0
 }
 
 cmd_collect() {
   load_run "$1"
+  shift
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --release) RELEASE=1; shift ;;
+      --keep) KEEP=1; shift ;;
+      *) die "unknown option '$1'" ;;
+    esac
+  done
   need "$COLAB_BIN"
   JOB_STARTED=1
   trap on_exit EXIT
   log "reattaching to $SESSION"
-  poll_until_done || die "the VM does not answer; it may have been reclaimed (check 'colab sessions')"
-  fetch_results
-  stop_session
+  wait_and_fetch_collect
+  release_or_remind
   colab_ usage </dev/null > "$RUN_DIR/usage_after.txt" 2>&1 || true
   push_results "$RUN_ID" || true
   print_summary
+}
+
+wait_and_fetch_collect() {
+  # collect never relies on the live output: poll, and use GitHub if the VM is gone
+  if ! poll_until_done; then
+    finish_from_github || die "the VM does not answer and results/$RUN_ID is not on GitHub; it may have been reclaimed"
+    return 0
+  fi
+  fetch_results
 }
 
 cmd_list() {
@@ -583,17 +783,17 @@ cmd_list() {
 
 main() {
   local command="${1:-}"
-  [[ -n "$command" ]] || { sed -n '2,14p' "$0"; exit 2; }
+  [[ -n "$command" ]] || { usage; exit 2; }
   shift
   case "$command" in
     check) cmd_check ;;
     preflight) cmd_run preflight "$@" ;;
     drive-check) cmd_run drive-check "$@" ;;
     collect) cmd_collect "$@" ;;
-    push) need git; check_python; load_run "$1"; push_results "$RUN_ID" ;;
-    stop) load_run "$1"; need "$COLAB_BIN"; stop_session ;;
+    push) need git; check_python; load_run "${1:-}"; push_results "$RUN_ID" ;;
+    stop) load_run "${1:-}"; need "$COLAB_BIN"; stop_session ;;
     list) cmd_list ;;
-    *) sed -n '2,14p' "$0"; exit 2 ;;
+    *) usage; exit 2 ;;
   esac
 }
 
