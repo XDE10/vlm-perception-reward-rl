@@ -32,6 +32,20 @@ def test_score_and_summarize_on_real_labels():
     assert summary["protocol_ok_rate"] == 1.0 and summary["completion_tokens_max"] == 1024
 
 
+def test_answer_set_references_accept_any_member_and_nothing_else():
+    """CF-Geo rounded items (S3 design 3.1): correct iff the answer matches one of the correct roundings."""
+    from src.evaluation.generate_v3 import verify_answers
+
+    refs = [{"answer": "56.6", "answer_set": ["113.1", "113.2", "113.3"]}] * 3 + [{"answer": "7"}]
+    verdicts = verify_answers(["113.2", "113.25", None, "7"], refs, FakeVerifier())
+    assert [v["correct"] for v in verdicts] == [True, False, False, True]
+    assert verdicts[0]["normalized_answer"] == "113.2" and verdicts[1]["status"] == "mismatch"
+    results = [{"id": "r", "text": "<answer>113.3</answer>", "completion_tokens": 5, "ended_eos": True,
+                "budget_exhausted": False, "prompt_variant": "p1"}]
+    scored = score(results, {"r": refs[0]}, FakeVerifier())
+    assert scored[0]["answer"]["correct"] and scored[0]["protocol"] == "perception-think-answer-v3-p1-20261109"
+
+
 @pytest.mark.skipif(processor_dir() is None or importlib.util.find_spec("transformers") is None,
                     reason="needs pinned Qwen2.5-VL processor files")
 def test_batched_generation_with_and_without_images_on_tiny_model():

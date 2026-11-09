@@ -24,6 +24,18 @@ SYSTEM_PROMPT = (
     "not facts stated in the question or obtained by calculation.\n"
     "The answer must be a single number or expression, without units and without \"x =\"."
 )
+# Prompt variants pre-registered in docs/plan/S3设计_20261109.md section 6. "p0" is the protocol every run so far used.
+# "p1" adds one fixed sentence at the end of the user turn; S3 adopts it only if the train-only rule says so, and then
+# for every arm and every evaluation. "answer_only" is a diagnostic (how much the three-part protocol costs V0); it is
+# never used for training or for an endpoint.
+P1_SUFFIX = "Respond in the format <perception>...</perception><think>...</think><answer>...</answer>."
+ANSWER_ONLY_SYSTEM_PROMPT = (
+    "You solve geometry problems from a diagram. Think step by step, then give the final answer inside "
+    "<answer></answer>. The answer must be a single number or expression, without units and without \"x =\"."
+)
+PROMPT_VARIANTS = ("p0", "p1", "answer_only")
+PROTOCOL_IDS = {"p0": PROTOCOL, "p1": "perception-think-answer-v3-p1-20261109",
+                "answer_only": "answer-only-diagnostic-20261109"}
 _SECTION = re.compile(r"\s*<perception>(.*?)</perception>\s*<think>(.*?)</think>\s*<answer>(.*?)</answer>\s*", re.S)
 _TAG = re.compile(r"</?(?:perception|think|answer)>")
 _ANSWER = re.compile(r"<answer>(.*?)</answer>", re.S)
@@ -33,14 +45,38 @@ def clean_problem(problem):
     return str(problem).removeprefix("<image>").strip()
 
 
-def training_prompt(problem):
+def _check_variant(variant):
+    if variant not in PROMPT_VARIANTS:
+        raise ValueError("unknown prompt variant %r; known: %s" % (variant, ", ".join(PROMPT_VARIANTS)))
+
+
+def system_prompt(variant="p0"):
+    _check_variant(variant)
+    return ANSWER_ONLY_SYSTEM_PROMPT if variant == "answer_only" else SYSTEM_PROMPT
+
+
+def user_text(problem, variant="p0"):
+    _check_variant(variant)
+    text = clean_problem(problem)
+    return text + "\n\n" + P1_SUFFIX if variant == "p1" else text
+
+
+def protocol_id(variant="p0"):
+    _check_variant(variant)
+    return PROTOCOL_IDS[variant]
+
+
+def training_prompt(problem, variant="p0"):
     """Conversational prompt with string contents; TRL adds the image block (if any)."""
-    return [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": clean_problem(problem)}]
+    if variant == "answer_only":
+        raise ValueError("the answer-only prompt is a diagnostic and is never used for training")
+    return [{"role": "system", "content": system_prompt(variant)}, {"role": "user", "content": user_text(problem, variant)}]
 
 
-def eval_messages(problem, with_image=True):
-    user = ([{"type": "image"}] if with_image else []) + [{"type": "text", "text": clean_problem(problem)}]
-    return [{"role": "system", "content": [{"type": "text", "text": SYSTEM_PROMPT}]}, {"role": "user", "content": user}]
+def eval_messages(problem, with_image=True, variant="p0"):
+    user = ([{"type": "image"}] if with_image else []) + [{"type": "text", "text": user_text(problem, variant)}]
+    return [{"role": "system", "content": [{"type": "text", "text": system_prompt(variant)}]},
+            {"role": "user", "content": user}]
 
 
 def extract_answer(text):
@@ -77,5 +113,6 @@ def format_reward(text, max_claims=MAX_CLAIMS):
     return 1.0
 
 
-__all__ = ["MAX_CLAIMS", "PROTOCOL", "SYSTEM_PROMPT", "clean_problem", "eval_messages", "extract_answer",
-           "format_reward", "parse_completion", "training_prompt"]
+__all__ = ["ANSWER_ONLY_SYSTEM_PROMPT", "MAX_CLAIMS", "P1_SUFFIX", "PROMPT_VARIANTS", "PROTOCOL", "PROTOCOL_IDS",
+           "SYSTEM_PROMPT", "clean_problem", "eval_messages", "extract_answer", "format_reward", "parse_completion",
+           "protocol_id", "system_prompt", "training_prompt", "user_text"]
