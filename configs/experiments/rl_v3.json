@@ -51,6 +51,7 @@
     "alpha": 1.0,
     "beta": 0.1,
     "max_claims": 24,
+    "consistency_gate": true,
     "oracle": {
       "line_distance": 0.06,
       "parallel_deg": 15.0,

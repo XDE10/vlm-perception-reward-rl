@@ -14,15 +14,21 @@ More than ``max_claims`` raw chunks gives -1. With alpha = 1 an extra verifiable
 claim raises the expected reward only if the policy believes it with p > 0.5,
 and beta prices padding with unverifiable claims. Under partial labels this is
 the property v4 lacked: v4 never charged for claims outside the certified slots.
+
+Consistency gate (D35, v5.1): if the oracle refutes one of the diagram's own
+certified facts, that family of checks ("coordinates" or "existence") is not
+trusted for the diagram, and its refutations of other claims are dropped (the
+claims stay UNKNOWN). It uses only certified facts and the annotation, so it is
+identical for every arm, split and model.
 """
 from collections import Counter
 from dataclasses import asdict, dataclass, field
 
 from src.data.perception_v4 import conflicts_with_certified_constant, token_key
-from src.rewards.claims import SCHEMA_VERSION, extract_block, parse_block
-from src.rewards.geometry_oracle import ORACLE_VERSION, OracleConfig, refute
+from src.rewards.claims import SCHEMA_VERSION, extract_block, parse_block, parse_claim
+from src.rewards.geometry_oracle import ORACLE_VERSION, OracleConfig, reason_family, refute
 
-VERSION = "perception-v5-20261109"
+VERSION = "perception-v5.1-20261109"
 
 
 @dataclass(frozen=True)
@@ -30,6 +36,7 @@ class V5Config:
     alpha: float = 1.0
     beta: float = 0.1
     max_claims: int = 24
+    consistency_gate: bool = True
     oracle: OracleConfig = field(default_factory=OracleConfig)
 
     @classmethod
@@ -47,7 +54,23 @@ class V5Config:
 def _empty(status, mask=True, reward=0.0, chunks=0):
     return {"reward": reward, "mask": mask, "status": status, "tp": 0, "false": 0, "unknown": 0,
             "chunks": chunks, "unique": 0, "recall": 0.0, "verified_precision": 0.0,
-            "false_reasons": {}, "verdicts": [], "version": VERSION}
+            "false_reasons": {}, "verdicts": [], "gated": [], "version": VERSION}
+
+
+def consistency_gate(gold_tokens, geometry, oracle_config=OracleConfig()):
+    """{family: first certified fact it refutes} for this diagram; empty when the annotation agrees with them all."""
+    gated = {}
+    if geometry is None:
+        return gated
+    for token in gold_tokens:
+        claim = parse_claim(token)
+        if not claim.valid:
+            continue
+        reason = refute(claim, geometry, oracle_config)
+        family = reason_family(reason)
+        if family is not None and family not in gated:
+            gated[family] = {"certified": token, "reason": reason}
+    return gated
 
 
 def score_v5(text, gold_tokens, geometry, negative_tokens=(), config=V5Config()):
@@ -64,6 +87,7 @@ def score_v5(text, gold_tokens, geometry, negative_tokens=(), config=V5Config())
         result["unique"] = info["unique"]
         return result
     negatives = {token_key(t) for t in negative_tokens} - gold
+    gate = consistency_gate(gold_tokens, geometry, config.oracle) if config.consistency_gate else {}
     tp = false = unknown = 0
     reasons = Counter()
     verdicts = []
@@ -78,6 +102,8 @@ def score_v5(text, gold_tokens, geometry, negative_tokens=(), config=V5Config())
             verdict, reason = "FALSE", "certified_constant_conflict"
         else:
             reason = refute(claim, geometry, config.oracle) if geometry is not None else None
+            if reason_family(reason) in gate:
+                reason = None  # this diagram's annotation contradicts its own certified facts for this family
             verdict = "FALSE" if reason else "UNKNOWN"
         if verdict == "TRUE":
             tp += 1
@@ -101,10 +127,11 @@ def score_v5(text, gold_tokens, geometry, negative_tokens=(), config=V5Config())
         "verified_precision": tp / (tp + false) if tp + false else 0.0,
         "false_reasons": dict(reasons),
         "verdicts": verdicts,
+        "gated": sorted(gate),
         "version": VERSION,
         "schema": SCHEMA_VERSION,
         "oracle": ORACLE_VERSION,
     }
 
 
-__all__ = ["V5Config", "VERSION", "score_v5"]
+__all__ = ["V5Config", "VERSION", "consistency_gate", "score_v5"]

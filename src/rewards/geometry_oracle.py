@@ -15,6 +15,21 @@ from dataclasses import asdict, dataclass
 from src.rewards.claims import entity_points
 
 ORACLE_VERSION = "geometry-oracle-v1-20261109"
+# Every reason refute() can return, by what it depends on. Logical reasons hold for any diagram; the other two
+# depend on the annotation (point/circle inventory, or coordinates) and can be gated per diagram (D35).
+LOGICAL_REASONS = frozenset({"invalid_chunk", "degenerate_incidence"})
+EXISTENCE_REASONS = frozenset({"unknown_point", "no_circle_in_diagram", "unknown_circle"})
+COORDINATE_REASONS = frozenset({"not_collinear", "collinear_pair", "not_parallel", "not_perpendicular", "off_circle",
+                                "angle_value_mismatch", "lengths_not_equal", "angles_not_equal"})
+
+
+def reason_family(reason):
+    """"existence" or "coordinates" for annotation-dependent refutations, else None (logical, or not refuted)."""
+    if reason in EXISTENCE_REASONS:
+        return "existence"
+    if reason in COORDINATE_REASONS:
+        return "coordinates"
+    return None
 
 
 @dataclass(frozen=True)
@@ -213,4 +228,45 @@ def refute(claim, geometry, config=OracleConfig()):
     return None
 
 
-__all__ = ["ORACLE_VERSION", "OracleConfig", "refute"]
+def measure(claim, geometry):
+    """Diagnostics only: the quantities the coordinate checks compare with their thresholds, plus segment lengths
+    relative to the diagram's extent (short segments make directions noisy). ``refute`` alone decides."""
+    if not claim.valid or not geometry.points:
+        return {}
+    xs = [p[0] for p in geometry.points.values()]
+    ys = [p[1] for p in geometry.points.values()]
+    extent = math.hypot(max(xs) - min(xs), max(ys) - min(ys)) or 1.0
+    relation, args = claim.relation, claim.args
+    out = {}
+    if relation == "PointLiesOnLine":
+        point, pair = _name(args[0]), _pair(args[1])
+        coords = _xy(geometry, point, *pair) if point and pair else None
+        if coords:
+            distance, t = _line_distance(*coords)
+            out = {"line_distance": distance, "position_on_segment": t,
+                   "segment_relative_length": math.dist(coords[1], coords[2]) / extent}
+    elif relation in {"Parallel", "Perpendicular"}:
+        first, second = _pair(args[0]), _pair(args[1])
+        coords = _xy(geometry, *first, *second) if first and second else None
+        if coords:
+            a, b, c, d = coords
+            gap = _line_gap(_direction_deg(a, b), _direction_deg(c, d))
+            out = {"angle_between_deg": gap, "deviation_deg": gap if relation == "Parallel" else abs(90.0 - gap),
+                   "segment_relative_lengths": sorted([math.dist(a, b) / extent, math.dist(c, d) / extent])}
+    elif relation == "PointLiesOnCircle":
+        point = _name(args[0])
+        centre, _ = _circle_centre(args[1], geometry)
+        coords = _xy(geometry, point, centre) if point and centre else None
+        others = [q for q in geometry.circle_points.get(centre, ()) if q != point and q in geometry.points] if centre else []
+        if coords and others:
+            radii = sorted(math.dist(geometry.points[centre], geometry.points[q]) for q in others)
+            radius = radii[len(radii) // 2]
+            if radius > 0:
+                out = {"relative_deviation": abs(math.dist(coords[0], coords[1]) - radius) / radius,
+                       "reference_points": len(others), "radius_relative": radius / extent}
+    return {k: (round(v, 4) if isinstance(v, float) else [round(x, 4) for x in v] if isinstance(v, list) else v)
+            for k, v in out.items()}
+
+
+__all__ = ["COORDINATE_REASONS", "EXISTENCE_REASONS", "LOGICAL_REASONS", "ORACLE_VERSION", "OracleConfig", "measure",
+           "reason_family", "refute"]
