@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS = ROOT / "scripts"
-GROUPS = ["common", "data", "training", "reporting", "migration"]
+GROUPS = ["common", "data", "training", "reporting", "migration", "colab"]
 
 
 def test_scripts_has_no_flat_modules():

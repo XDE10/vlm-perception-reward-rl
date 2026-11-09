@@ -1,7 +1,8 @@
 # scripts/ 脚本目录
 
-本目录按职责分为 5 个子包：`common/`（共享路径常量与 I/O 辅助）、`data/`（数据构建、导出与审计）、
-`training/`（训练与诊断入口）、`reporting/`（交付报告与发布）、`migration/`（历史迁移打包）。
+本目录按职责分为 6 个子包：`common/`（共享路径常量与 I/O 辅助）、`data/`（数据构建、导出与审计）、
+`training/`（训练与诊断入口）、`reporting/`（交付报告与发布）、`migration/`（历史迁移打包）、
+`colab/`（Colab 运行器的本地打包与 VM 端步骤，入口是 [colab/launch.sh](../colab/README.md)）。
 所有脚本的仓库根均由自身位置向上两级推导：
 `ROOT = Path(__file__).resolve().parents[2]`（`scripts/<group>/<name>.py`），因此
 **命令一律从仓库根目录执行**，统一入口形式为 `python -m scripts.<group>.<name>`。
@@ -73,3 +74,24 @@
 - CPU 检查环境见 `requirements/cpu-snapshot.txt`；项目三审计的可选依赖见 `requirements/project3-cpu.txt`。
 - 运行依赖不在 `pyproject.toml` 声明；GPU/PyTorch 版本按目标驱动单独固定。
 - 测试：从仓库根目录执行 `python -m pytest -q`（需要 Python 3.10+；`python -m` 会把仓库根放入 `sys.path`，从而可导入 `src.*` 与 `scripts.*`）。
+
+## colab/ — Colab 运行器（2026-11-10 起）
+
+本地脚本只用标准库（WSL2 的 `python3` ≥ 3.8 即可）；VM 端脚本由 `colab/kernel_*.py` 在 Colab 内核中调用。
+用户入口是 `bash colab/launch.sh`，见 [colab/README.md](../colab/README.md)。
+
+| 脚本 | 用途 | 状态 | 典型入口 |
+| --- | --- | --- | --- |
+| `common.py` | 本地与 VM 共用的标准库辅助：原子 JSON、分片/拼接校验、心跳输出 | 主线 | 被其余脚本导入 |
+| `pack_private_data.py` | 本地：按 release / 行内 SHA / 迁移清单三类锚点逐个校验后，打包运行所需的私有数据；VM：解包与复核 | 主线 | `python3 -m scripts.colab.pack_private_data --data-root <data 目录> --check-only` |
+| `verify_pack.py` | VM：复核解包后的数据与锚点一致 | 主线 | 预检步骤 `verify_pack` |
+| `local_tools.py` | 本地：生成请求与上传清单、读取远端状态、拼接并解压结果 | 主线 | 由 `colab/launch.sh` 调用 |
+| `bootstrap.py` | VM：解包数据、按驱动 CUDA 版本选择锁文件建隔离 venv、下载固定 revision 模型；可选建 vLLM venv | 主线 | 由 `colab/kernel_bootstrap.py` 调用；`python -m scripts.colab.bootstrap vllm-env --root ...` |
+| `fetch_model.py` | VM：下载固定 revision 的模型快照并记录每个文件的 SHA256 | 主线 | 由 `bootstrap.py` 调用 |
+| `runner.py` | VM：逐步运行任务（独立进程组、超时、心跳、状态文件），打包并分片结果 | 主线 | 由 `colab/kernel_job.py` 调用 |
+| `tasks.py` | 各任务的步骤定义（当前：`preflight`，含 dry-run 版本） | 主线 | 被 `runner.py` 导入 |
+| `env_report.py` | VM：记录实际软件版本、GPU、内存、磁盘、环境锁与模型文件 SHA | 主线 | 预检步骤 `env_report` |
+| `gpu_probe.py` | VM：真实 3B 权重下的 LoRA 范围、提示长度、峰值显存、生成吞吐、ViT 缓存等价性 | 主线 | 预检步骤 `gpu_probe` |
+| `v0_probe.py` | VM：V0 在 16 道 validation 上的协议 v3 贪心生成（有图/无图），工程信号 | 主线 | 预检步骤 `v0_probe` |
+| `decide_runtime.py` | VM：按预定规则把测量结果冻结成 `frozen_runtime.json` | 主线 | 预检步骤 `decide_runtime` |
+| `summarize_run.py` | VM：把一次运行的所有产物汇总成 `summary.json` 与 `summary.md` | 主线 | 运行结束时自动调用 |

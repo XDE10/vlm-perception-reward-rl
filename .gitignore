@@ -221,6 +221,11 @@ pro6000.ipynb
 /.pilot_deps/
 /runs/
 /backups/
+# Colab launcher: build cache (code archive, private data pack), local run records, local settings
+/.colab_cache/
+/.colab_runs/
+/.colab_local.env
+/.colab_pack_manifest.json
 *.tmp
 *.log.tmp
 
