@@ -77,13 +77,35 @@ def build_world(tmp_path):
     wrapper.write_text("#!/bin/sh\nexec '%s' '%s' \"$@\"\n" % (sys.executable, ROOT / "tests" / "colab_stub.py"))
     wrapper.chmod(0o755)
     env = dict(os.environ, STUB_ROOT=str(stub_root), P3_COLAB_BIN=str(wrapper), P3_PYTHON=sys.executable,
-               P3_DATA_ROOT=str(data_parent / "data"), P3_POLL_SECONDS="1", P3_UPLOAD_BACKOFF="0", PYTHONPATH="",
-               # never let a real rclone remote of the developer be used by these tests
-               P3_DRIVE_REMOTE="p3-test-no-such-remote:")
+               P3_DATA_ROOT=str(data_parent / "data"), P3_POLL_SECONDS="1", P3_UPLOAD_BACKOFF="0", P3_RETRY_SLEEP="0",
+               PYTHONPATH="",
+               # never let a real rclone remote or a real GitHub credential of the developer be used by these tests
+               P3_DRIVE_REMOTE="p3-test-no-such-remote:", P3_VM_GH_CREDENTIALS=str(tmp_path / "no_credentials"))
     for name in ["P3_QWEN_PROCESSOR_DIR", "P3_DRIVE_MOUNT_CMD", "P3_DRIVE_SETUP_FILE", "P3_CODE_SOURCE",
-                 "P3_CODE_TARBALL_URL", "P3_PART_MB", "P3_GPU", "P3_DRIVE_DIR", "P3_DRIVE_MOUNT"]:
+                 "P3_CODE_TARBALL_URL", "P3_PART_MB", "P3_GPU", "P3_DRIVE_DIR", "P3_DRIVE_MOUNT", "P3_VM_PUSH_URL",
+                 "P3_UPLOAD_TRIES"]:
         env.pop(name, None)
     return repo, origin, stub_root, env
+
+
+FAKE_PAT = "ghp_" + "Z" * 36
+
+
+def prepared_session(tmp_path, repo, origin, env, name="mine", credentials=True):
+    """What the user does by hand (colab/README.md section 8): create a VM, put a GitHub credential on it."""
+    git("push", "-q", "origin", "HEAD:refs/heads/master", cwd=repo)
+    subprocess.run([env["P3_COLAB_BIN"], "new", "-s", name], env=env, check=True, capture_output=True)
+    creds = tmp_path / "vm_gh_credentials"
+    if credentials:
+        creds.write_text("https://tester:%s@github.com\n" % FAKE_PAT, encoding="utf-8")
+        creds.chmod(0o600)
+    env = dict(env, P3_VM_PUSH_URL="file://%s" % origin, P3_VM_GH_CREDENTIALS=str(creds))
+    return env
+
+
+def branch_log(origin, run_dir):
+    return subprocess.run(["git", "--git-dir", str(origin), "log", "--format=%an|%s", "results/" + run_dir.name],
+                          check=True, capture_output=True, text=True).stdout.splitlines()
 
 
 def publish(repo, tmp_path, tamper=None):
@@ -259,3 +281,77 @@ def test_drive_check_on_a_cpu_vm_with_fake_rclone(tmp_path):
     assert not any("HOOK-SECRET" in show(origin, run_dir, n) for n in names if n.startswith("_local/"))
     leftovers = sorted(str(p.relative_to(drive_root)) for p in drive_root.rglob("*"))
     assert leftovers == ["ColabProjects", "ColabProjects/keep.txt", "ColabProjects/vlm-perception-reward-rl"]
+
+
+def test_prepared_session_vm_pushes_results_and_stays_up(tmp_path):
+    """--session: the VM pushes results/<run_id> itself; the launcher adds _local/ on top and keeps the VM."""
+    repo, origin, stub_root, env = build_world(tmp_path)
+    env = prepared_session(tmp_path, repo, origin, env)
+    result = launch(repo, env, "preflight", "--dry-run", "--no-vllm", "--session", "mine")
+    assert result.returncode == 0, result.stderr[-4000:] + result.stdout[-2000:]
+    assert "write access verified" in result.stdout and "the VM pushed the results itself" in result.stderr
+    assert "your session mine stays up" in result.stderr
+    calls = (stub_root / "calls.log").read_text()
+    assert "new -s mine" in calls.splitlines()[0] and calls.count("new -s") == 1  # only the user's own `colab new`
+    assert "stop -s" not in calls and (stub_root / "sessions" / "mine").is_dir()
+    run_dir = only_run(repo)
+    log = branch_log(origin, run_dir)
+    assert log[0].endswith("launcher logs (_local/)")
+    assert log[1].startswith("p3-colab-vm|") and log[1].endswith("[pushed from the Colab VM]")
+    summary = assert_pushed(origin, run_dir)
+    assert summary["overall"] == "passed"
+    assert json.loads(show(origin, run_dir, "github_check.json"))["ok"] is True
+    assert "由 VM 直接推送" in show(origin, run_dir, "summary.md")
+    _, names = branch_files(origin, run_dir)
+    assert not any(FAKE_PAT in show(origin, run_dir, n) for n in names)
+    assert json.loads((run_dir / "done.json").read_text())["github"]["ok"] is True
+    # a second run on the same session sends nothing that is already there (same data pack, same SHA256)
+    again = launch(repo, env, "preflight", "--dry-run", "--no-vllm", "--session", "mine")
+    assert again.returncode == 0, again.stderr[-3000:]
+    assert re.search(r"\d+ part\(s\) are already on the VM with the right SHA256", again.stderr)
+
+
+def test_vm_gone_after_the_job_results_come_from_github(tmp_path):
+    """The VM is reclaimed right after the job: the launcher finds the branch the VM pushed and finishes from it."""
+    repo, origin, stub_root, env = build_world(tmp_path)
+    env = prepared_session(tmp_path, repo, origin, env)
+    env.update(STUB_DROP_JOB="1", STUB_VANISH_AFTER_JOB="1")
+    result = launch(repo, env, "preflight", "--dry-run", "--no-vllm", "--session", "mine")
+    assert result.returncode == 0, result.stderr[-4000:]
+    assert not (stub_root / "sessions" / "mine").exists()  # the VM really went away
+    run_dir = only_run(repo)
+    assert (run_dir / "results" / run_dir.name / "summary.md").is_file()
+    assert any(entry.startswith("p3-colab-vm|") for entry in branch_log(origin, run_dir))
+    assert assert_pushed(origin, run_dir)["overall"] == "passed"
+
+
+def test_prepared_session_without_credentials_falls_back_to_a_local_push(tmp_path):
+    repo, origin, stub_root, env = build_world(tmp_path)
+    env = prepared_session(tmp_path, repo, origin, env, credentials=False)
+    result = launch(repo, env, "preflight", "--dry-run", "--no-vllm", "--session", "mine")
+    assert result.returncode == 0, result.stderr[-4000:]
+    run_dir = only_run(repo)
+    assert [entry.split("|")[0] for entry in branch_log(origin, run_dir)][0] != "p3-colab-vm"
+    check = json.loads(show(origin, run_dir, "github_check.json"))
+    assert check["credentials_present"] is False and "no credential file" in check["reason"]
+    assert "由你本机的运行器推送" in show(origin, run_dir, "summary.md")
+    assert assert_pushed(origin, run_dir)["overall"] == "passed"
+
+
+def test_failure_before_the_job_publishes_the_logs(tmp_path):
+    """A run that dies before its job (here: every upload fails) still leaves its logs on GitHub."""
+    repo, origin, stub_root, env = build_world(tmp_path)
+    env.update(STUB_FAIL_UPLOADS="1000", P3_UPLOAD_TRIES="2")
+    result = launch(repo, env, "preflight", "--dry-run", "--no-vllm")
+    assert result.returncode == 1, result.stderr[-3000:]
+    assert "publishing its logs to results/" in result.stderr
+    run_dir = only_run(repo)
+    assert not any((stub_root / "sessions").iterdir())  # the VM this run created was released first
+    _, names = branch_files(origin, run_dir)
+    assert {"RUN_STOPPED_EARLY.txt", "_local/launch.log", "_local/upload.log"} <= set(names), names
+    note = show(origin, run_dir, "RUN_STOPPED_EARLY.txt")
+    assert "stopped before its job started" in note and "upload of" in note
+    assert "stage reached: allocated" in note  # recorded before the VM was released
+    published = show(origin, run_dir, "_local/upload.log")
+    assert "SECRET-PROXY-TOKEN-123" not in published and "colab-runtime-proxy-token=REDACTED" in published
+    assert (run_dir / "state").read_text().strip() == "failed (logs on GitHub)"

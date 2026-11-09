@@ -87,6 +87,7 @@
 | `verify_pack.py` | VM：复核解包后的数据与锚点一致 | 主线 | 预检步骤 `verify_pack` |
 | `local_tools.py` | 本地：生成请求与上传清单（含提交的 git 文件清单）、比对 VM 上已收到的分片、读取远端状态、拼接并解压结果、发布前去除凭据 | 主线 | 由 `colab/launch.sh` 调用 |
 | `drive.py` | VM：可选的 Google Drive 持久化，只经 `rclone copy` + `rclone check` 写入并核对，不经 FUSE 挂载；探针只删除自己写的文件 | 主线（可选） | 预检步骤 `drive_probe`、任务 `drive-check`；`python -m scripts.colab.drive probe --out <json>` |
+| `vm_github.py` | VM：用户放在 VM 上的 GitHub 凭据存在时，由 VM 推送 `results/<run_id>`。开始时 dry-run 验证写权限，推送前脱敏；从不读取凭据内容，失败时由本机推送 | 主线（可选） | 由 `runner.py` 调用（任务开始时检查，打包后推送） |
 | `bootstrap.py` | VM：解包数据、按驱动 CUDA 版本选择锁文件建隔离 venv、下载固定 revision 模型（不需要 GPU 的任务跳过 venv 与模型）；可选建 vLLM venv | 主线 | 由 `colab/kernel_bootstrap.py` 调用；`python -m scripts.colab.bootstrap vllm-env --root ...` |
 | `fetch_model.py` | VM：下载固定 revision 的模型快照并记录每个文件的 SHA256 | 主线 | 由 `bootstrap.py` 调用 |
 | `runner.py` | VM：逐步运行任务（独立进程组、超时、心跳、状态文件），打包并分片结果；可选把结果复制到 Drive 并核对 | 主线 | 由 `colab/kernel_job.py` 调用 |

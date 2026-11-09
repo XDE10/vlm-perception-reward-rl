@@ -12,6 +12,10 @@ P3_REMOTE_ROOT pointing there. Fault injection:
   the substring is stored truncated but reported as successful.
 * STUB_HANG_UPLOADS=N: the first N uploads stall for 60 s (a request that never
   returns), so the launcher's per-call time limit has to end them.
+* STUB_VANISH_AFTER_JOB=1 (with STUB_DROP_JOB=1): when the background job ends,
+  the VM disappears (its files and the session), as when Colab reclaims it.
+
+Like the real CLI, exec/upload/download fail for a session that does not exist.
 """
 import os
 import shutil
@@ -23,6 +27,9 @@ from pathlib import Path
 
 STUB = Path(os.environ["STUB_ROOT"])
 REMOTE_PREFIX = "/content/p3"
+# run the job, then remove the VM's files and the session (argv: python, job script, vm dir, session dir)
+VANISH = ("import shutil, subprocess, sys; subprocess.call(sys.argv[1:3]); "
+          "[shutil.rmtree(p, ignore_errors=True) for p in sys.argv[3:]]")
 
 
 def remote_path(path):
@@ -51,6 +58,10 @@ def main():
     command, rest = args[0], args[1:]
     with open(str(STUB / "calls.log"), "a") as handle:
         handle.write(" ".join([command] + rest) + "\n")
+    session = option(rest, "-s")
+    if command in ("exec", "upload", "download") and not (STUB / "sessions" / str(session)).is_dir():
+        print("[colab] Session '%s' not found." % session)
+        sys.exit(1)
     if command == "version":
         print("Version: stub")
     elif command in ("sessions", "usage"):
@@ -91,9 +102,13 @@ def main():
         script = Path(tempfile.mkstemp(suffix=".py", dir=str(STUB))[1])
         script.write_text(code)
         if source and source.endswith("kernel_job.py") and os.environ.get("STUB_DROP_JOB") == "1":
+            runner = [sys.executable, str(script)]
+            if os.environ.get("STUB_VANISH_AFTER_JOB") == "1":
+                runner = [sys.executable, "-c", VANISH, sys.executable, str(script), str(STUB / "vm"),
+                          str(STUB / "sessions" / session)]
             with open(str(STUB / "background_job.log"), "ab") as log:
-                subprocess.Popen([sys.executable, str(script)], env=env, cwd=str(STUB / "vm"), stdout=log,
-                                 stderr=subprocess.STDOUT, start_new_session=True)
+                subprocess.Popen(runner, env=env, cwd=str(STUB / "vm"), stdout=log, stderr=subprocess.STDOUT,
+                                 start_new_session=True)
             print("stub: connection lost")
             sys.exit(1)
         sys.exit(subprocess.call([sys.executable, str(script)], env=env, cwd=str(STUB / "vm")))

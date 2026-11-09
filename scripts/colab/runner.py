@@ -5,10 +5,12 @@ subprocess in its own process group with a timeout; its output goes to
 ``<out>/logs/<step>.log``. ``<out>/status.json`` is rewritten atomically after
 every step and every heartbeat so the launcher can poll it through the Jupyter
 contents API even while the kernel is busy. At the end the run directory is
-packaged (weights and checkpoints excluded) and split into parts; if the request
-asks for it and rclone can reach the user's Drive, a verified copy goes to Drive
-(``persist_to_drive``); the part list and the Drive outcome are written to
-``<root>/out/<run_id>.done.json`` and ``JOB_DONE`` is printed.
+packaged (weights and checkpoints excluded) and split into parts. If the user put
+a GitHub credential on the VM, the VM pushes the results branch itself
+(``push_to_github``, D37); if the request asks for it and rclone can reach the
+user's Drive, a verified copy goes to Drive (``persist_to_drive``). The part
+list and both outcomes are written to ``<root>/out/<run_id>.done.json`` and
+``JOB_DONE`` is printed.
 """
 import gzip
 import os
@@ -50,6 +52,7 @@ class Job(object):
         self.status = {"schema": STATUS_SCHEMA, "run_id": self.run_id, "task": request["task"], "state": "starting",
                        "started_utc": _now(), "updated_utc": _now(), "steps": [], "current": None}
         self.proc = None
+        self.github_check = None
 
     def save(self):
         self.status["updated_utc"] = _now()
@@ -160,6 +163,36 @@ class Job(object):
         return {"name": archive.name, "sha256": sha256_file(archive), "bytes": archive.stat().st_size, "parts": parts,
                 "skipped": len(skipped), "gzipped": gzipped}
 
+    def check_github(self):
+        """Before the steps: can this VM push the results itself (D37)? Never raises."""
+        try:
+            from scripts.colab import vm_github
+
+            info = vm_github.check(self.root, self.request)
+            vm_github.report(self.out, info)
+        except Exception as exc:
+            info = {"ok": False, "reason": "%s: %s" % (type(exc).__name__, str(exc)[:300])}
+        self.status["github_check"] = {k: info.get(k) for k in ("mode", "ok", "credentials_present", "push_access",
+                                                                 "branch", "reason", "warning")}
+        self.save()
+        return info
+
+    def push_to_github(self, package):
+        """After packaging: push results/<run_id> from the VM; the launcher pushes instead if this fails."""
+        try:
+            from scripts.colab import vm_github
+
+            with Heartbeat("pushing the results to GitHub", HEARTBEAT_SECONDS):
+                result = vm_github.push(self.root, self.request, self.root / "out" / package["name"],
+                                        overall=self.status.get("overall"), prior_check=self.github_check)
+        except Exception as exc:
+            result = {"attempted": True, "ok": False, "reason": "%s: %s" % (type(exc).__name__, str(exc)[:300])}
+        if result.get("ok"):
+            log("results pushed from the VM to %s (commit %s)" % (result["branch"], (result.get("commit") or "?")[:12]))
+        elif result.get("attempted"):
+            log("WARNING: the VM could not push the results (%s); the launcher will push them" % result.get("reason"))
+        return result
+
     def persist_to_drive(self, package):
         """Optional verified copy to the user's Google Drive (rclone). Never raises, never fails the job.
 
@@ -227,6 +260,7 @@ def run_job(root, request):
                                 "description": s.get("description", "")} for s in steps]
         job.status["state"] = "running"
         job.save()
+        job.github_check = job.check_github()
         log("job %s: %d steps" % (job.run_id, len(steps)))
         for step in steps:
             job.run_step(step)
@@ -261,6 +295,9 @@ def run_job(root, request):
         job.save()
         package = job.package()
         job.status["package"] = package
+        job.status["state"] = "github_push"  # small and the primary record: before the (possibly long) Drive copy
+        job.save()
+        job.status["github"] = job.push_to_github(package)
         job.status["state"] = "drive_copy"
         job.save()
         job.status["drive"] = job.persist_to_drive(package)
@@ -269,7 +306,8 @@ def run_job(root, request):
         job.save()
         write_json(Path(root) / "out" / (job.run_id + ".done.json"),
                    {"run_id": job.run_id, "overall": job.status["overall"], "package": package,
-                    "drive": job.status["drive"], "finished_utc": job.status["finished_utc"]})
+                    "github": job.status["github"], "drive": job.status["drive"],
+                    "finished_utc": job.status["finished_utc"]})
         log("JOB_DONE overall=%s package=%s (%d parts, %.1f MB)" % (job.status["overall"], package["name"],
                                                                      len(package["parts"]), package["bytes"] / 1e6))
     return job.status

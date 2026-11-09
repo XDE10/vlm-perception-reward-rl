@@ -134,6 +134,26 @@ python -m pytest -q
 其他新增：`tests/test_multimodal_guard.py`；一致性门控与留一法的单元测试（`tests/test_perception_v5.py`、`tests/test_calibrate_v5.py`）；
 预检摘要的新检查与 `decide_runtime` 依赖（`tests/test_colab_vm_scripts.py`）。迷你数据新增 `sizes` 参数，可以生成不等长的提示。
 
+### 2026-11-09（S2.3，VM 直接推送与准备好的 VM）
+
+同一沙箱环境：
+
+```text
+python -m pytest -q
+226 passed, 2 failed
+```
+
+`git archive` 导出副本中是 216 passed / 10 skipped / 2 failed（10 项运行器端到端测试需要 git 工作树）。
+
+失败的仍是上面两项依赖 `data/` 的测试。新增的测试：
+
+- `tests/test_vm_github.py`：在本地 bare 仓库上验证 VM 端推送。覆盖 dry-run 不写入、提交的父提交与作者、超大文件不推送、
+  文件内令牌脱敏、提交不存在时的失败报告。只用临时路径，不访问 GitHub；在 VM 上运行时也不会碰到真实凭据。
+- `tests/test_colab_launcher.py` 新增四个端到端场景：准备好的 VM 由 VM 推送、VM 在任务后消失、准备好的 VM 没有凭据、
+  任务开始前失败时推送日志。stub CLI 现在会拒绝不存在的会话，并能模拟 VM 被回收。
+- `tests/test_colab_local_tools.py`：网址中的凭据、`github_pat_`、二次脱敏不重复计数。
+- `tests/test_repo_layout.py::test_colab_readme_commands_are_zsh_safe`：README 命令块兼容 zsh。
+
 ### 历史覆盖范围
 
 测试覆盖：数据准入与白名单、几何序列化、split 守卫、感知奖励与文本蕴含、

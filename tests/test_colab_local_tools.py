@@ -21,6 +21,18 @@ def test_redaction_removes_tokens_but_keeps_ordinary_text():
     assert redact_text(unchanged) == (unchanged, 0)
 
 
+def test_redaction_covers_credentials_in_urls_and_is_idempotent():
+    for secret, gone in [("https://XDE10:ghp_%s@github.com" % ("a" * 36), "ghp_"),
+                         ("https://x:github_pat_11ABCDEFG0_%s@github.com/o/r.git" % ("b" * 40), "github_pat_11"),
+                         ("fatal: https://user:p4ss@example.org/repo", "p4ss"),
+                         ("token github_pat_11ABCDEFG0_%s in a log" % ("c" * 40), "github_pat_11")]:
+        text, count = redact_text(secret)
+        assert count >= 1 and gone not in text, (secret, text)
+        assert redact_text(text) == (text, 0), text  # a second pass (VM push, then _local/) changes nothing
+    plain = "https://github.com/XDE10/vlm-perception-reward-rl/tree/results/x and git@github.com:o/r.git"
+    assert redact_text(plain) == (plain, 0)
+
+
 def test_redact_tree_reports_and_skips_binary_suffixes(tmp_path):
     (tmp_path / "_local").mkdir()
     (tmp_path / "_local" / "upload.log").write_text("u?colab-runtime-proxy-token=T1\nok\n", encoding="utf-8")

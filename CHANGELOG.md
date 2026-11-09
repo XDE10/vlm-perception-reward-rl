@@ -4,6 +4,20 @@
 [README](README.md) 和版本化报告为准；历史细节见
 [docs/migration/](docs/migration/)。
 
+## 2026-11-09 — S2.3：结果由 VM 直接推送，支持准备好的 VM，命令兼容 zsh
+
+决策见 [决策记录](docs/plan/决策记录.md) D37–D40，阶段报告见
+[docs/plan/阶段报告_S2.3_20261109.md](docs/plan/阶段报告_S2.3_20261109.md)。没有 GPU 运行，没有改动已批准数据。
+
+- 新增 `scripts/colab/vm_github.py`：你放在 VM 上的 GitHub 凭据存在时，由 VM 推送 `results/<run_id>`（开始时 dry-run
+  验证写权限，推送前脱敏）；运行器从不读取凭据。凭据缺失或推送失败时由本机推送；VM 推送后，运行器再补上 `_local/`。
+- `colab/launch.sh` 新增 `--session NAME`（在你准备好的 VM 上运行，不新建、默认不释放）、`--release`、`--no-vm-push`。
+  VM 上已有的相同分片不再上传。任务开始前失败的运行会把日志推到 GitHub。VM 不可达时，用 GitHub 上已有的结果完成收尾。
+- 脱敏新增网址中的 `用户:令牌@` 与 `github_pat_...`；二次脱敏不会重复计数。
+- `colab/README.md`：命令兼容 zsh（去掉命令行末尾的 `#` 注释），新增第八节（Drive 挂载、写入 PAT、`--session`）。
+  新增测试检查 README 命令块；新增 `.kiro/steering/colab-environment.md`，记录你的环境。
+- 测试：226 passed / 2 failed，两项失败依赖本机 `data/`。
+
 ## 2026-11-09 — S2.2：修复第二次预检的失败，改校准口径
 
 决策见 [决策记录](docs/plan/决策记录.md) D33–D36，阶段报告见

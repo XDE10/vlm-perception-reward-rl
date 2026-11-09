@@ -65,7 +65,7 @@ def make_request(args):
         pack.update(content_sha256=built["content_sha256"], files=built["files"])
         uploads += [(str(staging / p["name"]), p["name"]) for p in pack["parts"]]
     request = {"schema": REQUEST_SCHEMA, "run_id": args.run_id, "task": args.task, "options": json.loads(args.options or "{}"),
-               "code": code, "data_pack": pack, "part_bytes": part_bytes,
+               "code": code, "data_pack": pack, "part_bytes": part_bytes, "github": json.loads(args.github or "{}"),
                "created_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "local": json.loads(args.local or "{}")}
     request_path = staging / "request.json"
     write_json(request_path, request)
@@ -94,12 +94,16 @@ def inbox_diff(uploads_path, listing_path):
 
 
 SECRET_PATTERNS = [
-    # `requests` errors from `colab upload/download` print the request URL, which carries the runtime proxy token
+    # `requests` errors from `colab upload/download` print the request URL, which carries the runtime proxy token.
+    # (?!REDACTED\b) keeps a second pass (VM push, then the launcher's _local/ commit) from counting old redactions.
     (re.compile(r"((?<![A-Za-z0-9_-])(?:colab-runtime-proxy-token|access_token|token|api_key|key|sig|signature)=)"
-                r"[^&\s'\"<>]+"), r"\1REDACTED"),
-    (re.compile(r"(Bearer\s+)[A-Za-z0-9._~+/=-]+"), r"\1REDACTED"),
+                r"(?!REDACTED\b)[^&\s'\"<>]+"), r"\1REDACTED"),
+    (re.compile(r"(Bearer\s+)(?!REDACTED\b)[A-Za-z0-9._~+/=-]+"), r"\1REDACTED"),
+    # credentials inside URLs, e.g. the git-credential-store line https://<user>:<PAT>@github.com (D37)
+    (re.compile(r"(https?://)(?!REDACTED@)[^/\s:@'\"<>]+:[^@\s/'\"<>]+@"), r"\1REDACTED@"),
     (re.compile(r"ya29\.[0-9A-Za-z_-]{10,}"), "ya29.REDACTED"),  # Google OAuth access token
     (re.compile(r"1//[0-9A-Za-z_-]{20,}"), "1//REDACTED"),  # Google OAuth refresh token
+    (re.compile(r"\bgithub_pat_[A-Za-z0-9_]{20,}"), "github_pat_REDACTED"),  # fine-grained GitHub PAT
     (re.compile(r"\bgh[pousr]_[A-Za-z0-9]{20,}"), "gh_REDACTED"),
     (re.compile(r"\bhf_[A-Za-z0-9]{20,}"), "hf_REDACTED"),
 ]
@@ -180,6 +184,7 @@ def main(argv=None):
     p.add_argument("--code-mode", choices=["upload", "github"], default="upload")
     p.add_argument("--tarball-url", default="")
     p.add_argument("--tree-file", default="")
+    p.add_argument("--github", default="{}", help="VM-side push settings (scripts/colab/vm_github.py); {} = off")
     p = sub.add_parser("inbox-diff")
     p.add_argument("uploads")
     p.add_argument("listing")
