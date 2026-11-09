@@ -119,7 +119,8 @@ def build(out_dir):
                "smoke_full_hf": run_summary(out / "smoke_full_hf") if (out / "smoke_full_hf").is_dir() else None,
                "smoke_full_vllm": run_summary(out / "smoke_full_vllm") if (out / "smoke_full_vllm").is_dir() else None,
                "resume": run_summary(out / "resume") if (out / "resume").is_dir() else None,
-               "frozen_runtime": _load(out / "frozen_runtime.json"), "drive_probe": _load(out / "drive_probe.json")}
+               "frozen_runtime": _load(out / "frozen_runtime.json"), "drive_probe": _load(out / "drive_probe.json"),
+               "github_check": _load(out / "github_check.json")}
     checks = []
     if summary["task"] == "drive-check":
         checks.append(("Drive 写入、读回、哈希校验、删除全部成功", bool((summary["drive_probe"] or {}).get("ok"))))
@@ -276,6 +277,13 @@ def markdown(s):
                 _fmt(ro.get("claims_per_completion"), 2),
                 "%s / %s" % (guard["checked_forwards"], guard["left_padded_rows"]) if guard else "—"))
     lines += drive_lines(s.get("drive_probe"))
+    gh = s.get("github_check") or {}
+    if gh and gh.get("mode") != "off":
+        lines += ["", "## 结果推送到 GitHub（D37）", "",
+                  "- %s" % ("由 VM 直接推送到 `%s`（运行开始时已用 dry-run 验证写权限）" % gh.get("branch") if gh.get("ok")
+                            else "由你本机的运行器推送；VM 端未推送的原因：%s" % gh.get("reason"))]
+        if gh.get("warning"):
+            lines.append("- 注意：%s" % gh["warning"])
     runtime = s.get("frozen_runtime")
     if runtime:
         lines += ["", "## 冻结的运行时决策（`frozen_runtime.json`）", "",
