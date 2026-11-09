@@ -1,0 +1,265 @@
+"""Summarise a Colab run directory into summary.json and summary.md (standard library only).
+
+    python -m scripts.colab.summarize_run --out-dir <run dir>
+
+Every number in the Markdown comes from a file in the same directory; missing
+inputs are reported as missing, never filled in.
+"""
+import argparse
+import json
+import statistics
+import xml.etree.ElementTree as ET
+from pathlib import Path
+
+from scripts.colab.common import write_json
+
+DEFAULT_THRESHOLDS = {"PointLiesOnLine": 0.06, "Parallel": 15.0, "Perpendicular": 15.0, "PointLiesOnCircle": 0.15,
+                      "Angle": 35.0, "CongruentLength": 1.5, "CongruentAngle": 25.0}
+ON_BY_DEFAULT = {"PointLiesOnLine", "Parallel", "Perpendicular", "PointLiesOnCircle"}
+
+
+def _load(path):
+    path = Path(path)
+    if not path.is_file():
+        return None
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except ValueError:
+        return None
+
+
+def pytest_summary(path):
+    path = Path(path)
+    if not path.is_file():
+        return None
+    root = ET.parse(str(path)).getroot()
+    suites = [root] if root.tag == "testsuite" else list(root.iter("testsuite"))
+    total = {k: sum(int(s.get(k, 0)) for s in suites) for k in ["tests", "failures", "errors", "skipped"]}
+    failed = []
+    for case in root.iter("testcase"):
+        if case.find("failure") is not None or case.find("error") is not None:
+            failed.append("%s::%s" % (case.get("classname"), case.get("name")))
+    total["passed"] = total["tests"] - total["failures"] - total["errors"] - total["skipped"]
+    total["failed_tests"] = failed[:50]
+    total["seconds"] = round(sum(float(s.get("time", 0)) for s in suites), 1)
+    return total
+
+
+def rollout_stats(path):
+    path = Path(path)
+    if not path.is_file():
+        return None
+    rows = [json.loads(x) for x in path.read_text(encoding="utf-8").splitlines() if x.strip()]
+    if not rows:
+        return {"rollouts": 0}
+    n = len(rows)
+    tokens = [r["completion_tokens"] for r in rows if r.get("completion_tokens") is not None]
+    return {"rollouts": n, "steps": len({r.get("global_step") for r in rows}),
+            "answer_acc": round(sum(r["rewards"]["answer"] for r in rows) / n, 4),
+            "format_rate": round(sum(r["rewards"]["format"] for r in rows) / n, 4),
+            "protocol_ok": round(sum(bool(r.get("protocol_ok")) for r in rows) / n, 4),
+            "perception_reward_mean": round(sum(r["rewards"]["perception"] for r in rows) / n, 4),
+            "v5_own_mean": round(sum(r["v5_own"]["reward"] for r in rows) / n, 4),
+            "claims_per_completion": round(sum(r["v5_own"].get("unique") or 0 for r in rows) / n, 2),
+            "completion_tokens_mean": round(statistics.fmean(tokens), 1) if tokens else None,
+            "completion_tokens_max": max(tokens) if tokens else None,
+            "verifier_errors": sum(r["answer"]["status"] in ("verifier_timeout", "verifier_crashed") for r in rows)}
+
+
+def run_summary(run_dir):
+    run_dir = Path(run_dir)
+    train = _load(run_dir / "train_summary.json")
+    identity = _load(run_dir / "run_identity.json") or {}
+    history = _load(run_dir / "log_history.json") or []
+    times = [h["step_time"] for h in history if isinstance(h, dict) and "step_time" in h]
+    return {"train": train, "rollouts": rollout_stats(run_dir / "rollouts.jsonl"),
+            "step_time_median": round(statistics.median(times[1:] or times), 2) if times else None,
+            "trainable_parameters": (identity.get("parameters") or {}).get("trainable_parameters"),
+            "vision_frozen": (identity.get("parameters") or {}).get("vision_frozen"),
+            "config_sha256": identity.get("config_sha256"), "prompt_report": identity.get("prompt_report")}
+
+
+def calibration_summary(path):
+    data = _load(path)
+    if not data:
+        return None
+    relations = {}
+    for relation, block in data["train"]["sweep"].items():
+        default = DEFAULT_THRESHOLDS.get(relation)
+        entry = next((e for e in block["entries"] if e["threshold"] == default), None)
+        val = next((e for e in data["validation"]["sweep"][relation]["entries"] if e["threshold"] == default), None)
+        if entry:
+            relations[relation] = {"threshold": default, "enabled_by_default": relation in ON_BY_DEFAULT,
+                                   "certified_train": entry["certified"], "false_refutations_train": entry["false_refutations"],
+                                   "false_refutation_ids": entry["false_refutation_ids"],
+                                   "false_refutations_validation": val["false_refutations"] if val else None,
+                                   "spray_refuted_fraction": entry["spray_refuted_fraction"]}
+    return {"train_rows": data["train_rows"], "validation_rows": data["validation_rows"], "relations": relations,
+            "existence_refutations_of_certified": data["train"]["existence_refutations_of_certified"],
+            "attacks": data["attacks_train"]}
+
+
+def build(out_dir):
+    out = Path(out_dir)
+    status = _load(out / "status.json") or {}
+    summary = {"run_id": status.get("run_id"), "task": status.get("task"), "steps": status.get("steps", []),
+               "error": status.get("error"), "env": _load(out / "env.json"),
+               "pack": _load(out / "pack_verification.json"), "pytest": pytest_summary(out / "pytest.xml"),
+               "calibration": calibration_summary(out / "calibration" / "calibration.json"),
+               "gpu_probe": _load(out / "gpu_probe.json"), "v0_probe": _load(out / "v0_probe" / "summary.json"),
+               "smoke": {p.name: run_summary(p) for p in sorted((out / "smoke").glob("*")) if p.is_dir()},
+               "smoke_full_hf": run_summary(out / "smoke_full_hf") if (out / "smoke_full_hf").is_dir() else None,
+               "smoke_full_vllm": run_summary(out / "smoke_full_vllm") if (out / "smoke_full_vllm").is_dir() else None,
+               "resume": run_summary(out / "resume") if (out / "resume").is_dir() else None,
+               "frozen_runtime": _load(out / "frozen_runtime.json")}
+    checks = []
+    if summary["pytest"] is not None:
+        checks.append(("pytest 无失败", summary["pytest"]["failures"] == 0 and summary["pytest"]["errors"] == 0))
+    if summary["pack"] is not None:
+        checks.append(("私有数据与锚点一致", bool(summary["pack"].get("ok"))))
+    if summary["calibration"]:
+        on = [r for k, r in summary["calibration"]["relations"].items() if r["enabled_by_default"]]
+        checks.append(("默认开启的几何规则在 train 认证正例上零误杀", all(r["false_refutations_train"] == 0 for r in on)))
+    probe = summary["gpu_probe"] or {}
+    if probe:
+        checks.append(("ViT/merger 冻结且只训练 LoRA", bool((probe.get("parameters") or {}).get("vision_frozen"))))
+        checks.append(("所有训练提示不超过预算", not (probe.get("prompt_tokens") or {}).get("train_over_budget")))
+    resume = summary["resume"] or {}
+    if resume.get("train"):
+        checks.append(("断点恢复后到达第 2 步", resume["train"].get("global_step") == 2))
+    summary["checks"] = [{"check": name, "ok": bool(ok)} for name, ok in checks]
+    required = [s for s in summary["steps"] if s.get("required", True)]
+    summary["overall"] = "passed" if (required and all(s.get("state") == "passed" for s in required)
+                                      and all(c["ok"] for c in summary["checks"]) and not summary["error"]) else "failed"
+    return summary
+
+
+def _fmt(value, digits=3):
+    if value is None:
+        return "—"
+    if isinstance(value, float):
+        return ("%." + str(digits) + "f") % value
+    return str(value)
+
+
+def markdown(s):
+    lines = ["# Colab 运行摘要：%s（%s）" % (s.get("run_id"), s.get("task")), "",
+             "总体结论：**%s**%s" % ("通过" if s["overall"] == "passed" else "未通过",
+                                ("；编排错误：" + s["error"]) if s.get("error") else ""), "",
+             "## 步骤", "", "| 步骤 | 状态 | 用时（秒） | 计入结论 |", "|---|---|---|---|"]
+    for step in s["steps"]:
+        lines.append("| %s | %s | %s | %s |" % (step["name"], step.get("state"), _fmt(step.get("seconds"), 0),
+                                              "是" if step.get("required", True) else "否"))
+    if s["checks"]:
+        lines += ["", "## 检查", ""] + ["- %s %s" % ("✅" if c["ok"] else "❌", c["check"]) for c in s["checks"]]
+    env = s.get("env") or {}
+    if env:
+        gpu, torch, pk = env.get("gpu") or {}, env.get("torch") or {}, env.get("packages") or {}
+        lines += ["", "## 环境", "",
+                  "- GPU：%s，%s GB；驱动 %s" % (gpu.get("name"), gpu.get("total_gb"), (env.get("driver") or {}).get("driver")),
+                  "- torch %s（CUDA %s，后端 %s），transformers %s，trl %s，peft %s" % (
+                      torch.get("version"), torch.get("cuda_runtime"), (env.get("env") or {}).get("torch_backend"),
+                      pk.get("transformers"), pk.get("trl"), pk.get("peft")),
+                  "- 模型：%s@%s" % ((env.get("model") or {}).get("repo"), ((env.get("model") or {}).get("revision") or "")[:12])]
+    if s.get("pytest"):
+        p = s["pytest"]
+        lines += ["", "## CPU 测试（VM 上，GPU 已隐藏）", "",
+                  "%d 项：%d 通过，%d 失败，%d 错误，%d 跳过（%s 秒）" % (p["tests"], p["passed"], p["failures"], p["errors"],
+                                                          p["skipped"], p["seconds"])]
+        lines += ["- 失败：" + x for x in p["failed_tests"]]
+    cal = s.get("calibration")
+    if cal:
+        lines += ["", "## v5 几何证伪校准（默认阈值）", "", "| 关系 | 默认开启 | 阈值 | train 认证正例 | train 误杀 | val 误杀 | 罗列断言被证伪比例 |",
+                  "|---|---|---|---|---|---|---|"]
+        for name, r in cal["relations"].items():
+            lines.append("| %s | %s | %s | %s | %s | %s | %s |" % (name, "是" if r["enabled_by_default"] else "否", r["threshold"],
+                                                                r["certified_train"], r["false_refutations_train"],
+                                                                _fmt(r["false_refutations_validation"]),
+                                                                _fmt(r["spray_refuted_fraction"])))
+        lines += ["", "| 罗列探针 | 题数 | v4 均值 | v5 均值 | v4 高于诚实读一半 | v5 高于诚实读一半 |", "|---|---|---|---|---|---|"]
+        for name, a in cal["attacks"].items():
+            lines.append("| %s | %d | %s | %s | %s | %s |" % (name, a["rows"], _fmt(a["mean_v4"]), _fmt(a["mean_v5"]),
+                                                          _fmt(a["share_beating_honest_half_v4"]),
+                                                          _fmt(a["share_beating_honest_half_v5"])))
+    probe = s.get("gpu_probe")
+    if probe:
+        par, pt, gen, vit = probe.get("parameters") or {}, probe.get("prompt_tokens") or {}, probe.get("generation") or {}, probe.get("vit") or {}
+        lines += ["", "## GPU 探针（真实 3B 权重）", "",
+                  "- 可训练参数 %s（LoRA 目标模块 %s 个），视觉参数 %s 全部冻结：%s" % (
+                      par.get("trainable_parameters"), par.get("lora_target_modules"), par.get("vision_parameters"),
+                      par.get("vision_frozen")),
+                  "- 提示 token（含图像）：train 最大 %s / p95 %s，val 最大 %s；预算 %s，超预算 %d 条" % (
+                      (pt.get("train") or {}).get("max"), (pt.get("train") or {}).get("p95"),
+                      (pt.get("validation") or {}).get("max"), pt.get("budget"), len(pt.get("train_over_budget") or []))]
+        for size, r in sorted((probe.get("micro_batch") or {}).items(), key=lambda kv: -int(kv[0])):
+            lines.append("- 微批 %s（最长提示 + %s token 补全，前向+反向）：%s" % (
+                size, probe.get("completion_len"), "OOM" if r.get("oom") else "峰值 %s GB，%s 秒，梯度有限 %s" % (
+                    r.get("peak_gb"), r.get("seconds"), r.get("grads_finite"))))
+        if gen:
+            lines.append("- HF 生成：%s 条 × %s token，%s 秒，%s token/s，峰值 %s GB" % (
+                gen.get("sequences"), gen.get("new_tokens"), gen.get("seconds"), gen.get("tokens_per_second"), gen.get("peak_gb")))
+        if vit:
+            lines.append("- ViT 占一次前向的 %s；缓存与不缓存的补全 log-prob 最大差 %s（等价：%s）" % (
+                vit.get("vit_fraction_of_forward"), vit.get("cache_logprob_max_abs_diff"), vit.get("equivalent")))
+    v0 = s.get("v0_probe")
+    if v0:
+        lines += ["", "## V0 探针（%d 道 validation，贪心解码；工程信号，不是评测结果）" % v0["n"], "",
+                  "| 条件 | 协议合规 | 格式奖励 | 答案正确 | 补全长度 p50 / p90 / max | 触达长度上限 |", "|---|---|---|---|---|---|"]
+        for cond, label in [("with_image", "有图"), ("blind", "无图")]:
+            x = v0.get(cond) or {}
+            lines.append("| %s | %s | %s | %s | %s / %s / %s | %s |" % (
+                label, _fmt(x.get("protocol_ok_rate")), _fmt(x.get("format_rate")), _fmt(x.get("answer_accuracy")),
+                x.get("completion_tokens_p50"), x.get("completion_tokens_p90"), x.get("completion_tokens_max"),
+                _fmt(x.get("budget_exhausted_rate"))))
+    rows = []
+    for name, run in sorted((s.get("smoke") or {}).items()):
+        rows.append((name, run))
+    for name in ["smoke_full_hf", "smoke_full_vllm", "resume"]:
+        if s.get(name):
+            rows.append((name, s[name]))
+    if rows:
+        lines += ["", "## GRPO 冒烟", "", "| 运行 | 步数 | rollout 数 | 步时中位数（秒） | 峰值显存（GB） | 答案正确 | 格式 | 每条断言数 |",
+                  "|---|---|---|---|---|---|---|---|"]
+        for name, run in rows:
+            train, ro = run.get("train") or {}, run.get("rollouts") or {}
+            lines.append("| %s | %s | %s | %s | %s | %s | %s | %s |" % (
+                name, train.get("global_step"), ro.get("rollouts"), _fmt(run.get("step_time_median"), 1),
+                _fmt(train.get("peak_gpu_memory_gb"), 1), _fmt(ro.get("answer_acc")), _fmt(ro.get("format_rate")),
+                _fmt(ro.get("claims_per_completion"), 2)))
+    runtime = s.get("frozen_runtime")
+    if runtime:
+        lines += ["", "## 冻结的运行时决策（`frozen_runtime.json`）", "",
+                  "- 生成后端 %s；微批 %s；ViT 缓存 %s；梯度检查点 %s" % (
+                      runtime["generation_backend"], runtime["per_device_train_batch_size"], runtime["vision_cache"],
+                      runtime["gradient_checkpointing"])] + ["- 理由：" + r for r in runtime.get("rationale", [])]
+    failed = [x for x in s["steps"] if x.get("state") not in ("passed", "pending")]
+    if failed:
+        lines += ["", "## 未通过的步骤（日志末尾）", ""]
+        for step in failed:
+            lines += ["### %s（%s）" % (step["name"], step.get("state")), "", "```text", (step.get("log_tail") or step.get("reason") or "")[-3000:], "```", ""]
+    return "\n".join(lines) + "\n"
+
+
+def minimal(out_dir):
+    """Fallback when the full summary cannot run: status-only summary."""
+    out = Path(out_dir)
+    status = _load(out / "status.json") or {}
+    summary = {"run_id": status.get("run_id"), "task": status.get("task"), "steps": status.get("steps", []),
+               "error": status.get("error"), "checks": [], "overall": "failed", "minimal": True}
+    write_json(out / "summary.json", summary)
+    (out / "summary.md").write_text(markdown(summary), encoding="utf-8")
+    return summary
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--out-dir", required=True)
+    args = parser.parse_args(argv)
+    summary = build(args.out_dir)
+    write_json(Path(args.out_dir) / "summary.json", summary)
+    (Path(args.out_dir) / "summary.md").write_text(markdown(summary), encoding="utf-8")
+    print("summary:", summary["overall"])
+
+
+if __name__ == "__main__":
+    main()
