@@ -1,20 +1,20 @@
 # 项目三：多模态几何推理的视觉依赖与稀疏感知奖励
 
-基于 Qwen2.5-VL-3B-Instruct 的几何图形事实感知项目：先用手工/半自动认证的
-几何事实做感知 SFT，再用稀疏、可解释的感知奖励做 GRPO，研究“视觉信息是否被
-真正使用”。本仓库是可复现的数据、配置、训练入口与审计证据集合；**尚未有
-GPU 验收后的训练产物**。
+基于 Qwen2.5-VL-3B-Instruct 的几何图形事实感知项目：用经过认证的部分几何事实
+构造可证伪的感知奖励做 GRPO，并用对照组和反事实评测研究“视觉信息是否被真正使用”。
+本仓库是可复现的数据、配置、训练入口与审计证据集合；**尚未有 GPU 验收后的训练产物**。
+执行计划与决策见 [docs/plan/](docs/plan/执行计划_20261108.md)。
 
 ## 当前状态
 
-| 项目 | 事实（2026-11-08） |
+| 项目 | 事实（2026-11-09） |
 | --- | --- |
 | 批准数据 | 609 条训练事实（458 幅图）/ 82 条 validation 事实（77 幅图），部分认证事实，不是全图金标 |
 | 模型 | `Qwen/Qwen2.5-VL-3B-Instruct` revision `66285546d2b821cf421d4f5eb2576359d3770cd3` |
-| 训练阶段 | 已实现感知 SFT 入口与稀疏 GRPO 入口；`configs/` 只有 2 步工程 smoke |
-| GPU | 未验收：没有真实 VL 前后向、视觉 rollout、显存/恢复记录 |
-| 测试 | Python 3.11.4 下 74 passed / 2 failed（缺 `math_verify`、`trl`，见 [docs/verification.md](docs/verification.md)） |
-| 历史 | 2026-10-24 迁移（Python 3.12 时代记录 15 passed）、2026-11-08 清理与结构整理，均记录在 [CHANGELOG.md](CHANGELOG.md) |
+| 训练阶段 | 协议 v3 统一 GRPO 入口（`scripts/training/train_rl.py`，组别见 `configs/experiments/`）已实现，并在 CPU 上用 tiny 模型端到端验证；旧的感知 SFT → 稀疏 GRPO 入口保留为历史 |
+| GPU | 未验收：没有真实 VL 前后向、视觉 rollout、显存/恢复记录（执行计划 S2 预检） |
+| 测试 | Python 3.12.13 沙箱下 172 passed / 2 failed（两项需要本机 `data/`，见 [docs/verification.md](docs/verification.md)） |
+| 历史 | 2026-10-24 迁移、2026-11-08 清理与结构整理、2026-11-09 S1，均记录在 [CHANGELOG.md](CHANGELOG.md) |
 
 “已实现代码”“CPU 测试通过”“真实 GPU 跑通”“能力提升”是四种不同结论，报告
 时必须分开陈述。2 步 smoke 或 ZIP 完整性检查不代表训练成功。
@@ -34,11 +34,11 @@ GPU 验收后的训练产物**。
 
 ```bash
 python tools/verify_migration.py --full   # 离线完整性：manifest、release、逐行批准、图片 SHA
-python -m pytest -q                        # CPU 测试（当前基线 68/2，两处为环境缺包）
+python -m pytest -q                        # CPU 测试（环境见 requirements/dev-cpu.txt）
 python tools/check_links.py                # 当前文档相对链接
 ```
 
-`python` 需要 3.10+（本机实测 3.11.4）。上述通过只证明离线/CPU 性质，不证明
+`python` 需要 3.10+（CPU 测试环境实测 3.12.13）。上述通过只证明离线/CPU 性质，不证明
 CUDA、模型前后向或新环境依赖已安装。
 
 ## 目录结构
@@ -47,13 +47,13 @@ CUDA、模型前后向或新环境依赖已安装。
 .
 ├── README.md / AGENTS.md / CHANGELOG.md
 ├── pyproject.toml / .editorconfig / .gitignore
-├── configs/       当前执行配置（SFT smoke、稀疏 GRPO smoke）
+├── configs/       当前执行配置：experiments/（协议 v3 正式实验）+ 旧入口 smoke
 ├── data/          冻结的数据载荷（约 1.4 GB，不进 git，见 data/README.md）
 ├── docs/          当前文档 + guides/ + 历史归档 blueprints/、migration/
 ├── reports/       只追加的实验与审核证据（布局冻结）
 ├── requirements/  环境记录（非锁文件）
 ├── scripts/       data/ training/ reporting/ migration/ common/ 分组脚本
-├── src/           data/ evaluation/ losses/ teachers/ training/ 库代码
+├── src/           data/ evaluation/ losses/ rewards/ teachers/ training/ 库代码
 ├── tests/         CPU 测试
 └── tools/         verify_migration.py / build_migration_manifest.py / check_links.py
 ```
@@ -74,16 +74,16 @@ CUDA、模型前后向或新环境依赖已安装。
 ## 训练入口
 
 ```bash
-# 感知 SFT（需要已验收的 GPU 环境；当前未执行）
-python -m scripts.training.train_project3 --config configs/project3_fact_sft_smoke.json
-
-# 稀疏 GRPO（从 SFT merged 权重起跑，依赖 merged 权重身份清单）
-python -m scripts.training.train_project3 --config configs/project3_sparse_v4_grpo_smoke.json
+# 协议 v3 统一入口：所有实验组共用，组别与种子登记在 configs/experiments/arms.json
+python -m scripts.training.train_rl --arm rl_v5 --seed 1
 ```
 
-环境安装、输出目录、诊断脚本与 GPU 验收清单见
-[docs/training.md](docs/training.md)。稀疏 GRPO 的数学检查通过子进程调用
-`math_verify`（未列入 requirements 快照，属既有事实）。
+组别：`rl_ans`（答案 + 格式）、`rl_v4`（原稀疏 F1，消融）、`rl_v5`（可证伪感知奖励，主方法）、
+`rl_v5_placebo`（事实取自另一张图，对照）、`rl_blind`（训练时不给图，对照）。输出目录、运行身份与
+恢复规则见 [docs/training.md](docs/training.md)。
+
+旧入口 `python -m scripts.training.train_project3 --config configs/project3_*.json`（感知 SFT → 稀疏 GRPO）
+保留为历史，只修复了 LoRA 误入 ViT 与 transformers 5 兼容两处缺陷。
 
 ## 历史与溯源
 

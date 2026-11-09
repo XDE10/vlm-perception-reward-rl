@@ -56,6 +56,28 @@ python -m pytest -q
 把结果写成“全部通过”。项目文档记载的 2026-10-24 验收为 Python 3.12 下
 15 passed，本次未在 3.12 复验。
 
+### 2026-11-09（S1，协议 v3 统一入口）
+
+在没有 `data/` 的 Linux 沙箱中，用 Python 3.12.13 和
+[requirements/dev-cpu.txt](../requirements/dev-cpu.txt) 实测：
+
+```text
+python -m pytest -q
+172 passed, 2 failed
+```
+
+| 失败的测试 | 原因 |
+| --- | --- |
+| `tests/test_delivery_artifacts.py::test_offline_demo_and_cpu_environment` | 沙箱没有 `data/synthesis_mock/cache.jsonl`（`data/` 不进 git） |
+| `tests/test_repo_layout.py::test_configs_use_relative_paths_and_pinned_revision` | 沙箱没有 `data/portable_release/manifest.json` |
+
+两项都依赖本机的 `data/`，不是代码回归；装好 `trl` 与 `math_verify` 后，原先因缺包失败的两项已通过。
+新增测试覆盖：逐条断言解析、几何证伪（含真实图 1670 的坐标）、v5 奖励与罗列攻击、答案校验进程池、
+协议 v3（含经 TRL 渲染后提示逐字一致）、语言 LoRA 与 ViT 冻结、旧入口修复回归、组别配置差异、
+数据门控与安慰剂配对、奖励汇总与日志、ViT 缓存等价性、tiny Qwen2.5-VL 上的两步 GRPO 端到端与断点恢复、
+v5 校准脚本，以及 manifest 的 `--git-tracked-only` 模式。依赖固定 revision processor 文件的测试在找不到
+这些文件时跳过（设置 `HF_HOME` 或 `P3_QWEN_PROCESSOR_DIR` 指向缓存）。
+
 测试覆盖：数据准入与白名单、几何序列化、split 守卫、感知奖励与文本蕴含、
 几何解析/评分、tokenizer 审计、交付物与 funnel 脚本，以及
 [tests/test_repo_layout.py](../tests/test_repo_layout.py) 的仓库结构回归

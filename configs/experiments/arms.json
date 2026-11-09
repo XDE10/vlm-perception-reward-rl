@@ -1,0 +1,21 @@
+{
+  "schema": "rl-arms-v1",
+  "allowed_overrides": ["perception_reward", "perception_weight", "train_with_image", "metadata", "scale_rewards"],
+  "arms": {
+    "rl_ans": {"perception_reward": "none", "perception_weight": 0.0, "train_with_image": true, "metadata": "own"},
+    "rl_v4": {"perception_reward": "v4", "perception_weight": 0.2, "train_with_image": true, "metadata": "own"},
+    "rl_v5": {"perception_reward": "v5", "perception_weight": 0.1, "train_with_image": true, "metadata": "own"},
+    "rl_v5_placebo": {"perception_reward": "v5", "perception_weight": 0.1, "train_with_image": true, "metadata": "placebo"},
+    "rl_blind": {"perception_reward": "none", "perception_weight": 0.0, "train_with_image": false, "metadata": "own"},
+    "rl_v5_groupnorm": {"perception_reward": "v5", "perception_weight": 0.1, "train_with_image": true, "metadata": "own", "scale_rewards": "group"}
+  },
+  "seeds": {
+    "rl_ans": [1, 2, 3],
+    "rl_v4": [1, 2],
+    "rl_v5": [1, 2, 3],
+    "rl_v5_placebo": [1, 2],
+    "rl_blind": [1, 2],
+    "rl_v5_groupnorm": [1, 2]
+  },
+  "optional_arms": ["rl_v5_groupnorm"]
+}

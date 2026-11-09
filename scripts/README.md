@@ -25,6 +25,7 @@
 | 脚本 | 用途 | 状态 | 典型入口 |
 | --- | --- | --- | --- |
 | `audit_project3_overlap.py` | 本地 CPU 数据关联/重叠审计，写出 `reports/project3_cpu_20261023/`；可选依赖见 `requirements/project3-cpu.txt` | 主线 | `python -m scripts.data.audit_project3_overlap`（先运行 `python scripts/data/prepare_project3_sources.py`） |
+| `calibrate_perception_v5.py` | 只读：在认证正例上扫描 v5 几何证伪阈值（误杀数与对罗列断言的证伪率），并对比 v4/v5 在罗列探针上的奖励；输出 JSON 与 Markdown | 主线 | `python -m scripts.data.calibrate_perception_v5 --output reports/perception_v5_calibration_<日期>` |
 | `build_geometry_funnel_v8.py` | 只读：几何出口互斥分类与全池图像重叠统计；`classify` 被 `tests/test_geometry_funnel.py` 直接导入 | 主线 | `python -m scripts.data.build_geometry_funnel_v8` |
 | `build_project3_all_split_candidates.py` | 生成全量唯一匹配 split 候选并隔离模型文本（train/诊断分离） | 历史归档 | `python -m scripts.data.build_project3_all_split_candidates` |
 | `build_project3_perception_preview.py` | 冻结 200 题原型的增量预览补充；输出已存在时拒绝覆盖 | 历史归档 | `python -m scripts.data.build_project3_perception_preview` |
@@ -43,7 +44,8 @@
 
 | 脚本 | 用途 | 状态 | 典型入口 |
 | --- | --- | --- | --- |
-| `train_project3.py` | 项目三训练入口，委托 `src.training.approved_hf.cli(expected_vision=True)` | 主线 | `python -m scripts.training.train_project3 --config configs/...` |
+| `train_rl.py` | 统一 GRPO 入口（协议 v3，所有实验组共用）：`configs/experiments/` 基础配置 + 组别 + 种子，委托 `src.training.rl_entry.run` | 主线 | `python -m scripts.training.train_rl --arm rl_v5 --seed 1` |
+| `train_project3.py` | 旧训练入口（感知 SFT → 稀疏 GRPO），委托 `src.training.approved_hf.cli(expected_vision=True)`；2026-11-09 只修复 LoRA 误入 ViT 与 transformers 5 兼容，新实验不再使用 | 历史归档 | `python -m scripts.training.train_project3 --config configs/...` |
 | `diagnose_project3_vision.py` | 同题原图/黑图/无图/遮挡成对视觉依赖诊断 | 主线 | `python -m scripts.training.diagnose_project3_vision` |
 | `configure_topup_training.py` | 为已批准 V6 行生成版本化 smoke 配置（明确不是 GPU 验收） | 历史归档 | `python -m scripts.training.configure_topup_training` |
 | `write_approved_training_configs.py` | 写入初始 A100 smoke 配置，不下载权重、不执行训练 | 历史归档 | `python -m scripts.training.write_approved_training_configs` |
