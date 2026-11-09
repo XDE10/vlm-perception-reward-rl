@@ -36,8 +36,8 @@
   },
   {
    "path": "CHANGELOG.md",
-   "bytes": 8278,
-   "sha256": "604c1e71394cb6a4106528721146f2f54d2c8a0f4e5a3c2b1a4236a9c707a928",
+   "bytes": 8474,
+   "sha256": "160f48268fce7999880ded18171d622945fb945d7fd5bb0a8a0f2181ec00b563",
    "source_sha256": "dbded3caf83f4f16b506d3dc18f8ed0229cd90032081039f38c28fa58306dc50",
    "changed_for_portability": true,
    "updated_in": "2026-11-09_stage2.1"
@@ -20019,11 +20019,12 @@
   },
   {
    "path": "docs/plan/阶段报告_S2.1_20261109.md",
-   "bytes": 8276,
-   "sha256": "2912cde682b1513a456bc653ab0b2c6e8a577c5fe1580bc298bcbc80be4cc574",
+   "bytes": 8654,
+   "sha256": "71bc6b2f38711947f4bb850d21a571f73f008a8451491a65c32e3e3e8b9a63d8",
    "source_sha256": "2912cde682b1513a456bc653ab0b2c6e8a577c5fe1580bc298bcbc80be4cc574",
-   "changed_for_portability": false,
-   "added_in": "2026-11-09_stage2.1"
+   "changed_for_portability": true,
+   "added_in": "2026-11-09_stage2.1",
+   "updated_in": "2026-11-09_stage2.1"
   },
   {
    "path": "docs/plan/阶段报告_S2_20261110.md",
@@ -20051,8 +20052,8 @@
   },
   {
    "path": "docs/verification.md",
-   "bytes": 8578,
-   "sha256": "557754e198e10dac6da7800af69303dc5ac0ba3b875066d4f30ebb6b0f450347",
+   "bytes": 8575,
+   "sha256": "1ae6f23de593f133546d01d5077a04baf5a568aeda230567f1fb47906cca2233",
    "source_sha256": "dafa2e004f067fa92df2b610e7a800d35c350c32016b9dc2035f9a25913dc093",
    "changed_for_portability": true,
    "updated_in": "2026-11-09_stage2.1"
@@ -23760,7 +23761,7 @@
     {
      "path": "CHANGELOG.md",
      "previous_sha256": "050c923ba1c86f1b255f18a1ee91ad5d984e099bc8b097d6d4341609a7d40d4d",
-     "current_sha256": "604c1e71394cb6a4106528721146f2f54d2c8a0f4e5a3c2b1a4236a9c707a928"
+     "current_sha256": "160f48268fce7999880ded18171d622945fb945d7fd5bb0a8a0f2181ec00b563"
     },
     {
      "path": "colab/README.md",
@@ -23795,12 +23796,12 @@
     {
      "path": "docs/plan/阶段报告_S2.1_20261109.md",
      "previous_sha256": null,
-     "current_sha256": "2912cde682b1513a456bc653ab0b2c6e8a577c5fe1580bc298bcbc80be4cc574"
+     "current_sha256": "71bc6b2f38711947f4bb850d21a571f73f008a8451491a65c32e3e3e8b9a63d8"
     },
     {
      "path": "docs/verification.md",
      "previous_sha256": "bee1260579192fa07644180cbbcf6f08d606e771ed4a7647b81526d5450b9299",
-     "current_sha256": "557754e198e10dac6da7800af69303dc5ac0ba3b875066d4f30ebb6b0f450347"
+     "current_sha256": "1ae6f23de593f133546d01d5077a04baf5a568aeda230567f1fb47906cca2233"
     },
     {
      "path": "scripts/README.md",
