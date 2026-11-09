@@ -1,0 +1,76 @@
+{
+  "schema": "p3-frozen-runtime-v1",
+  "generation_backend": "vllm",
+  "vllm_gpu_memory_utilization": 0.3,
+  "vllm_max_model_length": 4096,
+  "vision_cache": false,
+  "per_device_train_batch_size": 8,
+  "gradient_checkpointing": true,
+  "gpu": {
+    "name": "NVIDIA A100-SXM4-40GB",
+    "total_gb": 42.41
+  },
+  "torch_backend": "cu130",
+  "env_lock_sha256": "d009cd2e1a7848a1e21326b601d8f849fbf03052b34d07d808afe9c8bb065d2e",
+  "measured": {
+    "micro_batch": {
+      "8": {
+        "peak_gb": 18.04,
+        "seconds": 14.11,
+        "loss": 13.670767784118652,
+        "grads_finite": true,
+        "nonzero_grad_tensors": 252,
+        "trainable_tensors": 504
+      },
+      "4": {
+        "peak_gb": 13.09,
+        "seconds": 4.86,
+        "loss": 13.62385368347168,
+        "grads_finite": true,
+        "nonzero_grad_tensors": 252,
+        "trainable_tensors": 504
+      },
+      "2": {
+        "peak_gb": 10.43,
+        "seconds": 2.6,
+        "loss": 13.647016525268555,
+        "grads_finite": true,
+        "nonzero_grad_tensors": 252,
+        "trainable_tensors": 504
+      }
+    },
+    "hf_step_seconds": 127.45,
+    "vllm_step_seconds": 47.07,
+    "hf_peak_gb": 16.360390144,
+    "vllm_peak_gb": 23.092868608,
+    "vit": {
+      "vit_seconds": 0.9068,
+      "forward_seconds": 2.2441,
+      "vit_fraction_of_forward": 0.4041,
+      "batched_vs_single_image_max_abs_diff": 2.513671875,
+      "batched_vs_single_image_max_rel_diff": 0.035212,
+      "image_feature_max_abs": 34.5,
+      "cache_logprob_max_abs_diff": 0.40537071228027344,
+      "cache_logprob_mean_abs_diff": 0.027922,
+      "equivalent": false,
+      "cache_hits": 13,
+      "cache_misses": 3
+    },
+    "generation_probe": {
+      "sequences": 64,
+      "new_tokens": 1024,
+      "seconds": 127.16,
+      "tokens_per_second": 515.4,
+      "peak_gb": 24.06,
+      "prompt_width": 1153
+    }
+  },
+  "rationale": [
+    "micro-batch 8: measured fwd+bwd peak 18.0 GB <= 80% of 42.4 GB",
+    "generation vLLM: smoke passed, 47.1s/step vs HF 127.5s/step (<= 0.7x)",
+    "frozen-ViT cache off: ViT is 0.4041 of a forward pass, cached-vs-uncached max |dlogp| = 0.40537071228027344"
+  ],
+  "decided_utc": "2026-11-09T12:56:34Z",
+  "source": "preflight preflight-20261109T122305Z-e6cd",
+  "notes": "Accepted for S4 in docs/plan/阶段报告_S2_验收_20261109.md (D43). Copied unchanged from results/preflight-20261109T122305Z-e6cd (commit 7afad4a42150); the earlier passing run preflight-20261109T100727Z-eabd (commit a189e4a53a92) froze the same decisions. Valid on A100 40/80 GB and H100 only; the vLLM importance-sampling mode is an algorithm setting in rl_v3.json (D41), not here."
+}

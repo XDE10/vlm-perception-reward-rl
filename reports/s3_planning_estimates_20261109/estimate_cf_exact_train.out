@@ -1,0 +1,16 @@
+wrapper rows                                  2101  (100.0% of train rows; x601 = 601)
+joined                                        2097  (99.8% of train rows; x601 = 600)
+VN                                            1427  (67.9% of train rows; x601 = 408)
+CF strict (structure)                          521  (24.8% of train rows; x601 = 149)
+CF strict, degree 1                            370  (17.6% of train rows; x601 = 106)
+CF strict + exact gold                         312  (14.9% of train rows; x601 = 89)
+numeric length labels to edit                  654  (31.1% of train rows; x601 = 187)
+CF strict, degree 2                            151  (7.2% of train rows; x601 = 43)
+not joined (excluded)                            4  (0.2% of train rows; x601 = 1)
+excluded from CF after VN:
+   length label is an expression                                 415
+   angle label is not a plain number                             301
+   rounding requested                                            209
+   goal is not a length or area                                  100
+   no numeric length label                                        66
+   other numeric diagram value (area/perimeter/radius/...)        24

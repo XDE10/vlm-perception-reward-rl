@@ -10,6 +10,7 @@
 | --- | --- |
 | `experiments/rl_v3.json` | 协议 v3 GRPO 的基础配置：固定模型 revision、数据入口、LoRA、训练预算、奖励权重、v5 几何阈值 |
 | `experiments/arms.json` | 实验组覆盖表与种子登记。组别只能覆盖 `allowed_overrides` 中的字段（感知奖励类型与权重、训练时是否有图、元数据来源、奖励标准化方式） |
+| `experiments/runtime_frozen_20261109.json` | 第三次预检（`preflight-20261109T122305Z-e6cd`）冻结的运行时：vLLM 生成、微批 8、ViT 缓存关闭、梯度检查点开启，附测量值与来源。只含不改变算法的字段；只用于 A100 40/80 GB 和 H100（D43）。vLLM 重要性采样的设置属于算法，写在 `rl_v3.json`（D41） |
 
 运行方式：`python -m scripts.training.train_rl --arm <组名> --seed <种子>`。入口把基础配置、
 组别和种子解析成一份完整配置，并把哈希写进运行身份文件；`tests/test_experiment_configs.py`

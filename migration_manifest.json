@@ -44,11 +44,11 @@
   },
   {
    "path": "CHANGELOG.md",
-   "bytes": 11189,
-   "sha256": "6f6a25e87bb89d65ef1944bc1479ea1b9e9239e570c63407d040bb42e1ad1e35",
+   "bytes": 12703,
+   "sha256": "9586ae5370643450203d81276b05919bd27eb9987d512c6b601c1d435c8031d9",
    "source_sha256": "dbded3caf83f4f16b506d3dc18f8ed0229cd90032081039f38c28fa58306dc50",
    "changed_for_portability": true,
-   "updated_in": "2026-11-09_stage2.3"
+   "updated_in": "2026-11-09_stage3_design"
   },
   {
    "path": "README.md",
@@ -103,11 +103,11 @@
   },
   {
    "path": "configs/README.md",
-   "bytes": 2349,
-   "sha256": "4e6ed65c9137c7980d7b22c7be12c477aa0ede6450045cd84cbecca1fb1bbb18",
+   "bytes": 2715,
+   "sha256": "3863c05d69ffb2a359465e60ce7f4b76a1ee4181b2c8ace326e1e271208ee913",
    "source_sha256": "b8d6c44d1b44f128f8af2ff8ae4f7ab31dd48efaa69c665542bfb6cc26ba1709",
    "changed_for_portability": true,
-   "updated_in": "2026-11-09_stage1"
+   "updated_in": "2026-11-09_stage3_design"
   },
   {
    "path": "configs/experiments/arms.json",
@@ -119,12 +119,20 @@
   },
   {
    "path": "configs/experiments/rl_v3.json",
-   "bytes": 1894,
-   "sha256": "ed917d45ccc8a72141da325cd2538c9b247e6d243769d2d449553316f9e38ffc",
+   "bytes": 1995,
+   "sha256": "4d0669ffce3c3e8d8224cc7f970d66c3d58d8220313e3e79f7ebd8d1c7e9bc04",
    "source_sha256": "0667834ec5885bcd97677d355f38cb42ad5c93c4b87d85e1b369b31fbb3507c9",
    "changed_for_portability": true,
    "added_in": "2026-11-09_stage1",
-   "updated_in": "2026-11-09_stage2.2"
+   "updated_in": "2026-11-09_stage3_design"
+  },
+  {
+   "path": "configs/experiments/runtime_frozen_20261109.json",
+   "bytes": 2659,
+   "sha256": "00dde114706608f25047844304527b865ec528dca1bede839c2d878376c14ac3",
+   "source_sha256": "00dde114706608f25047844304527b865ec528dca1bede839c2d878376c14ac3",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_design"
   },
   {
    "path": "configs/project3_fact_sft_smoke.json",
@@ -19833,11 +19841,11 @@
   },
   {
    "path": "docs/README.md",
-   "bytes": 3157,
-   "sha256": "121e540e723fbbf6b9a1677f5aa8963de9d7b1ca752a8f8b198289853c8a75b0",
+   "bytes": 3585,
+   "sha256": "777123a0c29f610783a2cc1dc1c6660288f5009cea09706e15a785d5f24d04ae",
    "source_sha256": "864ec78b4f6a1b3268680a9c2c0e95c21550b906d8d3fe3f491f0b1c9482b3e2",
    "changed_for_portability": true,
-   "updated_in": "2026-11-09_stage2.3"
+   "updated_in": "2026-11-09_stage3_design"
   },
   {
    "path": "docs/architecture.md",
@@ -20002,13 +20010,21 @@
    "changed_for_portability": false
   },
   {
+   "path": "docs/plan/S3设计_20261109.md",
+   "bytes": 16603,
+   "sha256": "0a0058a24354fbc8b655595d66b47e29be6956d7ddad476bc4e407945c2d7811",
+   "source_sha256": "0a0058a24354fbc8b655595d66b47e29be6956d7ddad476bc4e407945c2d7811",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_design"
+  },
+  {
    "path": "docs/plan/决策记录.md",
-   "bytes": 22585,
-   "sha256": "fd6f6c5efe055220de468caeada752925dcad3778bed609d90eb527130b1ba97",
+   "bytes": 28176,
+   "sha256": "82b1f257a16d41f90cf66d26793f433ff5513f9af0730a85cd6cf68ae3dfeb72",
    "source_sha256": "6270abf217d11dc49d0ffe5901cd3faa58aa3d56e47cfa8506fb765e952e9790",
    "changed_for_portability": true,
    "added_in": "2026-11-09_stage1",
-   "updated_in": "2026-11-09_stage2.3"
+   "updated_in": "2026-11-09_stage3_design"
   },
   {
    "path": "docs/plan/执行计划_20261108.md",
@@ -20061,6 +20077,14 @@
    "added_in": "2026-11-10_stage2"
   },
   {
+   "path": "docs/plan/阶段报告_S2_验收_20261109.md",
+   "bytes": 12281,
+   "sha256": "59bf486c88d9fa1674300ed5ec2414080d81cfc0bde31d991ceb827cae1f7f3c",
+   "source_sha256": "59bf486c88d9fa1674300ed5ec2414080d81cfc0bde31d991ceb827cae1f7f3c",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_design"
+  },
+  {
    "path": "docs/repo_layout.md",
    "bytes": 5543,
    "sha256": "4bc91b4ba344aaa6029ccaa2d927f6eca813ba6ebcd8f5f8b5bfa0430b199f26",
@@ -20078,11 +20102,11 @@
   },
   {
    "path": "docs/verification.md",
-   "bytes": 10887,
-   "sha256": "0b88f5143d19409f1aae697ea06333f53a260894f2ebc77bfff9e60185f0e3b7",
+   "bytes": 11990,
+   "sha256": "b1560fa5676435db616e558701f406841f1b3983b50512a3a6804100bbafa257",
    "source_sha256": "dafa2e004f067fa92df2b610e7a800d35c350c32016b9dc2035f9a25913dc093",
    "changed_for_portability": true,
-   "updated_in": "2026-11-09_stage2.3"
+   "updated_in": "2026-11-09_stage3_design"
   },
   {
    "path": "pyproject.toml",
@@ -20093,10 +20117,11 @@
   },
   {
    "path": "reports/README.md",
-   "bytes": 2187,
-   "sha256": "aba3ef9af9df316dea07a1cf6d11972f6969e61063e1a0b55b7aab42761f27f9",
+   "bytes": 2468,
+   "sha256": "c3f27185a599eeed454f1ddecd82f97249d8a0261ab87741f0fa81a0b37a0409",
    "source_sha256": "aba3ef9af9df316dea07a1cf6d11972f6969e61063e1a0b55b7aab42761f27f9",
-   "changed_for_portability": false
+   "changed_for_portability": true,
+   "updated_in": "2026-11-09_stage3_design"
   },
   {
    "path": "reports/artifact_inventory.json",
@@ -20111,6 +20136,30 @@
    "sha256": "fb57ffd4129260b4b567f7566c8642b5ba22b0718a66d69fc5e52819b4ea76ea",
    "source_sha256": "fb57ffd4129260b4b567f7566c8642b5ba22b0718a66d69fc5e52819b4ea76ea",
    "changed_for_portability": false
+  },
+  {
+   "path": "reports/certified_fact_errata_20261109/README.md",
+   "bytes": 4322,
+   "sha256": "baea2ddc3636ecdade9eb0374a45def12709709eec299e56fd521d25b3204ef4",
+   "source_sha256": "baea2ddc3636ecdade9eb0374a45def12709709eec299e56fd521d25b3204ef4",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_design"
+  },
+  {
+   "path": "reports/certified_fact_errata_20261109/build_errata.py",
+   "bytes": 8055,
+   "sha256": "9e385cd3a5e6bbbeda2832362f749f2b811508185265fd2d7205cd40575fbb0d",
+   "source_sha256": "9e385cd3a5e6bbbeda2832362f749f2b811508185265fd2d7205cd40575fbb0d",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_design"
+  },
+  {
+   "path": "reports/certified_fact_errata_20261109/errata.json",
+   "bytes": 13182,
+   "sha256": "aa2a140dcfab07bab74625c595b826878d553cde687dcad1d9d0223aaa64d50d",
+   "source_sha256": "aa2a140dcfab07bab74625c595b826878d553cde687dcad1d9d0223aaa64d50d",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_design"
   },
   {
    "path": "reports/completion_audit.json",
@@ -21688,6 +21737,94 @@
    "changed_for_portability": false
   },
   {
+   "path": "reports/s3_planning_estimates_20261109/README.md",
+   "bytes": 2368,
+   "sha256": "231f06425f0c3bdbab4800d3122930bebaaab0278016ceac257770e608b849e9",
+   "source_sha256": "231f06425f0c3bdbab4800d3122930bebaaab0278016ceac257770e608b849e9",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_design"
+  },
+  {
+   "path": "reports/s3_planning_estimates_20261109/cfgeo_prototype_train.out",
+   "bytes": 870,
+   "sha256": "8197df2a1912adcb8ff7abbd43e9407edf3d6b5aa425262868e95050c048b48f",
+   "source_sha256": "8197df2a1912adcb8ff7abbd43e9407edf3d6b5aa425262868e95050c048b48f",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_design"
+  },
+  {
+   "path": "reports/s3_planning_estimates_20261109/cfgeo_prototype_train.py",
+   "bytes": 6078,
+   "sha256": "f677c4ee2fe367341b406ce5fdb81d899181c8817586bc5327e532502719c492",
+   "source_sha256": "f677c4ee2fe367341b406ce5fdb81d899181c8817586bc5327e532502719c492",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_design"
+  },
+  {
+   "path": "reports/s3_planning_estimates_20261109/estimate_cf_exact_train.out",
+   "bytes": 1210,
+   "sha256": "9f905154ccf563419113c0f0b24a597b606b39d788084fe416aaf1e80a4c41c0",
+   "source_sha256": "9f905154ccf563419113c0f0b24a597b606b39d788084fe416aaf1e80a4c41c0",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_design"
+  },
+  {
+   "path": "reports/s3_planning_estimates_20261109/estimate_cf_exact_train.py",
+   "bytes": 5140,
+   "sha256": "f5d833810b69157a0ea8267d426382d9cf9417bc6a373dc01247a56e4383c521",
+   "source_sha256": "f5d833810b69157a0ea8267d426382d9cf9417bc6a373dc01247a56e4383c521",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_design"
+  },
+  {
+   "path": "reports/s3_planning_estimates_20261109/estimate_cf_rounding_train.out",
+   "bytes": 1619,
+   "sha256": "62b2795a91874af92cc04f4d59777dbc33e8de7ea7e6f9cbabfeeca51c9d56a2",
+   "source_sha256": "62b2795a91874af92cc04f4d59777dbc33e8de7ea7e6f9cbabfeeca51c9d56a2",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_design"
+  },
+  {
+   "path": "reports/s3_planning_estimates_20261109/estimate_cf_rounding_train.py",
+   "bytes": 6165,
+   "sha256": "f335657d6d3de49babb441548b252027d5eca86163f78cbbb04f778505e97f64",
+   "source_sha256": "f335657d6d3de49babb441548b252027d5eca86163f78cbbb04f778505e97f64",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_design"
+  },
+  {
+   "path": "reports/s3_planning_estimates_20261109/estimate_subsets_train.out",
+   "bytes": 462,
+   "sha256": "1ddecf72f685c41ab7c42c760fa174c486e8efe331f9aa77d9debbafc2e8f8a3",
+   "source_sha256": "1ddecf72f685c41ab7c42c760fa174c486e8efe331f9aa77d9debbafc2e8f8a3",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_design"
+  },
+  {
+   "path": "reports/s3_planning_estimates_20261109/estimate_subsets_train.py",
+   "bytes": 3438,
+   "sha256": "c8e87568dc51ecf353bfdaeb2811b48e7788f99360d762d68c0bb36da3d5c001",
+   "source_sha256": "c8e87568dc51ecf353bfdaeb2811b48e7788f99360d762d68c0bb36da3d5c001",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_design"
+  },
+  {
+   "path": "reports/s3_planning_estimates_20261109/ocr_feasibility_train.out",
+   "bytes": 1628,
+   "sha256": "c3f8d7125578d89e7a4f1db5aa39b006b45346b16dd2c3e7b28d65580831eba9",
+   "source_sha256": "c3f8d7125578d89e7a4f1db5aa39b006b45346b16dd2c3e7b28d65580831eba9",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_design"
+  },
+  {
+   "path": "reports/s3_planning_estimates_20261109/ocr_feasibility_train.py",
+   "bytes": 3575,
+   "sha256": "060ed64aca2b575247864ae2f215b675e364accb8fb4abc7eec86952d1f0063f",
+   "source_sha256": "060ed64aca2b575247864ae2f215b675e364accb8fb4abc7eec86952d1f0063f",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_design"
+  },
+  {
    "path": "reports/strict_v8_20261024/approved_input_preflight.json",
    "bytes": 707,
    "sha256": "b1432785d75ebe9cb41772a175e0049162e86e60906c2a45897f4eaec4c3f1a0",
@@ -22842,12 +22979,12 @@
   },
   {
    "path": "src/training/rl_entry.py",
-   "bytes": 14410,
-   "sha256": "a114a1bea09e428316593c7280e942c218f533b94e61147ed3b6fa3e69342675",
+   "bytes": 15195,
+   "sha256": "174cdf3b8922dd111516dcca50ec69549c14d24915c2afea6e1c240a49deeab0",
    "source_sha256": "0fbbd13fb08a842c2c0ba7e20e33609bc17c1b04e69d621aac78230c19cb0d7f",
    "changed_for_portability": true,
    "added_in": "2026-11-09_stage1",
-   "updated_in": "2026-11-09_stage2.2"
+   "updated_in": "2026-11-09_stage3_design"
   },
   {
    "path": "src/training/rl_rewards.py",
@@ -22992,11 +23129,12 @@
   },
   {
    "path": "tests/test_experiment_configs.py",
-   "bytes": 3345,
-   "sha256": "baaa719394f7db93f912caaecbf7b7a9042b2ded95775ee268b141380c5cac03",
+   "bytes": 6002,
+   "sha256": "b4635cae66273ba84142b24dedf0741e273d09ac7c69b09baac04aed92d895e3",
    "source_sha256": "baaa719394f7db93f912caaecbf7b7a9042b2ded95775ee268b141380c5cac03",
-   "changed_for_portability": false,
-   "added_in": "2026-11-09_stage1"
+   "changed_for_portability": true,
+   "added_in": "2026-11-09_stage1",
+   "updated_in": "2026-11-09_stage3_design"
   },
   {
    "path": "tests/test_generate_v3.py",
@@ -24182,6 +24320,147 @@
      "path": "tests/test_vm_github.py",
      "previous_sha256": null,
      "current_sha256": "e7d4f07cc0f76a2af1b1aa77130bfa39c1f3adf8a83b6355194a5ca71ab815bc"
+    }
+   ],
+   "dropped_tracked_paths": [],
+   "untracked_entries_kept_verbatim": 2848,
+   "note": "Only git-visible files were re-hashed; git-ignored payload entries (data/) were carried over unchanged. Run the full rebuild on a machine that has data/ to re-hash the payload."
+  },
+  {
+   "date": "2026-11-09",
+   "label": "2026-11-09_stage3_design",
+   "mode": "git_tracked_only",
+   "purpose": "S2 acceptance and S3 design: token-level truncated vLLM importance sampling (D41), certified-fact errata (D42), frozen runtime (D43), pre-registered evaluation rules (D44-D46), train-only planning estimates",
+   "changes": [
+    {
+     "path": "CHANGELOG.md",
+     "previous_sha256": "6f6a25e87bb89d65ef1944bc1479ea1b9e9239e570c63407d040bb42e1ad1e35",
+     "current_sha256": "9586ae5370643450203d81276b05919bd27eb9987d512c6b601c1d435c8031d9"
+    },
+    {
+     "path": "configs/README.md",
+     "previous_sha256": "4e6ed65c9137c7980d7b22c7be12c477aa0ede6450045cd84cbecca1fb1bbb18",
+     "current_sha256": "3863c05d69ffb2a359465e60ce7f4b76a1ee4181b2c8ace326e1e271208ee913"
+    },
+    {
+     "path": "configs/experiments/rl_v3.json",
+     "previous_sha256": "ed917d45ccc8a72141da325cd2538c9b247e6d243769d2d449553316f9e38ffc",
+     "current_sha256": "4d0669ffce3c3e8d8224cc7f970d66c3d58d8220313e3e79f7ebd8d1c7e9bc04"
+    },
+    {
+     "path": "configs/experiments/runtime_frozen_20261109.json",
+     "previous_sha256": null,
+     "current_sha256": "00dde114706608f25047844304527b865ec528dca1bede839c2d878376c14ac3"
+    },
+    {
+     "path": "docs/README.md",
+     "previous_sha256": "121e540e723fbbf6b9a1677f5aa8963de9d7b1ca752a8f8b198289853c8a75b0",
+     "current_sha256": "777123a0c29f610783a2cc1dc1c6660288f5009cea09706e15a785d5f24d04ae"
+    },
+    {
+     "path": "docs/plan/S3设计_20261109.md",
+     "previous_sha256": null,
+     "current_sha256": "0a0058a24354fbc8b655595d66b47e29be6956d7ddad476bc4e407945c2d7811"
+    },
+    {
+     "path": "docs/plan/决策记录.md",
+     "previous_sha256": "fd6f6c5efe055220de468caeada752925dcad3778bed609d90eb527130b1ba97",
+     "current_sha256": "82b1f257a16d41f90cf66d26793f433ff5513f9af0730a85cd6cf68ae3dfeb72"
+    },
+    {
+     "path": "docs/plan/阶段报告_S2_验收_20261109.md",
+     "previous_sha256": null,
+     "current_sha256": "59bf486c88d9fa1674300ed5ec2414080d81cfc0bde31d991ceb827cae1f7f3c"
+    },
+    {
+     "path": "docs/verification.md",
+     "previous_sha256": "0b88f5143d19409f1aae697ea06333f53a260894f2ebc77bfff9e60185f0e3b7",
+     "current_sha256": "b1560fa5676435db616e558701f406841f1b3983b50512a3a6804100bbafa257"
+    },
+    {
+     "path": "reports/README.md",
+     "previous_sha256": "aba3ef9af9df316dea07a1cf6d11972f6969e61063e1a0b55b7aab42761f27f9",
+     "current_sha256": "c3f27185a599eeed454f1ddecd82f97249d8a0261ab87741f0fa81a0b37a0409"
+    },
+    {
+     "path": "reports/certified_fact_errata_20261109/README.md",
+     "previous_sha256": null,
+     "current_sha256": "baea2ddc3636ecdade9eb0374a45def12709709eec299e56fd521d25b3204ef4"
+    },
+    {
+     "path": "reports/certified_fact_errata_20261109/build_errata.py",
+     "previous_sha256": null,
+     "current_sha256": "9e385cd3a5e6bbbeda2832362f749f2b811508185265fd2d7205cd40575fbb0d"
+    },
+    {
+     "path": "reports/certified_fact_errata_20261109/errata.json",
+     "previous_sha256": null,
+     "current_sha256": "aa2a140dcfab07bab74625c595b826878d553cde687dcad1d9d0223aaa64d50d"
+    },
+    {
+     "path": "reports/s3_planning_estimates_20261109/README.md",
+     "previous_sha256": null,
+     "current_sha256": "231f06425f0c3bdbab4800d3122930bebaaab0278016ceac257770e608b849e9"
+    },
+    {
+     "path": "reports/s3_planning_estimates_20261109/cfgeo_prototype_train.out",
+     "previous_sha256": null,
+     "current_sha256": "8197df2a1912adcb8ff7abbd43e9407edf3d6b5aa425262868e95050c048b48f"
+    },
+    {
+     "path": "reports/s3_planning_estimates_20261109/cfgeo_prototype_train.py",
+     "previous_sha256": null,
+     "current_sha256": "f677c4ee2fe367341b406ce5fdb81d899181c8817586bc5327e532502719c492"
+    },
+    {
+     "path": "reports/s3_planning_estimates_20261109/estimate_cf_exact_train.out",
+     "previous_sha256": null,
+     "current_sha256": "9f905154ccf563419113c0f0b24a597b606b39d788084fe416aaf1e80a4c41c0"
+    },
+    {
+     "path": "reports/s3_planning_estimates_20261109/estimate_cf_exact_train.py",
+     "previous_sha256": null,
+     "current_sha256": "f5d833810b69157a0ea8267d426382d9cf9417bc6a373dc01247a56e4383c521"
+    },
+    {
+     "path": "reports/s3_planning_estimates_20261109/estimate_cf_rounding_train.out",
+     "previous_sha256": null,
+     "current_sha256": "62b2795a91874af92cc04f4d59777dbc33e8de7ea7e6f9cbabfeeca51c9d56a2"
+    },
+    {
+     "path": "reports/s3_planning_estimates_20261109/estimate_cf_rounding_train.py",
+     "previous_sha256": null,
+     "current_sha256": "f335657d6d3de49babb441548b252027d5eca86163f78cbbb04f778505e97f64"
+    },
+    {
+     "path": "reports/s3_planning_estimates_20261109/estimate_subsets_train.out",
+     "previous_sha256": null,
+     "current_sha256": "1ddecf72f685c41ab7c42c760fa174c486e8efe331f9aa77d9debbafc2e8f8a3"
+    },
+    {
+     "path": "reports/s3_planning_estimates_20261109/estimate_subsets_train.py",
+     "previous_sha256": null,
+     "current_sha256": "c8e87568dc51ecf353bfdaeb2811b48e7788f99360d762d68c0bb36da3d5c001"
+    },
+    {
+     "path": "reports/s3_planning_estimates_20261109/ocr_feasibility_train.out",
+     "previous_sha256": null,
+     "current_sha256": "c3f8d7125578d89e7a4f1db5aa39b006b45346b16dd2c3e7b28d65580831eba9"
+    },
+    {
+     "path": "reports/s3_planning_estimates_20261109/ocr_feasibility_train.py",
+     "previous_sha256": null,
+     "current_sha256": "060ed64aca2b575247864ae2f215b675e364accb8fb4abc7eec86952d1f0063f"
+    },
+    {
+     "path": "src/training/rl_entry.py",
+     "previous_sha256": "a114a1bea09e428316593c7280e942c218f533b94e61147ed3b6fa3e69342675",
+     "current_sha256": "174cdf3b8922dd111516dcca50ec69549c14d24915c2afea6e1c240a49deeab0"
+    },
+    {
+     "path": "tests/test_experiment_configs.py",
+     "previous_sha256": "baaa719394f7db93f912caaecbf7b7a9042b2ded95775ee268b141380c5cac03",
+     "current_sha256": "b4635cae66273ba84142b24dedf0741e273d09ac7c69b09baac04aed92d895e3"
     }
    ],
    "dropped_tracked_paths": [],

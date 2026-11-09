@@ -80,3 +80,49 @@ def test_arm_validation_rejects_hidden_differences():
     with pytest.raises(ValueError, match="weight must be 0"):
         validate_arms(bad)
     assert json.dumps(validate_arms(arms))
+
+
+def test_vllm_importance_sampling_is_token_level_and_part_of_the_config_hash(tmp_path):
+    """D41: the IS correction is an algorithm setting (in config_sha256), not a runtime choice, and is token-level.
+
+    Preflight measured TRL's default sequence-level mask weighting sequences by 0.29-0.55 on average."""
+    import importlib.util
+
+    from src.training.rl_entry import ALGORITHM_NEUTRAL_RUNTIME_KEYS, finalize_budget
+
+    base = read_json(BASE)
+    assert base["train"]["vllm_importance_sampling_mode"] == "token_truncate"
+    assert base["train"]["vllm_importance_sampling_clip_max"] == 2.0
+    assert not {k for k in ALGORITHM_NEUTRAL_RUNTIME_KEYS if "importance" in k}  # a runtime file cannot change it
+    changed = copy.deepcopy(base)
+    changed["train"]["vllm_importance_sampling_mode"] = "sequence_mask"
+    (tmp_path / "rl_v3.json").write_text(json.dumps(changed), encoding="utf-8")
+    hashes = []
+    for path in (BASE, tmp_path / "rl_v3.json"):
+        config = resolve(path, "rl_v5", 1, arms_path=ARMS)
+        finalize_budget(config, 609)
+        hashes.append(config["config_sha256"])
+    assert hashes[0] != hashes[1]
+    if importlib.util.find_spec("trl") is None:
+        return
+    a = resolve(BASE, "rl_v5", 1, smoke={"max_steps": 1}, n_rows=8)
+    from src.training.rl_entry import DEFAULT_RUNTIME, grpo_args
+
+    vllm = grpo_args(a, dict(DEFAULT_RUNTIME, generation_backend="vllm"), "/tmp/p3-grpo-args-test", False, [1.0])
+    assert vllm.use_vllm and vllm.vllm_importance_sampling_correction
+    assert (vllm.vllm_importance_sampling_mode, vllm.vllm_importance_sampling_clip_max) == ("token_truncate", 2.0)
+    hf = grpo_args(a, dict(DEFAULT_RUNTIME), "/tmp/p3-grpo-args-test", False, [1.0])
+    assert not hf.use_vllm  # exactly on-policy: TRL computes no IS ratio without vLLM
+
+
+def test_accepted_frozen_runtime_loads_and_carries_only_neutral_keys():
+    """S4 trains with the runtime frozen by preflight-20261109T122305Z-e6cd (D43)."""
+    from src.training.rl_entry import ALGORITHM_NEUTRAL_RUNTIME_KEYS, RUNTIME_META_KEYS, load_runtime
+
+    path = ROOT / "configs/experiments/runtime_frozen_20261109.json"
+    runtime = load_runtime(path)
+    assert set(json.loads(path.read_text(encoding="utf-8"))) <= ALGORITHM_NEUTRAL_RUNTIME_KEYS | RUNTIME_META_KEYS
+    assert runtime["source"] == "preflight preflight-20261109T122305Z-e6cd"
+    assert (runtime["generation_backend"], runtime["per_device_train_batch_size"], runtime["vision_cache"],
+            runtime["gradient_checkpointing"]) == ("vllm", 8, False, True)
+    assert runtime["measured"]["vllm_step_seconds"] <= 0.7 * runtime["measured"]["hf_step_seconds"]  # D21

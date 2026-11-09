@@ -31,6 +31,9 @@ DEFAULT_RUNTIME = {"generation_backend": "hf", "vllm_gpu_memory_utilization": 0.
 # re-splits the same 64 completions per step (DAPO normalises over the whole accumulated batch).
 ALGORITHM_NEUTRAL_RUNTIME_KEYS = {"generation_backend", "vllm_gpu_memory_utilization", "vllm_max_model_length",
                                   "vision_cache", "per_device_train_batch_size", "gradient_checkpointing"}
+# provenance fields a frozen runtime file may carry; they are recorded, never applied
+RUNTIME_META_KEYS = {"source", "measured", "notes", "decided_utc", "rationale", "gpu", "torch_backend",
+                     "env_lock_sha256", "schema"}
 SOURCE_FILES = [
     "src/rewards/answer.py", "src/rewards/attacks.py", "src/rewards/claims.py", "src/rewards/geometry_oracle.py",
     "src/rewards/perception_v5.py", "src/training/hf_compat.py", "src/training/lora_language.py",
@@ -129,6 +132,13 @@ def grpo_args(config, runtime, output_dir, cuda, weights):
     if options["use_vllm"]:
         options.update(vllm_mode="colocate", vllm_gpu_memory_utilization=runtime["vllm_gpu_memory_utilization"],
                        vllm_max_model_length=runtime["vllm_max_model_length"])
+        # D41: token-level truncated IS. TRL's default (sequence_mask, cap 3) multiplies per-token ratios over the
+        # whole completion; under the measured bf16 vLLM/HF mismatch that weighted sequences by 0.29-0.55 on
+        # average in preflight, shrinking and length-biasing every update. The setting lives in the experiment
+        # config (part of config_sha256), not in the runtime file: it changes the optimisation.
+        options.update(vllm_importance_sampling_correction=True,
+                       vllm_importance_sampling_mode=t["vllm_importance_sampling_mode"],
+                       vllm_importance_sampling_clip_max=t["vllm_importance_sampling_clip_max"])
     return GRPOConfig(**options)
 
 
@@ -163,8 +173,7 @@ def run(config, root=ROOT, runtime=None, model_path=None, resume=None, model=Non
         raise RuntimeError("Exactly one visible GPU is supported")
     set_seed(config["seed"])
     rows, index = load_training_rows(config, root)
-    unknown = set(runtime) - ALGORITHM_NEUTRAL_RUNTIME_KEYS - {"source", "measured", "notes", "decided_utc", "rationale",
-                                                               "gpu", "torch_backend", "env_lock_sha256", "schema"}
+    unknown = set(runtime) - ALGORITHM_NEUTRAL_RUNTIME_KEYS - RUNTIME_META_KEYS
     if unknown:
         raise ValueError(f"runtime file has keys that could change the algorithm: {sorted(unknown)}")
     apply_runtime(config, runtime)
@@ -272,5 +281,5 @@ def run(config, root=ROOT, runtime=None, model_path=None, resume=None, model=Non
     return summary
 
 
-__all__ = ["ALGORITHM_NEUTRAL_RUNTIME_KEYS", "DEFAULT_RUNTIME", "apply_runtime", "finalize_budget", "grpo_args",
-           "load_model_and_processor", "load_runtime", "run"]
+__all__ = ["ALGORITHM_NEUTRAL_RUNTIME_KEYS", "DEFAULT_RUNTIME", "RUNTIME_META_KEYS", "apply_runtime", "finalize_budget",
+           "grpo_args", "load_model_and_processor", "load_runtime", "run"]

@@ -4,6 +4,22 @@
 [README](README.md) 和版本化报告为准；历史细节见
 [docs/migration/](docs/migration/)。
 
+## 2026-11-09 — S2 验收与 S3 设计：接受冻结的运行时，修正 vLLM 重要性采样，预注册评测规则
+
+决策见 [决策记录](docs/plan/决策记录.md) D41–D46，阶段报告见
+[docs/plan/阶段报告_S2_验收_20261109.md](docs/plan/阶段报告_S2_验收_20261109.md)，评测规则见
+[docs/plan/S3设计_20261109.md](docs/plan/S3设计_20261109.md)。没有 GPU 运行，没有改动已批准数据。
+
+- 第三次预检 `preflight-20261109T122305Z-e6cd` 18/18 通过；它冻结的运行时原样复制为
+  `configs/experiments/runtime_frozen_20261109.json`（vLLM、微批 8、ViT 缓存关闭、梯度检查点），只用于 A100 40/80 GB 和 H100。
+- vLLM 的重要性采样修正从 TRL 默认的 `sequence_mask`（上限 3）改为 `token_truncate`（上限 2.0），写在 `rl_v3.json`，进入配置哈希。
+  预检中默认设置让每步平均权重只有 0.29–0.55。
+- 新增 `reports/certified_fact_errata_20261109/`：校准中被几何检验否定的认证事实逐张看图核对，12 行是认证事实本身错了，
+  几何检验真正的误杀约 0.4%。release 不变。
+- 新增 `reports/s3_planning_estimates_20261109/`：S3 规则在 train 上的数量估计与 CF-Geo 原型（不读 validation 和 test）。
+- S3 设计：评测集、视觉必需子集、CF-Geo 规则（含取整题的集合判分）、主终点、统计方法、只用 train 的决策规则、`v0` 任务。
+- 测试：228 passed / 2 failed，两项失败依赖本机 `data/`。
+
 ## 2026-11-09 — S2.3：结果由 VM 直接推送，支持准备好的 VM，命令兼容 zsh
 
 决策见 [决策记录](docs/plan/决策记录.md) D37–D40，阶段报告见

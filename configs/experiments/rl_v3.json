@@ -38,6 +38,8 @@
     "max_completion_length": 1024,
     "max_prompt_tokens": 1600,
     "mask_truncated_completions": true,
+    "vllm_importance_sampling_mode": "token_truncate",
+    "vllm_importance_sampling_clip_max": 2.0,
     "save_steps": 38,
     "logging_steps": 1
   },
