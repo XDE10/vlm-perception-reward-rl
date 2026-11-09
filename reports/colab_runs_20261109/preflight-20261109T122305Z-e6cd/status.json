@@ -1,0 +1,219 @@
+{
+  "schema": "p3-job-status-v1",
+  "run_id": "preflight-20261109T122305Z-e6cd",
+  "task": "preflight",
+  "state": "packaging",
+  "started_utc": "2026-11-09T12:26:50Z",
+  "updated_utc": "2026-11-09T12:56:34Z",
+  "steps": [
+    {
+      "name": "env_report",
+      "state": "passed",
+      "required": true,
+      "description": "software, GPU and environment lock report",
+      "started_utc": "2026-11-09T12:26:52Z",
+      "log": "logs/env_report.log",
+      "exit_code": 0,
+      "seconds": 2.2,
+      "finished_utc": "2026-11-09T12:26:54Z"
+    },
+    {
+      "name": "verify_pack",
+      "state": "passed",
+      "required": true,
+      "description": "private data matches its anchors",
+      "started_utc": "2026-11-09T12:26:54Z",
+      "log": "logs/verify_pack.log",
+      "exit_code": 0,
+      "seconds": 0.3,
+      "finished_utc": "2026-11-09T12:26:55Z"
+    },
+    {
+      "name": "drive_probe",
+      "state": "passed",
+      "required": false,
+      "description": "Google Drive via rclone: write, read back, hash check, delete (optional unless drive-check)",
+      "started_utc": "2026-11-09T12:26:55Z",
+      "log": "logs/drive_probe.log",
+      "exit_code": 0,
+      "seconds": 81.0,
+      "finished_utc": "2026-11-09T12:28:16Z"
+    },
+    {
+      "name": "pytest",
+      "state": "passed",
+      "required": true,
+      "description": "full CPU test suite on the VM (GPU hidden)",
+      "started_utc": "2026-11-09T12:28:16Z",
+      "log": "logs/pytest.log",
+      "exit_code": 0,
+      "seconds": 161.9,
+      "finished_utc": "2026-11-09T12:30:58Z"
+    },
+    {
+      "name": "calibration",
+      "state": "passed",
+      "required": true,
+      "description": "v5 oracle calibration on all certified facts",
+      "started_utc": "2026-11-09T12:30:58Z",
+      "log": "logs/calibration.log",
+      "exit_code": 0,
+      "seconds": 158.0,
+      "finished_utc": "2026-11-09T12:33:36Z"
+    },
+    {
+      "name": "gpu_probe",
+      "state": "passed",
+      "required": true,
+      "description": "real-model LoRA scope, prompt lengths, peak memory, generation throughput, ViT cache",
+      "started_utc": "2026-11-09T12:33:36Z",
+      "log": "logs/gpu_probe.log",
+      "exit_code": 0,
+      "seconds": 181.1,
+      "finished_utc": "2026-11-09T12:36:37Z"
+    },
+    {
+      "name": "v0_probe",
+      "state": "passed",
+      "required": false,
+      "description": "V0 greedy protocol-v3 probe on 16 validation problems (with/without image)",
+      "started_utc": "2026-11-09T12:36:37Z",
+      "log": "logs/v0_probe.log",
+      "exit_code": 0,
+      "seconds": 111.2,
+      "finished_utc": "2026-11-09T12:38:28Z"
+    },
+    {
+      "name": "smoke_rl_ans",
+      "state": "passed",
+      "required": true,
+      "description": "1 GRPO step at a small shape for arm rl_ans",
+      "started_utc": "2026-11-09T12:38:28Z",
+      "log": "logs/smoke_rl_ans.log",
+      "exit_code": 0,
+      "seconds": 55.1,
+      "finished_utc": "2026-11-09T12:39:23Z"
+    },
+    {
+      "name": "smoke_rl_v4",
+      "state": "passed",
+      "required": true,
+      "description": "1 GRPO step at a small shape for arm rl_v4",
+      "started_utc": "2026-11-09T12:39:23Z",
+      "log": "logs/smoke_rl_v4.log",
+      "exit_code": 0,
+      "seconds": 55.5,
+      "finished_utc": "2026-11-09T12:40:18Z"
+    },
+    {
+      "name": "smoke_rl_v5",
+      "state": "passed",
+      "required": true,
+      "description": "1 GRPO step at a small shape for arm rl_v5",
+      "started_utc": "2026-11-09T12:40:18Z",
+      "log": "logs/smoke_rl_v5.log",
+      "exit_code": 0,
+      "seconds": 54.2,
+      "finished_utc": "2026-11-09T12:41:13Z"
+    },
+    {
+      "name": "smoke_rl_v5_placebo",
+      "state": "passed",
+      "required": true,
+      "description": "1 GRPO step at a small shape for arm rl_v5_placebo",
+      "started_utc": "2026-11-09T12:41:13Z",
+      "log": "logs/smoke_rl_v5_placebo.log",
+      "exit_code": 0,
+      "seconds": 54.0,
+      "finished_utc": "2026-11-09T12:42:07Z"
+    },
+    {
+      "name": "smoke_rl_blind",
+      "state": "passed",
+      "required": true,
+      "description": "1 GRPO step at a small shape for arm rl_blind",
+      "started_utc": "2026-11-09T12:42:07Z",
+      "log": "logs/smoke_rl_blind.log",
+      "exit_code": 0,
+      "seconds": 44.0,
+      "finished_utc": "2026-11-09T12:42:51Z"
+    },
+    {
+      "name": "smoke_full_hf",
+      "state": "passed",
+      "required": true,
+      "description": "3 GRPO steps at the registered shape (8 prompts x 8 generations), HF generation",
+      "started_utc": "2026-11-09T12:42:51Z",
+      "log": "logs/smoke_full_hf.log",
+      "exit_code": 0,
+      "seconds": 400.4,
+      "finished_utc": "2026-11-09T12:49:31Z"
+    },
+    {
+      "name": "resume_a",
+      "state": "passed",
+      "required": true,
+      "description": "2 steps with a checkpoint every step",
+      "started_utc": "2026-11-09T12:49:31Z",
+      "log": "logs/resume_a.log",
+      "exit_code": 0,
+      "seconds": 59.4,
+      "finished_utc": "2026-11-09T12:50:30Z"
+    },
+    {
+      "name": "resume_b",
+      "state": "passed",
+      "required": true,
+      "description": "resume from checkpoint-1 to step 2 with identity check",
+      "started_utc": "2026-11-09T12:50:30Z",
+      "log": "logs/resume_b.log",
+      "exit_code": 0,
+      "seconds": 43.0,
+      "finished_utc": "2026-11-09T12:51:13Z"
+    },
+    {
+      "name": "vllm_env",
+      "state": "passed",
+      "required": false,
+      "description": "optional vLLM venv (CUDA 13 only)",
+      "started_utc": "2026-11-09T12:51:13Z",
+      "log": "logs/vllm_env.log",
+      "exit_code": 0,
+      "seconds": 30.2,
+      "finished_utc": "2026-11-09T12:51:44Z"
+    },
+    {
+      "name": "smoke_full_vllm",
+      "state": "passed",
+      "required": false,
+      "description": "same 3 steps with vLLM colocate generation",
+      "started_utc": "2026-11-09T12:51:44Z",
+      "log": "logs/smoke_full_vllm.log",
+      "exit_code": 0,
+      "seconds": 290.3,
+      "finished_utc": "2026-11-09T12:56:34Z"
+    },
+    {
+      "name": "decide_runtime",
+      "state": "passed",
+      "required": true,
+      "description": "freeze runtime decisions from the measurements",
+      "started_utc": "2026-11-09T12:56:34Z",
+      "log": "logs/decide_runtime.log",
+      "exit_code": 0,
+      "seconds": 0.1,
+      "finished_utc": "2026-11-09T12:56:34Z"
+    }
+  ],
+  "current": null,
+  "github_check": {
+    "mode": "auto",
+    "ok": true,
+    "credentials_present": true,
+    "push_access": true,
+    "branch": "results/preflight-20261109T122305Z-e6cd",
+    "reason": null,
+    "warning": null
+  },
+  "overall": "passed"
+}

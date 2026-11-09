@@ -1,0 +1,1771 @@
+{
+ "schema": "v5-calibration-v2",
+ "oracle_version": "geometry-oracle-v1-20261109",
+ "reward_version": "perception-v5.1-20261109",
+ "train_rows": 609,
+ "validation_rows": 82,
+ "loo_limit": 0.05,
+ "train": {
+  "positives_by_relation": {
+   "Angle": 427,
+   "ArcLength": 5,
+   "ArcMeasure": 5,
+   "CongruentAngle": 36,
+   "CongruentLength": 91,
+   "Length": 921,
+   "Parallel": 19,
+   "Perpendicular": 264,
+   "PointLiesOnCircle": 493,
+   "PointLiesOnLine": 538
+  },
+  "existence_refutations_of_certified": {},
+  "sweep": {
+   "PointLiesOnLine": {
+    "field": "line_distance",
+    "entries": [
+     {
+      "threshold": 0.02,
+      "certified": 538,
+      "false_refutations": 10,
+      "false_refutation_ids": [
+       "train:1150",
+       "train:1218",
+       "train:1458",
+       "train:149",
+       "train:1542",
+       "train:1624",
+       "train:2057",
+       "train:380"
+      ],
+      "spray_claims": 15174,
+      "spray_refuted_fraction": 0.815605641228417
+     },
+     {
+      "threshold": 0.03,
+      "certified": 538,
+      "false_refutations": 8,
+      "false_refutation_ids": [
+       "train:1218",
+       "train:1458",
+       "train:1542",
+       "train:1624",
+       "train:2057",
+       "train:380"
+      ],
+      "spray_claims": 15174,
+      "spray_refuted_fraction": 0.8046658758402531
+     },
+     {
+      "threshold": 0.04,
+      "certified": 538,
+      "false_refutations": 8,
+      "false_refutation_ids": [
+       "train:1218",
+       "train:1458",
+       "train:1542",
+       "train:1624",
+       "train:2057",
+       "train:380"
+      ],
+      "spray_claims": 15174,
+      "spray_refuted_fraction": 0.7982733623303019
+     },
+     {
+      "threshold": 0.06,
+      "certified": 538,
+      "false_refutations": 5,
+      "false_refutation_ids": [
+       "train:1218",
+       "train:1542",
+       "train:380"
+      ],
+      "spray_claims": 15174,
+      "spray_refuted_fraction": 0.7903650981942797
+     },
+     {
+      "threshold": 0.08,
+      "certified": 538,
+      "false_refutations": 3,
+      "false_refutation_ids": [
+       "train:1542"
+      ],
+      "spray_claims": 15174,
+      "spray_refuted_fraction": 0.7846316066956637
+     },
+     {
+      "threshold": 0.1,
+      "certified": 538,
+      "false_refutations": 3,
+      "false_refutation_ids": [
+       "train:1542"
+      ],
+      "spray_claims": 15174,
+      "spray_refuted_fraction": 0.7781072887834454
+     }
+    ]
+   },
+   "Parallel": {
+    "field": "parallel_deg",
+    "entries": [
+     {
+      "threshold": 5.0,
+      "certified": 19,
+      "false_refutations": 2,
+      "false_refutation_ids": [
+       "train:146",
+       "train:1542"
+      ],
+      "spray_claims": 16741,
+      "spray_refuted_fraction": 0.9197777910519085
+     },
+     {
+      "threshold": 8.0,
+      "certified": 19,
+      "false_refutations": 1,
+      "false_refutation_ids": [
+       "train:1542"
+      ],
+      "spray_claims": 16741,
+      "spray_refuted_fraction": 0.9149393704079805
+     },
+     {
+      "threshold": 10.0,
+      "certified": 19,
+      "false_refutations": 1,
+      "false_refutation_ids": [
+       "train:1542"
+      ],
+      "spray_claims": 16741,
+      "spray_refuted_fraction": 0.9106385520578221
+     },
+     {
+      "threshold": 15.0,
+      "certified": 19,
+      "false_refutations": 1,
+      "false_refutation_ids": [
+       "train:1542"
+      ],
+      "spray_claims": 16741,
+      "spray_refuted_fraction": 0.8986918344184935
+     },
+     {
+      "threshold": 20.0,
+      "certified": 19,
+      "false_refutations": 1,
+      "false_refutation_ids": [
+       "train:1542"
+      ],
+      "spray_claims": 16741,
+      "spray_refuted_fraction": 0.8796965533719611
+     },
+     {
+      "threshold": 25.0,
+      "certified": 19,
+      "false_refutations": 1,
+      "false_refutation_ids": [
+       "train:1542"
+      ],
+      "spray_claims": 16741,
+      "spray_refuted_fraction": 0.852099635625112
+     }
+    ]
+   },
+   "Perpendicular": {
+    "field": "perpendicular_deg",
+    "entries": [
+     {
+      "threshold": 5.0,
+      "certified": 264,
+      "false_refutations": 13,
+      "false_refutation_ids": [
+       "train:1218",
+       "train:1251",
+       "train:1471",
+       "train:1488",
+       "train:1598",
+       "train:1729",
+       "train:1957",
+       "train:2090",
+       "train:335",
+       "train:380",
+       "train:425",
+       "train:598",
+       "train:919"
+      ],
+      "spray_claims": 16500,
+      "spray_refuted_fraction": 0.8690909090909091
+     },
+     {
+      "threshold": 8.0,
+      "certified": 264,
+      "false_refutations": 11,
+      "false_refutation_ids": [
+       "train:1251",
+       "train:1471",
+       "train:1488",
+       "train:1598",
+       "train:1729",
+       "train:1957",
+       "train:2090",
+       "train:335",
+       "train:425",
+       "train:598",
+       "train:919"
+      ],
+      "spray_claims": 16500,
+      "spray_refuted_fraction": 0.8481818181818181
+     },
+     {
+      "threshold": 10.0,
+      "certified": 264,
+      "false_refutations": 11,
+      "false_refutation_ids": [
+       "train:1251",
+       "train:1471",
+       "train:1488",
+       "train:1598",
+       "train:1729",
+       "train:1957",
+       "train:2090",
+       "train:335",
+       "train:425",
+       "train:598",
+       "train:919"
+      ],
+      "spray_claims": 16500,
+      "spray_refuted_fraction": 0.8335757575757575
+     },
+     {
+      "threshold": 15.0,
+      "certified": 264,
+      "false_refutations": 11,
+      "false_refutation_ids": [
+       "train:1251",
+       "train:1471",
+       "train:1488",
+       "train:1598",
+       "train:1729",
+       "train:1957",
+       "train:2090",
+       "train:335",
+       "train:425",
+       "train:598",
+       "train:919"
+      ],
+      "spray_claims": 16500,
+      "spray_refuted_fraction": 0.796060606060606
+     },
+     {
+      "threshold": 20.0,
+      "certified": 264,
+      "false_refutations": 11,
+      "false_refutation_ids": [
+       "train:1251",
+       "train:1471",
+       "train:1488",
+       "train:1598",
+       "train:1729",
+       "train:1957",
+       "train:2090",
+       "train:335",
+       "train:425",
+       "train:598",
+       "train:919"
+      ],
+      "spray_claims": 16500,
+      "spray_refuted_fraction": 0.7528484848484849
+     },
+     {
+      "threshold": 25.0,
+      "certified": 264,
+      "false_refutations": 9,
+      "false_refutation_ids": [
+       "train:1251",
+       "train:1471",
+       "train:1488",
+       "train:1598",
+       "train:1957",
+       "train:2090",
+       "train:425",
+       "train:598",
+       "train:919"
+      ],
+      "spray_claims": 16500,
+      "spray_refuted_fraction": 0.7097575757575758
+     }
+    ]
+   },
+   "PointLiesOnCircle": {
+    "field": "circle_relative",
+    "entries": [
+     {
+      "threshold": 0.05,
+      "certified": 493,
+      "false_refutations": 49,
+      "false_refutation_ids": [
+       "train:1000",
+       "train:1025",
+       "train:1226",
+       "train:132",
+       "train:1358",
+       "train:1386",
+       "train:1566",
+       "train:1593",
+       "train:1607",
+       "train:1660",
+       "train:1683",
+       "train:1734",
+       "train:1783",
+       "train:1811",
+       "train:1819",
+       "train:1878",
+       "train:1887",
+       "train:1977",
+       "train:2024",
+       "train:2049"
+      ],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 0.08,
+      "certified": 493,
+      "false_refutations": 19,
+      "false_refutation_ids": [
+       "train:1593",
+       "train:1660",
+       "train:1683",
+       "train:1783",
+       "train:1878",
+       "train:2024",
+       "train:2049",
+       "train:2085",
+       "train:329",
+       "train:499",
+       "train:523"
+      ],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 0.1,
+      "certified": 493,
+      "false_refutations": 14,
+      "false_refutation_ids": [
+       "train:1593",
+       "train:1660",
+       "train:1783",
+       "train:1878",
+       "train:2024",
+       "train:2049",
+       "train:329",
+       "train:523"
+      ],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 0.15,
+      "certified": 493,
+      "false_refutations": 11,
+      "false_refutation_ids": [
+       "train:1593",
+       "train:1783",
+       "train:1878",
+       "train:2049",
+       "train:329",
+       "train:523"
+      ],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 0.2,
+      "certified": 493,
+      "false_refutations": 9,
+      "false_refutation_ids": [
+       "train:1593",
+       "train:1783",
+       "train:1878",
+       "train:2049",
+       "train:329"
+      ],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 0.25,
+      "certified": 493,
+      "false_refutations": 8,
+      "false_refutation_ids": [
+       "train:1593",
+       "train:1783",
+       "train:2049",
+       "train:329"
+      ],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     }
+    ]
+   },
+   "Angle": {
+    "field": "angle_value_deg",
+    "entries": [
+     {
+      "threshold": 10.0,
+      "certified": 427,
+      "false_refutations": 24,
+      "false_refutation_ids": [
+       "train:1096",
+       "train:1126",
+       "train:1300",
+       "train:1542",
+       "train:1729",
+       "train:179",
+       "train:1861",
+       "train:1892",
+       "train:1899",
+       "train:1942",
+       "train:1970",
+       "train:1992",
+       "train:22",
+       "train:255",
+       "train:393",
+       "train:618",
+       "train:624",
+       "train:967"
+      ],
+      "spray_claims": 4080,
+      "spray_refuted_fraction": 0.46691176470588236
+     },
+     {
+      "threshold": 15.0,
+      "certified": 427,
+      "false_refutations": 15,
+      "false_refutation_ids": [
+       "train:1096",
+       "train:1300",
+       "train:1542",
+       "train:1729",
+       "train:1861",
+       "train:1942",
+       "train:1970",
+       "train:1992",
+       "train:22",
+       "train:255",
+       "train:393",
+       "train:967"
+      ],
+      "spray_claims": 4080,
+      "spray_refuted_fraction": 0.4485294117647059
+     },
+     {
+      "threshold": 25.0,
+      "certified": 427,
+      "false_refutations": 4,
+      "false_refutation_ids": [
+       "train:1542",
+       "train:1729",
+       "train:22"
+      ],
+      "spray_claims": 4080,
+      "spray_refuted_fraction": 0.38553921568627453
+     },
+     {
+      "threshold": 35.0,
+      "certified": 427,
+      "false_refutations": 3,
+      "false_refutation_ids": [
+       "train:1542",
+       "train:1729"
+      ],
+      "spray_claims": 4080,
+      "spray_refuted_fraction": 0.2821078431372549
+     },
+     {
+      "threshold": 45.0,
+      "certified": 427,
+      "false_refutations": 3,
+      "false_refutation_ids": [
+       "train:1542",
+       "train:1729"
+      ],
+      "spray_claims": 4080,
+      "spray_refuted_fraction": 0.2178921568627451
+     }
+    ]
+   },
+   "CongruentLength": {
+    "field": "congruent_length_ratio",
+    "entries": [
+     {
+      "threshold": 1.1,
+      "certified": 91,
+      "false_refutations": 6,
+      "false_refutation_ids": [
+       "train:1583",
+       "train:1632",
+       "train:1707",
+       "train:1827",
+       "train:1906",
+       "train:951"
+      ],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 1.2,
+      "certified": 91,
+      "false_refutations": 0,
+      "false_refutation_ids": [],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 1.35,
+      "certified": 91,
+      "false_refutations": 0,
+      "false_refutation_ids": [],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 1.5,
+      "certified": 91,
+      "false_refutations": 0,
+      "false_refutation_ids": [],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 2.0,
+      "certified": 91,
+      "false_refutations": 0,
+      "false_refutation_ids": [],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     }
+    ]
+   },
+   "CongruentAngle": {
+    "field": "congruent_angle_deg",
+    "entries": [
+     {
+      "threshold": 5.0,
+      "certified": 36,
+      "false_refutations": 2,
+      "false_refutation_ids": [
+       "train:20"
+      ],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 10.0,
+      "certified": 36,
+      "false_refutations": 0,
+      "false_refutation_ids": [],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 15.0,
+      "certified": 36,
+      "false_refutations": 0,
+      "false_refutation_ids": [],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 25.0,
+      "certified": 36,
+      "false_refutations": 0,
+      "false_refutation_ids": [],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 40.0,
+      "certified": 36,
+      "false_refutations": 0,
+      "false_refutation_ids": [],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     }
+    ]
+   }
+  },
+  "gate": {
+   "rows": 20,
+   "by_family": {
+    "coordinates": 20
+   },
+   "rows_detail": {
+    "train:1218": {
+     "coordinates": {
+      "certified": "PointLiesOnLine(E,(B,C))",
+      "reason": "not_collinear"
+     }
+    },
+    "train:1251": {
+     "coordinates": {
+      "certified": "Perpendicular((K,L),(L,M))",
+      "reason": "not_perpendicular"
+     }
+    },
+    "train:1471": {
+     "coordinates": {
+      "certified": "Perpendicular((A,C),(C,E))",
+      "reason": "not_perpendicular"
+     }
+    },
+    "train:1488": {
+     "coordinates": {
+      "certified": "Perpendicular((A,C),(C,E))",
+      "reason": "not_perpendicular"
+     }
+    },
+    "train:1542": {
+     "coordinates": {
+      "certified": "Parallel((A,B),(C,D))",
+      "reason": "not_parallel"
+     }
+    },
+    "train:1593": {
+     "coordinates": {
+      "certified": "PointLiesOnCircle(A,Circle(D))",
+      "reason": "off_circle"
+     }
+    },
+    "train:1598": {
+     "coordinates": {
+      "certified": "Perpendicular((B,C),(C,D))",
+      "reason": "not_perpendicular"
+     }
+    },
+    "train:1729": {
+     "coordinates": {
+      "certified": "Perpendicular((A,F),(F,H))",
+      "reason": "not_perpendicular"
+     }
+    },
+    "train:1783": {
+     "coordinates": {
+      "certified": "PointLiesOnCircle(A,Circle(B))",
+      "reason": "off_circle"
+     }
+    },
+    "train:1878": {
+     "coordinates": {
+      "certified": "PointLiesOnCircle(J,Circle(K))",
+      "reason": "off_circle"
+     }
+    },
+    "train:1957": {
+     "coordinates": {
+      "certified": "Perpendicular((A,C),(C,E))",
+      "reason": "not_perpendicular"
+     }
+    },
+    "train:2049": {
+     "coordinates": {
+      "certified": "PointLiesOnCircle(G,Circle(B))",
+      "reason": "off_circle"
+     }
+    },
+    "train:2090": {
+     "coordinates": {
+      "certified": "Perpendicular((A,C),(C,E))",
+      "reason": "not_perpendicular"
+     }
+    },
+    "train:329": {
+     "coordinates": {
+      "certified": "PointLiesOnCircle(G,Circle(B))",
+      "reason": "off_circle"
+     }
+    },
+    "train:335": {
+     "coordinates": {
+      "certified": "Perpendicular((T,U),(U,W))",
+      "reason": "not_perpendicular"
+     }
+    },
+    "train:380": {
+     "coordinates": {
+      "certified": "PointLiesOnLine(E,(B,C))",
+      "reason": "not_collinear"
+     }
+    },
+    "train:425": {
+     "coordinates": {
+      "certified": "Perpendicular((A,C),(C,E))",
+      "reason": "not_perpendicular"
+     }
+    },
+    "train:523": {
+     "coordinates": {
+      "certified": "PointLiesOnCircle(U,Circle)",
+      "reason": "off_circle"
+     }
+    },
+    "train:598": {
+     "coordinates": {
+      "certified": "Perpendicular((A,C),(C,E))",
+      "reason": "not_perpendicular"
+     }
+    },
+    "train:919": {
+     "coordinates": {
+      "certified": "Perpendicular((Q,T),(R,S))",
+      "reason": "not_perpendicular"
+     }
+    }
+   }
+  },
+  "after_gate": {
+   "PointLiesOnLine": 0,
+   "Parallel": 0,
+   "Perpendicular": 0,
+   "PointLiesOnCircle": 0
+  },
+  "loo": {
+   "limit": 0.05,
+   "relations": {
+    "PointLiesOnLine": {
+     "certified": 538,
+     "residual": 2,
+     "rate": 0.0037,
+     "ci95": [
+      0.001,
+      0.0135
+     ],
+     "within_limit": true,
+     "residual_ids": [
+      "train:1218",
+      "train:380"
+     ]
+    },
+    "Parallel": {
+     "certified": 19,
+     "residual": 0,
+     "rate": 0.0,
+     "ci95": [
+      0.0,
+      0.1682
+     ],
+     "within_limit": true,
+     "residual_ids": []
+    },
+    "Perpendicular": {
+     "certified": 264,
+     "residual": 11,
+     "rate": 0.0417,
+     "ci95": [
+      0.0234,
+      0.0731
+     ],
+     "within_limit": true,
+     "residual_ids": [
+      "train:1251",
+      "train:1471",
+      "train:1488",
+      "train:1598",
+      "train:1729",
+      "train:1957",
+      "train:2090",
+      "train:335",
+      "train:425",
+      "train:598",
+      "train:919"
+     ]
+    },
+    "PointLiesOnCircle": {
+     "certified": 493,
+     "residual": 3,
+     "rate": 0.0061,
+     "ci95": [
+      0.0021,
+      0.0177
+     ],
+     "within_limit": true,
+     "residual_ids": [
+      "train:2049",
+      "train:329",
+      "train:523"
+     ]
+    }
+   },
+   "pooled": {
+    "certified": 1314,
+    "residual": 16,
+    "rate": 0.0122,
+    "ci95": [
+     0.0075,
+     0.0197
+    ]
+   }
+  },
+  "raw_false_refutations": [
+   {
+    "sample_id": "train:1218",
+    "certified": "PointLiesOnLine(E,(B,C))",
+    "reason": "not_collinear",
+    "measured": {
+     "line_distance": 0.0707,
+     "position_on_segment": 0.8086,
+     "segment_relative_length": 0.8116
+    }
+   },
+   {
+    "sample_id": "train:1251",
+    "certified": "Perpendicular((K,L),(L,M))",
+    "reason": "not_perpendicular",
+    "measured": {
+     "angle_between_deg": 54.4293,
+     "deviation_deg": 35.5707,
+     "segment_relative_lengths": [
+      0.4248,
+      0.7332
+     ]
+    }
+   },
+   {
+    "sample_id": "train:1471",
+    "certified": "Perpendicular((A,C),(C,E))",
+    "reason": "not_perpendicular",
+    "measured": {
+     "angle_between_deg": 60.4304,
+     "deviation_deg": 29.5696,
+     "segment_relative_lengths": [
+      0.4337,
+      0.8678
+     ]
+    }
+   },
+   {
+    "sample_id": "train:1488",
+    "certified": "Perpendicular((A,C),(C,E))",
+    "reason": "not_perpendicular",
+    "measured": {
+     "angle_between_deg": 60.4304,
+     "deviation_deg": 29.5696,
+     "segment_relative_lengths": [
+      0.4337,
+      0.8678
+     ]
+    }
+   },
+   {
+    "sample_id": "train:1542",
+    "certified": "Parallel((A,B),(C,D))",
+    "reason": "not_parallel",
+    "measured": {
+     "angle_between_deg": 39.0402,
+     "deviation_deg": 39.0402,
+     "segment_relative_lengths": [
+      0.6567,
+      0.8372
+     ]
+    }
+   },
+   {
+    "sample_id": "train:1542",
+    "certified": "PointLiesOnLine(E,(G,H))",
+    "reason": "not_collinear",
+    "measured": {
+     "line_distance": 0.7963,
+     "position_on_segment": 1.316,
+     "segment_relative_length": 0.1587
+    }
+   },
+   {
+    "sample_id": "train:1542",
+    "certified": "PointLiesOnLine(F,(C,D))",
+    "reason": "not_collinear",
+    "measured": {
+     "line_distance": 0.2341,
+     "position_on_segment": 0.258,
+     "segment_relative_length": 0.8372
+    }
+   },
+   {
+    "sample_id": "train:1542",
+    "certified": "PointLiesOnLine(F,(H,I))",
+    "reason": "not_collinear",
+    "measured": {
+     "line_distance": 0.2139,
+     "position_on_segment": 0.7136,
+     "segment_relative_length": 0.4387
+    }
+   },
+   {
+    "sample_id": "train:1593",
+    "certified": "PointLiesOnCircle(A,Circle(D))",
+    "reason": "off_circle",
+    "measured": {
+     "relative_deviation": 0.5277,
+     "reference_points": 2,
+     "radius_relative": 0.7386
+    }
+   },
+   {
+    "sample_id": "train:1593",
+    "certified": "PointLiesOnCircle(C,Circle(D))",
+    "reason": "off_circle",
+    "measured": {
+     "relative_deviation": 0.5182,
+     "reference_points": 2,
+     "radius_relative": 0.7386
+    }
+   },
+   {
+    "sample_id": "train:1598",
+    "certified": "Perpendicular((B,C),(C,D))",
+    "reason": "not_perpendicular",
+    "measured": {
+     "angle_between_deg": 60.7762,
+     "deviation_deg": 29.2238,
+     "segment_relative_lengths": [
+      0.438,
+      0.8563
+     ]
+    }
+   },
+   {
+    "sample_id": "train:1729",
+    "certified": "Perpendicular((A,F),(F,H))",
+    "reason": "not_perpendicular",
+    "measured": {
+     "angle_between_deg": 65.609,
+     "deviation_deg": 24.391,
+     "segment_relative_lengths": [
+      0.4122,
+      0.9982
+     ]
+    }
+   },
+   {
+    "sample_id": "train:1783",
+    "certified": "PointLiesOnCircle(A,Circle(B))",
+    "reason": "off_circle",
+    "measured": {
+     "relative_deviation": 0.5323,
+     "reference_points": 3,
+     "radius_relative": 0.5383
+    }
+   },
+   {
+    "sample_id": "train:1783",
+    "certified": "PointLiesOnCircle(C,Circle(B))",
+    "reason": "off_circle",
+    "measured": {
+     "relative_deviation": 1.1518,
+     "reference_points": 3,
+     "radius_relative": 0.2878
+    }
+   },
+   {
+    "sample_id": "train:1783",
+    "certified": "PointLiesOnCircle(D,Circle(B))",
+    "reason": "off_circle",
+    "measured": {
+     "relative_deviation": 0.8701,
+     "reference_points": 3,
+     "radius_relative": 0.2878
+    }
+   },
+   {
+    "sample_id": "train:1783",
+    "certified": "PointLiesOnCircle(E,Circle(B))",
+    "reason": "off_circle",
+    "measured": {
+     "relative_deviation": 0.4653,
+     "reference_points": 3,
+     "radius_relative": 0.5383
+    }
+   },
+   {
+    "sample_id": "train:1878",
+    "certified": "PointLiesOnCircle(J,Circle(K))",
+    "reason": "off_circle",
+    "measured": {
+     "relative_deviation": 0.1686,
+     "reference_points": 1,
+     "radius_relative": 0.5646
+    }
+   },
+   {
+    "sample_id": "train:1878",
+    "certified": "PointLiesOnCircle(L,Circle(K))",
+    "reason": "off_circle",
+    "measured": {
+     "relative_deviation": 0.2028,
+     "reference_points": 1,
+     "radius_relative": 0.4694
+    }
+   },
+   {
+    "sample_id": "train:1957",
+    "certified": "Perpendicular((A,C),(C,E))",
+    "reason": "not_perpendicular",
+    "measured": {
+     "angle_between_deg": 60.4304,
+     "deviation_deg": 29.5696,
+     "segment_relative_lengths": [
+      0.4337,
+      0.8678
+     ]
+    }
+   },
+   {
+    "sample_id": "train:2049",
+    "certified": "PointLiesOnCircle(G,Circle(B))",
+    "reason": "off_circle",
+    "measured": {
+     "relative_deviation": 0.4031,
+     "reference_points": 1,
+     "radius_relative": 0.4161
+    }
+   },
+   {
+    "sample_id": "train:2090",
+    "certified": "Perpendicular((A,C),(C,E))",
+    "reason": "not_perpendicular",
+    "measured": {
+     "angle_between_deg": 60.4304,
+     "deviation_deg": 29.5696,
+     "segment_relative_lengths": [
+      0.4337,
+      0.8678
+     ]
+    }
+   },
+   {
+    "sample_id": "train:329",
+    "certified": "PointLiesOnCircle(G,Circle(B))",
+    "reason": "off_circle",
+    "measured": {
+     "relative_deviation": 0.4031,
+     "reference_points": 1,
+     "radius_relative": 0.4161
+    }
+   },
+   {
+    "sample_id": "train:335",
+    "certified": "Perpendicular((T,U),(U,W))",
+    "reason": "not_perpendicular",
+    "measured": {
+     "angle_between_deg": 67.8548,
+     "deviation_deg": 22.1452,
+     "segment_relative_lengths": [
+      0.339,
+      0.9273
+     ]
+    }
+   },
+   {
+    "sample_id": "train:380",
+    "certified": "PointLiesOnLine(E,(B,C))",
+    "reason": "not_collinear",
+    "measured": {
+     "line_distance": 0.0707,
+     "position_on_segment": 0.8086,
+     "segment_relative_length": 0.8116
+    }
+   },
+   {
+    "sample_id": "train:425",
+    "certified": "Perpendicular((A,C),(C,E))",
+    "reason": "not_perpendicular",
+    "measured": {
+     "angle_between_deg": 60.4304,
+     "deviation_deg": 29.5696,
+     "segment_relative_lengths": [
+      0.4337,
+      0.8678
+     ]
+    }
+   },
+   {
+    "sample_id": "train:523",
+    "certified": "PointLiesOnCircle(U,Circle)",
+    "reason": "off_circle",
+    "measured": {
+     "relative_deviation": 0.1555,
+     "reference_points": 2,
+     "radius_relative": 0.5384
+    }
+   },
+   {
+    "sample_id": "train:598",
+    "certified": "Perpendicular((A,C),(C,E))",
+    "reason": "not_perpendicular",
+    "measured": {
+     "angle_between_deg": 60.4304,
+     "deviation_deg": 29.5696,
+     "segment_relative_lengths": [
+      0.4337,
+      0.8678
+     ]
+    }
+   },
+   {
+    "sample_id": "train:919",
+    "certified": "Perpendicular((Q,T),(R,S))",
+    "reason": "not_perpendicular",
+    "measured": {
+     "angle_between_deg": 0.7544,
+     "deviation_deg": 89.2456,
+     "segment_relative_lengths": [
+      0.3509,
+      0.5052
+     ]
+    }
+   }
+  ]
+ },
+ "validation": {
+  "positives_by_relation": {
+   "Angle": 56,
+   "ArcMeasure": 1,
+   "CongruentAngle": 4,
+   "CongruentLength": 8,
+   "Length": 92,
+   "Parallel": 2,
+   "Perpendicular": 31,
+   "PointLiesOnCircle": 82,
+   "PointLiesOnLine": 87
+  },
+  "existence_refutations_of_certified": {},
+  "sweep": {
+   "PointLiesOnLine": {
+    "field": "line_distance",
+    "entries": [
+     {
+      "threshold": 0.02,
+      "certified": 87,
+      "false_refutations": 2,
+      "false_refutation_ids": [
+       "validation:148",
+       "validation:45"
+      ],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 0.03,
+      "certified": 87,
+      "false_refutations": 0,
+      "false_refutation_ids": [],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 0.04,
+      "certified": 87,
+      "false_refutations": 0,
+      "false_refutation_ids": [],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 0.06,
+      "certified": 87,
+      "false_refutations": 0,
+      "false_refutation_ids": [],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 0.08,
+      "certified": 87,
+      "false_refutations": 0,
+      "false_refutation_ids": [],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 0.1,
+      "certified": 87,
+      "false_refutations": 0,
+      "false_refutation_ids": [],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     }
+    ]
+   },
+   "Parallel": {
+    "field": "parallel_deg",
+    "entries": [
+     {
+      "threshold": 5.0,
+      "certified": 2,
+      "false_refutations": 0,
+      "false_refutation_ids": [],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 8.0,
+      "certified": 2,
+      "false_refutations": 0,
+      "false_refutation_ids": [],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 10.0,
+      "certified": 2,
+      "false_refutations": 0,
+      "false_refutation_ids": [],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 15.0,
+      "certified": 2,
+      "false_refutations": 0,
+      "false_refutation_ids": [],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 20.0,
+      "certified": 2,
+      "false_refutations": 0,
+      "false_refutation_ids": [],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 25.0,
+      "certified": 2,
+      "false_refutations": 0,
+      "false_refutation_ids": [],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     }
+    ]
+   },
+   "Perpendicular": {
+    "field": "perpendicular_deg",
+    "entries": [
+     {
+      "threshold": 5.0,
+      "certified": 31,
+      "false_refutations": 3,
+      "false_refutation_ids": [
+       "validation:165",
+       "validation:45"
+      ],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 8.0,
+      "certified": 31,
+      "false_refutations": 2,
+      "false_refutation_ids": [
+       "validation:165"
+      ],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 10.0,
+      "certified": 31,
+      "false_refutations": 2,
+      "false_refutation_ids": [
+       "validation:165"
+      ],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 15.0,
+      "certified": 31,
+      "false_refutations": 2,
+      "false_refutation_ids": [
+       "validation:165"
+      ],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 20.0,
+      "certified": 31,
+      "false_refutations": 2,
+      "false_refutation_ids": [
+       "validation:165"
+      ],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 25.0,
+      "certified": 31,
+      "false_refutations": 2,
+      "false_refutation_ids": [
+       "validation:165"
+      ],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     }
+    ]
+   },
+   "PointLiesOnCircle": {
+    "field": "circle_relative",
+    "entries": [
+     {
+      "threshold": 0.05,
+      "certified": 82,
+      "false_refutations": 19,
+      "false_refutation_ids": [
+       "validation:130",
+       "validation:157",
+       "validation:179",
+       "validation:24",
+       "validation:45",
+       "validation:76",
+       "validation:84"
+      ],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 0.08,
+      "certified": 82,
+      "false_refutations": 16,
+      "false_refutation_ids": [
+       "validation:130",
+       "validation:157",
+       "validation:179",
+       "validation:24",
+       "validation:45",
+       "validation:76",
+       "validation:84"
+      ],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 0.1,
+      "certified": 82,
+      "false_refutations": 9,
+      "false_refutation_ids": [
+       "validation:130",
+       "validation:157",
+       "validation:179",
+       "validation:76"
+      ],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 0.15,
+      "certified": 82,
+      "false_refutations": 1,
+      "false_refutation_ids": [
+       "validation:179"
+      ],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 0.2,
+      "certified": 82,
+      "false_refutations": 1,
+      "false_refutation_ids": [
+       "validation:179"
+      ],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 0.25,
+      "certified": 82,
+      "false_refutations": 1,
+      "false_refutation_ids": [
+       "validation:179"
+      ],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     }
+    ]
+   },
+   "Angle": {
+    "field": "angle_value_deg",
+    "entries": [
+     {
+      "threshold": 10.0,
+      "certified": 56,
+      "false_refutations": 1,
+      "false_refutation_ids": [
+       "validation:37"
+      ],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 15.0,
+      "certified": 56,
+      "false_refutations": 0,
+      "false_refutation_ids": [],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 25.0,
+      "certified": 56,
+      "false_refutations": 0,
+      "false_refutation_ids": [],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 35.0,
+      "certified": 56,
+      "false_refutations": 0,
+      "false_refutation_ids": [],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 45.0,
+      "certified": 56,
+      "false_refutations": 0,
+      "false_refutation_ids": [],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     }
+    ]
+   },
+   "CongruentLength": {
+    "field": "congruent_length_ratio",
+    "entries": [
+     {
+      "threshold": 1.1,
+      "certified": 8,
+      "false_refutations": 1,
+      "false_refutation_ids": [
+       "validation:156"
+      ],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 1.2,
+      "certified": 8,
+      "false_refutations": 1,
+      "false_refutation_ids": [
+       "validation:156"
+      ],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 1.35,
+      "certified": 8,
+      "false_refutations": 0,
+      "false_refutation_ids": [],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 1.5,
+      "certified": 8,
+      "false_refutations": 0,
+      "false_refutation_ids": [],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 2.0,
+      "certified": 8,
+      "false_refutations": 0,
+      "false_refutation_ids": [],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     }
+    ]
+   },
+   "CongruentAngle": {
+    "field": "congruent_angle_deg",
+    "entries": [
+     {
+      "threshold": 5.0,
+      "certified": 4,
+      "false_refutations": 2,
+      "false_refutation_ids": [
+       "validation:191",
+       "validation:227"
+      ],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 10.0,
+      "certified": 4,
+      "false_refutations": 1,
+      "false_refutation_ids": [
+       "validation:191"
+      ],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 15.0,
+      "certified": 4,
+      "false_refutations": 0,
+      "false_refutation_ids": [],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 25.0,
+      "certified": 4,
+      "false_refutations": 0,
+      "false_refutation_ids": [],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     },
+     {
+      "threshold": 40.0,
+      "certified": 4,
+      "false_refutations": 0,
+      "false_refutation_ids": [],
+      "spray_claims": 0,
+      "spray_refuted_fraction": null
+     }
+    ]
+   }
+  },
+  "gate": {
+   "rows": 2,
+   "by_family": {
+    "coordinates": 2
+   },
+   "rows_detail": {
+    "validation:165": {
+     "coordinates": {
+      "certified": "Perpendicular((A,C),(B,C))",
+      "reason": "not_perpendicular"
+     }
+    },
+    "validation:179": {
+     "coordinates": {
+      "certified": "PointLiesOnCircle(N,Circle)",
+      "reason": "off_circle"
+     }
+    }
+   }
+  },
+  "after_gate": {
+   "PointLiesOnLine": 0,
+   "Parallel": 0,
+   "Perpendicular": 0,
+   "PointLiesOnCircle": 0
+  },
+  "loo": {
+   "limit": 0.05,
+   "relations": {
+    "PointLiesOnLine": {
+     "certified": 87,
+     "residual": 0,
+     "rate": 0.0,
+     "ci95": [
+      0.0,
+      0.0423
+     ],
+     "within_limit": true,
+     "residual_ids": []
+    },
+    "Parallel": {
+     "certified": 2,
+     "residual": 0,
+     "rate": 0.0,
+     "ci95": [
+      0.0,
+      0.6576
+     ],
+     "within_limit": true,
+     "residual_ids": []
+    },
+    "Perpendicular": {
+     "certified": 31,
+     "residual": 0,
+     "rate": 0.0,
+     "ci95": [
+      0.0,
+      0.1103
+     ],
+     "within_limit": true,
+     "residual_ids": []
+    },
+    "PointLiesOnCircle": {
+     "certified": 82,
+     "residual": 1,
+     "rate": 0.0122,
+     "ci95": [
+      0.0022,
+      0.0659
+     ],
+     "within_limit": true,
+     "residual_ids": [
+      "validation:179"
+     ]
+    }
+   },
+   "pooled": {
+    "certified": 202,
+    "residual": 1,
+    "rate": 0.005,
+    "ci95": [
+     0.0009,
+     0.0275
+    ]
+   }
+  },
+  "raw_false_refutations": [
+   {
+    "sample_id": "validation:165",
+    "certified": "Perpendicular((A,C),(B,C))",
+    "reason": "not_perpendicular",
+    "measured": {
+     "angle_between_deg": 47.459,
+     "deviation_deg": 42.541,
+     "segment_relative_lengths": [
+      0.6732,
+      1.0
+     ]
+    }
+   },
+   {
+    "sample_id": "validation:165",
+    "certified": "Perpendicular((B,D),(C,D))",
+    "reason": "not_perpendicular",
+    "measured": {
+     "angle_between_deg": 0.22,
+     "deviation_deg": 89.78,
+     "segment_relative_lengths": [
+      0.454,
+      0.546
+     ]
+    }
+   },
+   {
+    "sample_id": "validation:179",
+    "certified": "PointLiesOnCircle(N,Circle)",
+    "reason": "off_circle",
+    "measured": {
+     "relative_deviation": 0.6489,
+     "reference_points": 3,
+     "radius_relative": 0.2355
+    }
+   }
+  ]
+ },
+ "attacks_train": {
+  "honest_full": {
+   "rows": 609,
+   "mean_v4": 1.0,
+   "mean_v5": 1.0,
+   "share_beating_honest_half_v4": 0.9408866995073891,
+   "share_beating_honest_half_v5": 0.9408866995073891
+  },
+  "honest_half": {
+   "rows": 609,
+   "mean_v4": 0.7188754916804757,
+   "mean_v5": 0.569368927004395,
+   "share_beating_honest_half_v4": 0.0,
+   "share_beating_honest_half_v5": 0.0
+  },
+  "incidence_spray": {
+   "rows": 608,
+   "mean_v4": 0.1758798767022451,
+   "mean_v5": -0.9161361737677527,
+   "share_beating_honest_half_v4": 0.03125,
+   "share_beating_honest_half_v5": 0.003289473684210526
+  },
+  "pair_spray": {
+   "rows": 608,
+   "mean_v4": 0.07967361585782638,
+   "mean_v5": -0.9245018796992482,
+   "share_beating_honest_half_v4": 0.0,
+   "share_beating_honest_half_v5": 0.0
+  },
+  "value_spray": {
+   "rows": 449,
+   "mean_v4": 0.5906713384143211,
+   "mean_v5": 0.06521288103136653,
+   "share_beating_honest_half_v4": 0.2026726057906459,
+   "share_beating_honest_half_v5": 0.14253897550111358
+  },
+  "combined_spray": {
+   "rows": 608,
+   "mean_v4": 0.40436456818035765,
+   "mean_v5": -0.9439470420843775,
+   "share_beating_honest_half_v4": 0.15460526315789475,
+   "share_beating_honest_half_v5": 0.0
+  },
+  "combined_spray_with_gold": {
+   "rows": 609,
+   "mean_v4": 0.9685648373613215,
+   "mean_v5": -0.7248032828328395,
+   "share_beating_honest_half_v4": 0.9047619047619048,
+   "share_beating_honest_half_v5": 0.042692939244663386
+  }
+ },
+ "attacks_train_without_gate": {
+  "honest_full": {
+   "rows": 609,
+   "mean_v4": 1.0,
+   "mean_v5": 1.0,
+   "share_beating_honest_half_v4": 0.9408866995073891,
+   "share_beating_honest_half_v5": 0.9408866995073891
+  },
+  "honest_half": {
+   "rows": 609,
+   "mean_v4": 0.7188754916804757,
+   "mean_v5": 0.569368927004395,
+   "share_beating_honest_half_v4": 0.0,
+   "share_beating_honest_half_v5": 0.0
+  },
+  "incidence_spray": {
+   "rows": 608,
+   "mean_v4": 0.1758798767022451,
+   "mean_v5": -0.9436338241436925,
+   "share_beating_honest_half_v4": 0.03125,
+   "share_beating_honest_half_v5": 0.0
+  },
+  "pair_spray": {
+   "rows": 608,
+   "mean_v4": 0.07967361585782638,
+   "mean_v5": -0.9484515977443609,
+   "share_beating_honest_half_v4": 0.0,
+   "share_beating_honest_half_v5": 0.0
+  },
+  "value_spray": {
+   "rows": 449,
+   "mean_v4": 0.5906713384143211,
+   "mean_v5": 0.06521288103136653,
+   "share_beating_honest_half_v4": 0.2026726057906459,
+   "share_beating_honest_half_v5": 0.14253897550111358
+  },
+  "combined_spray": {
+   "rows": 608,
+   "mean_v4": 0.40436456818035765,
+   "mean_v5": -0.9730524227234754,
+   "share_beating_honest_half_v4": 0.15460526315789475,
+   "share_beating_honest_half_v5": 0.0
+  },
+  "combined_spray_with_gold": {
+   "rows": 609,
+   "mean_v4": 0.9685648373613215,
+   "mean_v5": -0.7670927503439819,
+   "share_beating_honest_half_v4": 0.9047619047619048,
+   "share_beating_honest_half_v5": 0.016420361247947456
+  }
+ }
+}

@@ -1,0 +1,59 @@
+{
+  "schema": "p3-drive-probe-v1",
+  "detect": {
+    "remote": "mydrive:",
+    "base_dir": "ColabProjects/vlm-perception-reward-rl",
+    "mount": "/content/mydrive",
+    "rclone": "/usr/bin/rclone",
+    "rclone_version": "rclone v1.60.1-DEV",
+    "config": null,
+    "config_source": "default",
+    "remote_configured": true,
+    "mount_present": true,
+    "usable": true,
+    "method": "rclone",
+    "notes": [],
+    "remotes": [
+      "mydrive:"
+    ]
+  },
+  "ok": true,
+  "steps": {
+    "upload_text": {
+      "rc": 0,
+      "seconds": 10.85,
+      "error": null
+    },
+    "read_back_text": {
+      "rc": 0,
+      "seconds": 6.98,
+      "matches": true
+    },
+    "upload_blob": {
+      "rc": 0,
+      "seconds": 5.82,
+      "mb_per_s": 2.7
+    },
+    "download_blob": {
+      "rc": 0,
+      "seconds": 6.85,
+      "mb_per_s": 2.3,
+      "md5_matches": true
+    },
+    "rclone_check": {
+      "rc": 0,
+      "identical": true
+    },
+    "mount_write": {
+      "visible_on_remote": true,
+      "seconds_until_visible": 17.6
+    }
+  },
+  "deleted_probe_files": [
+    "probe.txt",
+    "probe.bin",
+    "via_mount.txt"
+  ],
+  "target": "mydrive:ColabProjects/vlm-perception-reward-rl/_p3_probe/preflight-20261109T122305Z-e6cd",
+  "size_mb": 16
+}
