@@ -111,8 +111,10 @@ def build(out_dir):
                "smoke_full_hf": run_summary(out / "smoke_full_hf") if (out / "smoke_full_hf").is_dir() else None,
                "smoke_full_vllm": run_summary(out / "smoke_full_vllm") if (out / "smoke_full_vllm").is_dir() else None,
                "resume": run_summary(out / "resume") if (out / "resume").is_dir() else None,
-               "frozen_runtime": _load(out / "frozen_runtime.json")}
+               "frozen_runtime": _load(out / "frozen_runtime.json"), "drive_probe": _load(out / "drive_probe.json")}
     checks = []
+    if summary["task"] == "drive-check":
+        checks.append(("Drive 写入、读回、哈希校验、删除全部成功", bool((summary["drive_probe"] or {}).get("ok"))))
     if summary["pytest"] is not None:
         checks.append(("pytest 无失败", summary["pytest"]["failures"] == 0 and summary["pytest"]["errors"] == 0))
     if summary["pack"] is not None:
@@ -226,6 +228,7 @@ def markdown(s):
                 name, train.get("global_step"), ro.get("rollouts"), _fmt(run.get("step_time_median"), 1),
                 _fmt(train.get("peak_gpu_memory_gb"), 1), _fmt(ro.get("answer_acc")), _fmt(ro.get("format_rate")),
                 _fmt(ro.get("claims_per_completion"), 2)))
+    lines += drive_lines(s.get("drive_probe"))
     runtime = s.get("frozen_runtime")
     if runtime:
         lines += ["", "## 冻结的运行时决策（`frozen_runtime.json`）", "",
@@ -238,6 +241,36 @@ def markdown(s):
         for step in failed:
             lines += ["### %s（%s）" % (step["name"], step.get("state")), "", "```text", (step.get("log_tail") or step.get("reason") or "")[-3000:], "```", ""]
     return "\n".join(lines) + "\n"
+
+
+def drive_lines(probe):
+    if not probe:
+        return []
+    det = probe.get("detect") or {}
+    lines = ["", "## Google Drive（可选；rclone，见 `drive_probe.json`）", "",
+             "- 结论：%s" % ("可用，写入/读回/校验/删除均成功" if probe.get("ok") else "不可用或未通过：%s" % (
+                 probe.get("reason") or "见 drive_probe.json")),
+             "- rclone：%s；远端 `%s` 已配置：%s%s；挂载点 `%s` 存在：%s" % (
+                 det.get("rclone_version") or "未安装", det.get("remote"), "是" if det.get("remote_configured") else "否",
+                 "（配置文件取自正在运行的 rclone mount）" if det.get("config_source") == "running rclone mount" else "",
+                 det.get("mount"), "是" if det.get("mount_present") else "否")]
+    steps = probe.get("steps") or {}
+    up, down, check = steps.get("upload_blob") or {}, steps.get("download_blob") or {}, steps.get("rclone_check") or {}
+    if up or down:
+        lines.append("- %s MB 随机文件：上传 %s 秒（%s MB/s），下载 %s 秒（%s MB/s），MD5 一致 %s，`rclone check` 一致 %s" % (
+            probe.get("size_mb", "?"), _fmt(up.get("seconds"), 1), _fmt(up.get("mb_per_s"), 1), _fmt(down.get("seconds"), 1),
+            _fmt(down.get("mb_per_s"), 1), down.get("md5_matches"), check.get("identical")))
+    mount = steps.get("mount_write")
+    if mount:
+        if mount.get("error"):
+            lines.append("- 经挂载写入失败：%s" % mount["error"])
+        else:
+            lines.append("- 经挂载写入的文件%s（挂载写入是异步的，所以持久化只用 `rclone copy` + `rclone check`）" % (
+                "在 %s 秒后出现在远端" % _fmt(mount.get("seconds_until_visible"), 1) if mount.get("visible_on_remote")
+                else "120 秒内未出现在远端"))
+    if probe.get("deleted_probe_files") is not None:
+        lines.append("- 探针文件已删除：%s" % (", ".join(probe["deleted_probe_files"]) or "无"))
+    return lines
 
 
 def minimal(out_dir):

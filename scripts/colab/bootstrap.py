@@ -177,25 +177,34 @@ def main(root, request):
     state = root / "state"
     state.mkdir(parents=True, exist_ok=True)
     started = time.time()
-    record = {"schema": "p3-bootstrap-v1", "run_id": request["run_id"], "code_sha256": request["code"]["sha256"],
-              "pack_content_sha256": request["data_pack"]["content_sha256"], "dry_run": bool(request["options"].get("dry_run"))}
+    pack_request = request.get("data_pack")
+    options = request.get("options", {})
+    record = {"schema": "p3-bootstrap-v1", "run_id": request["run_id"],
+              "code_identity": request["code"].get("tree_sha256") or request["code"]["sha256"],
+              "code_source": request["code"].get("source") or request["code"].get("mode", "upload"),
+              "code_commit": request["code"].get("commit"),
+              "pack_content_sha256": pack_request["content_sha256"] if pack_request else None,
+              "dry_run": bool(options.get("dry_run")), "env_mode": options.get("env", "gpu")}
     try:
         from scripts.colab.pack_private_data import extract_pack, verify_tree
 
         inbox = root / "inbox"
-        pack = join_parts(inbox, request["data_pack"]["parts"], inbox / request["data_pack"]["name"],
-                          request["data_pack"]["sha256"])
-        extract_pack(pack, repo)
-        verification = verify_tree(repo)
-        write_json(state / "pack_verification.json", verification)
-        if not verification["ok"]:
-            raise StepError("data pack verification failed: %s" % verification["problems"][:5])
-        log("data pack verified: %d files, anchors %s" % (verification["files"], ",".join(verification["anchors"])))
+        if pack_request:
+            pack = join_parts(inbox, pack_request["parts"], inbox / pack_request["name"], pack_request["sha256"])
+            extract_pack(pack, repo)
+            verification = verify_tree(repo)
+            write_json(state / "pack_verification.json", verification)
+            if not verification["ok"]:
+                raise StepError("data pack verification failed: %s" % verification["problems"][:5])
+            log("data pack verified: %d files, anchors %s" % (verification["files"], ",".join(verification["anchors"])))
+        else:
+            log("no data pack requested for this task")
         gpu = gpu_info()
         record["gpu"] = {k: v for k, v in gpu.items() if k != "nvidia_smi"}
         (state / "nvidia_smi.txt").write_text(gpu.get("nvidia_smi", "unavailable"), encoding="utf-8")
-        if record["dry_run"]:
-            record["envs"] = {"base": {"name": "base", "python": sys.executable, "torch_backend": "dry-run", "ok": True}}
+        if record["dry_run"] or record["env_mode"] == "none":
+            label = "dry-run" if record["dry_run"] else "kernel-python (task needs no GPU environment)"
+            record["envs"] = {"base": {"name": "base", "python": sys.executable, "torch_backend": label, "ok": True}}
             record["model"] = None
         else:
             if not gpu.get("available"):

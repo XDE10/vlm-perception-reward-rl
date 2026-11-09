@@ -24,12 +24,26 @@ class Context(object):
         self.run_id = request["run_id"]
         self.out = self.root / "out" / self.run_id
         self.bootstrap = bootstrap
-        self.python = bootstrap["envs"]["base"]["python"]
+        base = (bootstrap.get("envs") or {}).get("base") or {}
+        self.python = base.get("python") or kernel_python  # tasks without a GPU env run on the kernel's python
         self.kernel_python = kernel_python
         self.dry_run = bool(self.options.get("dry_run"))
         model = bootstrap.get("model") or {}
         self.model_dir = model.get("local_dir")
         self.vllm_python = str(self.root / "env" / "vllm" / "bin" / "python")
+
+
+def drive_probe_step(ctx, required):
+    """Write/read/verify/delete probe files on the user's Drive through rclone (stdlib only, kernel python)."""
+    cmd = [ctx.kernel_python, "-m", "scripts.colab.drive", "probe", "--out", ctx.out / "drive_probe.json",
+           "--run-id", ctx.run_id, "--scratch", ctx.out / ".drive_scratch"]
+    for flag, key in [("--remote", "drive_remote"), ("--dir", "drive_dir"), ("--mount", "drive_mount")]:
+        if ctx.options.get(key):
+            cmd += [flag, ctx.options[key]]
+    if required:
+        cmd.append("--require")
+    return step("drive_probe", cmd, 3600, required=required,
+                description="Google Drive via rclone: write, read back, hash check, delete (optional unless drive-check)")
 
 
 def step(name, cmd, timeout=3600, required=True, depends_on=(), env=None, description=""):
@@ -56,6 +70,7 @@ def preflight_steps(ctx):
              description="software, GPU and environment lock report"),
         step("verify_pack", [py, "-m", "scripts.colab.verify_pack", "--repo", ctx.repo, "--out",
                              out / "pack_verification.json"], 900, description="private data matches its anchors"),
+        drive_probe_step(ctx, required=False),
     ]
     if ctx.dry_run:
         return common + [
@@ -103,7 +118,16 @@ def preflight_steps(ctx):
     return steps
 
 
-TASKS = {"preflight": preflight_steps}
+def drive_check_steps(ctx):
+    """Cheap CPU-VM check of the optional Drive setup; no data, no GPU environment, no model."""
+    return [
+        step("env_report", [ctx.python, "-m", "scripts.colab.env_report", "--root", ctx.root, "--out", ctx.out / "env.json"],
+             900, required=False, description="VM software, RAM and disk"),
+        drive_probe_step(ctx, required=True),
+    ]
+
+
+TASKS = {"preflight": preflight_steps, "drive-check": drive_check_steps}
 
 
 def steps_for(ctx):

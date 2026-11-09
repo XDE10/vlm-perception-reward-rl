@@ -77,11 +77,20 @@ def test_summary_renders_all_sections(tmp_path):
                "rewards": {"answer": 1.0, "format": 1.0, "perception": 0.5},
                "v5_own": {"reward": 0.5, "unique": 3}, "answer": {"status": "equivalent"}}
     (out / "smoke_full_hf" / "rollouts.jsonl").write_text(json.dumps(rollout) + "\n", encoding="utf-8")
+    write(out / "drive_probe.json", {"ok": True, "size_mb": 16, "deleted_probe_files": ["probe.txt", "probe.bin"],
+                                     "detect": {"rclone_version": "rclone v1.71.0", "remote": "mydrive:",
+                                                "remote_configured": True, "mount": "/content/mydrive",
+                                                "mount_present": True},
+                                     "steps": {"upload_blob": {"seconds": 4.0, "mb_per_s": 4.0},
+                                               "download_blob": {"seconds": 2.0, "mb_per_s": 8.0, "md5_matches": True},
+                                               "rclone_check": {"identical": True},
+                                               "mount_write": {"visible_on_remote": True, "seconds_until_visible": 35.0}}})
     summary = build(out)
     text = markdown(summary)
-    for heading in ["## 步骤", "## GPU 探针", "## V0 探针", "## GRPO 冒烟", "## 未通过的步骤"]:
+    for heading in ["## 步骤", "## GPU 探针", "## V0 探针", "## GRPO 冒烟", "## Google Drive", "## 未通过的步骤"]:
         assert heading in text, heading
-    assert summary["overall"] == "passed"  # the only failed step is optional
+    assert "在 35.0 秒后出现在远端" in text and "上传 4.0 秒（4.0 MB/s）" in text
+    assert summary["overall"] == "passed"  # the only failed step is optional; Drive never gates a preflight
 
 
 @pytest.mark.skipif(not HAS_MODEL_DEPS, reason="needs pinned processor files, trl, peft, math_verify")
