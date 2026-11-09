@@ -1,0 +1,11 @@
+{
+  "run": "rl_v4/seed1_smoke",
+  "config_sha256": "44ba6bc0c6d8400f42a8dcfe8337e7e68224e7d7164861a8a6d8204b645aec79",
+  "global_step": 1,
+  "max_steps": 1,
+  "wall_seconds": 32.6737322807312,
+  "peak_gpu_memory_gb": 8.841887744,
+  "vision_cache": null,
+  "generation_backend": "hf",
+  "python": "3.12.3"
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "p3-drive-probe-v1",
+  "detect": {
+    "remote": "mydrive:",
+    "base_dir": "ColabProjects/vlm-perception-reward-rl",
+    "mount": "/content/mydrive",
+    "rclone": null,
+    "rclone_version": null,
+    "config": null,
+    "config_source": "default",
+    "remote_configured": false,
+    "mount_present": false,
+    "usable": false,
+    "method": null,
+    "notes": [
+      "rclone is not on PATH (Drive persistence needs the rclone CLI, not only the mount)"
+    ]
+  },
+  "ok": false,
+  "reason": "rclone is not on PATH (Drive persistence needs the rclone CLI, not only the mount)"
+}

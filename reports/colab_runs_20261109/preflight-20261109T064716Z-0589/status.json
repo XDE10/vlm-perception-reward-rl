@@ -1,0 +1,241 @@
+{
+  "schema": "p3-job-status-v1",
+  "run_id": "preflight-20261109T064716Z-0589",
+  "task": "preflight",
+  "state": "done",
+  "started_utc": "2026-11-09T06:55:26Z",
+  "updated_utc": "2026-11-09T07:15:35Z",
+  "steps": [
+    {
+      "name": "env_report",
+      "state": "passed",
+      "required": true,
+      "description": "software, GPU and environment lock report",
+      "started_utc": "2026-11-09T06:55:26Z",
+      "log": "logs/env_report.log",
+      "exit_code": 0,
+      "seconds": 2.3,
+      "finished_utc": "2026-11-09T06:55:29Z"
+    },
+    {
+      "name": "verify_pack",
+      "state": "passed",
+      "required": true,
+      "description": "private data matches its anchors",
+      "started_utc": "2026-11-09T06:55:29Z",
+      "log": "logs/verify_pack.log",
+      "exit_code": 0,
+      "seconds": 0.3,
+      "finished_utc": "2026-11-09T06:55:29Z"
+    },
+    {
+      "name": "drive_probe",
+      "state": "passed",
+      "required": false,
+      "description": "Google Drive via rclone: write, read back, hash check, delete (optional unless drive-check)",
+      "started_utc": "2026-11-09T06:55:29Z",
+      "log": "logs/drive_probe.log",
+      "exit_code": 0,
+      "seconds": 0.1,
+      "finished_utc": "2026-11-09T06:55:29Z"
+    },
+    {
+      "name": "pytest",
+      "state": "passed",
+      "required": true,
+      "description": "full CPU test suite on the VM (GPU hidden)",
+      "started_utc": "2026-11-09T06:55:29Z",
+      "log": "logs/pytest.log",
+      "exit_code": 0,
+      "seconds": 128.3,
+      "finished_utc": "2026-11-09T06:57:38Z"
+    },
+    {
+      "name": "calibration",
+      "state": "passed",
+      "required": true,
+      "description": "v5 oracle calibration on all certified facts",
+      "started_utc": "2026-11-09T06:57:38Z",
+      "log": "logs/calibration.log",
+      "exit_code": 0,
+      "seconds": 99.3,
+      "finished_utc": "2026-11-09T06:59:17Z"
+    },
+    {
+      "name": "gpu_probe",
+      "state": "passed",
+      "required": true,
+      "description": "real-model LoRA scope, prompt lengths, peak memory, generation throughput, ViT cache",
+      "started_utc": "2026-11-09T06:59:17Z",
+      "log": "logs/gpu_probe.log",
+      "exit_code": 0,
+      "seconds": 183.6,
+      "finished_utc": "2026-11-09T07:02:21Z"
+    },
+    {
+      "name": "v0_probe",
+      "state": "passed",
+      "required": false,
+      "description": "V0 greedy protocol-v3 probe on 16 validation problems (with/without image)",
+      "started_utc": "2026-11-09T07:02:21Z",
+      "log": "logs/v0_probe.log",
+      "exit_code": 0,
+      "seconds": 112.1,
+      "finished_utc": "2026-11-09T07:04:13Z"
+    },
+    {
+      "name": "smoke_rl_ans",
+      "state": "passed",
+      "required": true,
+      "description": "1 GRPO step at a small shape for arm rl_ans",
+      "started_utc": "2026-11-09T07:04:13Z",
+      "log": "logs/smoke_rl_ans.log",
+      "exit_code": 0,
+      "seconds": 57.1,
+      "finished_utc": "2026-11-09T07:05:10Z"
+    },
+    {
+      "name": "smoke_rl_v4",
+      "state": "passed",
+      "required": true,
+      "description": "1 GRPO step at a small shape for arm rl_v4",
+      "started_utc": "2026-11-09T07:05:10Z",
+      "log": "logs/smoke_rl_v4.log",
+      "exit_code": 0,
+      "seconds": 56.2,
+      "finished_utc": "2026-11-09T07:06:06Z"
+    },
+    {
+      "name": "smoke_rl_v5",
+      "state": "passed",
+      "required": true,
+      "description": "1 GRPO step at a small shape for arm rl_v5",
+      "started_utc": "2026-11-09T07:06:06Z",
+      "log": "logs/smoke_rl_v5.log",
+      "exit_code": 0,
+      "seconds": 56.4,
+      "finished_utc": "2026-11-09T07:07:02Z"
+    },
+    {
+      "name": "smoke_rl_v5_placebo",
+      "state": "passed",
+      "required": true,
+      "description": "1 GRPO step at a small shape for arm rl_v5_placebo",
+      "started_utc": "2026-11-09T07:07:02Z",
+      "log": "logs/smoke_rl_v5_placebo.log",
+      "exit_code": 0,
+      "seconds": 56.4,
+      "finished_utc": "2026-11-09T07:07:59Z"
+    },
+    {
+      "name": "smoke_rl_blind",
+      "state": "passed",
+      "required": true,
+      "description": "1 GRPO step at a small shape for arm rl_blind",
+      "started_utc": "2026-11-09T07:07:59Z",
+      "log": "logs/smoke_rl_blind.log",
+      "exit_code": 0,
+      "seconds": 45.8,
+      "finished_utc": "2026-11-09T07:08:45Z"
+    },
+    {
+      "name": "smoke_full_hf",
+      "state": "failed",
+      "required": true,
+      "description": "3 GRPO steps at the registered shape (8 prompts x 8 generations), HF generation",
+      "started_utc": "2026-11-09T07:08:45Z",
+      "log": "logs/smoke_full_hf.log",
+      "exit_code": 1,
+      "seconds": 114.7,
+      "finished_utc": "2026-11-09T07:10:39Z",
+      "log_tail": "           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/content/p3/env/base/lib/python3.12/site-packages/trl/trainer/utils.py\", line 1653, in _fused_forward\n    backbone_outputs = getattr(self, backbone_attr)(*args, **kwargs)\n                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/content/p3/env/base/lib/python3.12/site-packages/torch/nn/modules/module.py\", line 1778, in _wrapped_call_impl\n    return self._call_impl(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/content/p3/env/base/lib/python3.12/site-packages/torch/nn/modules/module.py\", line 1789, in _call_impl\n    return forward_call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/content/p3/env/base/lib/python3.12/site-packages/transformers/utils/generic.py\", line 943, in wrapper\n    output = func(self, *args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/content/p3/env/base/lib/python3.12/site-packages/transformers/models/qwen2_5_vl/modeling_qwen2_5_vl.py\", line 1243, in forward\n    position_ids = self.compute_3d_position_ids(\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/content/p3/env/base/lib/python3.12/site-packages/transformers/models/qwen2_5_vl/modeling_qwen2_5_vl.py\", line 1153, in compute_3d_position_ids\n    position_ids, rope_deltas = self.get_rope_index(\n                                ^^^^^^^^^^^^^^^^^^^^\n  File \"/content/p3/env/base/lib/python3.12/site-packages/transformers/models/qwen2_5_vl/modeling_qwen2_5_vl.py\", line 1054, in get_rope_index\n    position_ids[:, batch_idx, attention_mask[batch_idx].bool()] = llm_positions.to(position_ids.device)\n    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: shape mismatch: value tensor of shape [3, 889] cannot be broadcast to indexing result of shape [3, 870]\n\n  0%|          | 0/3 [01:30<?, ?it/s]"
+    },
+    {
+      "name": "resume_a",
+      "state": "passed",
+      "required": true,
+      "description": "2 steps with a checkpoint every step",
+      "started_utc": "2026-11-09T07:10:39Z",
+      "log": "logs/resume_a.log",
+      "exit_code": 0,
+      "seconds": 60.0,
+      "finished_utc": "2026-11-09T07:11:39Z"
+    },
+    {
+      "name": "resume_b",
+      "state": "failed",
+      "required": true,
+      "description": "resume from checkpoint-1 to step 2 with identity check",
+      "started_utc": "2026-11-09T07:11:39Z",
+      "log": "logs/resume_b.log",
+      "exit_code": 1,
+      "seconds": 14.9,
+      "finished_utc": "2026-11-09T07:11:54Z",
+      "log_tail": "\nLoading weights:   0%|          | 0/824 [00:00<?, ?it/s]\nLoading weights:  58%|█████▊    | 474/824 [00:00<00:00, 4737.63it/s]\nLoading weights: 100%|██████████| 824/824 [00:00<00:00, 5817.01it/s]\n/content/p3/env/base/lib/python3.12/site-packages/transformers/models/qwen2_vl/image_processing_qwen2_vl.py:129: FutureWarning: Passing `min_pixels` and `max_pixels` to a processor call is deprecated and will be removed in v5.23. Pass in `size={'longest_edge': xxx, 'shortest_edge': xxx} to override the target size.`\n  warnings.warn(\nTraceback (most recent call last):\n  File \"<frozen runpy>\", line 198, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/content/p3/repo/scripts/training/train_rl.py\", line 45, in <module>\n    main()\n  File \"/content/p3/repo/scripts/training/train_rl.py\", line 41, in main\n    return run(config, ROOT, load_runtime(args.runtime), model_path=args.model_path, resume=args.resume)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/content/p3/repo/src/training/rl_entry.py\", line 212, in run\n    raise ValueError(f\"Checkpoint identity mismatch in {changed}; start a new output directory\")\nValueError: Checkpoint identity mismatch in ['lora_targets_sha256']; start a new output directory"
+    },
+    {
+      "name": "vllm_env",
+      "state": "passed",
+      "required": false,
+      "description": "optional vLLM venv (CUDA 13 only)",
+      "started_utc": "2026-11-09T07:11:54Z",
+      "log": "logs/vllm_env.log",
+      "exit_code": 0,
+      "seconds": 55.7,
+      "finished_utc": "2026-11-09T07:12:50Z"
+    },
+    {
+      "name": "smoke_full_vllm",
+      "state": "failed",
+      "required": false,
+      "description": "same 3 steps with vLLM colocate generation",
+      "started_utc": "2026-11-09T07:12:50Z",
+      "log": "logs/smoke_full_vllm.log",
+      "exit_code": 1,
+      "seconds": 165.1,
+      "finished_utc": "2026-11-09T07:15:35Z",
+      "log_tail": "[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/content/p3/env/vllm/lib/python3.12/site-packages/trl/trainer/utils.py\", line 1653, in _fused_forward\n[rank0]:     backbone_outputs = getattr(self, backbone_attr)(*args, **kwargs)\n[rank0]:                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/content/p3/env/vllm/lib/python3.12/site-packages/torch/nn/modules/module.py\", line 1778, in _wrapped_call_impl\n[rank0]:     return self._call_impl(*args, **kwargs)\n[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/content/p3/env/vllm/lib/python3.12/site-packages/torch/nn/modules/module.py\", line 1789, in _call_impl\n[rank0]:     return forward_call(*args, **kwargs)\n[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/content/p3/env/vllm/lib/python3.12/site-packages/transformers/utils/generic.py\", line 943, in wrapper\n[rank0]:     output = func(self, *args, **kwargs)\n[rank0]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/content/p3/env/vllm/lib/python3.12/site-packages/transformers/models/qwen2_5_vl/modeling_qwen2_5_vl.py\", line 1243, in forward\n[rank0]:     position_ids = self.compute_3d_position_ids(\n[rank0]:                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/content/p3/env/vllm/lib/python3.12/site-packages/transformers/models/qwen2_5_vl/modeling_qwen2_5_vl.py\", line 1153, in compute_3d_position_ids\n[rank0]:     position_ids, rope_deltas = self.get_rope_index(\n[rank0]:                                 ^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/content/p3/env/vllm/lib/python3.12/site-packages/transformers/models/qwen2_5_vl/modeling_qwen2_5_vl.py\", line 1054, in get_rope_index\n[rank0]:     position_ids[:, batch_idx, attention_mask[batch_idx].bool()] = llm_positions.to(position_ids.device)\n[rank0]:     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]: RuntimeError: shape mismatch: value tensor of shape [3, 535] cannot be broadcast to indexing result of shape [3, 516]\n\n  0%|          | 0/3 [00:13<?, ?it/s]"
+    },
+    {
+      "name": "decide_runtime",
+      "state": "failed",
+      "required": true,
+      "description": "freeze runtime decisions from the measurements",
+      "started_utc": "2026-11-09T07:15:35Z",
+      "log": "logs/decide_runtime.log",
+      "exit_code": 1,
+      "seconds": 0.1,
+      "finished_utc": "2026-11-09T07:15:35Z",
+      "log_tail": "{\"generation_backend\": \"hf\", \"per_device_train_batch_size\": 8, \"vision_cache\": false, \"rationale\": [\"micro-batch 8: measured fwd+bwd peak 18.0 GB <= 80% of 42.4 GB\", \"generation HF: no HF smoke result\", \"frozen-ViT cache off: ViT is 0.4057 of a forward pass, cached-vs-uncached max |dlogp| = 0.40537071228027344\"], \"source\": \"preflight preflight-20261109T064716Z-0589 (NOT DECIDED: missing measurements)\"}"
+    }
+  ],
+  "current": null,
+  "overall": "failed",
+  "package": {
+    "name": "preflight-20261109T064716Z-0589.results.tar.gz",
+    "sha256": "794883d555c2e87e5cdf92066b89924a3bb639e31d78be8cc12973ec451e3e6f",
+    "bytes": 116515,
+    "parts": [
+      {
+        "name": "preflight-20261109T064716Z-0589.results.tar.gz.part000",
+        "bytes": 116515,
+        "sha256": "794883d555c2e87e5cdf92066b89924a3bb639e31d78be8cc12973ec451e3e6f"
+      }
+    ],
+    "skipped": 0,
+    "gzipped": []
+  },
+  "drive": {
+    "ok": false,
+    "attempted": false,
+    "verified": null,
+    "target": null,
+    "files": null,
+    "bytes": null,
+    "copy_seconds": null,
+    "check_seconds": null,
+    "reason": "rclone is not on PATH (Drive persistence needs the rclone CLI, not only the mount)",
+    "mode": "results"
+  },
+  "finished_utc": "2026-11-09T07:15:35Z"
+}

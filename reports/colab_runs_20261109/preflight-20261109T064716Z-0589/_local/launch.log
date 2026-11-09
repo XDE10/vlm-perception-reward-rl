@@ -1,0 +1,27 @@
+[launch 14:47:16] run preflight-20261109T064716Z-0589 (task preflight, commit 6238694f4a63, GPU A100)
+[launch 14:47:23] code: the VM downloads commit 6238694f4a63 from GitHub and verifies every file against its git blob SHA-1
+[launch 14:47:23] building private data pack from /home/xde10/projects/vlm-perception-reward-rl/data
+[launch 14:47:23] data pack: {"pack": "/home/xde10/projects/vlm-perception-reward-rl/.colab_cache/p3_private_082210c90d5b3834.tar.gz", "sha256": "8f571a49c40d45a8226245d4dee0715d05c94e518b64496a2d731b9cb926f5e2", "bytes": 21164679, "content_sha256": "082210c90d5b3834539380c37bb5a43deab0f4354b5ff630910a6c06be06f1a1", "files": 71
+[launch 14:47:26] allocating Colab VM p3-preflight-11090647-0589 (A100)
+[colab] Creating session 'p3-preflight-11090647-0589'...
+[colab] Session READY.
+[launch 14:51:52] upload inputs 1/12 p3_private_082210c90d5b3834.tar.gz.part000 (2048 KiB)
+[launch 14:51:58] upload inputs 2/12 p3_private_082210c90d5b3834.tar.gz.part001 (2048 KiB)
+[launch 14:52:02] upload inputs 3/12 p3_private_082210c90d5b3834.tar.gz.part002 (2048 KiB)
+[launch 14:52:05] upload inputs 4/12 p3_private_082210c90d5b3834.tar.gz.part003 (2048 KiB)
+[launch 14:52:18] upload inputs 5/12 p3_private_082210c90d5b3834.tar.gz.part004 (2048 KiB)
+[launch 14:52:21] upload inputs 6/12 p3_private_082210c90d5b3834.tar.gz.part005 (2048 KiB)
+[launch 14:52:25] upload inputs 7/12 p3_private_082210c90d5b3834.tar.gz.part006 (2048 KiB)
+[launch 14:52:28] upload inputs 8/12 p3_private_082210c90d5b3834.tar.gz.part007 (2048 KiB)
+[launch 14:52:51] upload inputs 9/12 p3_private_082210c90d5b3834.tar.gz.part008 (2048 KiB)
+[launch 14:52:59] upload inputs 10/12 p3_private_082210c90d5b3834.tar.gz.part009 (2048 KiB)
+[launch 14:53:14] upload inputs 11/12 p3_private_082210c90d5b3834.tar.gz.part010 (188 KiB)
+[launch 14:53:16] upload inputs 12/12 request.json (65 KiB)
+[launch 14:53:18] uploaded inputs: 20734 KiB in 86s (~241 KiB/s)
+[launch 14:53:24] all uploaded parts verified on the VM (size and SHA256)
+[launch 14:53:24] bootstrap on the VM (code, environment install and model download; ~10-20 min)
+[launch 14:55:23] job running on the VM; progress lines follow (Ctrl-C detaches, the job keeps running)
+[launch 15:15:33] fetching results
+[launch 15:15:41] results in /home/xde10/projects/vlm-perception-reward-rl/.colab_runs/preflight-20261109T064716Z-0589/results/preflight-20261109T064716Z-0589 (overall: failed)
+[launch 15:15:41] Drive copy skipped: rclone is not on PATH (Drive persistence needs the rclone CLI, not only the mount)
+[launch 15:15:41] releasing VM p3-preflight-11090647-0589

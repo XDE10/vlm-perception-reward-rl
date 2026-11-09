@@ -1,0 +1,110 @@
+Loading weights:   0%|          | 0/824 [00:00<?, ?it/s]Loading weights:  54%|█████▍    | 447/824 [00:00<00:00, 4463.57it/s]Loading weights: 100%|██████████| 824/824 [00:00<00:00, 5700.97it/s]
+/content/p3/env/vllm/lib/python3.12/site-packages/transformers/models/qwen2_vl/image_processing_qwen2_vl.py:129: FutureWarning: Passing `min_pixels` and `max_pixels` to a processor call is deprecated and will be removed in v5.23. Pass in `size={'longest_edge': xxx, 'shortest_edge': xxx} to override the target size.`
+  warnings.warn(
+Loading safetensors checkpoint shards:   0% Completed | 0/2 [00:00<?, ?it/s]
+Loading safetensors checkpoint shards:  50% Completed | 1/2 [00:01<00:01,  1.15s/it]
+Loading safetensors checkpoint shards: 100% Completed | 2/2 [00:02<00:00,  1.09s/it]
+Loading safetensors checkpoint shards: 100% Completed | 2/2 [00:02<00:00,  1.10s/it]
+
+[transformers] Qwen2VL video processing does not apply the per-frame pixel cap the reference implementation (qwen-vl-utils) applies, so some videos cost far more tokens than they would there. In v5.22 the capped behavior will become the default and `cap_pixels_per_frame` will be removed. Pass `cap_pixels_per_frame=True` to adopt the reference behavior now, or `False` to keep the current behavior and silence this warning.
+Capturing CUDA graphs (PIECEWISE):   0%|          | 0/19 [00:00<?, ?it/s]Capturing CUDA graphs (PIECEWISE):  11%|█         | 2/19 [00:00<00:01, 12.68it/s]Capturing CUDA graphs (PIECEWISE):  21%|██        | 4/19 [00:00<00:01, 14.79it/s]Capturing CUDA graphs (PIECEWISE):  32%|███▏      | 6/19 [00:00<00:00, 15.66it/s]Capturing CUDA graphs (PIECEWISE):  42%|████▏     | 8/19 [00:00<00:00, 15.98it/s]Capturing CUDA graphs (PIECEWISE):  53%|█████▎    | 10/19 [00:00<00:00, 15.43it/s]Capturing CUDA graphs (PIECEWISE):  63%|██████▎   | 12/19 [00:00<00:00, 15.15it/s]Capturing CUDA graphs (PIECEWISE):  74%|███████▎  | 14/19 [00:00<00:00, 14.98it/s]Capturing CUDA graphs (PIECEWISE):  84%|████████▍ | 16/19 [00:01<00:00, 14.27it/s]Capturing CUDA graphs (PIECEWISE):  95%|█████████▍| 18/19 [00:01<00:00, 14.37it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 19/19 [00:01<00:00, 14.52it/s]
+Capturing CUDA graphs (FULL):   0%|          | 0/2 [00:00<?, ?it/s]Capturing CUDA graphs (FULL): 100%|██████████| 2/2 [00:00<00:00, 17.51it/s]Capturing CUDA graphs (FULL): 100%|██████████| 2/2 [00:00<00:00, 17.47it/s]
+Capturing CUDA graphs (PIECEWISE):   0%|          | 0/19 [00:00<?, ?it/s]Capturing CUDA graphs (PIECEWISE):  11%|█         | 2/19 [00:00<00:01, 15.97it/s]Capturing CUDA graphs (PIECEWISE):  21%|██        | 4/19 [00:00<00:00, 16.51it/s]Capturing CUDA graphs (PIECEWISE):  32%|███▏      | 6/19 [00:00<00:00, 16.73it/s]Capturing CUDA graphs (PIECEWISE):  42%|████▏     | 8/19 [00:00<00:00, 16.84it/s]Capturing CUDA graphs (PIECEWISE):  53%|█████▎    | 10/19 [00:00<00:00, 16.08it/s]Capturing CUDA graphs (PIECEWISE):  63%|██████▎   | 12/19 [00:00<00:00, 15.79it/s]Capturing CUDA graphs (PIECEWISE):  74%|███████▎  | 14/19 [00:00<00:00, 15.68it/s]Capturing CUDA graphs (PIECEWISE):  84%|████████▍ | 16/19 [00:01<00:00, 15.66it/s]Capturing CUDA graphs (PIECEWISE):  95%|█████████▍| 18/19 [00:01<00:00, 15.59it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 19/19 [00:01<00:00, 15.92it/s]
+Capturing CUDA graphs (FULL):   0%|          | 0/11 [00:00<?, ?it/s]Capturing CUDA graphs (FULL):  27%|██▋       | 3/11 [00:00<00:00, 20.00it/s]Capturing CUDA graphs (FULL):  45%|████▌     | 5/11 [00:00<00:00, 19.91it/s]Capturing CUDA graphs (FULL):  73%|███████▎  | 8/11 [00:00<00:00, 19.98it/s]Capturing CUDA graphs (FULL):  91%|█████████ | 10/11 [00:00<00:00, 19.97it/s]Capturing CUDA graphs (FULL): 100%|██████████| 11/11 [00:00<00:00, 20.08it/s]
+  0%|          | 0/3 [00:00<?, ?it/s]/content/p3/env/vllm/lib/python3.12/site-packages/transformers/models/qwen2_vl/image_processing_qwen2_vl.py:129: FutureWarning: Passing `min_pixels` and `max_pixels` to a processor call is deprecated and will be removed in v5.23. Pass in `size={'longest_edge': xxx, 'shortest_edge': xxx} to override the target size.`
+  warnings.warn(
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "<frozen runpy>", line 198, in _run_module_as_main
+[rank0]:   File "<frozen runpy>", line 88, in _run_code
+[rank0]:   File "/content/p3/repo/scripts/training/train_rl.py", line 45, in <module>
+[rank0]:     main()
+[rank0]:   File "/content/p3/repo/scripts/training/train_rl.py", line 41, in main
+[rank0]:     return run(config, ROOT, load_runtime(args.runtime), model_path=args.model_path, resume=args.resume)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/content/p3/repo/src/training/rl_entry.py", line 247, in run
+[rank0]:     trainer.train(resume_from_checkpoint=resume)
+[rank0]:   File "/content/p3/env/vllm/lib/python3.12/site-packages/transformers/trainer.py", line 1562, in train
+[rank0]:     return inner_training_loop(
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/content/p3/env/vllm/lib/python3.12/site-packages/transformers/trainer.py", line 1646, in _inner_training_loop
+[rank0]:     self._run_epoch(
+[rank0]:   File "/content/p3/env/vllm/lib/python3.12/site-packages/transformers/trainer.py", line 1892, in _run_epoch
+[rank0]:     tr_loss_step = self.training_step(model, inputs, num_items_in_batch)
+[rank0]:                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/content/p3/env/vllm/lib/python3.12/site-packages/trl/trainer/grpo_trainer.py", line 1581, in training_step
+[rank0]:     output = super().training_step(model, inputs, num_items_in_batch)
+[rank0]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/content/p3/env/vllm/lib/python3.12/site-packages/transformers/trainer.py", line 2059, in training_step
+[rank0]:     inputs = self._prepare_inputs(inputs)
+[rank0]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/content/p3/env/vllm/lib/python3.12/site-packages/trl/extras/profiling.py", line 211, in wrapper
+[rank0]:     return func(self, *args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/content/p3/env/vllm/lib/python3.12/site-packages/trl/trainer/grpo_trainer.py", line 1610, in _prepare_inputs
+[rank0]:     generation_batch = self._generate_and_score_completions(generation_batch)
+[rank0]:                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/content/p3/env/vllm/lib/python3.12/site-packages/trl/trainer/grpo_trainer.py", line 2762, in _generate_and_score_completions
+[rank0]:     old_per_token_logps, _, _ = self._get_per_token_logps_and_entropies(
+[rank0]:                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/content/p3/env/vllm/lib/python3.12/site-packages/trl/extras/profiling.py", line 211, in wrapper
+[rank0]:     return func(self, *args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/content/p3/env/vllm/lib/python3.12/site-packages/trl/trainer/grpo_trainer.py", line 1567, in _get_per_token_logps_and_entropies
+[rank0]:     outputs = model(**model_inputs, labels=labels, fused_lm_head=True)
+[rank0]:               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/content/p3/env/vllm/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/content/p3/env/vllm/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/content/p3/env/vllm/lib/python3.12/site-packages/accelerate/utils/operations.py", line 943, in forward
+[rank0]:     return model_forward(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/content/p3/env/vllm/lib/python3.12/site-packages/accelerate/utils/operations.py", line 931, in __call__
+[rank0]:     return convert_to_fp32(self.model_forward(*args, **kwargs))
+[rank0]:                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/content/p3/env/vllm/lib/python3.12/site-packages/torch/amp/autocast_mode.py", line 44, in decorate_autocast
+[rank0]:     return func(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/content/p3/env/vllm/lib/python3.12/site-packages/peft/peft_model.py", line 2120, in forward
+[rank0]:     return self.base_model(
+[rank0]:            ^^^^^^^^^^^^^^^^
+[rank0]:   File "/content/p3/env/vllm/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/content/p3/env/vllm/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/content/p3/env/vllm/lib/python3.12/site-packages/peft/tuners/tuners_utils.py", line 359, in forward
+[rank0]:     return self.model(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/content/p3/env/vllm/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/content/p3/env/vllm/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/content/p3/env/vllm/lib/python3.12/site-packages/trl/trainer/utils.py", line 1653, in _fused_forward
+[rank0]:     backbone_outputs = getattr(self, backbone_attr)(*args, **kwargs)
+[rank0]:                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/content/p3/env/vllm/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/content/p3/env/vllm/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/content/p3/env/vllm/lib/python3.12/site-packages/transformers/utils/generic.py", line 943, in wrapper
+[rank0]:     output = func(self, *args, **kwargs)
+[rank0]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/content/p3/env/vllm/lib/python3.12/site-packages/transformers/models/qwen2_5_vl/modeling_qwen2_5_vl.py", line 1243, in forward
+[rank0]:     position_ids = self.compute_3d_position_ids(
+[rank0]:                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/content/p3/env/vllm/lib/python3.12/site-packages/transformers/models/qwen2_5_vl/modeling_qwen2_5_vl.py", line 1153, in compute_3d_position_ids
+[rank0]:     position_ids, rope_deltas = self.get_rope_index(
+[rank0]:                                 ^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/content/p3/env/vllm/lib/python3.12/site-packages/transformers/models/qwen2_5_vl/modeling_qwen2_5_vl.py", line 1054, in get_rope_index
+[rank0]:     position_ids[:, batch_idx, attention_mask[batch_idx].bool()] = llm_positions.to(position_ids.device)
+[rank0]:     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]: RuntimeError: shape mismatch: value tensor of shape [3, 535] cannot be broadcast to indexing result of shape [3, 516]
+  0%|          | 0/3 [00:13<?, ?it/s]

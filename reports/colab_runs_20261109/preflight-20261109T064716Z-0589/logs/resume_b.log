@@ -1,0 +1,14 @@
+Loading weights:   0%|          | 0/824 [00:00<?, ?it/s]Loading weights:  58%|█████▊    | 474/824 [00:00<00:00, 4737.63it/s]Loading weights: 100%|██████████| 824/824 [00:00<00:00, 5817.01it/s]
+/content/p3/env/base/lib/python3.12/site-packages/transformers/models/qwen2_vl/image_processing_qwen2_vl.py:129: FutureWarning: Passing `min_pixels` and `max_pixels` to a processor call is deprecated and will be removed in v5.23. Pass in `size={'longest_edge': xxx, 'shortest_edge': xxx} to override the target size.`
+  warnings.warn(
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/content/p3/repo/scripts/training/train_rl.py", line 45, in <module>
+    main()
+  File "/content/p3/repo/scripts/training/train_rl.py", line 41, in main
+    return run(config, ROOT, load_runtime(args.runtime), model_path=args.model_path, resume=args.resume)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/content/p3/repo/src/training/rl_entry.py", line 212, in run
+    raise ValueError(f"Checkpoint identity mismatch in {changed}; start a new output directory")
+ValueError: Checkpoint identity mismatch in ['lora_targets_sha256']; start a new output directory

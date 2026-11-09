@@ -1,0 +1,100 @@
+Loading weights:   0%|          | 0/824 [00:00<?, ?it/s]Loading weights:  60%|██████    | 497/824 [00:00<00:00, 4959.42it/s]Loading weights: 100%|██████████| 824/824 [00:00<00:00, 5106.96it/s]
+/content/p3/env/base/lib/python3.12/site-packages/transformers/models/qwen2_vl/image_processing_qwen2_vl.py:129: FutureWarning: Passing `min_pixels` and `max_pixels` to a processor call is deprecated and will be removed in v5.23. Pass in `size={'longest_edge': xxx, 'shortest_edge': xxx} to override the target size.`
+  warnings.warn(
+  0%|          | 0/3 [00:00<?, ?it/s]/content/p3/env/base/lib/python3.12/site-packages/transformers/models/qwen2_vl/image_processing_qwen2_vl.py:129: FutureWarning: Passing `min_pixels` and `max_pixels` to a processor call is deprecated and will be removed in v5.23. Pass in `size={'longest_edge': xxx, 'shortest_edge': xxx} to override the target size.`
+  warnings.warn(
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/content/p3/repo/scripts/training/train_rl.py", line 45, in <module>
+    main()
+  File "/content/p3/repo/scripts/training/train_rl.py", line 41, in main
+    return run(config, ROOT, load_runtime(args.runtime), model_path=args.model_path, resume=args.resume)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/content/p3/repo/src/training/rl_entry.py", line 247, in run
+    trainer.train(resume_from_checkpoint=resume)
+  File "/content/p3/env/base/lib/python3.12/site-packages/transformers/trainer.py", line 1562, in train
+    return inner_training_loop(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/content/p3/env/base/lib/python3.12/site-packages/transformers/trainer.py", line 1646, in _inner_training_loop
+    self._run_epoch(
+  File "/content/p3/env/base/lib/python3.12/site-packages/transformers/trainer.py", line 1892, in _run_epoch
+    tr_loss_step = self.training_step(model, inputs, num_items_in_batch)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/content/p3/env/base/lib/python3.12/site-packages/trl/trainer/grpo_trainer.py", line 1581, in training_step
+    output = super().training_step(model, inputs, num_items_in_batch)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/content/p3/env/base/lib/python3.12/site-packages/transformers/trainer.py", line 2059, in training_step
+    inputs = self._prepare_inputs(inputs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/content/p3/env/base/lib/python3.12/site-packages/trl/extras/profiling.py", line 211, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/content/p3/env/base/lib/python3.12/site-packages/trl/trainer/grpo_trainer.py", line 1610, in _prepare_inputs
+    generation_batch = self._generate_and_score_completions(generation_batch)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/content/p3/env/base/lib/python3.12/site-packages/trl/trainer/grpo_trainer.py", line 2846, in _generate_and_score_completions
+    ref_per_token_logps, _, _ = self._get_per_token_logps_and_entropies(
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/content/p3/env/base/lib/python3.12/site-packages/trl/extras/profiling.py", line 211, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/content/p3/env/base/lib/python3.12/site-packages/trl/trainer/grpo_trainer.py", line 1567, in _get_per_token_logps_and_entropies
+    outputs = model(**model_inputs, labels=labels, fused_lm_head=True)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/content/p3/env/base/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/content/p3/env/base/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/content/p3/env/base/lib/python3.12/site-packages/accelerate/utils/operations.py", line 943, in forward
+    return model_forward(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/content/p3/env/base/lib/python3.12/site-packages/accelerate/utils/operations.py", line 931, in __call__
+    return convert_to_fp32(self.model_forward(*args, **kwargs))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/content/p3/env/base/lib/python3.12/site-packages/torch/amp/autocast_mode.py", line 44, in decorate_autocast
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/content/p3/env/base/lib/python3.12/site-packages/peft/peft_model.py", line 2120, in forward
+    return self.base_model(
+           ^^^^^^^^^^^^^^^^
+  File "/content/p3/env/base/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/content/p3/env/base/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/content/p3/env/base/lib/python3.12/site-packages/peft/tuners/tuners_utils.py", line 359, in forward
+    return self.model(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/content/p3/env/base/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/content/p3/env/base/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/content/p3/env/base/lib/python3.12/site-packages/trl/trainer/utils.py", line 1653, in _fused_forward
+    backbone_outputs = getattr(self, backbone_attr)(*args, **kwargs)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/content/p3/env/base/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/content/p3/env/base/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/content/p3/env/base/lib/python3.12/site-packages/transformers/utils/generic.py", line 943, in wrapper
+    output = func(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/content/p3/env/base/lib/python3.12/site-packages/transformers/models/qwen2_5_vl/modeling_qwen2_5_vl.py", line 1243, in forward
+    position_ids = self.compute_3d_position_ids(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/content/p3/env/base/lib/python3.12/site-packages/transformers/models/qwen2_5_vl/modeling_qwen2_5_vl.py", line 1153, in compute_3d_position_ids
+    position_ids, rope_deltas = self.get_rope_index(
+                                ^^^^^^^^^^^^^^^^^^^^
+  File "/content/p3/env/base/lib/python3.12/site-packages/transformers/models/qwen2_5_vl/modeling_qwen2_5_vl.py", line 1054, in get_rope_index
+    position_ids[:, batch_idx, attention_mask[batch_idx].bool()] = llm_positions.to(position_ids.device)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: shape mismatch: value tensor of shape [3, 889] cannot be broadcast to indexing result of shape [3, 870]
+  0%|          | 0/3 [01:30<?, ?it/s]

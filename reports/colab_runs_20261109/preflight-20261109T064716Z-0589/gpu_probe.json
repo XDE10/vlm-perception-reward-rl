@@ -1,0 +1,82 @@
+{
+  "completion_len": 1024,
+  "prompt_tokens": {
+    "budget": 1600,
+    "train": {
+      "n": 609,
+      "max": 1153,
+      "p95": 707,
+      "mean": 453.3,
+      "min": 260
+    },
+    "train_over_budget": [],
+    "validation": {
+      "n": 82,
+      "max": 746,
+      "p95": 621,
+      "mean": 435.2,
+      "min": 286
+    },
+    "validation_over_budget": []
+  },
+  "parameters": {
+    "trainable_tensors": 504,
+    "trainable_parameters": 29933568,
+    "total_parameters": 3784556544,
+    "vision_tensors": 390,
+    "vision_parameters": 668684288,
+    "vision_frozen": true,
+    "trainable_names_sha256": "f1752f3acb59d5beab27990fae3e4ae85936b7a91f9665c23cdd8e1fff68b472",
+    "lora_target_modules": 112
+  },
+  "micro_batch": {
+    "8": {
+      "peak_gb": 18.04,
+      "seconds": 14.33,
+      "loss": 13.670767784118652,
+      "grads_finite": true,
+      "nonzero_grad_tensors": 252,
+      "trainable_tensors": 504
+    },
+    "4": {
+      "peak_gb": 13.09,
+      "seconds": 5.26,
+      "loss": 13.62385368347168,
+      "grads_finite": true,
+      "nonzero_grad_tensors": 252,
+      "trainable_tensors": 504
+    },
+    "2": {
+      "peak_gb": 10.43,
+      "seconds": 2.48,
+      "loss": 13.647016525268555,
+      "grads_finite": true,
+      "nonzero_grad_tensors": 252,
+      "trainable_tensors": 504
+    }
+  },
+  "generation": {
+    "sequences": 64,
+    "new_tokens": 1024,
+    "seconds": 128.15,
+    "tokens_per_second": 511.4,
+    "peak_gb": 24.06,
+    "prompt_width": 1153
+  },
+  "vit": {
+    "vit_seconds": 0.9224,
+    "forward_seconds": 2.2734,
+    "vit_fraction_of_forward": 0.4057,
+    "batched_vs_single_image_max_abs_diff": 2.513671875,
+    "cache_logprob_max_abs_diff": 0.40537071228027344,
+    "equivalent": false,
+    "cache_hits": 13,
+    "cache_misses": 3
+  },
+  "gpu": {
+    "name": "NVIDIA A100-SXM4-40GB",
+    "total_gb": 42.41
+  },
+  "load_seconds": 4.3,
+  "total_seconds": 177.2
+}

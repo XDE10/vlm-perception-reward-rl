@@ -1,0 +1,49 @@
+[p3] 06:55:26 job preflight-20261109T064716Z-0589: 18 steps
+[p3] 06:55:26 step env_report started: /content/p3/env/base/bin/python -m scripts.colab.env_report --root /content/p3 --out /content/p3/out/preflight-20261109T064716Z-0589/env.json
+[p3] 06:55:29 step env_report PASSED in 0m02s
+[p3] 06:55:29 step verify_pack started: /content/p3/env/base/bin/python -m scripts.colab.verify_pack --repo /content/p3/repo --out /content/p3/out/preflight-20261109T064716Z-0589/pack_verification.json
+[p3] 06:55:29 step verify_pack PASSED in 0m00s
+[p3] 06:55:29 step drive_probe started: /usr/bin/python3 -m scripts.colab.drive probe --out /content/p3/out/preflight-20261109T064716Z-0589/drive_probe.json --run-id preflight-20261109T064716Z-0589 --scratch /content/p3/out/preflight-20261109T064716Z-0589/.drive_scratch --remote mydrive: --dir ColabProjects/vlm-perception-reward-rl --moun
+[p3] 06:55:29 step drive_probe PASSED in 0m00s
+[p3] 06:55:29 step pytest started: /content/p3/env/base/bin/python -m pytest -q -p no:cacheprovider --junitxml=/content/p3/out/preflight-20261109T064716Z-0589/pytest.xml
+[p3] 06:56:29 pytest running 1m00s | ..............................................
+[p3] 06:57:29 pytest running 2m00s | ................................................
+[p3] 06:57:38 step pytest PASSED in 2m08s
+[p3] 06:57:38 step calibration started: /content/p3/env/base/bin/python -m scripts.data.calibrate_perception_v5 --output /content/p3/out/preflight-20261109T064716Z-0589/calibration
+[p3] 06:58:38 calibration running 1m00s | 
+[p3] 06:59:17 step calibration PASSED in 1m39s
+[p3] 06:59:17 step gpu_probe started: /content/p3/env/base/bin/python -m scripts.colab.gpu_probe --model-path /content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8 --out /content/p3/out/preflight-20261109T064716Z-0589/gpu_probe.json
+[p3] 07:00:17 gpu_probe running 1m00s |   warnings.warn(
+[p3] 07:01:17 gpu_probe running 2m00s |   warnings.warn(
+[p3] 07:02:17 gpu_probe running 3m00s |   warnings.warn(
+[p3] 07:02:21 step gpu_probe PASSED in 3m03s
+[p3] 07:02:21 step v0_probe started: /content/p3/env/base/bin/python -m scripts.colab.v0_probe --model-path /content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8 --out /content/p3/out/preflight-20261109T064716Z-0589/v0_probe --n 16
+[p3] 07:03:21 v0_probe running 1m00s | [transformers] The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+[p3] 07:04:13 step v0_probe PASSED in 1m52s
+[p3] 07:04:13 step smoke_rl_ans started: /content/p3/env/base/bin/python -m scripts.training.train_rl --arm rl_ans --seed 1 --smoke max_steps=1,num_generations=2,prompts_per_step=2,per_device_train_batch_size=2,max_completion_length=256,save_steps=1 --output-dir /content/p3/out/preflight-20261109T064716Z-0589/smoke/rl_ans --model-path /con
+[p3] 07:05:10 step smoke_rl_ans PASSED in 0m57s
+[p3] 07:05:10 step smoke_rl_v4 started: /content/p3/env/base/bin/python -m scripts.training.train_rl --arm rl_v4 --seed 1 --smoke max_steps=1,num_generations=2,prompts_per_step=2,per_device_train_batch_size=2,max_completion_length=256,save_steps=1 --output-dir /content/p3/out/preflight-20261109T064716Z-0589/smoke/rl_v4 --model-path /conte
+[p3] 07:06:06 step smoke_rl_v4 PASSED in 0m56s
+[p3] 07:06:06 step smoke_rl_v5 started: /content/p3/env/base/bin/python -m scripts.training.train_rl --arm rl_v5 --seed 1 --smoke max_steps=1,num_generations=2,prompts_per_step=2,per_device_train_batch_size=2,max_completion_length=256,save_steps=1 --output-dir /content/p3/out/preflight-20261109T064716Z-0589/smoke/rl_v5 --model-path /conte
+[p3] 07:07:02 step smoke_rl_v5 PASSED in 0m56s
+[p3] 07:07:02 step smoke_rl_v5_placebo started: /content/p3/env/base/bin/python -m scripts.training.train_rl --arm rl_v5_placebo --seed 1 --smoke max_steps=1,num_generations=2,prompts_per_step=2,per_device_train_batch_size=2,max_completion_length=256,save_steps=1 --output-dir /content/p3/out/preflight-20261109T064716Z-0589/smoke/rl_v5_placebo --m
+[p3] 07:07:59 step smoke_rl_v5_placebo PASSED in 0m56s
+[p3] 07:07:59 step smoke_rl_blind started: /content/p3/env/base/bin/python -m scripts.training.train_rl --arm rl_blind --seed 1 --smoke max_steps=1,num_generations=2,prompts_per_step=2,per_device_train_batch_size=2,max_completion_length=256,save_steps=1 --output-dir /content/p3/out/preflight-20261109T064716Z-0589/smoke/rl_blind --model-path 
+[p3] 07:08:45 step smoke_rl_blind PASSED in 0m45s
+[p3] 07:08:45 step smoke_full_hf started: /content/p3/env/base/bin/python -m scripts.training.train_rl --arm rl_v5 --seed 1 --smoke max_steps=3 --output-dir /content/p3/out/preflight-20261109T064716Z-0589/smoke_full_hf --model-path /content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8 --runtime /content/p3/out/preflight-20261109T064716Z-05
+[p3] 07:09:45 smoke_full_hf running 1m00s |   warnings.warn(
+[p3] 07:10:39 step smoke_full_hf FAILED in 1m54s
+[p3] 07:10:39 step resume_a started: /content/p3/env/base/bin/python -m scripts.training.train_rl --arm rl_v5 --seed 1 --smoke max_steps=2,num_generations=2,prompts_per_step=2,per_device_train_batch_size=2,max_completion_length=128,save_steps=1 --output-dir /content/p3/out/preflight-20261109T064716Z-0589/resume --model-path /content/p3
+[p3] 07:11:39 step resume_a PASSED in 0m59s
+[p3] 07:11:39 step resume_b started: /content/p3/env/base/bin/python -m scripts.training.train_rl --arm rl_v5 --seed 1 --smoke max_steps=2,num_generations=2,prompts_per_step=2,per_device_train_batch_size=2,max_completion_length=128,save_steps=1 --output-dir /content/p3/out/preflight-20261109T064716Z-0589/resume --model-path /content/p3
+[p3] 07:11:54 step resume_b FAILED in 0m14s
+[p3] 07:11:54 step vllm_env started: /usr/bin/python3 -m scripts.colab.bootstrap vllm-env --root /content/p3
+[p3] 07:12:50 step vllm_env PASSED in 0m55s
+[p3] 07:12:50 step smoke_full_vllm started: /content/p3/env/vllm/bin/python -m scripts.training.train_rl --arm rl_v5 --seed 1 --smoke max_steps=3 --output-dir /content/p3/out/preflight-20261109T064716Z-0589/smoke_full_vllm --model-path /content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8 --runtime /content/p3/out/preflight-20261109T064716Z-
+[p3] 07:13:50 smoke_full_vllm running 1m00s |   warnings.warn(
+[p3] 07:14:50 smoke_full_vllm running 2m00s | Capturing CUDA graphs (FULL): 100%|██████████| 2/2 [00:00<00:00, 17.47it/s]
+[p3] 07:15:35 step smoke_full_vllm FAILED in 2m45s
+[p3] 07:15:35 step decide_runtime started: /content/p3/env/base/bin/python -m scripts.colab.decide_runtime --out-dir /content/p3/out/preflight-20261109T064716Z-0589
+[p3] 07:15:35 step decide_runtime FAILED in 0m00s
+[p3] 07:15:35 Drive copy (results) skipped: rclone is not on PATH (Drive persistence needs the rclone CLI, not only the mount)
+[p3] 07:15:35 JOB_DONE overall=failed package=preflight-20261109T064716Z-0589.results.tar.gz (1 parts, 0.1 MB)
