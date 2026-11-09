@@ -1,0 +1,26 @@
+[launch 20:23:05] run preflight-20261109T122305Z-e6cd (task preflight, commit 7afad4a42150) on your session p3 (its hardware decides the GPU)
+[launch 20:23:07] code: the VM downloads commit 7afad4a42150 from GitHub and verifies every file against its git blob SHA-1
+[launch 20:23:07] building private data pack from /home/xde10/projects/vlm-perception-reward-rl/data
+[launch 20:23:07] data pack: {"pack": "/home/xde10/projects/vlm-perception-reward-rl/.colab_cache/p3_private_082210c90d5b3834.tar.gz", "sha256": "8f571a49c40d45a8226245d4dee0715d05c94e518b64496a2d731b9cb926f5e2", "bytes": 21164679, "content_sha256": "082210c90d5b3834539380c37bb5a43deab0f4354b5ff630910a6c06be06f1a1", "files": 71
+[launch 20:23:11] using your session p3; it is not released at the end unless you pass --release
+[launch 20:23:20] upload inputs 1/12 p3_private_082210c90d5b3834.tar.gz.part000 (2048 KiB)
+[launch 20:23:38] upload inputs 2/12 p3_private_082210c90d5b3834.tar.gz.part001 (2048 KiB)
+[launch 20:23:44] upload inputs 3/12 p3_private_082210c90d5b3834.tar.gz.part002 (2048 KiB)
+[launch 20:23:49] upload inputs 4/12 p3_private_082210c90d5b3834.tar.gz.part003 (2048 KiB)
+[launch 20:23:56] upload inputs 5/12 p3_private_082210c90d5b3834.tar.gz.part004 (2048 KiB)
+[launch 20:24:01] upload inputs 6/12 p3_private_082210c90d5b3834.tar.gz.part005 (2048 KiB)
+[launch 20:24:07] upload inputs 7/12 p3_private_082210c90d5b3834.tar.gz.part006 (2048 KiB)
+[launch 20:24:29] upload inputs 8/12 p3_private_082210c90d5b3834.tar.gz.part007 (2048 KiB)
+[launch 20:24:40] upload inputs 9/12 p3_private_082210c90d5b3834.tar.gz.part008 (2048 KiB)
+[launch 20:24:48] upload inputs 10/12 p3_private_082210c90d5b3834.tar.gz.part009 (2048 KiB)
+[launch 20:24:56] upload inputs 11/12 p3_private_082210c90d5b3834.tar.gz.part010 (188 KiB)
+[launch 20:24:59] upload inputs 12/12 request.json (67 KiB)
+[launch 20:25:05] uploaded inputs: 20735 KiB in 105s (~197 KiB/s)
+[launch 20:25:11] all uploaded parts verified on the VM (size and SHA256)
+[launch 20:25:11] bootstrap on the VM (code, environment install and model download; ~10-20 min)
+[launch 20:26:38] job running on the VM; progress lines follow (Ctrl-C detaches, the job keeps running)
+[launch 20:56:52] fetching results
+[launch 20:56:58] the VM pushed the results itself: https://github.com/XDE10/vlm-perception-reward-rl/tree/results/preflight-20261109T122305Z-e6cd
+[launch 20:57:05] results in /home/xde10/projects/vlm-perception-reward-rl/.colab_runs/preflight-20261109T122305Z-e6cd/results/preflight-20261109T122305Z-e6cd (overall: passed)
+[launch 20:57:05] Drive copy verified: mydrive:ColabProjects/vlm-perception-reward-rl/runs/preflight-20261109T122305Z-e6cd
+[launch 20:57:05] your session p3 stays up and keeps using compute units; when you are done: colab stop -s p3

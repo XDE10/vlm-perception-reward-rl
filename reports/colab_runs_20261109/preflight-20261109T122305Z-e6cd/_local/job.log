@@ -1,0 +1,60 @@
+[p3] 12:26:52 GitHub: the VM will push the results to results/preflight-20261109T122305Z-e6cd itself (write access verified)
+[p3] 12:26:52 job preflight-20261109T122305Z-e6cd: 18 steps
+[p3] 12:26:52 step env_report started: /content/p3/env/base/bin/python -m scripts.colab.env_report --root /content/p3 --out /content/p3/out/preflight-20261109T122305Z-e6cd/env.json
+[p3] 12:26:54 step env_report PASSED in 0m02s
+[p3] 12:26:54 step verify_pack started: /content/p3/env/base/bin/python -m scripts.colab.verify_pack --repo /content/p3/repo --out /content/p3/out/preflight-20261109T122305Z-e6cd/pack_verification.json
+[p3] 12:26:55 step verify_pack PASSED in 0m00s
+[p3] 12:26:55 step drive_probe started: /usr/bin/python3 -m scripts.colab.drive probe --out /content/p3/out/preflight-20261109T122305Z-e6cd/drive_probe.json --run-id preflight-20261109T122305Z-e6cd --scratch /content/p3/out/preflight-20261109T122305Z-e6cd/.drive_scratch --remote mydrive: --dir ColabProjects/vlm-perception-reward-rl --moun
+[p3] 12:27:55 drive_probe running 1m00s | 
+[p3] 12:28:16 step drive_probe PASSED in 1m21s
+[p3] 12:28:16 step pytest started: /content/p3/env/base/bin/python -m pytest -q -p no:cacheprovider --junitxml=/content/p3/out/preflight-20261109T122305Z-e6cd/pytest.xml
+[p3] 12:29:16 pytest running 1m00s | ..............................................................
+[p3] 12:30:16 pytest running 2m00s | ................................................................
+[p3] 12:30:58 step pytest PASSED in 2m41s
+[p3] 12:30:58 step calibration started: /content/p3/env/base/bin/python -m scripts.data.calibrate_perception_v5 --output /content/p3/out/preflight-20261109T122305Z-e6cd/calibration
+[p3] 12:31:58 calibration running 1m00s | 
+[p3] 12:32:58 calibration running 2m00s | 
+[p3] 12:33:36 step calibration PASSED in 2m37s
+[p3] 12:33:36 step gpu_probe started: /content/p3/env/base/bin/python -m scripts.colab.gpu_probe --model-path /content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8 --out /content/p3/out/preflight-20261109T122305Z-e6cd/gpu_probe.json
+[p3] 12:34:36 gpu_probe running 1m00s |   warnings.warn(
+[p3] 12:35:36 gpu_probe running 2m00s |   warnings.warn(
+[p3] 12:36:36 gpu_probe running 3m00s | {"prompt_tokens": {"budget": 1600, "train": {"n": 609, "max": 1153, "p95": 707, "mean": 453.3, "min": 260}, "train_over_budget": [], "validation": {"n": 82, "max": 746, "p95": 621, "mean": 435.2, "min
+[p3] 12:36:37 step gpu_probe PASSED in 3m01s
+[p3] 12:36:37 step v0_probe started: /content/p3/env/base/bin/python -m scripts.colab.v0_probe --model-path /content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8 --out /content/p3/out/preflight-20261109T122305Z-e6cd/v0_probe --n 16
+[p3] 12:37:37 v0_probe running 1m00s | [transformers] The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+[p3] 12:38:28 step v0_probe PASSED in 1m51s
+[p3] 12:38:28 step smoke_rl_ans started: /content/p3/env/base/bin/python -m scripts.training.train_rl --arm rl_ans --seed 1 --smoke max_steps=1,num_generations=2,prompts_per_step=2,per_device_train_batch_size=2,max_completion_length=256,save_steps=1 --output-dir /content/p3/out/preflight-20261109T122305Z-e6cd/smoke/rl_ans --model-path /con
+[p3] 12:39:23 step smoke_rl_ans PASSED in 0m55s
+[p3] 12:39:23 step smoke_rl_v4 started: /content/p3/env/base/bin/python -m scripts.training.train_rl --arm rl_v4 --seed 1 --smoke max_steps=1,num_generations=2,prompts_per_step=2,per_device_train_batch_size=2,max_completion_length=256,save_steps=1 --output-dir /content/p3/out/preflight-20261109T122305Z-e6cd/smoke/rl_v4 --model-path /conte
+[p3] 12:40:18 step smoke_rl_v4 PASSED in 0m55s
+[p3] 12:40:18 step smoke_rl_v5 started: /content/p3/env/base/bin/python -m scripts.training.train_rl --arm rl_v5 --seed 1 --smoke max_steps=1,num_generations=2,prompts_per_step=2,per_device_train_batch_size=2,max_completion_length=256,save_steps=1 --output-dir /content/p3/out/preflight-20261109T122305Z-e6cd/smoke/rl_v5 --model-path /conte
+[p3] 12:41:13 step smoke_rl_v5 PASSED in 0m54s
+[p3] 12:41:13 step smoke_rl_v5_placebo started: /content/p3/env/base/bin/python -m scripts.training.train_rl --arm rl_v5_placebo --seed 1 --smoke max_steps=1,num_generations=2,prompts_per_step=2,per_device_train_batch_size=2,max_completion_length=256,save_steps=1 --output-dir /content/p3/out/preflight-20261109T122305Z-e6cd/smoke/rl_v5_placebo --m
+[p3] 12:42:07 step smoke_rl_v5_placebo PASSED in 0m53s
+[p3] 12:42:07 step smoke_rl_blind started: /content/p3/env/base/bin/python -m scripts.training.train_rl --arm rl_blind --seed 1 --smoke max_steps=1,num_generations=2,prompts_per_step=2,per_device_train_batch_size=2,max_completion_length=256,save_steps=1 --output-dir /content/p3/out/preflight-20261109T122305Z-e6cd/smoke/rl_blind --model-path 
+[p3] 12:42:51 step smoke_rl_blind PASSED in 0m43s
+[p3] 12:42:51 step smoke_full_hf started: /content/p3/env/base/bin/python -m scripts.training.train_rl --arm rl_v5 --seed 1 --smoke max_steps=3 --output-dir /content/p3/out/preflight-20261109T122305Z-e6cd/smoke_full_hf --model-path /content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8 --runtime /content/p3/out/preflight-20261109T122305Z-e6
+[p3] 12:43:51 smoke_full_hf running 1m00s |   warnings.warn(
+[p3] 12:44:51 smoke_full_hf running 2m00s | Timeout is disabled as timeout_seconds is None or <= 0, you must provide                         the logic for timeout interuption yourself to prevent code getting stuck.
+[p3] 12:45:51 smoke_full_hf running 3m00s |   warnings.warn(
+[p3] 12:46:51 smoke_full_hf running 4m00s |   warnings.warn(
+[p3] 12:47:51 smoke_full_hf running 5m00s |  67%|██████▋   | 2/3 [04:20<02:12, 132.58s/it]
+[p3] 12:48:51 smoke_full_hf running 6m00s |  67%|██████▋   | 2/3 [04:20<02:12, 132.58s/it]
+[p3] 12:49:31 step smoke_full_hf PASSED in 6m40s
+[p3] 12:49:31 step resume_a started: /content/p3/env/base/bin/python -m scripts.training.train_rl --arm rl_v5 --seed 1 --smoke max_steps=2,num_generations=2,prompts_per_step=2,per_device_train_batch_size=2,max_completion_length=128,save_steps=1 --output-dir /content/p3/out/preflight-20261109T122305Z-e6cd/resume --model-path /content/p3
+[p3] 12:50:30 step resume_a PASSED in 0m59s
+[p3] 12:50:30 step resume_b started: /content/p3/env/base/bin/python -m scripts.training.train_rl --arm rl_v5 --seed 1 --smoke max_steps=2,num_generations=2,prompts_per_step=2,per_device_train_batch_size=2,max_completion_length=128,save_steps=1 --output-dir /content/p3/out/preflight-20261109T122305Z-e6cd/resume --model-path /content/p3
+[p3] 12:51:13 step resume_b PASSED in 0m42s
+[p3] 12:51:13 step vllm_env started: /usr/bin/python3 -m scripts.colab.bootstrap vllm-env --root /content/p3
+[p3] 12:51:44 step vllm_env PASSED in 0m30s
+[p3] 12:51:44 step smoke_full_vllm started: /content/p3/env/vllm/bin/python -m scripts.training.train_rl --arm rl_v5 --seed 1 --smoke max_steps=3 --output-dir /content/p3/out/preflight-20261109T122305Z-e6cd/smoke_full_vllm --model-path /content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8 --runtime /content/p3/out/preflight-20261109T122305Z-
+[p3] 12:52:44 smoke_full_vllm running 1m00s |   warnings.warn(
+[p3] 12:53:44 smoke_full_vllm running 2m00s | Capturing CUDA graphs (FULL): 100%|██████████| 2/2 [00:00<00:00, 18.48it/s]
+[p3] 12:54:44 smoke_full_vllm running 3m00s | Timeout is disabled as timeout_seconds is None or <= 0, you must provide                         the logic for timeout interuption yourself to prevent code getting stuck.
+[p3] 12:55:44 smoke_full_vllm running 4m00s |  67%|██████▋   | 2/3 [01:28<00:44, 44.27s/it]
+[p3] 12:56:34 step smoke_full_vllm PASSED in 4m50s
+[p3] 12:56:34 step decide_runtime started: /content/p3/env/base/bin/python -m scripts.colab.decide_runtime --out-dir /content/p3/out/preflight-20261109T122305Z-e6cd
+[p3] 12:56:34 step decide_runtime PASSED in 0m00s
+[p3] 12:56:37 results pushed from the VM to results/preflight-20261109T122305Z-e6cd (commit 371a6e446fa0)
+[p3] 12:56:52 Drive copy (results): verified mydrive:ColabProjects/vlm-perception-reward-rl/runs/preflight-20261109T122305Z-e6cd
+[p3] 12:56:52 JOB_DONE overall=passed package=preflight-20261109T122305Z-e6cd.results.tar.gz (1 parts, 0.2 MB)

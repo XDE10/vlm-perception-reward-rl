@@ -1,0 +1,42 @@
+{
+  "run_id": "preflight-20261109T122305Z-e6cd",
+  "overall": "passed",
+  "package": {
+    "name": "preflight-20261109T122305Z-e6cd.results.tar.gz",
+    "sha256": "a95739d5dce1131dd06ec7b774ccafdc496dd6a821ef556d607cf71e85dfbcb7",
+    "bytes": 206318,
+    "parts": [
+      {
+        "name": "preflight-20261109T122305Z-e6cd.results.tar.gz.part000",
+        "bytes": 206318,
+        "sha256": "a95739d5dce1131dd06ec7b774ccafdc496dd6a821ef556d607cf71e85dfbcb7"
+      }
+    ],
+    "skipped": 0,
+    "gzipped": []
+  },
+  "github": {
+    "attempted": true,
+    "ok": true,
+    "branch": "results/preflight-20261109T122305Z-e6cd",
+    "skipped_large": 0,
+    "redacted": 0,
+    "files": 88,
+    "bytes": 1558863,
+    "commit": "371a6e446fa0d3c7d68b2f550a0c23350069e5d2",
+    "seconds": 3.1
+  },
+  "drive": {
+    "ok": true,
+    "attempted": true,
+    "verified": true,
+    "target": "mydrive:ColabProjects/vlm-perception-reward-rl/runs/preflight-20261109T122305Z-e6cd",
+    "files": 2,
+    "bytes": 206790,
+    "copy_seconds": 9.7,
+    "check_seconds": 4.5,
+    "reason": null,
+    "mode": "results"
+  },
+  "finished_utc": "2026-11-09T12:56:52Z"
+}

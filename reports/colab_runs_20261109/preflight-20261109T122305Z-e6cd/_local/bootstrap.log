@@ -1,0 +1,6 @@
+[p3] 12:25:26 data pack verified: 716 files, anchors ledger,release,row
+[p3] 12:25:26 GPU: NVIDIA A100-SXM4-40GB, 40960.0 MiB, driver 580.82.07 (CUDA [13, 0])
+[p3] 12:25:57 base env ready: torch 2.13.0+cu130, backend cu130
+[p3] 12:26:27 downloading Qwen/Qwen2.5-VL-3B-Instruct@66285546 ... 0m30s elapsed | Fetching 11 files: 100%|██████████| 11/11 [00:19<00:00,  1.78s/it]
+[p3] 12:26:40 model ready: /content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8 (11 files)
+[p3] 12:26:40 BOOTSTRAP_OK in 75s
