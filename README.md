@@ -12,9 +12,9 @@
 | 批准数据 | 609 条训练事实（458 幅图）/ 82 条 validation 事实（77 幅图），部分认证事实，不是全图金标 |
 | 模型 | `Qwen/Qwen2.5-VL-3B-Instruct` revision `66285546d2b821cf421d4f5eb2576359d3770cd3` |
 | 训练阶段 | 协议 v3 统一 GRPO 入口（`scripts/training/train_rl.py`，组别见 `configs/experiments/`）已实现，并在 CPU 上用 tiny 模型端到端验证；旧的感知 SFT → 稀疏 GRPO 入口保留为历史 |
-| GPU | 未验收：没有真实 VL 前后向、视觉 rollout、显存/恢复记录（执行计划 S2 预检） |
-| 测试 | Python 3.12.13 沙箱下 172 passed / 2 failed（两项需要本机 `data/`，见 [docs/verification.md](docs/verification.md)） |
-| 历史 | 2026-10-24 迁移、2026-11-08 清理与结构整理、2026-11-09 S1，均记录在 [CHANGELOG.md](CHANGELOG.md) |
+| GPU | 未验收：Colab 运行器（`colab/launch.sh`）已在 CPU 上用 stub CLI 端到端验证，真实 GPU 预检待运行 |
+| 测试 | Python 3.12.13 沙箱下 188 passed / 2 failed（两项需要本机 `data/`，见 [docs/verification.md](docs/verification.md)） |
+| 历史 | 2026-10-24 迁移、2026-11-08 清理与结构整理、2026-11-09 S1、2026-11-10 S2，均记录在 [CHANGELOG.md](CHANGELOG.md) |
 
 “已实现代码”“CPU 测试通过”“真实 GPU 跑通”“能力提升”是四种不同结论，报告
 时必须分开陈述。2 步 smoke 或 ZIP 完整性检查不代表训练成功。
@@ -47,6 +47,7 @@ CUDA、模型前后向或新环境依赖已安装。
 .
 ├── README.md / AGENTS.md / CHANGELOG.md
 ├── pyproject.toml / .editorconfig / .gitignore
+├── colab/         Colab 运行器：launch.sh（本地入口）+ 在 Colab 内核中执行的脚本 + 使用说明
 ├── configs/       当前执行配置：experiments/（协议 v3 正式实验）+ 旧入口 smoke
 ├── data/          冻结的数据载荷（约 1.4 GB，不进 git，见 data/README.md）
 ├── docs/          当前文档 + guides/ + 历史归档 blueprints/、migration/
@@ -70,6 +71,15 @@ CUDA、模型前后向或新环境依赖已安装。
 - 认证范围之外的事实视为未知（mask）；不能宣称完整防幻觉或全图 precision/recall。
 - 不手改批准字段、行内容、图片或 SHA；不把 validation/测试题用于训练或调奖励。
 - 新数据版本使用新的带日期目录并重新封板，保留来源证据。
+
+## 在 Colab 上运行
+
+在 WSL2 中运行以下命令，一次性准备与断线恢复见 [colab/README.md](colab/README.md)：
+
+```bash
+bash colab/launch.sh check        # 本地自检：colab 认证、数据 SHA、git 推送权限（不建 VM）
+bash colab/launch.sh preflight    # GPU 预检：建 VM → 安装 → 测试/探针/冒烟 → 取回结果 → 释放 VM → 推送 results/<run_id>
+```
 
 ## 训练入口
 

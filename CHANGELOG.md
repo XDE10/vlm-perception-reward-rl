@@ -4,6 +4,25 @@
 [README](README.md) 和版本化报告为准；历史细节见
 [docs/migration/](docs/migration/)。
 
+## 2026-11-10 — S2：Colab 运行器
+
+决策见 [决策记录](docs/plan/决策记录.md) D18–D27，阶段报告见
+[docs/plan/阶段报告_S2_20261110.md](docs/plan/阶段报告_S2_20261110.md)。没有 GPU 运行，没有改动已批准数据。
+
+- 新增 `colab/launch.sh`（`check`、`preflight`、`collect`、`push`、`stop`、`list`）和使用说明 `colab/README.md`；
+  在 Colab 内核中执行的是 `colab/kernel_bootstrap.py` 与 `colab/kernel_job.py`。
+- 新增 `scripts/colab/`：
+  - 私有数据打包与复核：三类锚点，标准库实现；
+  - VM 引导：按驱动的 CUDA 版本选锁文件建隔离 venv，下载固定 revision 的模型并记录每个文件的 SHA；
+  - 任务执行器：独立进程组、超时、心跳、原子 `status.json`、结果分片；
+  - 预检步骤：环境报告、GPU 探针、V0 探针、运行时决策、摘要。
+- 新增 `requirements/colab-gpu*.txt` 与 `requirements/locks/`：用 uv 预先解析的 cu130、cu129、cu126，以及 vLLM cu130 锁文件。
+- 新增 `src/evaluation/generate_v3.py`：协议 v3 的批量生成与评分，解码设置固定在代码里。
+- 统一入口新增不改变算法的运行时选项（微批切分、梯度检查点、vLLM 长度），其他运行时键会被拒绝。
+- ViT 缓存改为修补真正持有视觉塔的模块，不再修补外层包装。
+- 新增 `.gitattributes`（`*.sh` 与 Colab 脚本固定使用 LF）；`.gitignore` 新增运行器的本地目录。
+- 测试：188 passed / 2 failed，两项失败都依赖本机 `data/`。
+
 ## 2026-11-09 — S1：修复审计问题，新增协议 v3 统一 GRPO 入口
 
 按 [执行计划](docs/plan/执行计划_20261108.md) 第 4 节逐项修复，决策见

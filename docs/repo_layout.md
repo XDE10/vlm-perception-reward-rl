@@ -13,6 +13,7 @@
 ├── pyproject.toml         # 项目元数据 + pytest 配置
 ├── .editorconfig          # 编码/换行/缩进约定
 ├── .gitignore             # data/、runs/、缓存等本地内容不入库
+├── colab/                 # Colab 运行器：launch.sh（本地入口）、kernel_*.py（在 Colab 内核中执行）、使用说明
 ├── configs/               # 当前执行配置；experiments/ 为协议 v3 正式实验（基础配置 + 组别）
 ├── data/                  # 本地数据载荷（约 1.4 GB，git 忽略，SHA 由清单校验）
 ├── docs/                  # 说明页 + 历史留档（见下）
@@ -24,8 +25,9 @@
 └── tools/                 # 离线校验与仓库维护工具
 ```
 
-`runs/`、`backups/`、`.venv/`、`.pilot_deps/` 是本地目录，默认被
-`.gitignore` 忽略，不应提交。
+`runs/`、`backups/`、`.venv/`、`.pilot_deps/`，以及 Colab 运行器的 `.colab_cache/`、`.colab_runs/`、
+`.colab_local.env` 都是本地目录或文件，默认被 `.gitignore` 忽略，不应提交。Colab 运行的结果通过
+`results/<run_id>` 分支进入 `reports/colab_runs_<日期>/`。
 
 ## scripts/ 分组
 
@@ -39,6 +41,7 @@
 | `scripts/training/` | 训练入口、视觉诊断、配置生成、数学验证 worker |
 | `scripts/reporting/` | 发布/执行报告、汇总与交付清单 |
 | `scripts/migration/` | 历史迁移打包脚本（不随当前布局保证可运行） |
+| `scripts/colab/` | Colab 运行器的本地打包工具与 VM 端步骤（引导、任务步骤、探针、运行时决策、摘要） |
 
 完整脚本清单与状态见 [scripts/README.md](../scripts/README.md)。
 历史方案文档中的 `python -m scripts.<name>` 是当时快照，当前入口以 README 和

@@ -72,11 +72,29 @@ python -m pytest -q
 | `tests/test_repo_layout.py::test_configs_use_relative_paths_and_pinned_revision` | 沙箱没有 `data/portable_release/manifest.json` |
 
 两项都依赖本机的 `data/`，不是代码回归；装好 `trl` 与 `math_verify` 后，原先因缺包失败的两项已通过。
+
 新增测试覆盖：逐条断言解析、几何证伪（含真实图 1670 的坐标）、v5 奖励与罗列攻击、答案校验进程池、
 协议 v3（含经 TRL 渲染后提示逐字一致）、语言 LoRA 与 ViT 冻结、旧入口修复回归、组别配置差异、
 数据门控与安慰剂配对、奖励汇总与日志、ViT 缓存等价性、tiny Qwen2.5-VL 上的两步 GRPO 端到端与断点恢复、
 v5 校准脚本，以及 manifest 的 `--git-tracked-only` 模式。依赖固定 revision processor 文件的测试在找不到
 这些文件时跳过（设置 `HF_HOME` 或 `P3_QWEN_PROCESSOR_DIR` 指向缓存）。
+
+### 2026-11-10（S2，Colab 运行器）
+
+同一沙箱环境：`188 passed, 2 failed`，失败的仍是上面两项依赖 `data/` 的测试。新增的测试：
+
+- `tests/test_colab_pack.py`：私有数据包。覆盖三类锚点、确定性打包、VM 端复核、篡改检测，以及拒绝不安全的归档成员。
+- `tests/test_colab_launcher.py`：用 stub `colab` CLI 端到端跑 `launch.sh preflight --dry-run`。覆盖打包、分片上传、
+  内核引导、任务步骤、结果取回与校验、释放 VM、推送结果分支到本地 bare 仓库；也覆盖实时连接断开后改为轮询，
+  以及有未提交改动时拒绝运行。
+- `tests/test_colab_vm_scripts.py`：CUDA 后端选择、运行时决策规则、摘要渲染；在 CPU 上用 tiny 模型跑通 GPU 探针与 V0 探针的全部代码路径。
+- `tests/test_rl_entry_cpu.py` 新增两项：梯度检查点与 PEFT 的组合路径（GPU 运行使用它）、运行时微批切分，
+  以及拒绝可能改变算法的运行时键。
+- `tests/test_generate_v3.py`：批量生成（有图与无图）与评分。
+
+还没有在真实 Colab GPU 上运行，这要靠 `bash colab/launch.sh preflight` 的结果来确认。
+
+### 历史覆盖范围
 
 测试覆盖：数据准入与白名单、几何序列化、split 守卫、感知奖励与文本蕴含、
 几何解析/评分、tokenizer 审计、交付物与 funnel 脚本，以及
