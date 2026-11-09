@@ -26,7 +26,7 @@
 | 脚本 | 用途 | 状态 | 典型入口 |
 | --- | --- | --- | --- |
 | `audit_project3_overlap.py` | 本地 CPU 数据关联/重叠审计，写出 `reports/project3_cpu_20261023/`；可选依赖见 `requirements/project3-cpu.txt` | 主线 | `python -m scripts.data.audit_project3_overlap`（先运行 `python scripts/data/prepare_project3_sources.py`） |
-| `calibrate_perception_v5.py` | 只读：在认证正例上扫描 v5 几何证伪阈值（误杀数与对罗列断言的证伪率），并对比 v4/v5 在罗列探针上的奖励；输出 JSON 与 Markdown | 主线 | `python -m scripts.data.calibrate_perception_v5 --output reports/perception_v5_calibration_<日期>` |
+| `calibrate_perception_v5.py` | 只读：在认证正例上扫描 v5 几何证伪阈值（误杀数与对罗列断言的证伪率）；在登记阈值下报告一致性门控、门控后误杀、留一法残余误杀率（Wilson 区间）和每条误杀的测量值；对比 v4/v5（含与不含门控）在罗列探针上的奖励；输出 JSON 与 Markdown | 主线 | `python -m scripts.data.calibrate_perception_v5 --output reports/perception_v5_calibration_<日期>` |
 | `build_geometry_funnel_v8.py` | 只读：几何出口互斥分类与全池图像重叠统计；`classify` 被 `tests/test_geometry_funnel.py` 直接导入 | 主线 | `python -m scripts.data.build_geometry_funnel_v8` |
 | `build_project3_all_split_candidates.py` | 生成全量唯一匹配 split 候选并隔离模型文本（train/诊断分离） | 历史归档 | `python -m scripts.data.build_project3_all_split_candidates` |
 | `build_project3_perception_preview.py` | 冻结 200 题原型的增量预览补充；输出已存在时拒绝覆盖 | 历史归档 | `python -m scripts.data.build_project3_perception_preview` |

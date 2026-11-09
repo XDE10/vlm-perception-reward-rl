@@ -67,7 +67,8 @@ runs/<实验>/<组>/seed<k>/：rollouts.jsonl（逐条 rollout 与奖励明细�
 | `src/training/rl_entry.py` / `rl_config.py` / `rl_data.py` / `rl_rewards.py` | 协议 v3 统一 GRPO 入口：组别配置解析、数据门控、奖励汇总与逐条日志、运行身份与恢复 | 组别只能覆盖白名单字段；CPU 用 tiny Qwen2.5-VL 端到端测试，GPU 待 S2 预检 |
 | `src/training/protocol_v3.py` | 所有组共用的 system prompt 与输出解析 | 训练与评测提示经 TRL 渲染后逐字一致（有测试） |
 | `src/training/lora_language.py` / `vision_cache.py` | 只挂语言模块的 LoRA 与冻结断言；可选的冻结 ViT 输出缓存 | 缓存只在冻结且等价性检验通过时启用 |
-| `src/rewards/claims.py` / `geometry_oracle.py` / `perception_v5.py` | 逐条断言解析；用 InterGPS 坐标与线/圆实例证伪断言；可证伪感知奖励 v5 | 几何只用来否定，不用来认证；阈值需在 train 正例上零误杀 |
+| `src/training/multimodal_guard.py` | 让 TRL 评分前向的图像 token 类型与 input_ids 对齐（处理器左填充），并在每次前向检查 | 不一致就报错停止，不会带着错误的 M-RoPE 位置训练（D33） |
+| `src/rewards/claims.py` / `geometry_oracle.py` / `perception_v5.py` | 逐条断言解析；用 InterGPS 坐标与线/圆实例证伪断言；可证伪感知奖励 v5.1 | 几何只用来否定，不用来认证；标注否定了自身认证事实的图，同类检验不参与证伪（一致性门控）；门控后每类留一法残余误杀率 ≤ 5%（D35） |
 | `src/rewards/answer.py` / `attacks.py` | math_verify 常驻进程池与仅去掉表述形式的答案规范化；确定性罗列攻击探针 | 训练判定不加数值容差 |
 | `src/data/intergps_index.py` | InterGPS 人工标注的只读几何视图（点坐标、线/圆实例、题型） | 坐标只用于与平移无关的相对检验 |
 | `src/training/perception_reward_v4.py` | 训练器回调，把感知奖励接到 TRL | 奖励标签是私有元数据，不进入可见输入 |

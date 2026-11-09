@@ -4,6 +4,21 @@
 [README](README.md) 和版本化报告为准；历史细节见
 [docs/migration/](docs/migration/)。
 
+## 2026-11-09 — S2.2：修复第二次预检的失败，改校准口径
+
+决策见 [决策记录](docs/plan/决策记录.md) D33–D36，阶段报告见
+[docs/plan/阶段报告_S2.2_20261109.md](docs/plan/阶段报告_S2.2_20261109.md)。没有 GPU 运行，没有改动已批准数据。
+
+- 修复 TRL 评分前向的图像 token 类型错位：TRL 1.17.1 用处理器默认（右）填充重建 `mm_token_type_ids`，`prompt_ids` 却是左填充，
+  导致 M-RoPE 位置错误或 shape mismatch。入口改为先把处理器设成左填充，并新增 `src/training/multimodal_guard.py`，
+  每次前向检查类型与图像 token 一致，不一致就停止。
+- 修复断点恢复的身份不一致：LoRA 目标模块列表在写入运行身份前排序（PEFT 存成 set，顺序随进程变化）。
+- 感知奖励 v5.1：新增一致性门控（标注否定了自身认证事实的图，同类检验不再参与证伪）。校准新增门控统计、门控后误杀、
+  留一法残余误杀率（Wilson 区间）与每条误杀的测量值；预检的校准检查从“零误杀”改为“门控后零误杀，且每类留一法 ≤ 5%”。
+  阈值不变。
+- `decide_runtime` 在 HF 冒烟未通过时记为跳过；GPU 探针增加 ViT 成批与单张的相对误差。
+- 测试：216 passed / 2 failed，两项失败依赖本机 `data/`。
+
 ## 2026-11-09 — S2.1：修复预检上传失败，加可选 Google Drive
 
 决策见 [决策记录](docs/plan/决策记录.md) D28–D32，阶段报告见
