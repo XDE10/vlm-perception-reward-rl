@@ -49,3 +49,11 @@ def test_git_tracked_mode_refreshes_code_and_keeps_data_entries(tmp_path):
     entry_paths = [c["path"] for c in again["documentation_updates"][-1]["changes"]]
     assert entry_paths == ["src/a.py", "src/later.py", "src/new.py"]
     assert again["documentation_updates"][-1]["dropped_tracked_paths"] == ["src/deleted.py"]
+    # another stage on the same date gets its own entry and leaves the earlier stage's entry untouched
+    manifest_path.write_text(json.dumps(again), encoding="utf8")
+    (tmp_path / "src/b.py").write_text("changed in stage2", encoding="utf8")
+    third, _ = build_git_tracked(manifest_path, "2026-11-09", "stage2", "test", root=tmp_path)
+    assert [(u.get("date"), u.get("label")) for u in third["documentation_updates"]] == [
+        ("2026-11-08", None), ("2026-11-09", "stage1"), ("2026-11-09", "stage2")]
+    assert third["documentation_updates"][1] == again["documentation_updates"][-1]
+    assert [c["path"] for c in third["documentation_updates"][-1]["changes"]] == ["src/b.py"]
