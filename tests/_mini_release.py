@@ -14,7 +14,9 @@ def _sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def make_release(root, n=4, duplicate_image=False):
+def make_release(root, n=4, duplicate_image=False, sizes=None):
+    """``sizes``: optional per-row (width, height); different sizes give prompts of different token lengths,
+    so batched prompts get left padding (the case real data always has)."""
     from PIL import Image, ImageDraw
 
     root = Path(root)
@@ -25,7 +27,7 @@ def make_release(root, n=4, duplicate_image=False):
     rows, records = [], []
     for i in range(n):
         oid = str(9000 + i)
-        image = Image.new("RGB", (84, 56), "white")
+        image = Image.new("RGB", tuple(sizes[i]) if sizes else (84, 56), "white")
         draw = ImageDraw.Draw(image)
         shade = 0 if duplicate_image and i == 1 else i
         draw.line((4, 50, 80, 50), fill=(shade * 40, 0, 0), width=2)

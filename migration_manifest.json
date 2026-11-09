@@ -36,11 +36,11 @@
   },
   {
    "path": "CHANGELOG.md",
-   "bytes": 8474,
-   "sha256": "160f48268fce7999880ded18171d622945fb945d7fd5bb0a8a0f2181ec00b563",
+   "bytes": 9835,
+   "sha256": "15a4012144110817bf3a8bde54f69b1b06ad8ec27e8820c04ed37bfe32545e2b",
    "source_sha256": "dbded3caf83f4f16b506d3dc18f8ed0229cd90032081039f38c28fa58306dc50",
    "changed_for_portability": true,
-   "updated_in": "2026-11-09_stage2.1"
+   "updated_in": "2026-11-09_stage2.2"
   },
   {
    "path": "README.md",
@@ -111,11 +111,12 @@
   },
   {
    "path": "configs/experiments/rl_v3.json",
-   "bytes": 1864,
-   "sha256": "0667834ec5885bcd97677d355f38cb42ad5c93c4b87d85e1b369b31fbb3507c9",
+   "bytes": 1894,
+   "sha256": "ed917d45ccc8a72141da325cd2538c9b247e6d243769d2d449553316f9e38ffc",
    "source_sha256": "0667834ec5885bcd97677d355f38cb42ad5c93c4b87d85e1b369b31fbb3507c9",
-   "changed_for_portability": false,
-   "added_in": "2026-11-09_stage1"
+   "changed_for_portability": true,
+   "added_in": "2026-11-09_stage1",
+   "updated_in": "2026-11-09_stage2.2"
   },
   {
    "path": "configs/project3_fact_sft_smoke.json",
@@ -19824,19 +19825,19 @@
   },
   {
    "path": "docs/README.md",
-   "bytes": 2751,
-   "sha256": "7f9a17dd827d292b03afbc644519b447f5b6aba426a41be0c91c154af46e191d",
+   "bytes": 2978,
+   "sha256": "27ce319ca44746432c50e7f3278be750c84a9ca78f0bba4eca6a7c076290b88f",
    "source_sha256": "864ec78b4f6a1b3268680a9c2c0e95c21550b906d8d3fe3f491f0b1c9482b3e2",
    "changed_for_portability": true,
-   "updated_in": "2026-11-09_stage2.1"
+   "updated_in": "2026-11-09_stage2.2"
   },
   {
    "path": "docs/architecture.md",
-   "bytes": 7766,
-   "sha256": "90658e5a5d38f1b297a5613488b0e00aea149c1f316afabc639bc96b0eac2b04",
+   "bytes": 8114,
+   "sha256": "02343d0f8e352d874aa381fffd073edb3b3df504caf9f2350221d4259d8447f2",
    "source_sha256": "d4741c763022737eaf77f807b2529d6ff262ae5422e7c8c8ff3ea48a2296fa9a",
    "changed_for_portability": true,
-   "updated_in": "2026-11-09_stage1"
+   "updated_in": "2026-11-09_stage2.2"
   },
   {
    "path": "docs/blueprints/Strict_v8_数据封板与上卡说明.md",
@@ -19994,12 +19995,12 @@
   },
   {
    "path": "docs/plan/决策记录.md",
-   "bytes": 14979,
-   "sha256": "dbbe5d0f45a3f087c181ccaa4831efd0ddf63e21db3047d89425f94fd77bb19d",
+   "bytes": 18753,
+   "sha256": "9c608dc429426107d99c34f8251e7c1b7d1d0d7ebc01757c8ebde621fed3457d",
    "source_sha256": "6270abf217d11dc49d0ffe5901cd3faa58aa3d56e47cfa8506fb765e952e9790",
    "changed_for_portability": true,
    "added_in": "2026-11-09_stage1",
-   "updated_in": "2026-11-09_stage2.1"
+   "updated_in": "2026-11-09_stage2.2"
   },
   {
    "path": "docs/plan/执行计划_20261108.md",
@@ -20027,6 +20028,15 @@
    "updated_in": "2026-11-09_stage2.1"
   },
   {
+   "path": "docs/plan/阶段报告_S2.2_20261109.md",
+   "bytes": 11227,
+   "sha256": "85bb84eca5a7b7726d2ef7aecf6ba370d1be987cb729f699bfb1b9b375236553",
+   "source_sha256": "6d9a26e85f889ec7807f9b7677d5e2421a4cd6e72064cf0ac6b5ba62c4cb294f",
+   "changed_for_portability": true,
+   "added_in": "2026-11-09_stage2.2",
+   "updated_in": "2026-11-09_stage2.2"
+  },
+  {
    "path": "docs/plan/阶段报告_S2_20261110.md",
    "bytes": 5609,
    "sha256": "90aa520f7a8345b2854086bf619d654888df59f30ac0f778029370e0c2bce766",
@@ -20052,11 +20062,11 @@
   },
   {
    "path": "docs/verification.md",
-   "bytes": 8575,
-   "sha256": "1ae6f23de593f133546d01d5077a04baf5a568aeda230567f1fb47906cca2233",
+   "bytes": 9760,
+   "sha256": "50009bbc3cbf54cc8770f27ecd42721ace039cb383a8c1ce32621edd49ed5486",
    "source_sha256": "dafa2e004f067fa92df2b610e7a800d35c350c32016b9dc2035f9a25913dc093",
    "changed_for_portability": true,
-   "updated_in": "2026-11-09_stage2.1"
+   "updated_in": "2026-11-09_stage2.2"
   },
   {
    "path": "pyproject.toml",
@@ -22161,11 +22171,11 @@
   },
   {
    "path": "scripts/README.md",
-   "bytes": 11457,
-   "sha256": "4a82cb029a67d3bff67cc82faf7d0bab36b1d4e9222a92b6b93729297db7542b",
+   "bytes": 11610,
+   "sha256": "099c912c3924446bcc7e0344827ce1030a32d1e646f908e32feeba0b26c235cc",
    "source_sha256": "eda255f3087e1cdbf10295a30894dcceb5eeed01031ac3dbc0f65b51d594256c",
    "changed_for_portability": true,
-   "updated_in": "2026-11-09_stage2.1"
+   "updated_in": "2026-11-09_stage2.2"
   },
   {
    "path": "scripts/__init__.py",
@@ -22234,11 +22244,12 @@
   },
   {
    "path": "scripts/colab/gpu_probe.py",
-   "bytes": 12928,
-   "sha256": "eb5ac41d190dea9bb1ec22ec917daef70a5b4c38af1543679b8f4c13392bddbd",
+   "bytes": 13513,
+   "sha256": "bd8d64f30cf7294516471c1507670760cbfd635be93295ce3564ba844afa08e2",
    "source_sha256": "eb5ac41d190dea9bb1ec22ec917daef70a5b4c38af1543679b8f4c13392bddbd",
-   "changed_for_portability": false,
-   "added_in": "2026-11-10_stage2"
+   "changed_for_portability": true,
+   "added_in": "2026-11-10_stage2",
+   "updated_in": "2026-11-09_stage2.2"
   },
   {
    "path": "scripts/colab/local_tools.py",
@@ -22268,21 +22279,21 @@
   },
   {
    "path": "scripts/colab/summarize_run.py",
-   "bytes": 18540,
-   "sha256": "d955abfd3f95a8d0554571543f42a787cd95c59404d599230245dee9ac93b7d2",
+   "bytes": 22524,
+   "sha256": "12a0da73cfa0512e45159d09e37c182b8716d3c0193c04a1ef8bd41bf065067a",
    "source_sha256": "c84812cd525dc0c458e805f3c9f20cf01f234f7678f257b4d4c1936423aea5c3",
    "changed_for_portability": true,
    "added_in": "2026-11-10_stage2",
-   "updated_in": "2026-11-09_stage2.1"
+   "updated_in": "2026-11-09_stage2.2"
   },
   {
    "path": "scripts/colab/tasks.py",
-   "bytes": 8341,
-   "sha256": "631160362855245935bcde6acde96307050d3483fd8ba747ba43ed3f92218da0",
+   "bytes": 8487,
+   "sha256": "04dee4a3f6e54838a7be8d8767ec3f17224ad1f8e9d594733fd24072e7678dbb",
    "source_sha256": "516613dcb3689e785698d1f7de5f88671b9298b95135ed53fc2a1d1af73962f5",
    "changed_for_portability": true,
    "added_in": "2026-11-10_stage2",
-   "updated_in": "2026-11-09_stage2.1"
+   "updated_in": "2026-11-09_stage2.2"
   },
   {
    "path": "scripts/colab/v0_probe.py",
@@ -22379,11 +22390,12 @@
   },
   {
    "path": "scripts/data/calibrate_perception_v5.py",
-   "bytes": 8970,
-   "sha256": "8689c6166a807999987f822506f2e64da336a2cf34b431b5d73bb06e144b09f8",
+   "bytes": 16150,
+   "sha256": "d712956aa723d79e6ceefe9308fe60e2370c9fcbb5c54da6b2e84c023c3d80a9",
    "source_sha256": "8689c6166a807999987f822506f2e64da336a2cf34b431b5d73bb06e144b09f8",
-   "changed_for_portability": false,
-   "added_in": "2026-11-09_stage1"
+   "changed_for_portability": true,
+   "added_in": "2026-11-09_stage1",
+   "updated_in": "2026-11-09_stage2.2"
   },
   {
    "path": "scripts/data/check_topup_source_integrity.py",
@@ -22710,19 +22722,21 @@
   },
   {
    "path": "src/rewards/geometry_oracle.py",
-   "bytes": 8119,
-   "sha256": "fac4ef8d0935e8877ed471cc077c6fc22f7f5a2695559159055b92dc841b7e61",
+   "bytes": 11444,
+   "sha256": "0741399cd53c4e5c5e44abe52a5f33ba729337f5d82a5f471eb7276f446bb6f3",
    "source_sha256": "fac4ef8d0935e8877ed471cc077c6fc22f7f5a2695559159055b92dc841b7e61",
-   "changed_for_portability": false,
-   "added_in": "2026-11-09_stage1"
+   "changed_for_portability": true,
+   "added_in": "2026-11-09_stage1",
+   "updated_in": "2026-11-09_stage2.2"
   },
   {
    "path": "src/rewards/perception_v5.py",
-   "bytes": 4296,
-   "sha256": "8441d04687232e3f8c18b59bfba38881d38151658cb4dff5a944c08cbcb37a39",
+   "bytes": 5641,
+   "sha256": "2b079214c7dd2c032f1329576fd34fb0f3c99aa32879a2e2664a7cb326038986",
    "source_sha256": "8441d04687232e3f8c18b59bfba38881d38151658cb4dff5a944c08cbcb37a39",
-   "changed_for_portability": false,
-   "added_in": "2026-11-09_stage1"
+   "changed_for_portability": true,
+   "added_in": "2026-11-09_stage1",
+   "updated_in": "2026-11-09_stage2.2"
   },
   {
    "path": "src/teachers/__init__.py",
@@ -22756,11 +22770,20 @@
   },
   {
    "path": "src/training/lora_language.py",
-   "bytes": 3389,
-   "sha256": "64f560ddf94d5ee25b2ac3d95f09b63c4f9194cb7b6694af6777f5aca2b3add1",
+   "bytes": 3607,
+   "sha256": "fa247ff5700b08eb915a3c8472aedc7624b692d75c092b63976bf0c22cfb8138",
    "source_sha256": "64f560ddf94d5ee25b2ac3d95f09b63c4f9194cb7b6694af6777f5aca2b3add1",
+   "changed_for_portability": true,
+   "added_in": "2026-11-09_stage1",
+   "updated_in": "2026-11-09_stage2.2"
+  },
+  {
+   "path": "src/training/multimodal_guard.py",
+   "bytes": 4085,
+   "sha256": "9b3ab6ed2a1746bbc6205e6662c420efccfa354afe362c2bcb319a087d3ae7f7",
+   "source_sha256": "9b3ab6ed2a1746bbc6205e6662c420efccfa354afe362c2bcb319a087d3ae7f7",
    "changed_for_portability": false,
-   "added_in": "2026-11-09_stage1"
+   "added_in": "2026-11-09_stage2.2"
   },
   {
    "path": "src/training/perception_reward_v4.py",
@@ -22795,12 +22818,12 @@
   },
   {
    "path": "src/training/rl_entry.py",
-   "bytes": 14075,
-   "sha256": "1b1789a3a76c2e57fe0c18ab55323c529d4963a8fcecd14098cbe4824ed6202c",
+   "bytes": 14410,
+   "sha256": "a114a1bea09e428316593c7280e942c218f533b94e61147ed3b6fa3e69342675",
    "source_sha256": "0fbbd13fb08a842c2c0ba7e20e33609bc17c1b04e69d621aac78230c19cb0d7f",
    "changed_for_portability": true,
    "added_in": "2026-11-09_stage1",
-   "updated_in": "2026-11-10_stage2"
+   "updated_in": "2026-11-09_stage2.2"
   },
   {
    "path": "src/training/rl_rewards.py",
@@ -22829,11 +22852,12 @@
   },
   {
    "path": "tests/_mini_release.py",
-   "bytes": 3503,
-   "sha256": "7e701c568c8bcf306f3f4a2000b560c4356044e87a552573cd1fbd005c6af4ac",
+   "bytes": 3730,
+   "sha256": "8a882a6a099272001e33ca80228bafe179f35e6ea0a3ffd7e3fa3596bf0cc0fe",
    "source_sha256": "7e701c568c8bcf306f3f4a2000b560c4356044e87a552573cd1fbd005c6af4ac",
-   "changed_for_portability": false,
-   "added_in": "2026-11-09_stage1"
+   "changed_for_portability": true,
+   "added_in": "2026-11-09_stage1",
+   "updated_in": "2026-11-09_stage2.2"
   },
   {
    "path": "tests/_qwen.py",
@@ -22877,11 +22901,12 @@
   },
   {
    "path": "tests/test_calibrate_v5.py",
-   "bytes": 1317,
-   "sha256": "185bc390c90b2b219f6a21e1fa07aa0bb5e6c744abc715418b19ecd02be1316c",
+   "bytes": 4147,
+   "sha256": "b42c40324f92b1aeb9a1a72d7bcfd21103432e5acbb95487fa4afbf58271de89",
    "source_sha256": "185bc390c90b2b219f6a21e1fa07aa0bb5e6c744abc715418b19ecd02be1316c",
-   "changed_for_portability": false,
-   "added_in": "2026-11-09_stage1"
+   "changed_for_portability": true,
+   "added_in": "2026-11-09_stage1",
+   "updated_in": "2026-11-09_stage2.2"
   },
   {
    "path": "tests/test_claims.py",
@@ -22926,12 +22951,12 @@
   },
   {
    "path": "tests/test_colab_vm_scripts.py",
-   "bytes": 8134,
-   "sha256": "5f568baa90d95869b54e6b1e12706aea4ab74e476e2746b237be5d6529bceaa8",
+   "bytes": 10626,
+   "sha256": "dcdfa344194fa534210fbf2c3083cb3809c1e52ea52058450246e030086a591b",
    "source_sha256": "5c03fda803bf668de214b6f037534713c34d13b6af40f174c9820a1e7ba1ac54",
    "changed_for_portability": true,
    "added_in": "2026-11-10_stage2",
-   "updated_in": "2026-11-09_stage2.1"
+   "updated_in": "2026-11-09_stage2.2"
   },
   {
    "path": "tests/test_delivery_artifacts.py",
@@ -23010,11 +23035,12 @@
   },
   {
    "path": "tests/test_lora_language.py",
-   "bytes": 2016,
-   "sha256": "c3586374b9d1398ae06f78812dde1fcdc9810c17579ca5ce221f28f4e0d9c153",
+   "bytes": 3208,
+   "sha256": "efb313d58f5177fe83cae908a353d73b65498ce7fd483199745b5f58823dfa34",
    "source_sha256": "c3586374b9d1398ae06f78812dde1fcdc9810c17579ca5ce221f28f4e0d9c153",
-   "changed_for_portability": false,
-   "added_in": "2026-11-09_stage1"
+   "changed_for_portability": true,
+   "added_in": "2026-11-09_stage1",
+   "updated_in": "2026-11-09_stage2.2"
   },
   {
    "path": "tests/test_losses_and_masks.py",
@@ -23033,6 +23059,14 @@
    "updated_in": "2026-11-09_stage2.1"
   },
   {
+   "path": "tests/test_multimodal_guard.py",
+   "bytes": 3041,
+   "sha256": "267d5a49cde4209a8f57ae8272550eaaa34fe355f028a487693863fa3bd51728",
+   "source_sha256": "267d5a49cde4209a8f57ae8272550eaaa34fe355f028a487693863fa3bd51728",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage2.2"
+  },
+  {
    "path": "tests/test_perception_v4.py",
    "bytes": 4793,
    "sha256": "138551852c3114b29e28e80ad09f6805ace0e95935289295bc67f1ed82bff730",
@@ -23041,11 +23075,12 @@
   },
   {
    "path": "tests/test_perception_v5.py",
-   "bytes": 3237,
-   "sha256": "ed1f7c4b0719de2339e12c02f3713b3d6292c249089af64e7aeae376fd42ffff",
+   "bytes": 5520,
+   "sha256": "94b45f0d5d36cc35c3abd481e830297103f300ada428cdc1f49fd3b838294d0c",
    "source_sha256": "ed1f7c4b0719de2339e12c02f3713b3d6292c249089af64e7aeae376fd42ffff",
-   "changed_for_portability": false,
-   "added_in": "2026-11-09_stage1"
+   "changed_for_portability": true,
+   "added_in": "2026-11-09_stage1",
+   "updated_in": "2026-11-09_stage2.2"
   },
   {
    "path": "tests/test_project3_audit.py",
@@ -23101,12 +23136,12 @@
   },
   {
    "path": "tests/test_rl_entry_cpu.py",
-   "bytes": 6723,
-   "sha256": "8304a5896da474eb2dd1432dfcf140a888826ec095d398e9c6778e4517a05f1b",
+   "bytes": 8188,
+   "sha256": "83bd923dc93449718921dcbf1db938812c1c3651fda6aa498fded016566254be",
    "source_sha256": "b5899d761e7c926b4aae1ad1d93262aabafc9f1d14670d9006c706e18578650b",
    "changed_for_portability": true,
    "added_in": "2026-11-09_stage1",
-   "updated_in": "2026-11-10_stage2"
+   "updated_in": "2026-11-09_stage2.2"
   },
   {
    "path": "tests/test_rl_rewards.py",
@@ -23882,6 +23917,137 @@
      "path": "tools/build_migration_manifest.py",
      "previous_sha256": "83b9c7523ddc493afdb006725b417a7c10660bf8f9980cfbb69b9fe49d443678",
      "current_sha256": "46a6330613a2831eb5cf199b35bc57357212a83ea83875e6e4e4b48a7bd6167a"
+    }
+   ],
+   "dropped_tracked_paths": [],
+   "untracked_entries_kept_verbatim": 2848,
+   "note": "Only git-visible files were re-hashed; git-ignored payload entries (data/) were carried over unchanged. Run the full rebuild on a machine that has data/ to re-hash the payload."
+  },
+  {
+   "date": "2026-11-09",
+   "label": "2026-11-09_stage2.2",
+   "mode": "git_tracked_only",
+   "purpose": "S2.2: scoring-pass image-token alignment and guard, LoRA target order, reward v5.1 consistency gate with leave-one-out calibration, preflight checks; docs and tests",
+   "changes": [
+    {
+     "path": "CHANGELOG.md",
+     "previous_sha256": "160f48268fce7999880ded18171d622945fb945d7fd5bb0a8a0f2181ec00b563",
+     "current_sha256": "15a4012144110817bf3a8bde54f69b1b06ad8ec27e8820c04ed37bfe32545e2b"
+    },
+    {
+     "path": "configs/experiments/rl_v3.json",
+     "previous_sha256": "0667834ec5885bcd97677d355f38cb42ad5c93c4b87d85e1b369b31fbb3507c9",
+     "current_sha256": "ed917d45ccc8a72141da325cd2538c9b247e6d243769d2d449553316f9e38ffc"
+    },
+    {
+     "path": "docs/README.md",
+     "previous_sha256": "7f9a17dd827d292b03afbc644519b447f5b6aba426a41be0c91c154af46e191d",
+     "current_sha256": "27ce319ca44746432c50e7f3278be750c84a9ca78f0bba4eca6a7c076290b88f"
+    },
+    {
+     "path": "docs/architecture.md",
+     "previous_sha256": "90658e5a5d38f1b297a5613488b0e00aea149c1f316afabc639bc96b0eac2b04",
+     "current_sha256": "02343d0f8e352d874aa381fffd073edb3b3df504caf9f2350221d4259d8447f2"
+    },
+    {
+     "path": "docs/plan/决策记录.md",
+     "previous_sha256": "dbbe5d0f45a3f087c181ccaa4831efd0ddf63e21db3047d89425f94fd77bb19d",
+     "current_sha256": "9c608dc429426107d99c34f8251e7c1b7d1d0d7ebc01757c8ebde621fed3457d"
+    },
+    {
+     "path": "docs/plan/阶段报告_S2.2_20261109.md",
+     "previous_sha256": null,
+     "current_sha256": "85bb84eca5a7b7726d2ef7aecf6ba370d1be987cb729f699bfb1b9b375236553"
+    },
+    {
+     "path": "docs/verification.md",
+     "previous_sha256": "1ae6f23de593f133546d01d5077a04baf5a568aeda230567f1fb47906cca2233",
+     "current_sha256": "50009bbc3cbf54cc8770f27ecd42721ace039cb383a8c1ce32621edd49ed5486"
+    },
+    {
+     "path": "scripts/README.md",
+     "previous_sha256": "4a82cb029a67d3bff67cc82faf7d0bab36b1d4e9222a92b6b93729297db7542b",
+     "current_sha256": "099c912c3924446bcc7e0344827ce1030a32d1e646f908e32feeba0b26c235cc"
+    },
+    {
+     "path": "scripts/colab/gpu_probe.py",
+     "previous_sha256": "eb5ac41d190dea9bb1ec22ec917daef70a5b4c38af1543679b8f4c13392bddbd",
+     "current_sha256": "bd8d64f30cf7294516471c1507670760cbfd635be93295ce3564ba844afa08e2"
+    },
+    {
+     "path": "scripts/colab/summarize_run.py",
+     "previous_sha256": "d955abfd3f95a8d0554571543f42a787cd95c59404d599230245dee9ac93b7d2",
+     "current_sha256": "12a0da73cfa0512e45159d09e37c182b8716d3c0193c04a1ef8bd41bf065067a"
+    },
+    {
+     "path": "scripts/colab/tasks.py",
+     "previous_sha256": "631160362855245935bcde6acde96307050d3483fd8ba747ba43ed3f92218da0",
+     "current_sha256": "04dee4a3f6e54838a7be8d8767ec3f17224ad1f8e9d594733fd24072e7678dbb"
+    },
+    {
+     "path": "scripts/data/calibrate_perception_v5.py",
+     "previous_sha256": "8689c6166a807999987f822506f2e64da336a2cf34b431b5d73bb06e144b09f8",
+     "current_sha256": "d712956aa723d79e6ceefe9308fe60e2370c9fcbb5c54da6b2e84c023c3d80a9"
+    },
+    {
+     "path": "src/rewards/geometry_oracle.py",
+     "previous_sha256": "fac4ef8d0935e8877ed471cc077c6fc22f7f5a2695559159055b92dc841b7e61",
+     "current_sha256": "0741399cd53c4e5c5e44abe52a5f33ba729337f5d82a5f471eb7276f446bb6f3"
+    },
+    {
+     "path": "src/rewards/perception_v5.py",
+     "previous_sha256": "8441d04687232e3f8c18b59bfba38881d38151658cb4dff5a944c08cbcb37a39",
+     "current_sha256": "2b079214c7dd2c032f1329576fd34fb0f3c99aa32879a2e2664a7cb326038986"
+    },
+    {
+     "path": "src/training/lora_language.py",
+     "previous_sha256": "64f560ddf94d5ee25b2ac3d95f09b63c4f9194cb7b6694af6777f5aca2b3add1",
+     "current_sha256": "fa247ff5700b08eb915a3c8472aedc7624b692d75c092b63976bf0c22cfb8138"
+    },
+    {
+     "path": "src/training/multimodal_guard.py",
+     "previous_sha256": null,
+     "current_sha256": "9b3ab6ed2a1746bbc6205e6662c420efccfa354afe362c2bcb319a087d3ae7f7"
+    },
+    {
+     "path": "src/training/rl_entry.py",
+     "previous_sha256": "1b1789a3a76c2e57fe0c18ab55323c529d4963a8fcecd14098cbe4824ed6202c",
+     "current_sha256": "a114a1bea09e428316593c7280e942c218f533b94e61147ed3b6fa3e69342675"
+    },
+    {
+     "path": "tests/_mini_release.py",
+     "previous_sha256": "7e701c568c8bcf306f3f4a2000b560c4356044e87a552573cd1fbd005c6af4ac",
+     "current_sha256": "8a882a6a099272001e33ca80228bafe179f35e6ea0a3ffd7e3fa3596bf0cc0fe"
+    },
+    {
+     "path": "tests/test_calibrate_v5.py",
+     "previous_sha256": "185bc390c90b2b219f6a21e1fa07aa0bb5e6c744abc715418b19ecd02be1316c",
+     "current_sha256": "b42c40324f92b1aeb9a1a72d7bcfd21103432e5acbb95487fa4afbf58271de89"
+    },
+    {
+     "path": "tests/test_colab_vm_scripts.py",
+     "previous_sha256": "5f568baa90d95869b54e6b1e12706aea4ab74e476e2746b237be5d6529bceaa8",
+     "current_sha256": "dcdfa344194fa534210fbf2c3083cb3809c1e52ea52058450246e030086a591b"
+    },
+    {
+     "path": "tests/test_lora_language.py",
+     "previous_sha256": "c3586374b9d1398ae06f78812dde1fcdc9810c17579ca5ce221f28f4e0d9c153",
+     "current_sha256": "efb313d58f5177fe83cae908a353d73b65498ce7fd483199745b5f58823dfa34"
+    },
+    {
+     "path": "tests/test_multimodal_guard.py",
+     "previous_sha256": null,
+     "current_sha256": "267d5a49cde4209a8f57ae8272550eaaa34fe355f028a487693863fa3bd51728"
+    },
+    {
+     "path": "tests/test_perception_v5.py",
+     "previous_sha256": "ed1f7c4b0719de2339e12c02f3713b3d6292c249089af64e7aeae376fd42ffff",
+     "current_sha256": "94b45f0d5d36cc35c3abd481e830297103f300ada428cdc1f49fd3b838294d0c"
+    },
+    {
+     "path": "tests/test_rl_entry_cpu.py",
+     "previous_sha256": "8304a5896da474eb2dd1432dfcf140a888826ec095d398e9c6778e4517a05f1b",
+     "current_sha256": "83bd923dc93449718921dcbf1db938812c1c3651fda6aa498fded016566254be"
     }
    ],
    "dropped_tracked_paths": [],

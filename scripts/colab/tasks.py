@@ -113,8 +113,9 @@ def preflight_steps(ctx):
                                               runtime=out / "runtime_vllm.json", python=ctx.vllm_python), 7200,
                  required=False, depends_on=["vllm_env"], description="same 3 steps with vLLM colocate generation"),
         ]
+    # without the HF measurement there is nothing to decide: report "skipped (smoke_full_hf)", not a second failure
     steps.append(step("decide_runtime", [py, "-m", "scripts.colab.decide_runtime", "--out-dir", out], 600,
-                      description="freeze runtime decisions from the measurements"))
+                      depends_on=["smoke_full_hf"], description="freeze runtime decisions from the measurements"))
     return steps
 
 

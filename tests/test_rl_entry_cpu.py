@@ -109,6 +109,30 @@ def test_gradient_checkpointing_path_and_runtime_micro_batch(tmp_path):
     assert any(p.detach().abs().sum() > 0 for p in lora)
 
 
+def test_scoring_pass_keeps_image_token_types_aligned_under_left_padding(tmp_path):
+    """Regression for preflight-20261109T064716Z-0589: prompts of different lengths force left padding.
+
+    The mini release used to have four identical image sizes, so TRL never padded and the misaligned
+    mm_token_type_ids of its scoring pass went unnoticed on CPU. The guard in run() fails closed on any
+    misalignment; its stats prove that padded rows were actually checked.
+    """
+    from transformers import AutoProcessor
+
+    from src.training.rl_entry import run
+
+    make_release(tmp_path, sizes=[(84, 56), (168, 112), (252, 168), (336, 224)])
+    smoke = {"max_steps": 1, "num_generations": 2, "prompts_per_step": 4, "per_device_train_batch_size": 4,
+             "max_completion_length": 8, "save_steps": 1}
+    config = mini_config(tmp_path, "rl_v5", smoke=smoke)
+    config["train"].update(mask_truncated_completions=False, warmup_steps=0, learning_rate=1e-3)
+    processor = AutoProcessor.from_pretrained(processor_dir())
+    assert processor.tokenizer.padding_side == "right"  # Qwen2.5-VL's default, the one that misplaced the image span
+    summary = run(config, tmp_path, model=tiny_model(), processor=processor, extra_reward_funcs=[noisy_reward])
+    guard = summary["mm_alignment"]
+    assert guard["checked_forwards"] > 0 and guard["left_padded_rows"] > 0 and guard["max_left_padding"] > 0, guard
+    assert processor.tokenizer.padding_side == "left"
+
+
 def test_runtime_keys_that_could_change_the_algorithm_are_rejected(tmp_path):
     from src.training.rl_entry import apply_runtime, run
 

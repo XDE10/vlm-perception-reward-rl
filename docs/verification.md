@@ -115,6 +115,25 @@ python -m pytest -q
 
 真实 Colab 上的上传、GitHub 源码下载和 Drive 仍未验证，要看下一次 `preflight` 和 `drive-check` 的结果。
 
+### 2026-11-09（S2.2，第二次预检的修复）
+
+第二次预检（preflight-20261109T064716Z-0589）证实：S2.1 的分片上传与 GitHub 取代码在真实 Colab 上可用；VM 上 pytest
+207 项中 201 项通过、6 项跳过。同一沙箱环境：
+
+```text
+python -m pytest -q
+216 passed, 2 failed
+```
+
+失败的仍是上面两项依赖 `data/` 的测试。新增的回归测试都在旧代码上失败、修复后通过：
+
+- `tests/test_rl_entry_cpu.py::test_scoring_pass_keeps_image_token_types_aligned_under_left_padding`：4 张不同尺寸的图，
+  走真实 TRL 路径。旧代码在评分前向报 `first image token at column 288 in input_ids, 216 in mm_token_type_ids`。
+- `tests/test_lora_language.py::test_lora_targets_are_identical_across_processes`：两个 PYTHONHASHSEED 不同的进程必须得到相同的 LoRA 目标列表。
+
+其他新增：`tests/test_multimodal_guard.py`；一致性门控与留一法的单元测试（`tests/test_perception_v5.py`、`tests/test_calibrate_v5.py`）；
+预检摘要的新检查与 `decide_runtime` 依赖（`tests/test_colab_vm_scripts.py`）。迷你数据新增 `sizes` 参数，可以生成不等长的提示。
+
 ### 历史覆盖范围
 
 测试覆盖：数据准入与白名单、几何序列化、split 守卫、感知奖励与文本蕴含、

@@ -74,3 +74,45 @@ def test_config_round_trip():
     config = V5Config.from_dict({"alpha": 2.0, "oracle": {"parallel_deg": 10.0}})
     assert config.alpha == 2.0 and config.oracle.parallel_deg == 10.0
     assert V5Config.from_dict(config.to_dict()) == config
+
+
+def _right_angle_geometry(d_xy):
+    """Diagram where Perpendicular((A,B),(B,C)) is certified; C sits at d_xy (off-scale when not on the y axis)."""
+    from src.data.intergps_index import geometry_from_record
+    from tests._fixtures import synthetic_record
+
+    points = {"A": (0, 0), "B": (10, 0), "C": d_xy, "D": (5, 0), "E": (5, 8)}
+    return geometry_from_record(synthetic_record(points=points, lines=["AB", "BC", "AD", "DB", "DE"]))
+
+
+RIGHT_GOLD = ["Perpendicular((A,B),(B,C))", "PointLiesOnLine(D,(A,B))"]
+
+
+def test_consistency_gate_drops_coordinate_refutations_on_self_contradicting_diagrams():
+    from src.rewards.perception_v5 import consistency_gate
+
+    claims = RIGHT_GOLD + ["PointLiesOnLine(E,(A,B))", "PointLiesOnLine(Z,(A,B))"]
+    drawn_to_scale = _right_angle_geometry((10, 8))
+    assert consistency_gate(RIGHT_GOLD, drawn_to_scale) == {}
+    ok = score_v5(as_completion(claims), RIGHT_GOLD, drawn_to_scale)
+    assert ok["gated"] == [] and ok["false_reasons"] == {"not_collinear": 1, "unknown_point": 1}
+    # the certified right angle is drawn at ~50 degrees: these coordinates refute a true fact of this diagram
+    off_scale = _right_angle_geometry((15, 6))
+    gate = consistency_gate(RIGHT_GOLD, off_scale)
+    assert gate == {"coordinates": {"certified": "Perpendicular((A,B),(B,C))", "reason": "not_perpendicular"}}
+    gated = score_v5(as_completion(claims), RIGHT_GOLD, off_scale)
+    # coordinate refutations are dropped (E stays UNKNOWN); the point inventory still refutes the invented point Z
+    assert gated["gated"] == ["coordinates"] and gated["false_reasons"] == {"unknown_point": 1}
+    assert gated["tp"] == 2 and gated["unknown"] == 1
+    ungated = score_v5(as_completion(claims), RIGHT_GOLD, off_scale, config=V5Config(consistency_gate=False))
+    assert ungated["false_reasons"] == {"not_collinear": 1, "unknown_point": 1} and ungated["gated"] == []
+
+
+def test_gate_never_changes_scores_on_the_real_row_1670():
+    from src.rewards.perception_v5 import consistency_gate
+
+    assert consistency_gate(GOLD, geometry_1670()) == {}
+    suite = attack_suite(geometry_1670(), GOLD)
+    for claims in suite.values():
+        if claims:
+            assert v5(claims)["reward"] == v5(claims, config=V5Config(consistency_gate=False))["reward"]

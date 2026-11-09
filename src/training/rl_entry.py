@@ -17,6 +17,7 @@ from pathlib import Path
 
 from src.rewards.perception_v5 import V5Config
 from src.training.lora_language import attach_language_lora, parameter_identity
+from src.training.multimodal_guard import MultimodalAlignmentGuard, left_pad_processor
 from src.training.rl_config import canonical_sha256
 from src.training.rl_data import build_items, load_training_rows, prompt_length_report
 from src.training.rl_rewards import RewardBank
@@ -33,7 +34,8 @@ ALGORITHM_NEUTRAL_RUNTIME_KEYS = {"generation_backend", "vllm_gpu_memory_utiliza
 SOURCE_FILES = [
     "src/rewards/answer.py", "src/rewards/attacks.py", "src/rewards/claims.py", "src/rewards/geometry_oracle.py",
     "src/rewards/perception_v5.py", "src/training/hf_compat.py", "src/training/lora_language.py",
-    "src/training/protocol_v3.py", "src/training/rl_config.py", "src/training/rl_data.py",
+    "src/training/multimodal_guard.py", "src/training/protocol_v3.py", "src/training/rl_config.py",
+    "src/training/rl_data.py",
     "src/training/rl_entry.py", "src/training/rl_rewards.py", "src/training/vision_cache.py",
     "src/data/approved_training_inputs.py", "src/data/intergps_index.py", "src/data/perception_v4.py",
     "src/data/project3_perception_v2.py", "src/data/project3_perception_prototype.py",
@@ -173,6 +175,7 @@ def run(config, root=ROOT, runtime=None, model_path=None, resume=None, model=Non
     out.mkdir(parents=True, exist_ok=True)
     if model is None or processor is None:
         model, processor = load_model_and_processor(config, model_path, cuda)
+    left_pad_processor(processor)  # TRL's scoring pass relies on the processor default (D33)
     items, mapping = build_items(config, rows, index, root)
     prompt_report = prompt_length_report(items, processor, config["train"]["max_prompt_tokens"])
     lora = config["lora"]
@@ -242,11 +245,13 @@ def run(config, root=ROOT, runtime=None, model_path=None, resume=None, model=Non
                           train_dataset=Dataset.from_list(items), processing_class=processor,
                           reward_funcs=reward_funcs, callbacks=[IdentityCallback(), ProgressCallback()])
     parameter_identity(trainer.model)
+    guard = MultimodalAlignmentGuard(trainer.model)
     started = time.time()
     try:
         trainer.train(resume_from_checkpoint=resume)
     finally:
         bank.close()
+        guard.remove()
     trainer.save_model(str(out / "final"))
     processor.save_pretrained(str(out / "final"))
     summary = {
@@ -257,6 +262,7 @@ def run(config, root=ROOT, runtime=None, model_path=None, resume=None, model=Non
         "wall_seconds": time.time() - started,
         "peak_gpu_memory_gb": (torch.cuda.max_memory_allocated() / 1e9) if cuda else None,
         "vision_cache": cache.stats() if cache else None,
+        "mm_alignment": guard.stats(),
         "generation_backend": runtime["generation_backend"],
         "python": sys.version.split()[0],
     }

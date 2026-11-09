@@ -46,3 +46,26 @@ def test_parameter_identity_rejects_trainable_vision_or_non_lora():
     next(p for n, p in model.named_parameters() if "embed_tokens" in n).requires_grad_(True)
     with pytest.raises(ValueError, match="Non-LoRA"):
         parameter_identity(model)
+
+
+def test_lora_targets_are_identical_across_processes():
+    """resume_b of preflight-20261109T064716Z-0589: PEFT keeps target_modules in a set, so the order (and the
+    run identity hash) changed with each process's PYTHONHASHSEED. Two fresh processes must now agree."""
+    import json
+    import os
+    import subprocess
+    import sys
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[1]
+    code = ("import json; from tests._qwen import tiny_model; from src.training.lora_language import attach_language_lora;"
+            " from src.training.rl_config import canonical_sha256; _, t, _ = attach_language_lora(tiny_model());"
+            " print(json.dumps([canonical_sha256(t), t]))")
+    outputs = []
+    for seed in ("1", "2"):
+        proc = subprocess.run([sys.executable, "-c", code], cwd=str(root), capture_output=True, text=True, timeout=600,
+                              env=dict(os.environ, PYTHONHASHSEED=seed, PYTHONPATH=str(root)))
+        assert proc.returncode == 0, proc.stderr[-2000:]
+        outputs.append(json.loads(proc.stdout.strip().splitlines()[-1]))
+    assert outputs[0] == outputs[1]
+    assert outputs[0][1] == sorted(outputs[0][1])

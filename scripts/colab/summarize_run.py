@@ -73,6 +73,7 @@ def run_summary(run_dir):
     history = _load(run_dir / "log_history.json") or []
     times = [h["step_time"] for h in history if isinstance(h, dict) and "step_time" in h]
     return {"train": train, "rollouts": rollout_stats(run_dir / "rollouts.jsonl"),
+            "mm_alignment": (train or {}).get("mm_alignment"),
             "step_time_median": round(statistics.median(times[1:] or times), 2) if times else None,
             "trainable_parameters": (identity.get("parameters") or {}).get("trainable_parameters"),
             "vision_frozen": (identity.get("parameters") or {}).get("vision_frozen"),
@@ -82,6 +83,8 @@ def run_summary(run_dir):
 def calibration_summary(path):
     data = _load(path)
     if not data:
+        return None
+    if "gate" not in data["train"]:  # v1 output (before D35): no gate, no leave-one-out estimate
         return None
     relations = {}
     for relation, block in data["train"]["sweep"].items():
@@ -94,9 +97,14 @@ def calibration_summary(path):
                                    "false_refutation_ids": entry["false_refutation_ids"],
                                    "false_refutations_validation": val["false_refutations"] if val else None,
                                    "spray_refuted_fraction": entry["spray_refuted_fraction"]}
+    train, val = data["train"], data["validation"]
     return {"train_rows": data["train_rows"], "validation_rows": data["validation_rows"], "relations": relations,
-            "existence_refutations_of_certified": data["train"]["existence_refutations_of_certified"],
-            "attacks": data["attacks_train"]}
+            "existence_refutations_of_certified": train["existence_refutations_of_certified"],
+            "gate": {"train_rows_gated": train["gate"]["rows"], "validation_rows_gated": val["gate"]["rows"],
+                     "train_by_family": train["gate"]["by_family"], "validation_by_family": val["gate"]["by_family"]},
+            "after_gate": {"train": train["after_gate"], "validation": val["after_gate"]},
+            "loo": train["loo"], "attacks": data["attacks_train"],
+            "attacks_without_gate": data.get("attacks_train_without_gate")}
 
 
 def build(out_dir):
@@ -119,9 +127,16 @@ def build(out_dir):
         checks.append(("pytest 无失败", summary["pytest"]["failures"] == 0 and summary["pytest"]["errors"] == 0))
     if summary["pack"] is not None:
         checks.append(("私有数据与锚点一致", bool(summary["pack"].get("ok"))))
-    if summary["calibration"]:
-        on = [r for k, r in summary["calibration"]["relations"].items() if r["enabled_by_default"]]
-        checks.append(("默认开启的几何规则在 train 认证正例上零误杀", all(r["false_refutations_train"] == 0 for r in on)))
+    cal = summary["calibration"]
+    if cal:
+        after = list(cal["after_gate"]["train"].values()) + list(cal["after_gate"]["validation"].values())
+        checks.append(("门控后奖励不证伪任何认证正例（train 与 validation）", all(n == 0 for n in after)))
+        loo = cal["loo"]["relations"]
+        checks.append(("门控后每类默认开启的几何检验，留一法残余误杀率不超过 %d%%（由 α、β 推出，D35）"
+                       % round(100 * cal["loo"]["limit"]),
+                       all(r["within_limit"] is not False for r in loo.values())))
+    elif (out / "calibration" / "calibration.json").is_file():
+        checks.append(("校准输出为新版格式（含门控与留一法）", False))
     probe = summary["gpu_probe"] or {}
     if probe:
         checks.append(("ViT/merger 冻结且只训练 LoRA", bool((probe.get("parameters") or {}).get("vision_frozen"))))
@@ -129,6 +144,10 @@ def build(out_dir):
     resume = summary["resume"] or {}
     if resume.get("train"):
         checks.append(("断点恢复后到达第 2 步", resume["train"].get("global_step") == 2))
+    if summary["smoke_full_hf"] is not None:  # D33: the guard must have checked padded rows, not just run
+        guard = summary["smoke_full_hf"].get("mm_alignment") or {}
+        checks.append(("评分前向的图像 token 类型与 input_ids 一致，且检查覆盖了左填充的行（D33）",
+                       guard.get("checked_forwards", 0) > 0 and guard.get("left_padded_rows", 0) > 0))
     summary["checks"] = [{"check": name, "ok": bool(ok)} for name, ok in checks]
     required = [s for s in summary["steps"] if s.get("required", True)]
     summary["overall"] = "passed" if (required and all(s.get("state") == "passed" for s in required)
@@ -171,18 +190,39 @@ def markdown(s):
         lines += ["- 失败：" + x for x in p["failed_tests"]]
     cal = s.get("calibration")
     if cal:
-        lines += ["", "## v5 几何证伪校准（默认阈值）", "", "| 关系 | 默认开启 | 阈值 | train 认证正例 | train 误杀 | val 误杀 | 罗列断言被证伪比例 |",
+        lines += ["", "## v5 几何证伪校准（默认阈值）", "",
+                  "| 关系 | 默认开启 | 阈值 | train 认证正例 | train 误杀（门控前） | val 误杀（门控前） | 罗列断言被证伪比例 |",
                   "|---|---|---|---|---|---|---|"]
         for name, r in cal["relations"].items():
             lines.append("| %s | %s | %s | %s | %s | %s | %s |" % (name, "是" if r["enabled_by_default"] else "否", r["threshold"],
                                                                 r["certified_train"], r["false_refutations_train"],
                                                                 _fmt(r["false_refutations_validation"]),
                                                                 _fmt(r["spray_refuted_fraction"])))
-        lines += ["", "| 罗列探针 | 题数 | v4 均值 | v5 均值 | v4 高于诚实读一半 | v5 高于诚实读一半 |", "|---|---|---|---|---|---|"]
+        gate = cal["gate"]
+        lines += ["", "一致性门控（D35）：train 有 %s / %s 张图、validation 有 %s / %s 张图的标注否定了自己的认证事实，"
+                      "这些图上同类检验不再用来证伪（按类别：train %s，validation %s）。门控后仍被证伪的认证正例："
+                      "train %s 条，validation %s 条。" % (
+                          gate["train_rows_gated"], cal["train_rows"], gate["validation_rows_gated"], cal["validation_rows"],
+                          gate["train_by_family"], gate["validation_by_family"], sum(cal["after_gate"]["train"].values()),
+                          sum(cal["after_gate"]["validation"].values())),
+                  "", "| 关系（留一法，train） | 认证正例 | 残余误杀 | 比例 | 95%% 区间 | ≤ %d%% |" % round(100 * cal["loo"]["limit"]),
+                  "|---|---|---|---|---|---|"]
+        for name, r in cal["loo"]["relations"].items():
+            ci = r.get("ci95")
+            lines.append("| %s | %s | %s | %s | %s | %s |" % (name, r["certified"], r["residual"], _fmt(r["rate"]),
+                                                          "—" if not ci else "%.3f–%.3f" % tuple(ci),
+                                                          "—" if r["within_limit"] is None else ("是" if r["within_limit"] else "否")))
+        pooled = cal["loo"]["pooled"]
+        if pooled.get("ci95"):
+            lines.append("| 合计 | %s | %s | %s | %.3f–%.3f | |" % (pooled["certified"], pooled["residual"], _fmt(pooled["rate"]),
+                                                                pooled["ci95"][0], pooled["ci95"][1]))
+        lines += ["", "| 罗列探针（含门控） | 题数 | v4 均值 | v5 均值 | v4 高于诚实读一半 | v5 高于诚实读一半 | v5 均值（关闭门控） |",
+                  "|---|---|---|---|---|---|---|"]
+        without = cal.get("attacks_without_gate") or {}
         for name, a in cal["attacks"].items():
-            lines.append("| %s | %d | %s | %s | %s | %s |" % (name, a["rows"], _fmt(a["mean_v4"]), _fmt(a["mean_v5"]),
-                                                          _fmt(a["share_beating_honest_half_v4"]),
-                                                          _fmt(a["share_beating_honest_half_v5"])))
+            lines.append("| %s | %d | %s | %s | %s | %s | %s |" % (
+                name, a["rows"], _fmt(a["mean_v4"]), _fmt(a["mean_v5"]), _fmt(a["share_beating_honest_half_v4"]),
+                _fmt(a["share_beating_honest_half_v5"]), _fmt((without.get(name) or {}).get("mean_v5"))))
     probe = s.get("gpu_probe")
     if probe:
         par, pt, gen, vit = probe.get("parameters") or {}, probe.get("prompt_tokens") or {}, probe.get("generation") or {}, probe.get("vit") or {}
@@ -201,8 +241,12 @@ def markdown(s):
             lines.append("- HF 生成：%s 条 × %s token，%s 秒，%s token/s，峰值 %s GB" % (
                 gen.get("sequences"), gen.get("new_tokens"), gen.get("seconds"), gen.get("tokens_per_second"), gen.get("peak_gb")))
         if vit:
-            lines.append("- ViT 占一次前向的 %s；缓存与不缓存的补全 log-prob 最大差 %s（等价：%s）" % (
-                vit.get("vit_fraction_of_forward"), vit.get("cache_logprob_max_abs_diff"), vit.get("equivalent")))
+            lines.append("- ViT 占一次前向的 %s；缓存与不缓存的补全 log-prob 最大差 %s、平均差 %s（等价：%s）" % (
+                vit.get("vit_fraction_of_forward"), vit.get("cache_logprob_max_abs_diff"),
+                _fmt(vit.get("cache_logprob_mean_abs_diff"), 5), vit.get("equivalent")))
+            lines.append("- 同一张图单独过 ViT 与成批过 ViT 的特征：最大绝对差 %s，相对差（L2）%s，特征最大绝对值 %s" % (
+                _fmt(vit.get("batched_vs_single_image_max_abs_diff"), 4), _fmt(vit.get("batched_vs_single_image_max_rel_diff"), 6),
+                _fmt(vit.get("image_feature_max_abs"), 1)))
     v0 = s.get("v0_probe")
     if v0:
         lines += ["", "## V0 探针（%d 道 validation，贪心解码；工程信号，不是评测结果）" % v0["n"], "",
@@ -220,14 +264,17 @@ def markdown(s):
         if s.get(name):
             rows.append((name, s[name]))
     if rows:
-        lines += ["", "## GRPO 冒烟", "", "| 运行 | 步数 | rollout 数 | 步时中位数（秒） | 峰值显存（GB） | 答案正确 | 格式 | 每条断言数 |",
-                  "|---|---|---|---|---|---|---|---|"]
+        lines += ["", "## GRPO 冒烟", "",
+                  "| 运行 | 步数 | rollout 数 | 步时中位数（秒） | 峰值显存（GB） | 答案正确 | 格式 | 每条断言数 | 对齐检查：前向 / 左填充行 |",
+                  "|---|---|---|---|---|---|---|---|---|"]
         for name, run in rows:
             train, ro = run.get("train") or {}, run.get("rollouts") or {}
-            lines.append("| %s | %s | %s | %s | %s | %s | %s | %s |" % (
+            guard = run.get("mm_alignment") or {}
+            lines.append("| %s | %s | %s | %s | %s | %s | %s | %s | %s |" % (
                 name, train.get("global_step"), ro.get("rollouts"), _fmt(run.get("step_time_median"), 1),
                 _fmt(train.get("peak_gpu_memory_gb"), 1), _fmt(ro.get("answer_acc")), _fmt(ro.get("format_rate")),
-                _fmt(ro.get("claims_per_completion"), 2)))
+                _fmt(ro.get("claims_per_completion"), 2),
+                "%s / %s" % (guard["checked_forwards"], guard["left_padded_rows"]) if guard else "—"))
     lines += drive_lines(s.get("drive_probe"))
     runtime = s.get("frozen_runtime")
     if runtime:
