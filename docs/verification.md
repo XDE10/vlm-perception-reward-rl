@@ -154,6 +154,28 @@ python -m pytest -q
 - `tests/test_colab_local_tools.py`：网址中的凭据、`github_pat_`、二次脱敏不重复计数。
 - `tests/test_repo_layout.py::test_colab_readme_commands_are_zsh_safe`：README 命令块兼容 zsh。
 
+### 2026-11-09（S2 验收：第三次预检）
+
+真实 Colab GPU 上的结果（VM 上运行 pytest 时隐藏 GPU；`git archive` 导出的副本，运行器端到端测试需要 git 工作树，所以跳过）：
+
+| 运行 | 代码 | pytest |
+|---|---|---|
+| `preflight-20261109T122305Z-e6cd` | `7afad4a`（S2.3） | 228 项：218 通过、10 跳过、0 失败 |
+| `preflight-20261109T100727Z-eabd` | `a189e4a`（S2.2） | 218 项：212 通过、6 跳过、0 失败 |
+
+两次预检的全部 18 个步骤都通过，包括 GPU 上的冒烟训练、断点恢复、对齐检查和 v5 校准；
+详见 [S2 验收报告](plan/阶段报告_S2_验收_20261109.md)。这证明工程链路在 A100 上可用，不代表正式训练成功或能力提升。
+
+同一沙箱环境（S2 验收与 S3 设计的改动之后）：
+
+```text
+python -m pytest -q
+228 passed, 2 failed
+```
+
+失败的仍是上面两项依赖 `data/` 的测试。新增：`tests/test_experiment_configs.py` 中重要性采样设置进入配置哈希且只对 vLLM 生效（D41），
+以及冻结运行时文件只含中性字段（D43）。
+
 ### 历史覆盖范围
 
 测试覆盖：数据准入与白名单、几何序列化、split 守卫、感知奖励与文本蕴含、
