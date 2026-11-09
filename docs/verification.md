@@ -100,8 +100,8 @@ v5 校准脚本，以及 manifest 的 `--git-tracked-only` 模式。依赖固定
 
 ```text
 python -m pytest -q
-204 passed, 2 failed            # git 工作树
-198 passed, 6 skipped, 2 failed # 不含 .git 的导出副本（与 VM 上相同；运行器端到端测试需要 git，跳过）
+205 passed, 2 failed            # git 工作树
+199 passed, 6 skipped, 2 failed # git archive 导出副本（与 VM 上相同；运行器端到端测试需要 git，跳过）
 ```
 
 失败的仍是上面两项依赖 `data/` 的测试。新增或扩展的测试：

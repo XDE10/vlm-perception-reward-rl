@@ -17,7 +17,9 @@
 - 新增可选 Google Drive 持久化 `scripts/colab/drive.py`（只用 `rclone copy` + `rclone check`，不经 FUSE 挂载写入），
   新命令 `bash colab/launch.sh drive-check`，预检新增不计入结论的 `drive_probe` 步骤，结束时可把结果包复制到 Drive。
 - 推送结果分支前对日志做凭据脱敏（CLI 报错网址里带运行时代理 token），记录在 `_local/REDACTIONS.txt`。
-- 测试：204 passed / 2 failed，两项失败依赖本机 `data/`。
+- 修复 `tools/build_migration_manifest.py --git-tracked-only`：同一天的刷新会删掉其他阶段的 `documentation_updates`
+  条目（S1 引入）。带缺陷的清单没有提交过。
+- 测试：205 passed / 2 failed，两项失败依赖本机 `data/`。
 
 ## 2026-11-10 — S2：Colab 运行器
 
