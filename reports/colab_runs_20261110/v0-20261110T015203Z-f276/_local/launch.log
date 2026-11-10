@@ -1,0 +1,27 @@
+[launch 09:52:03] run v0-20261110T015203Z-f276 (task v0, commit d85f2b816713) on your session p3 (its hardware decides the GPU)
+[launch 09:52:06] code: the VM downloads commit d85f2b816713 from GitHub and verifies every file against its git blob SHA-1
+[launch 09:52:06] building private data pack from /home/xde10/projects/vlm-perception-reward-rl/data
+[launch 09:52:06] data pack: {"pack": "/home/xde10/projects/vlm-perception-reward-rl/.colab_cache/p3_private_082210c90d5b3834.tar.gz", "sha256": "8f571a49c40d45a8226245d4dee0715d05c94e518b64496a2d731b9cb926f5e2", "bytes": 21164679, "content_sha256": "082210c90d5b3834539380c37bb5a43deab0f4354b5ff630910a6c06be06f1a1", "files": 71
+[launch 09:52:10] WARNING: Colab reports 2 active assignment(s) before this run (expected 1); another VM may be using compute units
+[launch 09:52:11]   [p3] gpu-a100-s-ass1c0-1qb1fch065iqk | Hardware: A100 | Shape: Standard | Variant: GPU
+[launch 09:52:11]   [opd] gpu-g4-s-asso1c0-1s2dmu2m3a3an | Hardware: G4 | Shape: Standard | Variant: GPU
+[launch 09:52:11] stop the ones you do not use with: colab stop -s NAME
+[launch 09:52:11] using your session p3; it is not released at the end unless you pass --release
+[launch 09:52:15] upload inputs 1/12 p3_private_082210c90d5b3834.tar.gz.part000 (2048 KiB)
+[launch 09:52:22] upload inputs 2/12 p3_private_082210c90d5b3834.tar.gz.part001 (2048 KiB)
+[launch 09:52:31] upload inputs 3/12 p3_private_082210c90d5b3834.tar.gz.part002 (2048 KiB)
+[launch 09:52:35] upload inputs 4/12 p3_private_082210c90d5b3834.tar.gz.part003 (2048 KiB)
+[launch 09:52:39] upload inputs 5/12 p3_private_082210c90d5b3834.tar.gz.part004 (2048 KiB)
+[launch 09:52:43] upload inputs 6/12 p3_private_082210c90d5b3834.tar.gz.part005 (2048 KiB)
+[launch 09:52:54] upload inputs 7/12 p3_private_082210c90d5b3834.tar.gz.part006 (2048 KiB)
+[launch 09:53:22] upload inputs 8/12 p3_private_082210c90d5b3834.tar.gz.part007 (2048 KiB)
+[launch 09:53:26] upload inputs 9/12 p3_private_082210c90d5b3834.tar.gz.part008 (2048 KiB)
+[launch 09:53:32] upload inputs 10/12 p3_private_082210c90d5b3834.tar.gz.part009 (2048 KiB)
+[launch 09:53:44] upload inputs 11/12 p3_private_082210c90d5b3834.tar.gz.part010 (188 KiB)
+[launch 09:53:46] upload inputs 12/12 request.json (73 KiB)
+[launch 09:53:48] uploaded inputs: 20741 KiB in 93s (~223 KiB/s)
+[launch 09:53:53] all uploaded parts verified on the VM (size and SHA256)
+[launch 09:53:53] bootstrap on the VM (code, environment install and model download; ~10-20 min)
+[launch 09:59:29] interrupted
+[launch 09:59:29] your session p3 stays up and keeps using compute units; when you are done: colab stop -s p3
+[launch 09:59:29] the run stopped before the job started; publishing its logs to results/v0-20261110T015203Z-f276
