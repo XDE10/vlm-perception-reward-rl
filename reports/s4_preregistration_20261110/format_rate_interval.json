@@ -1,0 +1,35 @@
+{
+  "schema": "p3-s4-format-rate-interval-v1",
+  "run": "v0-20261110T023008Z-60fc",
+  "ref": "origin/results/v0-20261110T023008Z-60fc",
+  "ref_commit": "52140d9a57011c31b608e7db673c09832d268a4d",
+  "predictions_commit": "15ca2714ba1610be9aa7c1915f0a56b9d1d71f04",
+  "source": "reports/colab_runs_20261110/v0-20261110T023008Z-60fc/prompt_select/predictions.jsonl",
+  "decoding": "sampled (temperature 1.0, 4 per problem)",
+  "cluster": "train problem",
+  "resamples": 10000,
+  "seed": 20261109,
+  "interval": "95% percentile",
+  "variants": {
+    "p0": {
+      "problems": 64,
+      "completions": 256,
+      "format_reward_1": 43,
+      "format_rate": 0.16796875,
+      "ci95": [
+        0.1172,
+        0.2227
+      ]
+    },
+    "p1": {
+      "problems": 64,
+      "completions": 256,
+      "format_reward_1": 136,
+      "format_rate": 0.53125,
+      "ci95": [
+        0.4609,
+        0.6016
+      ]
+    }
+  }
+}

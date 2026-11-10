@@ -1,6 +1,7 @@
 # 训练与诊断入口
 
-本页给出环境、配置和命令。**当前没有 GPU 训练产物**，所有 GPU/CUDA 行为仍未验收。
+本页给出环境、配置和命令。**当前没有正式训练产物**。S2 预检与 S3 `v0` 已在 A100 上通过
+（环境、数据核对、3 步 GRPO 冒烟、断点恢复、V0 诊断），这只证明工程链路可用，不代表正式训练成功或能力提升。
 历史 CPU 通过与 ZIP 完整性不能证明真实 VL 前后向或视觉 rollout 可用。
 
 ## 协议 v3 统一入口（2026-11-09 起的正式实验）
@@ -24,6 +25,26 @@ python -m scripts.training.train_rl --arm rl_v5 --seed 1 \
 - `--runtime` 指向预检冻结的 `frozen_runtime.json`。其中只有不改变算法的选项（生成后端、微批切分、
   梯度检查点、ViT 缓存）；出现其他键时入口直接报错。
 - CPU 开发与测试环境见 [requirements/dev-cpu.txt](../requirements/dev-cpu.txt)。
+
+## S4 正式任务（登记运行）
+
+配置、奖励、损失、终止判据和运行顺序见 [S4 预注册](plan/S4预注册_20261110.md)。正式任务一律这样启动：
+
+```bash
+python -m scripts.training.train_rl --registered configs/experiments/s4_runs_20261110.json --arm rl_v5 --seed 1 --model-path /content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8
+```
+
+- 这条命令由 Colab 上的 `train` 任务执行，不需要你手动运行；`--model-path` 是 VM 引导时下载的固定 revision 快照。
+  从 checkpoint 恢复时再加 `--resume runs/rl_v3_p1_20261110/rl_v5/seed1/checkpoint-38`（运行身份必须一致）。
+- 实验配置（`rl_v3_p1_20261110.json`，提示 P1）、组别表和冻结运行时都取自登记表；`--smoke`、`--output-dir`、
+  不同的 `--experiment` 或 `--runtime` 会被拒绝。
+- 加载模型前核对：完整配置哈希、609 行批准训练数据、三个数据文件的 SHA256、GPU 为 NVIDIA A100-SXM4-40GB。
+  任何一项不同就停止；结果写进 `train_summary.json` 的 `registration`。
+- 输出 `runs/rl_v3_p1_20261110/<组>/seed<k>/`，每 38 步一个 checkpoint，第 228 步后写 `final/`。
+  loss 或梯度范数出现 NaN/inf 时立即停止，不再写 checkpoint 和 `final/`。
+- 登记表的派生字段由 `python -m scripts.training.register_runs --write` 生成；改动任何实验配置后先运行 `--check`。
+  `--show rl_v5 1` 打印一个任务合成后的完整配置。
+- 在 Colab 上的 `pilot` 与 `train` 任务（试跑、Drive 上的 checkpoint 与恢复）在下一个 PR 中实现。
 
 ## 在 Colab 上运行（S2 起）
 

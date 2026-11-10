@@ -7,14 +7,14 @@
 
 ## 当前状态
 
-| 项目 | 事实（2026-11-09） |
+| 项目 | 事实（2026-11-10） |
 | --- | --- |
 | 批准数据 | 609 条训练事实（458 幅图）/ 82 条 validation 事实（77 幅图），部分认证事实，不是全图金标 |
 | 模型 | `Qwen/Qwen2.5-VL-3B-Instruct` revision `66285546d2b821cf421d4f5eb2576359d3770cd3` |
-| 训练阶段 | 协议 v3 统一 GRPO 入口（`scripts/training/train_rl.py`，组别见 `configs/experiments/`）已实现，并在 CPU 上用 tiny 模型端到端验证；旧的感知 SFT → 稀疏 GRPO 入口保留为历史 |
-| GPU | 未验收：Colab 运行器（`colab/launch.sh`）已在 CPU 上用 stub CLI 端到端验证，真实 GPU 预检待运行 |
-| 测试 | Python 3.12.13 沙箱下 188 passed / 2 failed（两项需要本机 `data/`，见 [docs/verification.md](docs/verification.md)） |
-| 历史 | 2026-10-24 迁移、2026-11-08 清理与结构整理、2026-11-09 S1、2026-11-10 S2，均记录在 [CHANGELOG.md](CHANGELOG.md) |
+| 训练阶段 | S4 已预注册（[docs/plan/S4预注册_20261110.md](docs/plan/S4预注册_20261110.md)）：12 个正式任务（+2 个可选）全部从 V0 出发、用 S3 选定的提示 P1，配置哈希登记在 `configs/experiments/s4_runs_20261110.json`；**还没有正式训练**。旧的感知 SFT → 稀疏 GRPO 入口保留为历史 |
+| GPU | A100-SXM4-40GB 上 S2 预检（18/18）与 S3 `v0`（12/12）通过：环境、数据核对、3 步 GRPO 冒烟、断点恢复、V0 诊断。这是工程验证，不是训练结果 |
+| 测试 | 本机 WSL2（Python 3.12.3，有 `data/` 和固定 revision 的处理器文件）全部通过，见 [docs/verification.md](docs/verification.md) |
+| 历史 | 2026-10-24 迁移、2026-11-08 清理与结构整理、2026-11-09 S1–S3、2026-11-10 S4 预注册，均记录在 [CHANGELOG.md](CHANGELOG.md) |
 
 “已实现代码”“CPU 测试通过”“真实 GPU 跑通”“能力提升”是四种不同结论，报告
 时必须分开陈述。2 步 smoke 或 ZIP 完整性检查不代表训练成功。
@@ -33,10 +33,13 @@
 ## 快速检查（无需 GPU）
 
 ```bash
-python tools/verify_migration.py --full   # 离线完整性：manifest、release、逐行批准、图片 SHA
-python -m pytest -q                        # CPU 测试（环境见 requirements/dev-cpu.txt）
-python tools/check_links.py                # 当前文档相对链接
+python tools/verify_migration.py --full
+python -m pytest -q
+python tools/check_links.py
 ```
+
+三条命令依次检查：离线完整性（manifest、release、逐行批准、图片 SHA）；CPU 测试（环境见 requirements/dev-cpu.txt）；
+当前文档的相对链接。命令块里不写 `#` 注释，粘贴到 zsh 里也能直接运行（D40）。
 
 `python` 需要 3.10+（CPU 测试环境实测 3.12.13）。上述通过只证明离线/CPU 性质，不证明
 CUDA、模型前后向或新环境依赖已安装。
@@ -77,16 +80,23 @@ CUDA、模型前后向或新环境依赖已安装。
 在 WSL2 中运行以下命令，一次性准备与断线恢复见 [colab/README.md](colab/README.md)：
 
 ```bash
-bash colab/launch.sh check        # 本地自检：colab 认证、数据 SHA、git 推送权限（不建 VM）
-bash colab/launch.sh preflight    # GPU 预检：建 VM → 安装 → 测试/探针/冒烟 → 取回结果 → 释放 VM → 推送 results/<run_id>
+bash colab/launch.sh check
+bash colab/launch.sh preflight
+bash colab/launch.sh v0 --session p3
 ```
+
+`check` 是本地自检（colab 认证、数据 SHA、git 推送权限，不建 VM）；`preflight` 是 S2 的 GPU 预检；`v0` 是 S3 的评测输入核对、
+train 上的决策测量与 V0 诊断，在你准备好的 VM `p3` 上运行。S4 的 `pilot` 与 `train` 任务在下一个 PR 中加入。
 
 ## 训练入口
 
 ```bash
-# 协议 v3 统一入口：所有实验组共用，组别与种子登记在 configs/experiments/arms.json
 python -m scripts.training.train_rl --arm rl_v5 --seed 1
+python -m scripts.training.train_rl --registered configs/experiments/s4_runs_20261110.json --arm rl_v5 --seed 1
 ```
+
+第一条是协议 v3 统一入口，所有实验组共用，组别与种子登记在 `configs/experiments/arms.json`。第二条是 S4 正式任务的启动方式：
+必须与登记表一致（配置哈希、数据、行数、GPU），不允许 `--smoke` 与 `--output-dir`。
 
 组别：`rl_ans`（答案 + 格式）、`rl_v4`（原稀疏 F1，消融）、`rl_v5`（可证伪感知奖励，主方法）、
 `rl_v5_placebo`（事实取自另一张图，对照）、`rl_blind`（训练时不给图，对照）。输出目录、运行身份与

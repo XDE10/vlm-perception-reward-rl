@@ -201,6 +201,41 @@ python -m pytest -q
 另外在沙箱里按 VM 的做法运行了不需要模型的步骤（评测集定义与提交的完全相同；198 题 CF-Geo 全部重建；没有评测图会被分辨率上限改变），
 并从 Hugging Face 真实下载了一个固定版本文件。GPU 上的步骤还没有运行。
 
+### 2026-11-10（S4 预注册）
+
+S3 的 `v0` 任务（`v0-20261110T023008Z-60fc`，代码 `d85f2b8`）在 A100-SXM4-40GB 上 12 个步骤全部通过，VM 上 pytest 276 项：
+265 通过、11 跳过、0 失败（跳过的是需要 git 工作树的运行器端到端测试）。
+
+本阶段改为在你的 WSL2 上测试（不再用沙箱）：Python 3.12.3，隔离环境 `~/.venvs/p3-dev`，按 [requirements/dev-cpu.txt](../requirements/dev-cpu.txt)
+的版本安装（torch 2.13.0+cpu 取自 PyTorch 的 CPU 源）；有本机 `data/`；固定 revision 的处理器文件在 Hugging Face 缓存里
+（只有 json 和 txt，没有权重）；`HF_HUB_OFFLINE=1`。
+
+```text
+python -m pytest -q
+276 passed                # 改动前，master d85f2b8
+296 passed                # 本阶段改动后，0 失败，0 跳过
+```
+
+沙箱里一直失败的两项（依赖 `data/`）在这里通过。新增 20 项测试：
+
+- `tests/test_s4_registration.py`（15 项）：登记表与配置一致（派生字段由脚本重算后完全相同）；顺序覆盖每个登记的组与种子各一次；
+  S4 配置与 S3 决策一致（P1、不预热、1024、vLLM、802,816）；S4 配置与 `rl_v3.json` 只差三个字段；组间只差白名单字段；
+  运行时与数据哈希等于记录值；checkpoint 与 Drive 目录；试跑门槛沿用 D41 的数值；登记检查报告每一种不一致；`--show`；
+  `train_rl --registered` 拒绝 smoke、输出目录、别的实验配置或运行时、未登记的种子；预注册文件列出全部哈希；登记运行在加载模型前停止、
+  不写任何文件；NaN/inf 检测；本机数据与登记一致（没有 `data/` 时跳过）。
+- `tests/test_rl_data.py`（2 项）：S4 配置生成 P1 提示，`rl_v3.json` 仍是 P0；只要答案的协议和未知协议不能用于训练。
+- `tests/test_rl_rewards.py`（1 项）：rollout 记录写实际的协议编号。
+- `tests/test_protocol_v3.py`（1 项）：协议编号与提示变体一一对应。
+- `tests/test_rl_entry_cpu.py`（1 项）：S4 配置走真实的 TRL 路径（tiny Qwen2.5-VL）时，奖励函数收到的提示都以 P1 句子结尾，
+  rollout 和运行身份都记录 P1。
+
+其他检查（清单按 `--git-tracked-only` 刷新之后）：`python tools/verify_migration.py --full` 核对 3,354 个文件，0 个错误，
+批准行 609 / 82；`python tools/check_links.py` 检查 19 个页面的 169 个相对链接，0 个失效；
+`python -m scripts.training.register_runs --check` 通过（含本机数据的 SHA256 与 609 行）。
+
+没有验证的：新代码在 GPU 上的行为（P1 提示下 vLLM 的重要性采样、NaN 停止、登记核对中的 GPU 型号），这些由试跑检查（S4 预注册第 11 节）；
+`pilot` 与 `train` 两个 Colab 任务还没有实现。
+
 ### 历史覆盖范围
 
 测试覆盖：数据准入与白名单、几何序列化、split 守卫、感知奖励与文本蕴含、

@@ -4,6 +4,24 @@
 [README](README.md) 和版本化报告为准；历史细节见
 [docs/migration/](docs/migration/)。
 
+## 2026-11-10 — S4 预注册：正式训练的配置、登记表与终止判据
+
+决策见 [决策记录](docs/plan/决策记录.md) D52–D58，预注册见
+[docs/plan/S4预注册_20261110.md](docs/plan/S4预注册_20261110.md)。依据 S3 `v0` 运行
+`v0-20261110T023008Z-60fc`（A100-SXM4-40GB，12/12 步通过）。没有 GPU 运行，没有改动已批准数据、`rl_v3.json` 或 v4 评分。
+
+- 接受 S3 的全部决策：提示 P1、不做格式预热、生成上限 1024、vLLM 生成、max_pixels 802,816；`s3_decisions.json` 原样复制为
+  `configs/experiments/s3_decisions_20261110.json`。
+- 新增 S4 基础配置 `configs/experiments/rl_v3_p1_20261110.json`（与 `rl_v3.json` 只差名称、协议和输出目录）。训练入口改为按配置的
+  协议编号生成提示（修改前只会生成 P0），rollout 记录写实际的协议编号。
+- 新增登记表 `configs/experiments/s4_runs_20261110.json`、`src/training/registry.py` 与 `scripts/training/register_runs.py`：
+  12 个正式任务和 2 个可选任务的顺序与完整配置哈希，冻结运行时的内容哈希，数据 SHA256，GPU 型号，Drive 目录，试跑门槛。
+  `train_rl --registered` 在加载模型前核对配置、数据、行数与 GPU，并拒绝 `--smoke` 与 `--output-dir`。
+- 训练入口：loss 或梯度范数出现 NaN/inf 时立即停止（关闭 `logging_nan_inf_filter`，只影响日志）；训练失败时也写出 `log_history.json`。
+- 新增 `reports/s4_preregistration_20261110/`：S3 决策副本的核对，P0/P1 格式率按题聚类的 bootstrap 区间（只用 train）。
+- `.gitattributes`：S3 决策副本标为 `-text`，保证字节不变。
+- 测试：本机 WSL2（Python 3.12.3，有 `data/`）全部通过，见 [docs/verification.md](docs/verification.md)。
+
 ## 2026-11-09 — S3 实施：评测集、CF-Geo、统一评测路径、统计与 `v0` 任务
 
 决策见 [决策记录](docs/plan/决策记录.md) D47–D51，阶段报告见

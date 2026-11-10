@@ -7,7 +7,8 @@ therefore checks the pages that must stay navigable today:
 
     README.md, AGENTS.md, CHANGELOG.md, docs/README.md,
     docs/{repo_layout,architecture,data,training,verification}.md,
-    docs/guides/*.md and the README.md of each top-level working directory.
+    docs/guides/*.md, the README.md of each top-level working directory, and the
+    plan pages in force (execution plan, decision record, S4 pre-registration).
 
 Usage:
     python tools/check_links.py            # current docs only
@@ -38,6 +39,7 @@ CURRENT_TARGETS = [
     "colab/README.md",
     "docs/plan/执行计划_20261108.md",
     "docs/plan/决策记录.md",
+    "docs/plan/S4预注册_20261110.md",
 ]
 LINK = re.compile(r"!?\[[^\]]*\]\(\s*(?:<([^>]+)>|([^)\s]+))\s*\)")
 
