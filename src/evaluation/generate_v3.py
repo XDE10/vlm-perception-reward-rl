@@ -12,9 +12,9 @@ import time
 from src.data.intergps_index import Geometry
 from src.data.perception_v4 import scoped_score
 from src.rewards.perception_v5 import V5Config, score_v5
-from src.training.protocol_v3 import PROTOCOL, eval_messages, extract_answer, format_reward, parse_completion
+from src.training.protocol_v3 import eval_messages, extract_answer, format_reward, parse_completion, protocol_id
 
-VERSION = "generate-v3-20261110"
+VERSION = "generate-v3-s3-20261109"
 
 
 def decoding_config(processor, model, max_new_tokens, do_sample=False, temperature=1.0, top_p=1.0):
@@ -36,10 +36,11 @@ def decoding_config(processor, model, max_new_tokens, do_sample=False, temperatu
 
 
 def generate(model, processor, requests, max_new_tokens=1024, batch_size=16, do_sample=False, temperature=1.0,
-             top_p=1.0, seed=0, progress=None):
+             top_p=1.0, seed=0, progress=None, prompt_variant="p0"):
     """Generate one completion per request.
 
     ``requests``: dicts with ``id``, ``problem`` and optional ``image`` (PIL image or None).
+    ``prompt_variant``: one of protocol_v3.PROMPT_VARIANTS (default: the protocol every run used so far).
     Returns one dict per request with the raw text and token accounting.
     """
     import torch
@@ -56,8 +57,9 @@ def generate(model, processor, requests, max_new_tokens=1024, batch_size=16, do_
             with_image = [r.get("image") is not None for r in chunk]
             if len(set(with_image)) != 1:
                 raise ValueError("a generation batch must be all-image or all-text")
-            texts = [processor.apply_chat_template(eval_messages(r["problem"], with_image=with_image[0]), tokenize=False,
-                                                   add_generation_prompt=True) for r in chunk]
+            texts = [processor.apply_chat_template(eval_messages(r["problem"], with_image=with_image[0],
+                                                                 variant=prompt_variant),
+                                                   tokenize=False, add_generation_prompt=True) for r in chunk]
             images = [r["image"] for r in chunk] if with_image[0] else None
             inputs = processor(text=texts, images=images, padding=True, return_tensors="pt").to(device)
             if do_sample:
@@ -80,6 +82,7 @@ def generate(model, processor, requests, max_new_tokens=1024, batch_size=16, do_
                     "id": request["id"],
                     "text": text,
                     "has_image": with_image[0],
+                    "prompt_variant": prompt_variant,
                     "prompt_tokens": int(inputs["attention_mask"][i].sum()),
                     "completion_tokens": len(generated),
                     "ended_eos": ended,
@@ -93,14 +96,30 @@ def generate(model, processor, requests, max_new_tokens=1024, batch_size=16, do_
     return results
 
 
+def verify_answers(answers, refs, verifier):
+    """One verdict per answer. A reference with ``answer_set`` is correct when the training verifier finds the answer
+    equivalent to any member (CF-Geo rounded items, S3 design section 3.1); otherwise ``answer`` is the reference."""
+    jobs = []
+    for i, (answer, ref) in enumerate(zip(answers, refs)):
+        for reference in (ref.get("answer_set") or [ref["answer"]]):
+            jobs.append((i, str(reference)))
+    raw = verifier.verify_many([answers[i] for i, _ in jobs], [r for _, r in jobs]) if jobs else []
+    verdicts = [None] * len(answers)
+    for (i, _), verdict in zip(jobs, raw):
+        if verdicts[i] is None or (verdict.get("correct") and not verdicts[i].get("correct")):
+            verdicts[i] = verdict
+    return verdicts
+
+
 def score(results, references, verifier, v5_config=None):
     """Attach protocol, answer, format, v4 and v5 scores.
 
-    ``references`` maps id -> dict(answer, gold_tokens (list), negative_tokens (list), geometry (Geometry|json|None)).
+    ``references`` maps id -> dict(answer, gold_tokens (list), negative_tokens (list), geometry (Geometry|json|None),
+    optional answer_set (list of equivalent-enough references, see verify_answers)).
     """
     v5_config = v5_config or V5Config()
     answers = [extract_answer(r["text"])[0] for r in results]
-    verdicts = verifier.verify_many(answers, [references[r["id"]]["answer"] for r in results])
+    verdicts = verify_answers(answers, [references[r["id"]] for r in results], verifier)
     scored = []
     for result, answer, verdict in zip(results, answers, verdicts):
         ref = references[result["id"]]
@@ -113,7 +132,7 @@ def score(results, references, verifier, v5_config=None):
         v4 = scoped_score(result["text"], gold, negative) if gold else None
         scored.append({
             **result,
-            "protocol": PROTOCOL,
+            "protocol": protocol_id(result.get("prompt_variant", "p0")),
             "protocol_ok": parsed["protocol_ok"],
             "format": format_reward(result["text"], v5_config.max_claims),
             "answer": {"extracted": answer, "correct": bool(verdict.get("correct")), "status": verdict.get("status"),
@@ -166,4 +185,4 @@ def write_jsonl(path, rows):
             handle.write(json.dumps(row, ensure_ascii=False) + "\n")
 
 
-__all__ = ["VERSION", "decoding_config", "generate", "score", "summarize", "write_jsonl"]
+__all__ = ["VERSION", "decoding_config", "generate", "score", "summarize", "verify_answers", "write_jsonl"]

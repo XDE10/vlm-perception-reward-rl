@@ -82,6 +82,21 @@ def gpu_info():
             "driver_cuda": [int(match.group(1)), int(match.group(2))] if match else None, "nvidia_smi": text}
 
 
+def gpu_memory_problem(gpu, min_gb):
+    """None when the GPU has at least ``min_gb`` GB (decimal); else the reason to stop (D43: the frozen runtime needs
+    an A100 40/80 GB or an H100; vLLM alone peaked at 23.1-23.7 GB)."""
+    if not min_gb:
+        return None
+    if not gpu.get("memory_mib"):
+        return "this task needs a GPU with at least %s GB, and the GPU memory could not be read" % min_gb
+    total_gb = gpu["memory_mib"] * 1048576 / 1e9
+    if total_gb < float(min_gb):
+        return ("this task needs a GPU with at least %s GB (decision D43); this VM has %s with %.1f GB. "
+                "Use a session on an A100 40/80 GB or an H100, e.g. colab new -s p3 --gpu A100"
+                % (min_gb, gpu.get("name") or "a GPU", total_gb))
+    return None
+
+
 def backend_candidates(driver_cuda):
     """Highest compatible PyTorch CUDA build first; torch 2.13.0 exists for cu126/cu129/cu130 (not cu128)."""
     if not driver_cuda:
@@ -211,6 +226,10 @@ def main(root, request):
                 raise StepError("no NVIDIA GPU visible on this VM")
             log("GPU: %s, %s MiB, driver %s (CUDA %s)" % (gpu.get("name"), gpu.get("memory_mib"), gpu.get("driver"),
                                                         gpu.get("driver_cuda")))
+            record["min_gpu_gb"] = options.get("min_gpu_gb")
+            problem = gpu_memory_problem(gpu, options.get("min_gpu_gb"))
+            if problem:  # before any install: a too-small GPU costs seconds, not the 10-20 minute environment build
+                raise StepError(problem)
             base = build_base_env(root, repo, gpu)
             record["envs"] = {"base": base}
             log("base env ready: torch %s, backend %s" % (base["torch_check"].get("torch"), base["torch_backend"]))

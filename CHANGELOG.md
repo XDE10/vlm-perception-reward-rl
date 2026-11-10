@@ -4,6 +4,23 @@
 [README](README.md) 和版本化报告为准；历史细节见
 [docs/migration/](docs/migration/)。
 
+## 2026-11-09 — S3 实施：评测集、CF-Geo、统一评测路径、统计与 `v0` 任务
+
+决策见 [决策记录](docs/plan/决策记录.md) D47–D51，阶段报告见
+[docs/plan/阶段报告_S3_实施_20261109.md](docs/plan/阶段报告_S3_实施_20261109.md)，规则修订见
+[S3 设计](docs/plan/S3设计_20261109.md) 第 11 节。没有 GPU 运行，没有改动已批准数据。
+
+- 新增 `src/evaluation/eval_sets.py`、`public_sources.py`、`cfgeo.py`、`harness.py`、`stats.py` 与 `scripts/data/build_eval_sets.py`、
+  `scripts/data/build_cfgeo.py`。
+- 新增 `reports/eval_sets_20261109/`（test 视觉必需 388 题，CF 候选 224 题）和 `reports/cfgeo_20261109/`（CF-Geo 158 题，
+  补丁与像素哈希，不含原图；两轮看图抽查）。
+- 新任务 `bash colab/launch.sh v0`：评测输入核对、train 上的提示/预热/长度测量、V0 在 val82 上的诊断、评测路径检查、
+  vLLM 重要性采样检查，输出 `s3_decisions.json`。
+- 运行器：申请 VM 逐次重试并打印进度；任务在开始前断开时安全地重新发送（VM 端锁文件）；运行前多余的 Colab 分配会报警；
+  `v0` 要求 GPU 至少 40 GB；用 vLLM 训练前检查训练图的 patch 网格。
+- 提示变体 P1 与只要答案的诊断提示；`generate()` 支持提示变体，评分支持答案集合。
+- 测试：274 passed / 2 failed，两项失败依赖本机 `data/`。
+
 ## 2026-11-09 — S2 验收与 S3 设计：接受冻结的运行时，修正 vLLM 重要性采样，预注册评测规则
 
 决策见 [决策记录](docs/plan/决策记录.md) D41–D46，阶段报告见

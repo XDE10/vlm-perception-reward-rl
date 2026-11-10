@@ -14,6 +14,11 @@ P3_REMOTE_ROOT pointing there. Fault injection:
   returns), so the launcher's per-call time limit has to end them.
 * STUB_VANISH_AFTER_JOB=1 (with STUB_DROP_JOB=1): when the background job ends,
   the VM disappears (its files and the session), as when Colab reclaims it.
+* STUB_FAIL_ALLOCATE=N: the first N `new` calls fail like an A100 queue (503); every
+  `new` call records the COLAB_CLI_ASSIGN_RETRIES value it saw in calls.log.
+* STUB_LOSE_JOB_EXEC=N: the first N job execs end with "RuntimeError: Connection was
+  lost." before the job starts (seen after a 0-second bootstrap in the third preflight).
+* STUB_USAGE: the text `colab usage` prints (default "stub usage").
 
 Like the real CLI, exec/upload/download fail for a session that does not exist.
 """
@@ -64,9 +69,18 @@ def main():
         sys.exit(1)
     if command == "version":
         print("Version: stub")
-    elif command in ("sessions", "usage"):
-        print("stub " + command)
+    elif command == "usage":
+        print(os.environ.get("STUB_USAGE", "stub usage").replace("\\n", "\n"))
+    elif command == "sessions":
+        print("stub sessions: " + " ".join(sorted(p.name for p in (STUB / "sessions").glob("*"))))
     elif command == "new":
+        with open(str(STUB / "calls.log"), "a") as handle:
+            handle.write("new-env ASSIGN_RETRIES=%s\n" % os.environ.get("COLAB_CLI_ASSIGN_RETRIES", "unset"))
+        if take(STUB / "allocations_failed", int(os.environ.get("STUB_FAIL_ALLOCATE", "0"))):
+            print("[colab] Creating session '%s'..." % option(rest, "-s"))
+            print("requests.exceptions.HTTPError: 503 Server Error: Service Unavailable for url: "
+                  "https://stub.colab.dev/tun/m/assign?authuser=0")
+            sys.exit(1)
         (STUB / "sessions" / option(rest, "-s")).mkdir(parents=True, exist_ok=True)
         print("stub: allocated")
     elif command == "stop":
@@ -101,6 +115,10 @@ def main():
         (STUB / "vm").mkdir(parents=True, exist_ok=True)
         script = Path(tempfile.mkstemp(suffix=".py", dir=str(STUB))[1])
         script.write_text(code)
+        if source and source.endswith("kernel_job.py") and take(STUB / "job_execs_lost",
+                                                                int(os.environ.get("STUB_LOSE_JOB_EXEC", "0"))):
+            print("RuntimeError: Connection was lost.")
+            sys.exit(1)
         if source and source.endswith("kernel_job.py") and os.environ.get("STUB_DROP_JOB") == "1":
             runner = [sys.executable, str(script)]
             if os.environ.get("STUB_VANISH_AFTER_JOB") == "1":

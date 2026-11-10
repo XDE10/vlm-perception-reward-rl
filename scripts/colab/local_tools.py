@@ -156,6 +156,12 @@ def field(path, key):
     return "" if value is None else (json.dumps(value) if isinstance(value, (dict, list)) else str(value))
 
 
+def active_assignments(text):
+    """The number in the "Active assignments: N" line of ``colab usage`` output, or None."""
+    match = re.search(r"Active assignments:\s*(\d+)", text)
+    return int(match.group(1)) if match else None
+
+
 def extract(archive, dest):
     dest = Path(dest)
     dest.mkdir(parents=True, exist_ok=True)
@@ -206,6 +212,8 @@ def main(argv=None):
     p = sub.add_parser("extract")
     p.add_argument("archive")
     p.add_argument("dest")
+    p = sub.add_parser("active-assignments")
+    p.add_argument("usage_file")
     args = parser.parse_args(argv)
     if args.command == "make-request":
         make_request(args)
@@ -233,6 +241,9 @@ def main(argv=None):
         print(args.out)
     elif args.command == "extract":
         extract(args.archive, args.dest)
+    elif args.command == "active-assignments":
+        count = active_assignments(Path(args.usage_file).read_text(encoding="utf-8", errors="replace"))
+        print("" if count is None else count)
     return 0
 
 

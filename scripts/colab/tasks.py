@@ -119,6 +119,63 @@ def preflight_steps(ctx):
     return steps
 
 
+FROZEN_RUNTIME = "configs/experiments/runtime_frozen_20261109.json"
+IS_CHECK_SMOKE = "max_steps=3"
+
+
+def v0_steps(ctx):
+    """S3 (docs/plan/S3设计_20261109.md section 7): evaluation inputs, train-only decisions, V0 diagnosis, IS check."""
+    py, out, model = ctx.python, ctx.out, ctx.model_dir
+    public = ctx.root / "public"
+    common = [
+        step("env_report", [py, "-m", "scripts.colab.env_report", "--root", ctx.root, "--out", out / "env.json"], 900,
+             description="software, GPU and environment lock report"),
+        step("verify_pack", [py, "-m", "scripts.colab.verify_pack", "--repo", ctx.repo, "--out",
+                             out / "pack_verification.json"], 900, description="private data matches its anchors"),
+    ]
+    decide = [py, "-m", "scripts.colab.decide_s3", "--out-dir", out]
+    if ctx.dry_run:
+        return common + [
+            step("pytest", [py, "-m", "pytest", "-q", "-p", "no:cacheprovider", "tests/test_eval_stats.py",
+                            "--junitxml=%s" % (out / "pytest.xml")], 1800, env={"CUDA_VISIBLE_DEVICES": ""},
+                 description="dry run: one fast test module"),
+            step("decide_s3", decide + ["--allow-missing"], 600, description="dry run: decisions from what exists"),
+        ]
+    steps = common + [
+        step("pytest", [py, "-m", "pytest", "-q", "-p", "no:cacheprovider", "--junitxml=%s" % (out / "pytest.xml")], 3600,
+             env={"CUDA_VISIBLE_DEVICES": "", "P3_QWEN_PROCESSOR_DIR": model, "HF_HUB_OFFLINE": "1"},
+             description="full CPU test suite on the VM (GPU hidden)"),
+        step("public_sources", [py, "-m", "scripts.colab.public_sources", "--dest", public, "--out",
+                                out / "public_sources.json"], 1800,
+             description="pinned Geometry3K wrapper parquets, checked against migration_manifest.json"),
+        step("eval_sets", [py, "-m", "scripts.colab.eval_inputs", "eval-sets", "--sources", public, "--out",
+                           out / "eval_sets_check.json"], 1800, depends_on=["public_sources"],
+             description="evaluation-set rules reproduce reports/eval_sets_20261109/eval_sets.json (no model)"),
+        step("cfgeo_build", [py, "-m", "scripts.colab.eval_inputs", "cfgeo", "--sources", public, "--out",
+                             out / "cfgeo_build.json"], 1800, depends_on=["public_sources"],
+             description="every CF-Geo image rebuilds from its patches to the recorded pixels (no model)"),
+        step("prompt_select", [py, "-m", "scripts.colab.prompt_select", "--model-path", model, "--out",
+                               out / "prompt_select"], 7200,
+             description="P0 vs P1, warm-up and length measurements on 64 approved train problems"),
+        step("v0_val82", [py, "-m", "scripts.colab.v0_diagnosis", "--model-path", model, "--out", out / "v0_val82"], 5400,
+             description="V0 greedy on the 82 validation problems (with image, without, answer-only): measurement only"),
+        step("harness_check", [py, "-m", "scripts.colab.harness_check", "--model-path", model, "--sources", public,
+                               "--out", out / "harness_check"], 5400, depends_on=["cfgeo_build"],
+             description="the S5 evaluation path on train-only inputs, all five conditions and the statistics"),
+    ]
+    if ctx.options.get("vllm_probe", True):
+        steps += [
+            step("vllm_env", [ctx.kernel_python, "-m", "scripts.colab.bootstrap", "vllm-env", "--root", ctx.root], 5400,
+                 required=False, description="vLLM venv (CUDA 13 only) for the importance-sampling check"),
+            step("is_check", train_cmd(ctx, "rl_v5", IS_CHECK_SMOKE, out / "is_check", runtime=ctx.repo / FROZEN_RUNTIME,
+                                       python=ctx.vllm_python), 7200, required=False, depends_on=["vllm_env"],
+                 description="3 GRPO steps with vLLM and the frozen runtime: importance-sampling weights (D41)"),
+        ]
+    steps.append(step("decide_s3", decide, 600, depends_on=["prompt_select"],
+                      description="apply the pre-registered S3 decision rules (s3_decisions.json)"))
+    return steps
+
+
 def drive_check_steps(ctx):
     """Cheap CPU-VM check of the optional Drive setup; no data, no GPU environment, no model."""
     return [
@@ -128,7 +185,7 @@ def drive_check_steps(ctx):
     ]
 
 
-TASKS = {"preflight": preflight_steps, "drive-check": drive_check_steps}
+TASKS = {"preflight": preflight_steps, "drive-check": drive_check_steps, "v0": v0_steps}
 
 
 def steps_for(ctx):

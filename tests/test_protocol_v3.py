@@ -42,6 +42,29 @@ def test_problem_cleaning_and_message_shapes():
     assert blind[1]["content"] == [{"type": "text", "text": "Find x."}]
 
 
+def test_prompt_variants_are_the_pre_registered_text():
+    """S3 design section 6 fixes the P1 sentence verbatim; the code must use exactly that sentence."""
+    from pathlib import Path
+
+    from src.training.protocol_v3 import (ANSWER_ONLY_SYSTEM_PROMPT, P1_SUFFIX, PROTOCOL, protocol_id, system_prompt,
+                                          user_text)
+
+    design = (Path(__file__).resolve().parents[1] / "docs/plan/S3设计_20261109.md").read_text(encoding="utf-8")
+    assert P1_SUFFIX == "Respond in the format <perception>...</perception><think>...</think><answer>...</answer>."
+    assert "`%s`" % P1_SUFFIX in design
+    assert user_text("<image>Find x.", "p1") == "Find x.\n\n" + P1_SUFFIX
+    assert user_text("<image>Find x.", "p0") == "Find x." == user_text("Find x.", "answer_only")
+    assert system_prompt("p1") == system_prompt("p0") == SYSTEM_PROMPT
+    assert system_prompt("answer_only") == ANSWER_ONLY_SYSTEM_PROMPT and "<perception>" not in ANSWER_ONLY_SYSTEM_PROMPT
+    assert protocol_id("p0") == PROTOCOL and len({protocol_id(v) for v in ("p0", "p1", "answer_only")}) == 3
+    assert training_prompt("Find x.", "p1")[1]["content"].endswith(P1_SUFFIX)
+    assert eval_messages("Find x.", True, "p1")[1]["content"][-1]["text"].endswith(P1_SUFFIX)
+    with pytest.raises(ValueError, match="diagnostic"):
+        training_prompt("Find x.", "answer_only")
+    with pytest.raises(ValueError, match="unknown prompt variant"):
+        eval_messages("Find x.", True, "p2")
+
+
 @pytest.mark.skipif(processor_dir() is None, reason="pinned Qwen2.5-VL processor files not available")
 def test_training_and_eval_prompts_render_identically_through_trl():
     from PIL import Image
@@ -54,6 +77,9 @@ def test_training_and_eval_prompts_render_identically_through_trl():
     ours = eval_messages("<image>Find x.", with_image=True)
     render = lambda m: processor.apply_chat_template(m, tokenize=False, add_generation_prompt=True)  # noqa: E731
     assert render(via_trl) == render(ours)
+    # the P1 variant, if S3 adopts it, must also be identical between training and evaluation
+    p1_trl = prepare_multimodal_messages(training_prompt("<image>Find x.", "p1"), images=[image])
+    assert render(p1_trl) == render(eval_messages("<image>Find x.", True, "p1")) != render(ours)
     text_only = processor.apply_chat_template(eval_messages("Find x.", with_image=False), tokenize=False,
                                               add_generation_prompt=True)
     assert "<|image_pad|>" not in text_only and "<|image_pad|>" in render(ours)

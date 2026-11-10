@@ -44,11 +44,11 @@
   },
   {
    "path": "CHANGELOG.md",
-   "bytes": 12703,
-   "sha256": "9586ae5370643450203d81276b05919bd27eb9987d512c6b601c1d435c8031d9",
+   "bytes": 14135,
+   "sha256": "109c6166630edab005c33034876ae41235219fde33325dc15843b6fb0f8c7bcf",
    "source_sha256": "dbded3caf83f4f16b506d3dc18f8ed0229cd90032081039f38c28fa58306dc50",
    "changed_for_portability": true,
-   "updated_in": "2026-11-09_stage3_design"
+   "updated_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "README.md",
@@ -60,12 +60,12 @@
   },
   {
    "path": "colab/README.md",
-   "bytes": 16583,
-   "sha256": "a3e610dad70ab2a188a032bde50031495a5aa6f617f946908a587e105511cd99",
+   "bytes": 18554,
+   "sha256": "6cb2ceb816283ee2aed5b39733d1432e0d624df0a2278b80df09062a3fe85f7c",
    "source_sha256": "932007e1f9719066c8c3b6e17fd3da3ac427e094ffcc2fa7b67311b7bf8faa29",
    "changed_for_portability": true,
    "added_in": "2026-11-10_stage2",
-   "updated_in": "2026-11-09_stage2.3"
+   "updated_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "colab/kernel_bootstrap.py",
@@ -86,20 +86,21 @@
   },
   {
    "path": "colab/kernel_job.py",
-   "bytes": 880,
-   "sha256": "71901ccc08b86cbf81209b9c4185415d95d8952e7b6e7a6a4ddfcbde78b45285",
+   "bytes": 2458,
+   "sha256": "b286d8e604b2156b378198ec5445505e4442f502c0f11e6d37440eb675c54abf",
    "source_sha256": "71901ccc08b86cbf81209b9c4185415d95d8952e7b6e7a6a4ddfcbde78b45285",
-   "changed_for_portability": false,
-   "added_in": "2026-11-10_stage2"
+   "changed_for_portability": true,
+   "added_in": "2026-11-10_stage2",
+   "updated_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "colab/launch.sh",
-   "bytes": 35202,
-   "sha256": "ab72293afea9306e326cf9e13319e593e73f090e0c9236d0ede77916966eb443",
+   "bytes": 38943,
+   "sha256": "4478c1806d4f4580f80bd32b8756750abcc78d1b9ca07e728a357c13990b7712",
    "source_sha256": "71a765f7cff528a8c46272a5888a66f5959e50363f016d83f51c9c7d637c5c39",
    "changed_for_portability": true,
    "added_in": "2026-11-10_stage2",
-   "updated_in": "2026-11-09_stage2.3"
+   "updated_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "configs/README.md",
@@ -19841,19 +19842,19 @@
   },
   {
    "path": "docs/README.md",
-   "bytes": 3585,
-   "sha256": "777123a0c29f610783a2cc1dc1c6660288f5009cea09706e15a785d5f24d04ae",
+   "bytes": 3793,
+   "sha256": "de5276d0562487f02d7512e47052f76325bdf9a2f05db986ca929996eecbcce0",
    "source_sha256": "864ec78b4f6a1b3268680a9c2c0e95c21550b906d8d3fe3f491f0b1c9482b3e2",
    "changed_for_portability": true,
-   "updated_in": "2026-11-09_stage3_design"
+   "updated_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "docs/architecture.md",
-   "bytes": 8114,
-   "sha256": "02343d0f8e352d874aa381fffd073edb3b3df504caf9f2350221d4259d8447f2",
+   "bytes": 9393,
+   "sha256": "83e8855ec2282e390e1e0d3a02866a7ee97db78f16ff45b51ec832b51af0f039",
    "source_sha256": "d4741c763022737eaf77f807b2529d6ff262ae5422e7c8c8ff3ea48a2296fa9a",
    "changed_for_portability": true,
-   "updated_in": "2026-11-09_stage2.2"
+   "updated_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "docs/blueprints/Strict_v8_数据封板与上卡说明.md",
@@ -20011,20 +20012,21 @@
   },
   {
    "path": "docs/plan/S3设计_20261109.md",
-   "bytes": 16603,
-   "sha256": "0a0058a24354fbc8b655595d66b47e29be6956d7ddad476bc4e407945c2d7811",
+   "bytes": 19593,
+   "sha256": "af9fbb62c931f6923d941c4c2685c31da23ea87bbe57efece081bf4736a9685c",
    "source_sha256": "0a0058a24354fbc8b655595d66b47e29be6956d7ddad476bc4e407945c2d7811",
-   "changed_for_portability": false,
-   "added_in": "2026-11-09_stage3_design"
+   "changed_for_portability": true,
+   "added_in": "2026-11-09_stage3_design",
+   "updated_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "docs/plan/决策记录.md",
-   "bytes": 28176,
-   "sha256": "82b1f257a16d41f90cf66d26793f433ff5513f9af0730a85cd6cf68ae3dfeb72",
+   "bytes": 32960,
+   "sha256": "fb4116daa90c06c0383ad08db09c6af392137df51a8f225a7f5797b2c3138c75",
    "source_sha256": "6270abf217d11dc49d0ffe5901cd3faa58aa3d56e47cfa8506fb765e952e9790",
    "changed_for_portability": true,
    "added_in": "2026-11-09_stage1",
-   "updated_in": "2026-11-09_stage3_design"
+   "updated_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "docs/plan/执行计划_20261108.md",
@@ -20085,28 +20087,36 @@
    "added_in": "2026-11-09_stage3_design"
   },
   {
+   "path": "docs/plan/阶段报告_S3_实施_20261109.md",
+   "bytes": 9617,
+   "sha256": "ce23432c877856304ef4cee0f6d2d7eadaa2bbdff853acb591abf3e11984b212",
+   "source_sha256": "ce23432c877856304ef4cee0f6d2d7eadaa2bbdff853acb591abf3e11984b212",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_eval"
+  },
+  {
    "path": "docs/repo_layout.md",
-   "bytes": 5543,
-   "sha256": "4bc91b4ba344aaa6029ccaa2d927f6eca813ba6ebcd8f5f8b5bfa0430b199f26",
+   "bytes": 5616,
+   "sha256": "2f861d507f36844eafacf7702991a4b2824c000482f8e75dec7ddba27b3c1f11",
    "source_sha256": "b57dfadb86819df71982809fe629af47eacbd3978d50e137c6331f3e9f1f10fb",
    "changed_for_portability": true,
-   "updated_in": "2026-11-10_stage2"
+   "updated_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "docs/training.md",
-   "bytes": 7118,
-   "sha256": "ec6261f178b85ceda48d5a3c79ab8fc1b06028266f5656e9a158b2435f04843d",
+   "bytes": 7931,
+   "sha256": "919c7d560ecc59ff0616bf84e6eec3ef984909a348ff0955e4a1f31891d2521b",
    "source_sha256": "ad87c2bf52cffb63323d34182e61e92fabaa755b79ef0741dd52dd4ddccb476b",
    "changed_for_portability": true,
-   "updated_in": "2026-11-10_stage2"
+   "updated_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "docs/verification.md",
-   "bytes": 11990,
-   "sha256": "b1560fa5676435db616e558701f406841f1b3983b50512a3a6804100bbafa257",
+   "bytes": 13853,
+   "sha256": "eaee802b0cf33b779b11ff509218acacf6884813f524925f9939d9aad242745b",
    "source_sha256": "dafa2e004f067fa92df2b610e7a800d35c350c32016b9dc2035f9a25913dc093",
    "changed_for_portability": true,
-   "updated_in": "2026-11-09_stage3_design"
+   "updated_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "pyproject.toml",
@@ -20117,11 +20127,11 @@
   },
   {
    "path": "reports/README.md",
-   "bytes": 2468,
-   "sha256": "c3f27185a599eeed454f1ddecd82f97249d8a0261ab87741f0fa81a0b37a0409",
+   "bytes": 2764,
+   "sha256": "0661ce543cdec33e5b29df3a008bdd4500d04df796d9f1e3b28795ece72b86aa",
    "source_sha256": "aba3ef9af9df316dea07a1cf6d11972f6969e61063e1a0b55b7aab42761f27f9",
    "changed_for_portability": true,
-   "updated_in": "2026-11-09_stage3_design"
+   "updated_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "reports/artifact_inventory.json",
@@ -20160,6 +20170,46 @@
    "source_sha256": "aa2a140dcfab07bab74625c595b826878d553cde687dcad1d9d0223aaa64d50d",
    "changed_for_portability": false,
    "added_in": "2026-11-09_stage3_design"
+  },
+  {
+   "path": "reports/cfgeo_20261109/README.md",
+   "bytes": 4238,
+   "sha256": "bd78086000d4534d584f67e1422afbb48b9912fa9a3c3aad5afeb363a3ff1111",
+   "source_sha256": "bd78086000d4534d584f67e1422afbb48b9912fa9a3c3aad5afeb363a3ff1111",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_eval"
+  },
+  {
+   "path": "reports/cfgeo_20261109/cfgeo.json",
+   "bytes": 1422009,
+   "sha256": "03871c151ddf9be8f6a2ed52481c3addbeab615680120c9d7981f745fb434129",
+   "source_sha256": "03871c151ddf9be8f6a2ed52481c3addbeab615680120c9d7981f745fb434129",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_eval"
+  },
+  {
+   "path": "reports/cfgeo_20261109/cfgeo_dev_train.json",
+   "bytes": 358527,
+   "sha256": "a80fcd8d6c79f1b2e77d69a0ebbbb732fc99175d6191243ebb147c499ecbad0a",
+   "source_sha256": "a80fcd8d6c79f1b2e77d69a0ebbbb732fc99175d6191243ebb147c499ecbad0a",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_eval"
+  },
+  {
+   "path": "reports/cfgeo_20261109/render_spot_check.py",
+   "bytes": 2955,
+   "sha256": "41503547998e23baccb4c4985be7c1deb6c896d1122ef8b4a2d7aace66b798fa",
+   "source_sha256": "41503547998e23baccb4c4985be7c1deb6c896d1122ef8b4a2d7aace66b798fa",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_eval"
+  },
+  {
+   "path": "reports/cfgeo_20261109/spot_check.md",
+   "bytes": 5954,
+   "sha256": "ab2cb525a15e895275fd78265915f4df7076fc227988f9da7cdf66559ab741c5",
+   "source_sha256": "ab2cb525a15e895275fd78265915f4df7076fc227988f9da7cdf66559ab741c5",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "reports/completion_audit.json",
@@ -20356,6 +20406,22 @@
    "sha256": "efbc6ee25d17920676492ea8544dc39cfb19f60198216aa634777b1278a9635d",
    "source_sha256": "6d346de9c73fc648978e1a1bddabce5919364c8827b5b5b57f3fbc1e4d48784f",
    "changed_for_portability": true
+  },
+  {
+   "path": "reports/eval_sets_20261109/README.md",
+   "bytes": 2117,
+   "sha256": "24d987a43c2260294ddab065d72102f968fa19dadae9859b72c6a63ee263820f",
+   "source_sha256": "24d987a43c2260294ddab065d72102f968fa19dadae9859b72c6a63ee263820f",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_eval"
+  },
+  {
+   "path": "reports/eval_sets_20261109/eval_sets.json",
+   "bytes": 174146,
+   "sha256": "5e6a52db26a82aba9df3ab483aa59428f37042fd5153f93f4637a478f93c1051",
+   "source_sha256": "5e6a52db26a82aba9df3ab483aa59428f37042fd5153f93f4637a478f93c1051",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "reports/handover_20261024_v2/CHANGELOG.md",
@@ -22324,11 +22390,11 @@
   },
   {
    "path": "scripts/README.md",
-   "bytes": 11916,
-   "sha256": "e56238e74bb4fdf96e112bec14f91848538cb5ab615c7cbac0420bf2ccd85db7",
+   "bytes": 14207,
+   "sha256": "d56427ba6e76c5754750f928502b284e888ca7612fe4ebb20bca5bddcd68cb94",
    "source_sha256": "eda255f3087e1cdbf10295a30894dcceb5eeed01031ac3dbc0f65b51d594256c",
    "changed_for_portability": true,
-   "updated_in": "2026-11-09_stage2.3"
+   "updated_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "scripts/__init__.py",
@@ -22347,12 +22413,12 @@
   },
   {
    "path": "scripts/colab/bootstrap.py",
-   "bytes": 13181,
-   "sha256": "aef71dd8b399a38be647456789e82117c3b9d069b3bc7281e1666a6804e37e21",
+   "bytes": 14247,
+   "sha256": "dfc92cec5cb571a8bf8940c41e5611fdaa7febfe05bd47304b6da87ecfee3bae",
    "source_sha256": "006c7ea8da283d377494acf744471cb1a79815447c61d392ef925d5ae38f780f",
    "changed_for_portability": true,
    "added_in": "2026-11-10_stage2",
-   "updated_in": "2026-11-09_stage2.1"
+   "updated_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "scripts/colab/common.py",
@@ -22372,6 +22438,14 @@
    "added_in": "2026-11-10_stage2"
   },
   {
+   "path": "scripts/colab/decide_s3.py",
+   "bytes": 6562,
+   "sha256": "170a92c78b22f510c7588261879ca6d19e9b1a85cc028d7f24aa93302ef3e6b7",
+   "source_sha256": "170a92c78b22f510c7588261879ca6d19e9b1a85cc028d7f24aa93302ef3e6b7",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_eval"
+  },
+  {
    "path": "scripts/colab/drive.py",
    "bytes": 14051,
    "sha256": "34b8446a6107880d17024964899d0c5161bb4b8939fc0119d49920924c9001ef",
@@ -22386,6 +22460,14 @@
    "source_sha256": "ca655a013b2b6d05e6afbed97ed2068f4c30bb5318b0cd4b929484de5b94e8d5",
    "changed_for_portability": false,
    "added_in": "2026-11-10_stage2"
+  },
+  {
+   "path": "scripts/colab/eval_inputs.py",
+   "bytes": 6133,
+   "sha256": "6868e6c5cf5a814645c77666e5326c5e55689b2e35ede0442a99ff5875cf7040",
+   "source_sha256": "6868e6c5cf5a814645c77666e5326c5e55689b2e35ede0442a99ff5875cf7040",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "scripts/colab/fetch_model.py",
@@ -22405,13 +22487,21 @@
    "updated_in": "2026-11-09_stage2.2"
   },
   {
+   "path": "scripts/colab/harness_check.py",
+   "bytes": 4821,
+   "sha256": "0ddceea0abe94b932a41374ace046d921da4903ca4812f2ea98406af1a9db4c9",
+   "source_sha256": "0ddceea0abe94b932a41374ace046d921da4903ca4812f2ea98406af1a9db4c9",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_eval"
+  },
+  {
    "path": "scripts/colab/local_tools.py",
-   "bytes": 10905,
-   "sha256": "cab248e667c55f3d5882c0b3c3125079eb683d8646574abf4aaeb8af7d182820",
+   "bytes": 11415,
+   "sha256": "d23cc1af99bffc00be9e1212d951da343163db27322fd1f19088cd9aade68f67",
    "source_sha256": "b79f9ad4c1ebfe750266c56f835e32e437bb758920f1742d9e69200cb8c5bc56",
    "changed_for_portability": true,
    "added_in": "2026-11-10_stage2",
-   "updated_in": "2026-11-09_stage2.3"
+   "updated_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "scripts/colab/pack_private_data.py",
@@ -22420,6 +22510,22 @@
    "source_sha256": "5bee1f3ab8455b8f74faa7c4bee3bb50f72ffe15223cc23191d35c9a13b7e1b6",
    "changed_for_portability": false,
    "added_in": "2026-11-10_stage2"
+  },
+  {
+   "path": "scripts/colab/prompt_select.py",
+   "bytes": 6584,
+   "sha256": "bef2c930a1d12432df8ee0b4f58247353dd49d579bef83f677606754a6c45b00",
+   "source_sha256": "bef2c930a1d12432df8ee0b4f58247353dd49d579bef83f677606754a6c45b00",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_eval"
+  },
+  {
+   "path": "scripts/colab/public_sources.py",
+   "bytes": 2353,
+   "sha256": "ad98f8598b0c5da55f1cc7c45aced2539ed7867ef2619d2cf35e52a730d71fe6",
+   "source_sha256": "ad98f8598b0c5da55f1cc7c45aced2539ed7867ef2619d2cf35e52a730d71fe6",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "scripts/colab/runner.py",
@@ -22432,21 +22538,29 @@
   },
   {
    "path": "scripts/colab/summarize_run.py",
-   "bytes": 23080,
-   "sha256": "d727ee2d9cb8a01004ec85224c6ff2ef5a14620e963664b5a82aa6f4d39127be",
+   "bytes": 30688,
+   "sha256": "b7586371157b1f0fdb22ec711fdd14611c054f64534cd1f8a6ee66b34ef8958e",
    "source_sha256": "c84812cd525dc0c458e805f3c9f20cf01f234f7678f257b4d4c1936423aea5c3",
    "changed_for_portability": true,
    "added_in": "2026-11-10_stage2",
-   "updated_in": "2026-11-09_stage2.3"
+   "updated_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "scripts/colab/tasks.py",
-   "bytes": 8487,
-   "sha256": "04dee4a3f6e54838a7be8d8767ec3f17224ad1f8e9d594733fd24072e7678dbb",
+   "bytes": 12690,
+   "sha256": "082362279c9f332b9d3cc31fb30bf2b2e6ef14ff1bcee6c1063041b8943201cc",
    "source_sha256": "516613dcb3689e785698d1f7de5f88671b9298b95135ed53fc2a1d1af73962f5",
    "changed_for_portability": true,
    "added_in": "2026-11-10_stage2",
-   "updated_in": "2026-11-09_stage2.2"
+   "updated_in": "2026-11-09_stage3_eval"
+  },
+  {
+   "path": "scripts/colab/v0_diagnosis.py",
+   "bytes": 5538,
+   "sha256": "c3b26922b4b2741c558bb4794ac2c0c4e09219c97cc79ed55d47596651f47ab1",
+   "source_sha256": "c3b26922b4b2741c558bb4794ac2c0c4e09219c97cc79ed55d47596651f47ab1",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "scripts/colab/v0_probe.py",
@@ -22513,6 +22627,22 @@
    "sha256": "378a4c2973507b7db4c302a410222d27e468e344815f47de5410761280262888",
    "source_sha256": "4b9c43253a71d39f53f26511c534703331023be1ac10835938c1c936bf593bc7",
    "changed_for_portability": true
+  },
+  {
+   "path": "scripts/data/build_cfgeo.py",
+   "bytes": 25826,
+   "sha256": "58c3bef02073569b7072a185247019dbd9992ce0249a854bcd30e662037debed",
+   "source_sha256": "58c3bef02073569b7072a185247019dbd9992ce0249a854bcd30e662037debed",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_eval"
+  },
+  {
+   "path": "scripts/data/build_eval_sets.py",
+   "bytes": 3047,
+   "sha256": "7db97ebe422850518355f2d07cf900d09108e827cf7c01b7e8b3d5a187809306",
+   "source_sha256": "7db97ebe422850518355f2d07cf900d09108e827cf7c01b7e8b3d5a187809306",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "scripts/data/build_geometry_funnel_v8.py",
@@ -22821,12 +22951,29 @@
    "changed_for_portability": false
   },
   {
-   "path": "src/evaluation/generate_v3.py",
-   "bytes": 8165,
-   "sha256": "80a6af24a0d525edd8f65027d25b45a5ffd4fc1297c4d8347ccf076df49be7c8",
-   "source_sha256": "80a6af24a0d525edd8f65027d25b45a5ffd4fc1297c4d8347ccf076df49be7c8",
+   "path": "src/evaluation/cfgeo.py",
+   "bytes": 2948,
+   "sha256": "498f3c12f803aff61896edde67f76ba04d23dd2e7383d264884961d002f0d399",
+   "source_sha256": "498f3c12f803aff61896edde67f76ba04d23dd2e7383d264884961d002f0d399",
    "changed_for_portability": false,
-   "added_in": "2026-11-10_stage2"
+   "added_in": "2026-11-09_stage3_eval"
+  },
+  {
+   "path": "src/evaluation/eval_sets.py",
+   "bytes": 12847,
+   "sha256": "b15153f37231ccb15a75f8657885b1ed499169f42b3d36e2eae77dac342f5ee3",
+   "source_sha256": "b15153f37231ccb15a75f8657885b1ed499169f42b3d36e2eae77dac342f5ee3",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_eval"
+  },
+  {
+   "path": "src/evaluation/generate_v3.py",
+   "bytes": 9375,
+   "sha256": "a11aa95d496bf121b02b11b8041c203c13a548eeda584aec33b2158b1a9f1ae7",
+   "source_sha256": "80a6af24a0d525edd8f65027d25b45a5ffd4fc1297c4d8347ccf076df49be7c8",
+   "changed_for_portability": true,
+   "added_in": "2026-11-10_stage2",
+   "updated_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "src/evaluation/geometry_perception_parser.py",
@@ -22834,6 +22981,30 @@
    "sha256": "ef1ca9b1bfae904f89ef5076114c43df8ff393110ffac13f36211c59bf755d01",
    "source_sha256": "ef1ca9b1bfae904f89ef5076114c43df8ff393110ffac13f36211c59bf755d01",
    "changed_for_portability": false
+  },
+  {
+   "path": "src/evaluation/harness.py",
+   "bytes": 12480,
+   "sha256": "bf6109270831485205b7ebf3b03f8a2dbe3cbbc49d1e060c4c713b6f15decd1d",
+   "source_sha256": "bf6109270831485205b7ebf3b03f8a2dbe3cbbc49d1e060c4c713b6f15decd1d",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_eval"
+  },
+  {
+   "path": "src/evaluation/public_sources.py",
+   "bytes": 4840,
+   "sha256": "1db2b9ef2be8e119b0c852e21761d7b2419ae192924062c7525b3346127de8d7",
+   "source_sha256": "1db2b9ef2be8e119b0c852e21761d7b2419ae192924062c7525b3346127de8d7",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_eval"
+  },
+  {
+   "path": "src/evaluation/stats.py",
+   "bytes": 6772,
+   "sha256": "408516c129fcd7f4883e78e4fd94b42788189bb8f83c857290b3404d2e9baa2a",
+   "source_sha256": "408516c129fcd7f4883e78e4fd94b42788189bb8f83c857290b3404d2e9baa2a",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "src/losses/__init__.py",
@@ -22955,11 +23126,12 @@
   },
   {
    "path": "src/training/protocol_v3.py",
-   "bytes": 3595,
-   "sha256": "57f1aabb3b4a6536c59367299f8dd78d4965cd1f0a89afdb0a4565121c22c5c5",
+   "bytes": 5460,
+   "sha256": "cf217475d9258a74a4a2e43fa2376d703b27b6443ea9b86b65af0a287a9b5327",
    "source_sha256": "57f1aabb3b4a6536c59367299f8dd78d4965cd1f0a89afdb0a4565121c22c5c5",
-   "changed_for_portability": false,
-   "added_in": "2026-11-09_stage1"
+   "changed_for_portability": true,
+   "added_in": "2026-11-09_stage1",
+   "updated_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "src/training/rl_config.py",
@@ -22979,12 +23151,12 @@
   },
   {
    "path": "src/training/rl_entry.py",
-   "bytes": 15195,
-   "sha256": "174cdf3b8922dd111516dcca50ec69549c14d24915c2afea6e1c240a49deeab0",
+   "bytes": 15534,
+   "sha256": "aa4621c37d4afd5d7e37d72b8bc583c1fcdc7668e8d3e6ba489fc53ebe627e75",
    "source_sha256": "0fbbd13fb08a842c2c0ba7e20e33609bc17c1b04e69d621aac78230c19cb0d7f",
    "changed_for_portability": true,
    "added_in": "2026-11-09_stage1",
-   "updated_in": "2026-11-09_stage3_design"
+   "updated_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "src/training/rl_rewards.py",
@@ -23004,6 +23176,14 @@
    "updated_in": "2026-11-10_stage2"
   },
   {
+   "path": "src/training/vllm_guard.py",
+   "bytes": 3348,
+   "sha256": "e4192370ee7bb2bc33b9066824dcbb316f75070429ec65d363f616a902251aac",
+   "source_sha256": "e4192370ee7bb2bc33b9066824dcbb316f75070429ec65d363f616a902251aac",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_eval"
+  },
+  {
    "path": "tests/_fixtures.py",
    "bytes": 1665,
    "sha256": "0edf58ccdc35c90599768046154bcd621686014e6bd4f1dba2782a6992106408",
@@ -23013,12 +23193,12 @@
   },
   {
    "path": "tests/_mini_release.py",
-   "bytes": 3730,
-   "sha256": "8a882a6a099272001e33ca80228bafe179f35e6ea0a3ffd7e3fa3596bf0cc0fe",
+   "bytes": 5294,
+   "sha256": "f1daf7f0c82dc48e7920662e6a8fa2d34bf1efdecf32463a70672831219d0256",
    "source_sha256": "7e701c568c8bcf306f3f4a2000b560c4356044e87a552573cd1fbd005c6af4ac",
    "changed_for_portability": true,
    "added_in": "2026-11-09_stage1",
-   "updated_in": "2026-11-09_stage2.2"
+   "updated_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "tests/_qwen.py",
@@ -23030,12 +23210,12 @@
   },
   {
    "path": "tests/colab_stub.py",
-   "bytes": 5796,
-   "sha256": "15b588d47406054fdd4c5d25a1fe08cf6425922429b2d37e0029233f9e6c7f40",
+   "bytes": 7174,
+   "sha256": "b08f1c0ca57102591f30428f64000c7719af9b697daec01a433b12231df089fa",
    "source_sha256": "ca5df672316ffb262b1df8c430f19d24e783912872dbf5d126ea944d6090bb00",
    "changed_for_portability": true,
    "added_in": "2026-11-10_stage2",
-   "updated_in": "2026-11-09_stage2.3"
+   "updated_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "tests/rclone_stub.py",
@@ -23070,6 +23250,14 @@
    "updated_in": "2026-11-09_stage2.2"
   },
   {
+   "path": "tests/test_cfgeo.py",
+   "bytes": 7720,
+   "sha256": "1d6e2a99afd516a7461b8f2181eaf707da7513a2fc77b3841f606786f61f36ce",
+   "source_sha256": "1d6e2a99afd516a7461b8f2181eaf707da7513a2fc77b3841f606786f61f36ce",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_eval"
+  },
+  {
    "path": "tests/test_claims.py",
    "bytes": 2516,
    "sha256": "785a7dee89f148e749ad6d17ae2dd38ee9c081a53e2966566a01f3eb86da14c2",
@@ -23087,12 +23275,12 @@
   },
   {
    "path": "tests/test_colab_launcher.py",
-   "bytes": 19791,
-   "sha256": "ae818176a1a8eb142852e5aaa5d0ea2ed09b918ff60c598e25d7595c0c751872",
+   "bytes": 21940,
+   "sha256": "eb66fd808b747a0421c564f22d0305010b92c9a0ac665e4660af40056d3a82a5",
    "source_sha256": "bb348c2f89d06301942158d05db9bd1d715b86906dd891fe6f86de5a45065f48",
    "changed_for_portability": true,
    "added_in": "2026-11-10_stage2",
-   "updated_in": "2026-11-09_stage2.3"
+   "updated_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "tests/test_colab_local_tools.py",
@@ -23128,6 +23316,30 @@
    "changed_for_portability": true
   },
   {
+   "path": "tests/test_eval_harness.py",
+   "bytes": 10368,
+   "sha256": "97bcb433d186cc7e3e39092076191e425ec8aecdd6b8137e26e371f06ff33724",
+   "source_sha256": "97bcb433d186cc7e3e39092076191e425ec8aecdd6b8137e26e371f06ff33724",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_eval"
+  },
+  {
+   "path": "tests/test_eval_sets.py",
+   "bytes": 8335,
+   "sha256": "cf740f677076a01db6b651d16c5eaeab8486b02abebbca51f649f8db0a01d843",
+   "source_sha256": "cf740f677076a01db6b651d16c5eaeab8486b02abebbca51f649f8db0a01d843",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_eval"
+  },
+  {
+   "path": "tests/test_eval_stats.py",
+   "bytes": 4930,
+   "sha256": "a00ca04e9d06f2e4a89a2a25212576bccbe8938c95f780f8b5ddadc2b3d70ebe",
+   "source_sha256": "a00ca04e9d06f2e4a89a2a25212576bccbe8938c95f780f8b5ddadc2b3d70ebe",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_eval"
+  },
+  {
    "path": "tests/test_experiment_configs.py",
    "bytes": 6002,
    "sha256": "b4635cae66273ba84142b24dedf0741e273d09ac7c69b09baac04aed92d895e3",
@@ -23138,11 +23350,12 @@
   },
   {
    "path": "tests/test_generate_v3.py",
-   "bytes": 3118,
-   "sha256": "7f3711af9c2a77bdd5a107e7e86dff20bb724d5f8f5711193122e5d3915be1bb",
+   "bytes": 4053,
+   "sha256": "713c33ba660f309abfcbf1a9dc00eb53a02a3005fd5c16a4385eb4f52608a4a3",
    "source_sha256": "7f3711af9c2a77bdd5a107e7e86dff20bb724d5f8f5711193122e5d3915be1bb",
-   "changed_for_portability": false,
-   "added_in": "2026-11-10_stage2"
+   "changed_for_portability": true,
+   "added_in": "2026-11-10_stage2",
+   "updated_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "tests/test_geometry_funnel.py",
@@ -23275,11 +23488,12 @@
   },
   {
    "path": "tests/test_protocol_v3.py",
-   "bytes": 3093,
-   "sha256": "6ac218e703eef8e7f85b717b9e5a5d3f501daa3e09ee106e138585c1bd3c82e4",
+   "bytes": 4878,
+   "sha256": "32eb9304ee7ee75b87ef418e6ae8e1316c0930748b26075a9dd8633446c12b25",
    "source_sha256": "6ac218e703eef8e7f85b717b9e5a5d3f501daa3e09ee106e138585c1bd3c82e4",
-   "changed_for_portability": false,
-   "added_in": "2026-11-09_stage1"
+   "changed_for_portability": true,
+   "added_in": "2026-11-09_stage1",
+   "updated_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "tests/test_repo_layout.py",
@@ -23313,6 +23527,14 @@
    "source_sha256": "e71bd60c8753b675b62fbcaedcee8a5e349c37850ee769d5d2defb30b2b5df1b",
    "changed_for_portability": false,
    "added_in": "2026-11-09_stage1"
+  },
+  {
+   "path": "tests/test_s3_vm_scripts.py",
+   "bytes": 20167,
+   "sha256": "597fe329398c0d0196893e5bf3e7c4420d756157a95e9beaf2e34c28f838f817",
+   "source_sha256": "597fe329398c0d0196893e5bf3e7c4420d756157a95e9beaf2e34c28f838f817",
+   "changed_for_portability": false,
+   "added_in": "2026-11-09_stage3_eval"
   },
   {
    "path": "tests/test_tokenizer_audit.py",
@@ -24461,6 +24683,277 @@
      "path": "tests/test_experiment_configs.py",
      "previous_sha256": "baaa719394f7db93f912caaecbf7b7a9042b2ded95775ee268b141380c5cac03",
      "current_sha256": "b4635cae66273ba84142b24dedf0741e273d09ac7c69b09baac04aed92d895e3"
+    }
+   ],
+   "dropped_tracked_paths": [],
+   "untracked_entries_kept_verbatim": 2848,
+   "note": "Only git-visible files were re-hashed; git-ignored payload entries (data/) were carried over unchanged. Run the full rebuild on a machine that has data/ to re-hash the payload."
+  },
+  {
+   "date": "2026-11-09",
+   "label": "2026-11-09_stage3_eval",
+   "mode": "git_tracked_only",
+   "purpose": "S3 implementation: pre-registered evaluation sets, CF-Geo evaluation set with spot checks, evaluation harness, statistics, v0 Colab task, runner guards (D47-D51)",
+   "changes": [
+    {
+     "path": "CHANGELOG.md",
+     "previous_sha256": "9586ae5370643450203d81276b05919bd27eb9987d512c6b601c1d435c8031d9",
+     "current_sha256": "109c6166630edab005c33034876ae41235219fde33325dc15843b6fb0f8c7bcf"
+    },
+    {
+     "path": "colab/README.md",
+     "previous_sha256": "a3e610dad70ab2a188a032bde50031495a5aa6f617f946908a587e105511cd99",
+     "current_sha256": "6cb2ceb816283ee2aed5b39733d1432e0d624df0a2278b80df09062a3fe85f7c"
+    },
+    {
+     "path": "colab/kernel_job.py",
+     "previous_sha256": "71901ccc08b86cbf81209b9c4185415d95d8952e7b6e7a6a4ddfcbde78b45285",
+     "current_sha256": "b286d8e604b2156b378198ec5445505e4442f502c0f11e6d37440eb675c54abf"
+    },
+    {
+     "path": "colab/launch.sh",
+     "previous_sha256": "ab72293afea9306e326cf9e13319e593e73f090e0c9236d0ede77916966eb443",
+     "current_sha256": "4478c1806d4f4580f80bd32b8756750abcc78d1b9ca07e728a357c13990b7712"
+    },
+    {
+     "path": "docs/README.md",
+     "previous_sha256": "777123a0c29f610783a2cc1dc1c6660288f5009cea09706e15a785d5f24d04ae",
+     "current_sha256": "de5276d0562487f02d7512e47052f76325bdf9a2f05db986ca929996eecbcce0"
+    },
+    {
+     "path": "docs/architecture.md",
+     "previous_sha256": "02343d0f8e352d874aa381fffd073edb3b3df504caf9f2350221d4259d8447f2",
+     "current_sha256": "83e8855ec2282e390e1e0d3a02866a7ee97db78f16ff45b51ec832b51af0f039"
+    },
+    {
+     "path": "docs/plan/S3设计_20261109.md",
+     "previous_sha256": "0a0058a24354fbc8b655595d66b47e29be6956d7ddad476bc4e407945c2d7811",
+     "current_sha256": "af9fbb62c931f6923d941c4c2685c31da23ea87bbe57efece081bf4736a9685c"
+    },
+    {
+     "path": "docs/plan/决策记录.md",
+     "previous_sha256": "82b1f257a16d41f90cf66d26793f433ff5513f9af0730a85cd6cf68ae3dfeb72",
+     "current_sha256": "fb4116daa90c06c0383ad08db09c6af392137df51a8f225a7f5797b2c3138c75"
+    },
+    {
+     "path": "docs/plan/阶段报告_S3_实施_20261109.md",
+     "previous_sha256": null,
+     "current_sha256": "ce23432c877856304ef4cee0f6d2d7eadaa2bbdff853acb591abf3e11984b212"
+    },
+    {
+     "path": "docs/repo_layout.md",
+     "previous_sha256": "4bc91b4ba344aaa6029ccaa2d927f6eca813ba6ebcd8f5f8b5bfa0430b199f26",
+     "current_sha256": "2f861d507f36844eafacf7702991a4b2824c000482f8e75dec7ddba27b3c1f11"
+    },
+    {
+     "path": "docs/training.md",
+     "previous_sha256": "ec6261f178b85ceda48d5a3c79ab8fc1b06028266f5656e9a158b2435f04843d",
+     "current_sha256": "919c7d560ecc59ff0616bf84e6eec3ef984909a348ff0955e4a1f31891d2521b"
+    },
+    {
+     "path": "docs/verification.md",
+     "previous_sha256": "b1560fa5676435db616e558701f406841f1b3983b50512a3a6804100bbafa257",
+     "current_sha256": "eaee802b0cf33b779b11ff509218acacf6884813f524925f9939d9aad242745b"
+    },
+    {
+     "path": "reports/README.md",
+     "previous_sha256": "c3f27185a599eeed454f1ddecd82f97249d8a0261ab87741f0fa81a0b37a0409",
+     "current_sha256": "0661ce543cdec33e5b29df3a008bdd4500d04df796d9f1e3b28795ece72b86aa"
+    },
+    {
+     "path": "reports/cfgeo_20261109/README.md",
+     "previous_sha256": null,
+     "current_sha256": "bd78086000d4534d584f67e1422afbb48b9912fa9a3c3aad5afeb363a3ff1111"
+    },
+    {
+     "path": "reports/cfgeo_20261109/cfgeo.json",
+     "previous_sha256": null,
+     "current_sha256": "03871c151ddf9be8f6a2ed52481c3addbeab615680120c9d7981f745fb434129"
+    },
+    {
+     "path": "reports/cfgeo_20261109/cfgeo_dev_train.json",
+     "previous_sha256": null,
+     "current_sha256": "a80fcd8d6c79f1b2e77d69a0ebbbb732fc99175d6191243ebb147c499ecbad0a"
+    },
+    {
+     "path": "reports/cfgeo_20261109/render_spot_check.py",
+     "previous_sha256": null,
+     "current_sha256": "41503547998e23baccb4c4985be7c1deb6c896d1122ef8b4a2d7aace66b798fa"
+    },
+    {
+     "path": "reports/cfgeo_20261109/spot_check.md",
+     "previous_sha256": null,
+     "current_sha256": "ab2cb525a15e895275fd78265915f4df7076fc227988f9da7cdf66559ab741c5"
+    },
+    {
+     "path": "reports/eval_sets_20261109/README.md",
+     "previous_sha256": null,
+     "current_sha256": "24d987a43c2260294ddab065d72102f968fa19dadae9859b72c6a63ee263820f"
+    },
+    {
+     "path": "reports/eval_sets_20261109/eval_sets.json",
+     "previous_sha256": null,
+     "current_sha256": "5e6a52db26a82aba9df3ab483aa59428f37042fd5153f93f4637a478f93c1051"
+    },
+    {
+     "path": "scripts/README.md",
+     "previous_sha256": "e56238e74bb4fdf96e112bec14f91848538cb5ab615c7cbac0420bf2ccd85db7",
+     "current_sha256": "d56427ba6e76c5754750f928502b284e888ca7612fe4ebb20bca5bddcd68cb94"
+    },
+    {
+     "path": "scripts/colab/bootstrap.py",
+     "previous_sha256": "aef71dd8b399a38be647456789e82117c3b9d069b3bc7281e1666a6804e37e21",
+     "current_sha256": "dfc92cec5cb571a8bf8940c41e5611fdaa7febfe05bd47304b6da87ecfee3bae"
+    },
+    {
+     "path": "scripts/colab/decide_s3.py",
+     "previous_sha256": null,
+     "current_sha256": "170a92c78b22f510c7588261879ca6d19e9b1a85cc028d7f24aa93302ef3e6b7"
+    },
+    {
+     "path": "scripts/colab/eval_inputs.py",
+     "previous_sha256": null,
+     "current_sha256": "6868e6c5cf5a814645c77666e5326c5e55689b2e35ede0442a99ff5875cf7040"
+    },
+    {
+     "path": "scripts/colab/harness_check.py",
+     "previous_sha256": null,
+     "current_sha256": "0ddceea0abe94b932a41374ace046d921da4903ca4812f2ea98406af1a9db4c9"
+    },
+    {
+     "path": "scripts/colab/local_tools.py",
+     "previous_sha256": "cab248e667c55f3d5882c0b3c3125079eb683d8646574abf4aaeb8af7d182820",
+     "current_sha256": "d23cc1af99bffc00be9e1212d951da343163db27322fd1f19088cd9aade68f67"
+    },
+    {
+     "path": "scripts/colab/prompt_select.py",
+     "previous_sha256": null,
+     "current_sha256": "bef2c930a1d12432df8ee0b4f58247353dd49d579bef83f677606754a6c45b00"
+    },
+    {
+     "path": "scripts/colab/public_sources.py",
+     "previous_sha256": null,
+     "current_sha256": "ad98f8598b0c5da55f1cc7c45aced2539ed7867ef2619d2cf35e52a730d71fe6"
+    },
+    {
+     "path": "scripts/colab/summarize_run.py",
+     "previous_sha256": "d727ee2d9cb8a01004ec85224c6ff2ef5a14620e963664b5a82aa6f4d39127be",
+     "current_sha256": "b7586371157b1f0fdb22ec711fdd14611c054f64534cd1f8a6ee66b34ef8958e"
+    },
+    {
+     "path": "scripts/colab/tasks.py",
+     "previous_sha256": "04dee4a3f6e54838a7be8d8767ec3f17224ad1f8e9d594733fd24072e7678dbb",
+     "current_sha256": "082362279c9f332b9d3cc31fb30bf2b2e6ef14ff1bcee6c1063041b8943201cc"
+    },
+    {
+     "path": "scripts/colab/v0_diagnosis.py",
+     "previous_sha256": null,
+     "current_sha256": "c3b26922b4b2741c558bb4794ac2c0c4e09219c97cc79ed55d47596651f47ab1"
+    },
+    {
+     "path": "scripts/data/build_cfgeo.py",
+     "previous_sha256": null,
+     "current_sha256": "58c3bef02073569b7072a185247019dbd9992ce0249a854bcd30e662037debed"
+    },
+    {
+     "path": "scripts/data/build_eval_sets.py",
+     "previous_sha256": null,
+     "current_sha256": "7db97ebe422850518355f2d07cf900d09108e827cf7c01b7e8b3d5a187809306"
+    },
+    {
+     "path": "src/evaluation/cfgeo.py",
+     "previous_sha256": null,
+     "current_sha256": "498f3c12f803aff61896edde67f76ba04d23dd2e7383d264884961d002f0d399"
+    },
+    {
+     "path": "src/evaluation/eval_sets.py",
+     "previous_sha256": null,
+     "current_sha256": "b15153f37231ccb15a75f8657885b1ed499169f42b3d36e2eae77dac342f5ee3"
+    },
+    {
+     "path": "src/evaluation/generate_v3.py",
+     "previous_sha256": "80a6af24a0d525edd8f65027d25b45a5ffd4fc1297c4d8347ccf076df49be7c8",
+     "current_sha256": "a11aa95d496bf121b02b11b8041c203c13a548eeda584aec33b2158b1a9f1ae7"
+    },
+    {
+     "path": "src/evaluation/harness.py",
+     "previous_sha256": null,
+     "current_sha256": "bf6109270831485205b7ebf3b03f8a2dbe3cbbc49d1e060c4c713b6f15decd1d"
+    },
+    {
+     "path": "src/evaluation/public_sources.py",
+     "previous_sha256": null,
+     "current_sha256": "1db2b9ef2be8e119b0c852e21761d7b2419ae192924062c7525b3346127de8d7"
+    },
+    {
+     "path": "src/evaluation/stats.py",
+     "previous_sha256": null,
+     "current_sha256": "408516c129fcd7f4883e78e4fd94b42788189bb8f83c857290b3404d2e9baa2a"
+    },
+    {
+     "path": "src/training/protocol_v3.py",
+     "previous_sha256": "57f1aabb3b4a6536c59367299f8dd78d4965cd1f0a89afdb0a4565121c22c5c5",
+     "current_sha256": "cf217475d9258a74a4a2e43fa2376d703b27b6443ea9b86b65af0a287a9b5327"
+    },
+    {
+     "path": "src/training/rl_entry.py",
+     "previous_sha256": "174cdf3b8922dd111516dcca50ec69549c14d24915c2afea6e1c240a49deeab0",
+     "current_sha256": "aa4621c37d4afd5d7e37d72b8bc583c1fcdc7668e8d3e6ba489fc53ebe627e75"
+    },
+    {
+     "path": "src/training/vllm_guard.py",
+     "previous_sha256": null,
+     "current_sha256": "e4192370ee7bb2bc33b9066824dcbb316f75070429ec65d363f616a902251aac"
+    },
+    {
+     "path": "tests/_mini_release.py",
+     "previous_sha256": "8a882a6a099272001e33ca80228bafe179f35e6ea0a3ffd7e3fa3596bf0cc0fe",
+     "current_sha256": "f1daf7f0c82dc48e7920662e6a8fa2d34bf1efdecf32463a70672831219d0256"
+    },
+    {
+     "path": "tests/colab_stub.py",
+     "previous_sha256": "15b588d47406054fdd4c5d25a1fe08cf6425922429b2d37e0029233f9e6c7f40",
+     "current_sha256": "b08f1c0ca57102591f30428f64000c7719af9b697daec01a433b12231df089fa"
+    },
+    {
+     "path": "tests/test_cfgeo.py",
+     "previous_sha256": null,
+     "current_sha256": "1d6e2a99afd516a7461b8f2181eaf707da7513a2fc77b3841f606786f61f36ce"
+    },
+    {
+     "path": "tests/test_colab_launcher.py",
+     "previous_sha256": "ae818176a1a8eb142852e5aaa5d0ea2ed09b918ff60c598e25d7595c0c751872",
+     "current_sha256": "eb66fd808b747a0421c564f22d0305010b92c9a0ac665e4660af40056d3a82a5"
+    },
+    {
+     "path": "tests/test_eval_harness.py",
+     "previous_sha256": null,
+     "current_sha256": "97bcb433d186cc7e3e39092076191e425ec8aecdd6b8137e26e371f06ff33724"
+    },
+    {
+     "path": "tests/test_eval_sets.py",
+     "previous_sha256": null,
+     "current_sha256": "cf740f677076a01db6b651d16c5eaeab8486b02abebbca51f649f8db0a01d843"
+    },
+    {
+     "path": "tests/test_eval_stats.py",
+     "previous_sha256": null,
+     "current_sha256": "a00ca04e9d06f2e4a89a2a25212576bccbe8938c95f780f8b5ddadc2b3d70ebe"
+    },
+    {
+     "path": "tests/test_generate_v3.py",
+     "previous_sha256": "7f3711af9c2a77bdd5a107e7e86dff20bb724d5f8f5711193122e5d3915be1bb",
+     "current_sha256": "713c33ba660f309abfcbf1a9dc00eb53a02a3005fd5c16a4385eb4f52608a4a3"
+    },
+    {
+     "path": "tests/test_protocol_v3.py",
+     "previous_sha256": "6ac218e703eef8e7f85b717b9e5a5d3f501daa3e09ee106e138585c1bd3c82e4",
+     "current_sha256": "32eb9304ee7ee75b87ef418e6ae8e1316c0930748b26075a9dd8633446c12b25"
+    },
+    {
+     "path": "tests/test_s3_vm_scripts.py",
+     "previous_sha256": null,
+     "current_sha256": "597fe329398c0d0196893e5bf3e7c4420d756157a95e9beaf2e34c28f838f817"
     }
    ],
    "dropped_tracked_paths": [],

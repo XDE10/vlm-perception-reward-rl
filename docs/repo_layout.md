@@ -52,7 +52,7 @@
 | 目录 | 职责 |
 | --- | --- |
 | `src/data/` | 数据准入、模型输入白名单、事实序列化、split 保护、感知奖励解析 |
-| `src/evaluation/` | 有限几何 schema 的解析与覆盖感知评分 |
+| `src/evaluation/` | 有限几何 schema 的解析与覆盖感知评分；S3 起的评测集规则、CF-Geo 重建、统一评测路径与统计 |
 | `src/losses/` | CPU 参考损失（正确性参照，不是 GPU 训练器） |
 | `src/teachers/` | tokenizer/配置元数据审计（不下载权重） |
 | `src/rewards/` | 协议 v3 的奖励组件：逐条断言解析、InterGPS 几何证伪、可证伪感知奖励 v5、答案校验进程池、罗列攻击探针 |

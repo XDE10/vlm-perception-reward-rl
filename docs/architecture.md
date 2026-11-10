@@ -73,6 +73,11 @@ runs/<实验>/<组>/seed<k>/：rollouts.jsonl（逐条 rollout 与奖励明细�
 | `src/data/intergps_index.py` | InterGPS 人工标注的只读几何视图（点坐标、线/圆实例、题型） | 坐标只用于与平移无关的相对检验 |
 | `src/training/perception_reward_v4.py` | 训练器回调，把感知奖励接到 TRL | 奖励标签是私有元数据，不进入可见输入 |
 | `src/evaluation/geometry_perception_parser.py` | 有限关系 schema 解析、确定性序列化、覆盖感知去重评分 | 拒绝解析不等于模型推理错误；无标签类别不惩罚 |
+| `src/evaluation/eval_sets.py` / `public_sources.py` | S3 预注册的评测集规则（视觉必需子集、CF-Geo 候选、取整题的答案集合、换图配对）；固定版本公开数据的下载与按 `migration_manifest.json` 核对 | 规则只读题面、答案和 InterGPS 人工标注，不看模型输出；下载的文件不进数据包，也不进结果分支 |
+| `src/evaluation/cfgeo.py` | CF-Geo 补丁格式与重建：在固定版本的原图上贴补丁，前后都核对像素哈希 | 补丁只含我们填的底色和画的数字，仓库里没有原图 |
+| `src/evaluation/generate_v3.py` / `harness.py` | 批量贪心生成与评分；所有模型、所有条件（原图、无图、换图、CF k=1、CF k=2）共用一条评测路径 | 每个模型用同样的批次（32）和顺序；LoRA 不合并加载，即训练出的策略本身 |
+| `src/evaluation/stats.py` | 按图聚类的配对 bootstrap 与置换检验、Holm 校正、McNemar 精确检验（D46） | “能区分”要求 Holm 校正后 p < 0.05 且区间不跨 0 |
+| `src/training/vllm_guard.py` | 用 vLLM 生成时，检查每张训练图在训练处理器和 vLLM 默认设置下得到相同的 patch 网格 | 不同就在训练前停止（TRL 不能把 max_pixels 传给 vLLM） |
 | `src/losses/reference.py` | SFT/GRPO/对齐 KL 的 CPU 参考实现 | 正确性参照，不是 GPU 训练器或性能结论 |
 | `src/teachers/tokenizer_audit.py` | 按白名单下载 tokenizer/config 元数据并逐 token 比对 | 不下载模型权重，不产生能力结论 |
 
