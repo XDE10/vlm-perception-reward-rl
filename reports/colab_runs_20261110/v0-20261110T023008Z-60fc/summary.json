@@ -1,0 +1,1049 @@
+{
+  "run_id": "v0-20261110T023008Z-60fc",
+  "task": "v0",
+  "steps": [
+    {
+      "name": "env_report",
+      "state": "passed",
+      "required": true,
+      "description": "software, GPU and environment lock report",
+      "started_utc": "2026-11-10T02:32:20Z",
+      "log": "logs/env_report.log",
+      "exit_code": 0,
+      "seconds": 2.3,
+      "finished_utc": "2026-11-10T02:32:22Z"
+    },
+    {
+      "name": "verify_pack",
+      "state": "passed",
+      "required": true,
+      "description": "private data matches its anchors",
+      "started_utc": "2026-11-10T02:32:22Z",
+      "log": "logs/verify_pack.log",
+      "exit_code": 0,
+      "seconds": 0.3,
+      "finished_utc": "2026-11-10T02:32:22Z"
+    },
+    {
+      "name": "pytest",
+      "state": "passed",
+      "required": true,
+      "description": "full CPU test suite on the VM (GPU hidden)",
+      "started_utc": "2026-11-10T02:32:22Z",
+      "log": "logs/pytest.log",
+      "exit_code": 0,
+      "seconds": 170.8,
+      "finished_utc": "2026-11-10T02:35:13Z"
+    },
+    {
+      "name": "public_sources",
+      "state": "passed",
+      "required": true,
+      "description": "pinned Geometry3K wrapper parquets, checked against migration_manifest.json",
+      "started_utc": "2026-11-10T02:35:13Z",
+      "log": "logs/public_sources.log",
+      "exit_code": 0,
+      "seconds": 3.5,
+      "finished_utc": "2026-11-10T02:35:17Z"
+    },
+    {
+      "name": "eval_sets",
+      "state": "passed",
+      "required": true,
+      "description": "evaluation-set rules reproduce reports/eval_sets_20261109/eval_sets.json (no model)",
+      "started_utc": "2026-11-10T02:35:17Z",
+      "log": "logs/eval_sets.log",
+      "exit_code": 0,
+      "seconds": 13.5,
+      "finished_utc": "2026-11-10T02:35:30Z"
+    },
+    {
+      "name": "cfgeo_build",
+      "state": "passed",
+      "required": true,
+      "description": "every CF-Geo image rebuilds from its patches to the recorded pixels (no model)",
+      "started_utc": "2026-11-10T02:35:30Z",
+      "log": "logs/cfgeo_build.log",
+      "exit_code": 0,
+      "seconds": 12.9,
+      "finished_utc": "2026-11-10T02:35:43Z"
+    },
+    {
+      "name": "prompt_select",
+      "state": "passed",
+      "required": true,
+      "description": "P0 vs P1, warm-up and length measurements on 64 approved train problems",
+      "started_utc": "2026-11-10T02:35:43Z",
+      "log": "logs/prompt_select.log",
+      "exit_code": 0,
+      "seconds": 760.5,
+      "finished_utc": "2026-11-10T02:48:24Z"
+    },
+    {
+      "name": "v0_val82",
+      "state": "passed",
+      "required": true,
+      "description": "V0 greedy on the 82 validation problems (with image, without, answer-only): measurement only",
+      "started_utc": "2026-11-10T02:48:24Z",
+      "log": "logs/v0_val82.log",
+      "exit_code": 0,
+      "seconds": 466.9,
+      "finished_utc": "2026-11-10T02:56:11Z"
+    },
+    {
+      "name": "harness_check",
+      "state": "passed",
+      "required": true,
+      "description": "the S5 evaluation path on train-only inputs, all five conditions and the statistics",
+      "started_utc": "2026-11-10T02:56:11Z",
+      "log": "logs/harness_check.log",
+      "exit_code": 0,
+      "seconds": 328.9,
+      "finished_utc": "2026-11-10T03:01:39Z"
+    },
+    {
+      "name": "vllm_env",
+      "state": "passed",
+      "required": false,
+      "description": "vLLM venv (CUDA 13 only) for the importance-sampling check",
+      "started_utc": "2026-11-10T03:01:39Z",
+      "log": "logs/vllm_env.log",
+      "exit_code": 0,
+      "seconds": 26.3,
+      "finished_utc": "2026-11-10T03:02:06Z"
+    },
+    {
+      "name": "is_check",
+      "state": "passed",
+      "required": false,
+      "description": "3 GRPO steps with vLLM and the frozen runtime: importance-sampling weights (D41)",
+      "started_utc": "2026-11-10T03:02:06Z",
+      "log": "logs/is_check.log",
+      "exit_code": 0,
+      "seconds": 291.2,
+      "finished_utc": "2026-11-10T03:06:57Z"
+    },
+    {
+      "name": "decide_s3",
+      "state": "passed",
+      "required": true,
+      "description": "apply the pre-registered S3 decision rules (s3_decisions.json)",
+      "started_utc": "2026-11-10T03:06:57Z",
+      "log": "logs/decide_s3.log",
+      "exit_code": 0,
+      "seconds": 0.1,
+      "finished_utc": "2026-11-10T03:06:57Z"
+    }
+  ],
+  "error": null,
+  "env": {
+    "python": "3.12.3",
+    "platform": "Linux-6.6.159+-x86_64-with-glibc2.39",
+    "cpu_count": 12,
+    "ram_gb": 87.5,
+    "disk_free_gb": 239.8,
+    "packages": {
+      "torch": "2.13.0+cu130",
+      "torchvision": "0.28.0+cu130",
+      "transformers": "5.19.0",
+      "trl": "1.17.1",
+      "peft": "0.21.2",
+      "accelerate": "1.15.0",
+      "datasets": "4.8.5",
+      "math-verify": "0.9.0",
+      "sympy": "1.14.0",
+      "huggingface-hub": "1.33.0",
+      "numpy": "2.5.4",
+      "pillow": "13.0.0",
+      "pytest": "9.2.0",
+      "vllm": null
+    },
+    "torch": {
+      "version": "2.13.0+cu130",
+      "cuda_runtime": "13.0",
+      "cudnn": 92000,
+      "cuda_available": true
+    },
+    "gpu": {
+      "name": "NVIDIA A100-SXM4-40GB",
+      "total_gb": 42.41,
+      "capability": [
+        8,
+        0
+      ],
+      "count": 1,
+      "bf16": true
+    },
+    "env": {
+      "torch_backend": "cu130",
+      "lock": "requirements/locks/colab-gpu-cu130.txt",
+      "lock_sha256": "d009cd2e1a7848a1e21326b601d8f849fbf03052b34d07d808afe9c8bb065d2e",
+      "freeze_sha256": "ff9316bc44f93d48a284d806fc493dc0ad16c5237d84f7eb0acc0cc848f26f6a",
+      "install_seconds": 22.284565687179565
+    },
+    "driver": {
+      "available": true,
+      "name": "NVIDIA A100-SXM4-40GB",
+      "memory_mib": 40960.0,
+      "driver": "580.82.07",
+      "driver_cuda": [
+        13,
+        0
+      ]
+    },
+    "model": {
+      "repo": "Qwen/Qwen2.5-VL-3B-Instruct",
+      "revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+      "local_dir": "/content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8",
+      "total_bytes": 7520892432,
+      "download_seconds": 19.62476086616516
+    },
+    "model_files_sha256": {
+      "chat_template.json": "ad60d90252ed0b0705ba14e2d0ad0fec0beac1ea955642b54059b36052d8bc96",
+      "config.json": "7ed3eed5be6924cc800e8a5e53fc405c1aab1aaf36bad65c33403b36c56827f5",
+      "generation_config.json": "533f191cc257b7de37a4fccd0a7a1706d75e1aa660f93efaa54e5a2a9f9aace9",
+      "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+      "model-00001-of-00002.safetensors": "41a8895c164b4d32bae6b302f4603fcbc1797f32dafa45c7e9bcda23c6755df8",
+      "model-00002-of-00002.safetensors": "365531ff8752420e89dee707b79d021fb2d6e25abafe486f080555a4fe6972e4",
+      "model.safetensors.index.json": "c7dd78a4c6bea60b51332f1baf37b8f8124ecab2c35395a29a29825bf2619768",
+      "preprocessor_config.json": "f2058c716eef96ccaed1cc1e2d0c08306b62586d535b28d9d08e691b2fab7ca0",
+      "tokenizer.json": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+      "tokenizer_config.json": "4abd3520120e266da84c0864fee064d1fb10806f02225911a47253dd38dc5f56",
+      "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+    }
+  },
+  "pack": {
+    "schema": "p3-pack-verification-v1",
+    "content_sha256": "082210c90d5b3834539380c37bb5a43deab0f4354b5ff630910a6c06be06f1a1",
+    "recomputed_content_sha256": "082210c90d5b3834539380c37bb5a43deab0f4354b5ff630910a6c06be06f1a1",
+    "files": 716,
+    "anchors": [
+      "ledger",
+      "release",
+      "row"
+    ],
+    "missing_optional": [],
+    "problems": [],
+    "ok": true
+  },
+  "pytest": {
+    "tests": 276,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 11,
+    "passed": 265,
+    "failed_tests": [],
+    "seconds": 168.3
+  },
+  "calibration": null,
+  "gpu_probe": null,
+  "v0_probe": null,
+  "smoke": {},
+  "smoke_full_hf": null,
+  "smoke_full_vllm": null,
+  "resume": null,
+  "frozen_runtime": null,
+  "drive_probe": null,
+  "github_check": {
+    "mode": "auto",
+    "branch": "results/v0-20261110T023008Z-60fc",
+    "url": "https://github.com/XDE10/vlm-perception-reward-rl.git",
+    "credentials_file": "/content/gh_credentials",
+    "credentials_present": true,
+    "ok": true,
+    "credentials_mode": "0o600",
+    "push_access": true,
+    "seconds": 2.6,
+    "workdir": "/content/p3/github/v0-20261110T023008Z-60fc"
+  },
+  "public_sources": {
+    "schema": "p3-public-sources-v1",
+    "dest": "/content/p3/public",
+    "ok": true,
+    "files": [
+      {
+        "name": "geometry3k/data/train-00000-of-00001.parquet",
+        "ok": true,
+        "reused": false,
+        "bytes": 41542768,
+        "attempts": 1,
+        "seconds": 1.4
+      },
+      {
+        "name": "geometry3k/data/validation-00000-of-00001.parquet",
+        "ok": true,
+        "reused": false,
+        "bytes": 5885804,
+        "attempts": 1,
+        "seconds": 1.0
+      },
+      {
+        "name": "geometry3k/data/test-00000-of-00001.parquet",
+        "ok": true,
+        "reused": false,
+        "bytes": 11831222,
+        "attempts": 1,
+        "seconds": 1.0
+      }
+    ],
+    "bytes": 59259794
+  },
+  "eval_sets_check": {
+    "schema": "p3-eval-sets-check-v1",
+    "ok": true,
+    "differences": [],
+    "counts": {
+      "test601": 601,
+      "test_vn": 388,
+      "cf_candidates": 224,
+      "cf_candidates_by_split": {
+        "validation": 77,
+        "test": 147
+      },
+      "cf_rounded": 84,
+      "cf_degree": {
+        "1": 161,
+        "2": 63
+      },
+      "joined": {
+        "validation": {
+          "matched": 300
+        },
+        "test": {
+          "matched": 601
+        }
+      }
+    },
+    "committed": "reports/eval_sets_20261109/eval_sets.json",
+    "annotations": "data/project3_audit/intergps_annotations.jsonl",
+    "resolution": {
+      "max_pixels": 802816,
+      "min_pixels": 3136,
+      "validation": {
+        "images": 300,
+        "shrunk": 0,
+        "enlarged": 0,
+        "max_pixels_seen": 462146,
+        "min_pixels_seen": 21870
+      },
+      "test": {
+        "images": 601,
+        "shrunk": 0,
+        "enlarged": 0,
+        "max_pixels_seen": 562830,
+        "min_pixels_seen": 25288
+      }
+    }
+  },
+  "cfgeo_build": {
+    "schema": "p3-cfgeo-build-v1",
+    "files": {
+      "cfgeo.json": {
+        "items": 158,
+        "rebuilt": 158,
+        "failures": [],
+        "edit_version": "cfgeo-edit-v3-20261109"
+      },
+      "cfgeo_dev_train.json": {
+        "items": 40,
+        "rebuilt": 40,
+        "failures": [],
+        "edit_version": "cfgeo-edit-v3-20261109"
+      }
+    },
+    "ok": true
+  },
+  "prompt_select": {
+    "schema": "p3-prompt-select-v1",
+    "problems": 64,
+    "sample_ids": [
+      "train:1596",
+      "train:1148",
+      "train:670",
+      "train:1896",
+      "train:1458",
+      "train:425",
+      "train:249",
+      "train:1593",
+      "train:1022",
+      "train:584",
+      "train:1328",
+      "train:1664",
+      "train:689",
+      "train:1683",
+      "train:250",
+      "train:1525",
+      "train:1985",
+      "train:1932",
+      "train:242",
+      "train:42",
+      "train:35",
+      "train:1695",
+      "train:951",
+      "train:409",
+      "train:1296",
+      "train:1605",
+      "train:1597",
+      "train:1795",
+      "train:152",
+      "train:919",
+      "train:54",
+      "train:145",
+      "train:1917",
+      "train:1981",
+      "train:2096",
+      "train:640",
+      "train:1581",
+      "train:575",
+      "train:146",
+      "train:860",
+      "train:2024",
+      "train:1281",
+      "train:1176",
+      "train:147",
+      "train:1743",
+      "train:1185",
+      "train:314",
+      "train:1808",
+      "train:177",
+      "train:1942",
+      "train:849",
+      "train:149",
+      "train:741",
+      "train:535",
+      "train:329",
+      "train:678",
+      "train:1081",
+      "train:712",
+      "train:1355",
+      "train:1783",
+      "train:10",
+      "train:1144",
+      "train:1632",
+      "train:1233"
+    ],
+    "seed": 20261109,
+    "temperature": 1.0,
+    "top_p": 1.0,
+    "max_new_tokens": 1024,
+    "variants": {
+      "p0": {
+        "sampled": {
+          "completions": 256,
+          "samples_per_problem": 4,
+          "format_rate": 0.16796875,
+          "answer_accuracy": 0.015625,
+          "protocol_ok_rate": 0.19140625,
+          "budget_exhausted_rate": 0.01171875,
+          "finished": 82,
+          "finished_tokens": {
+            "p50": 187.5,
+            "p90": 372,
+            "p95": 415,
+            "max": 746
+          },
+          "problems_with_mixed_answer_reward": 4,
+          "problems": 64
+        },
+        "greedy": {
+          "completions": 64,
+          "format_rate": 0.140625,
+          "answer_accuracy": 0.015625,
+          "budget_exhausted_rate": 0.5625
+        },
+        "seconds": 439.8
+      },
+      "p1": {
+        "sampled": {
+          "completions": 256,
+          "samples_per_problem": 4,
+          "format_rate": 0.53125,
+          "answer_accuracy": 0.04296875,
+          "protocol_ok_rate": 0.64453125,
+          "budget_exhausted_rate": 0.0,
+          "finished": 215,
+          "finished_tokens": {
+            "p50": 180,
+            "p90": 330,
+            "p95": 361,
+            "max": 670
+          },
+          "problems_with_mixed_answer_reward": 11,
+          "problems": 64
+        },
+        "greedy": {
+          "completions": 64,
+          "format_rate": 0.46875,
+          "answer_accuracy": 0.03125,
+          "budget_exhausted_rate": 0.53125
+        },
+        "seconds": 307.3
+      }
+    }
+  },
+  "v0_val82": {
+    "schema": "p3-v0-diagnosis-v1",
+    "problems": 82,
+    "decoding": "greedy",
+    "batch_size": 32,
+    "max_new_tokens": 1024,
+    "conditions": {
+      "p0_image": {
+        "n": 82,
+        "protocol_ok_rate": 0.15853658536585366,
+        "format_rate": 0.15853658536585366,
+        "answer_accuracy": 0.024390243902439025,
+        "answer_status": {
+          "no_answer": 67,
+          "mismatch": 13,
+          "equivalent": 2
+        },
+        "eos_rate": 0.4024390243902439,
+        "budget_exhausted_rate": 0.5975609756097561,
+        "completion_tokens_mean": 662.5365853658536,
+        "completion_tokens_p50": 1024,
+        "completion_tokens_p90": 1024,
+        "completion_tokens_max": 1024,
+        "v5_reward_mean": -0.2606910569105691,
+        "v5_recall_mean": 0.042682926829268296,
+        "v5_false_mean": 1.5365853658536586,
+        "claims_mean": 2.317073170731707,
+        "version": "generate-v3-s3-20261109",
+        "failure_classes": {
+          "facts_without_tags": 39,
+          "perception_only": 16,
+          "complete": 13,
+          "perception_and_think_no_answer": 11,
+          "answer_but_malformed": 2,
+          "no_tags": 1
+        },
+        "repetition_loops": 40,
+        "seconds": 157.4
+      },
+      "p0_blind": {
+        "n": 82,
+        "protocol_ok_rate": 0.47560975609756095,
+        "format_rate": 0.45121951219512196,
+        "answer_accuracy": 0.04878048780487805,
+        "answer_status": {
+          "no_answer": 41,
+          "mismatch": 35,
+          "equivalent": 4,
+          "unparsed_prediction": 2
+        },
+        "eos_rate": 0.5609756097560976,
+        "budget_exhausted_rate": 0.43902439024390244,
+        "completion_tokens_mean": 550.6585365853658,
+        "completion_tokens_p50": 277,
+        "completion_tokens_p90": 1024,
+        "completion_tokens_max": 1024,
+        "v5_reward_mean": -0.6918766937669377,
+        "v5_recall_mean": 0.012262872628726287,
+        "v5_false_mean": 3.9634146341463414,
+        "claims_mean": 5.402439024390244,
+        "version": "generate-v3-s3-20261109",
+        "failure_classes": {
+          "complete": 39,
+          "perception_and_think_no_answer": 23,
+          "perception_only": 12,
+          "facts_without_tags": 3,
+          "no_tags": 3,
+          "answer_but_malformed": 2
+        },
+        "repetition_loops": 30,
+        "seconds": 147.0
+      },
+      "answer_only_image": {
+        "n": 82,
+        "protocol_ok_rate": 0.0,
+        "format_rate": 0.0,
+        "answer_accuracy": 0.13414634146341464,
+        "answer_status": {
+          "mismatch": 38,
+          "no_answer": 30,
+          "equivalent": 11,
+          "unparsed_prediction": 3
+        },
+        "eos_rate": 0.9512195121951219,
+        "budget_exhausted_rate": 0.04878048780487805,
+        "completion_tokens_mean": 333.4512195121951,
+        "completion_tokens_p50": 292,
+        "completion_tokens_p90": 506,
+        "completion_tokens_max": 1024,
+        "v5_reward_mean": null,
+        "v5_recall_mean": null,
+        "v5_false_mean": null,
+        "claims_mean": null,
+        "version": "generate-v3-s3-20261109",
+        "failure_classes": {
+          "answer_but_malformed": 52,
+          "no_tags": 26,
+          "other": 4
+        },
+        "repetition_loops": 0,
+        "seconds": 152.0
+      }
+    }
+  },
+  "harness_check": {
+    "summary": {
+      "e1_original": {
+        "n": 16,
+        "accuracy": 0.0,
+        "protocol_ok_rate": 0.0,
+        "format_rate": 0.0,
+        "budget_exhausted_rate": 0.75,
+        "no_answer_rate": 1.0,
+        "clusters": 16,
+        "e1": {
+          "items": 16,
+          "verified_precision": 0.08695652173913043,
+          "recall": 0.02702702702702703,
+          "claims_per_output": 1.8125,
+          "unknown_share": 0.20689655172413793,
+          "false_share": 0.7241379310344828,
+          "over_cap_rate": 0.0
+        }
+      },
+      "original": {
+        "n": 32,
+        "accuracy": 0.03125,
+        "protocol_ok_rate": 0.125,
+        "format_rate": 0.125,
+        "budget_exhausted_rate": 0.59375,
+        "no_answer_rate": 0.75,
+        "clusters": 32
+      },
+      "blind": {
+        "n": 32,
+        "accuracy": 0.0,
+        "protocol_ok_rate": 0.53125,
+        "format_rate": 0.53125,
+        "budget_exhausted_rate": 0.34375,
+        "no_answer_rate": 0.46875,
+        "clusters": 32
+      },
+      "swap": {
+        "n": 32,
+        "accuracy": 0.0,
+        "protocol_ok_rate": 0.125,
+        "format_rate": 0.125,
+        "budget_exhausted_rate": 0.6875,
+        "no_answer_rate": 0.78125,
+        "clusters": 32
+      },
+      "cf_k1": {
+        "n": 32,
+        "accuracy": 0.0625,
+        "protocol_ok_rate": 0.09375,
+        "format_rate": 0.0625,
+        "budget_exhausted_rate": 0.5625,
+        "no_answer_rate": 0.78125,
+        "clusters": 32
+      },
+      "cf_k2": {
+        "n": 32,
+        "accuracy": 0.03125,
+        "protocol_ok_rate": 0.125,
+        "format_rate": 0.125,
+        "budget_exhausted_rate": 0.5625,
+        "no_answer_rate": 0.84375,
+        "clusters": 32,
+        "old_answer_rate": 0.0
+      }
+    },
+    "comparisons": {
+      "original_vs_blind": {
+        "estimate": 0.03125,
+        "a": 0.03125,
+        "b": 0.0,
+        "ci95": [
+          0.0,
+          0.09375
+        ],
+        "p_value": 1.0,
+        "items": 32,
+        "clusters": 32,
+        "resamples": 10000,
+        "seed": 20261109,
+        "undefined_resamples": 0
+      },
+      "cf_k2_vs_cf_k1": {
+        "estimate": -0.03125,
+        "a": 0.03125,
+        "b": 0.0625,
+        "ci95": [
+          -0.09375,
+          0.0
+        ],
+        "p_value": 1.0,
+        "items": 32,
+        "clusters": 32,
+        "resamples": 10000,
+        "seed": 20261109,
+        "undefined_resamples": 0
+      }
+    },
+    "checks": {
+      "e1_scored": true,
+      "all_conditions_complete": true,
+      "blind_has_no_image": true,
+      "swap_shows_other_images": true,
+      "cf_k2_old_answer_measured": true,
+      "statistics_ran": true
+    },
+    "ok": true,
+    "swap": {
+      "train:1048": "train:650",
+      "train:108": "train:1799",
+      "train:1097": "train:527",
+      "train:1316": "train:394",
+      "train:1334": "train:1510",
+      "train:1379": "train:1551",
+      "train:1493": "train:1660",
+      "train:1510": "train:1910",
+      "train:1551": "train:583",
+      "train:1584": "train:1856",
+      "train:1598": "train:339",
+      "train:1607": "train:1097",
+      "train:1660": "train:578",
+      "train:1682": "train:1598",
+      "train:1721": "train:1902",
+      "train:1788": "train:397",
+      "train:1799": "train:520",
+      "train:1856": "train:579",
+      "train:1902": "train:613",
+      "train:1908": "train:1493",
+      "train:1910": "train:1316",
+      "train:339": "train:1721",
+      "train:394": "train:1048",
+      "train:397": "train:1379",
+      "train:520": "train:934",
+      "train:527": "train:1682",
+      "train:578": "train:1334",
+      "train:579": "train:1908",
+      "train:583": "train:1584",
+      "train:613": "train:1788",
+      "train:650": "train:108",
+      "train:934": "train:1607"
+    },
+    "schema": "p3-harness-check-v1",
+    "e1_items": [
+      "train:10",
+      "train:1000",
+      "train:1003",
+      "train:1006",
+      "train:1010",
+      "train:1011",
+      "train:1013",
+      "train:1019",
+      "train:1022",
+      "train:1023",
+      "train:1025",
+      "train:1026",
+      "train:1032",
+      "train:1036",
+      "train:1038",
+      "train:104"
+    ],
+    "items": [
+      "train:1856",
+      "train:1510",
+      "train:1788",
+      "train:1682",
+      "train:1607",
+      "train:1584",
+      "train:520",
+      "train:527",
+      "train:934",
+      "train:1721",
+      "train:1334",
+      "train:613",
+      "train:578",
+      "train:1379",
+      "train:1908",
+      "train:394",
+      "train:583",
+      "train:1799",
+      "train:397",
+      "train:650",
+      "train:1660",
+      "train:339",
+      "train:1910",
+      "train:1902",
+      "train:1493",
+      "train:579",
+      "train:1097",
+      "train:1598",
+      "train:1551",
+      "train:1316",
+      "train:108",
+      "train:1048"
+    ]
+  },
+  "is_check": {
+    "train": {
+      "run": "rl_v5/seed1_smoke",
+      "config_sha256": "39f64594ad767ceb71f35cc949241b61d9a554db9dbe42427415559bc0119a22",
+      "global_step": 3,
+      "max_steps": 3,
+      "wall_seconds": 140.6553041934967,
+      "peak_gpu_memory_gb": 23.217231872,
+      "vision_cache": null,
+      "mm_alignment": {
+        "version": "mm-alignment-guard-v1-20261109",
+        "checked_forwards": 72,
+        "left_padded_rows": 504,
+        "max_left_padding": 326
+      },
+      "vllm_image_grid": {
+        "images": 609,
+        "distinct_sizes": 456,
+        "train_limits": [
+          3136,
+          802816
+        ],
+        "vllm_limits": [
+          3136,
+          12845056
+        ],
+        "factor": 28,
+        "mismatches": 0
+      },
+      "generation_backend": "vllm",
+      "python": "3.12.3"
+    },
+    "rollouts": {
+      "rollouts": 192,
+      "steps": 3,
+      "answer_acc": 0.0156,
+      "format_rate": 0.1458,
+      "protocol_ok": 0.1458,
+      "perception_reward_mean": -0.1607,
+      "v5_own_mean": -0.1607,
+      "claims_per_completion": 1.65,
+      "completion_tokens_mean": 153.3,
+      "completion_tokens_max": 643,
+      "verifier_errors": 0
+    },
+    "mm_alignment": {
+      "version": "mm-alignment-guard-v1-20261109",
+      "checked_forwards": 72,
+      "left_padded_rows": 504,
+      "max_left_padding": 326
+    },
+    "step_time_median": 47.14,
+    "trainable_parameters": 29933568,
+    "vision_frozen": true,
+    "config_sha256": "39f64594ad767ceb71f35cc949241b61d9a554db9dbe42427415559bc0119a22",
+    "prompt_report": {
+      "prompts": 609,
+      "max_tokens": 1153,
+      "mean_tokens": 453.3464696223317,
+      "limit": 1600
+    }
+  },
+  "s3_decisions": {
+    "schema": "p3-s3-decisions-v1",
+    "design": "docs/plan/S3设计_20261109.md section 6",
+    "inputs": {
+      "eval_sets_identical": true,
+      "cfgeo_rebuilt": true,
+      "harness_check": true
+    },
+    "resolution": {
+      "max_pixels": 802816,
+      "evaluation_images": {
+        "max_pixels": 802816,
+        "min_pixels": 3136,
+        "validation": {
+          "images": 300,
+          "shrunk": 0,
+          "enlarged": 0,
+          "max_pixels_seen": 462146,
+          "min_pixels_seen": 21870
+        },
+        "test": {
+          "images": 601,
+          "shrunk": 0,
+          "enlarged": 0,
+          "max_pixels_seen": 562830,
+          "min_pixels_seen": 25288
+        }
+      }
+    },
+    "generation_backend": {
+      "value": "vllm",
+      "passed": true,
+      "steps": [
+        {
+          "step": 1,
+          "ratio_mean": 0.9997879862785339,
+          "logp_difference_mean": 0.06472377479076385,
+          "logp_difference_max": 3.2233071327209473
+        },
+        {
+          "step": 2,
+          "ratio_mean": 0.9967750310897827,
+          "logp_difference_mean": 0.061375007033348083,
+          "logp_difference_max": 2.7539563179016113
+        },
+        {
+          "step": 3,
+          "ratio_mean": 0.9975651502609253,
+          "logp_difference_mean": 0.0676916241645813,
+          "logp_difference_max": 4.432302474975586
+        }
+      ],
+      "rule": "every step: mean weight in [0.9, 1.1] and mean |dlogp| <= 0.10"
+    },
+    "v0_val82_measured_only": {
+      "p0_image": {
+        "n": 82,
+        "protocol_ok_rate": 0.15853658536585366,
+        "format_rate": 0.15853658536585366,
+        "answer_accuracy": 0.024390243902439025,
+        "answer_status": {
+          "no_answer": 67,
+          "mismatch": 13,
+          "equivalent": 2
+        },
+        "eos_rate": 0.4024390243902439,
+        "budget_exhausted_rate": 0.5975609756097561,
+        "completion_tokens_mean": 662.5365853658536,
+        "completion_tokens_p50": 1024,
+        "completion_tokens_p90": 1024,
+        "completion_tokens_max": 1024,
+        "v5_reward_mean": -0.2606910569105691,
+        "v5_recall_mean": 0.042682926829268296,
+        "v5_false_mean": 1.5365853658536586,
+        "claims_mean": 2.317073170731707,
+        "version": "generate-v3-s3-20261109",
+        "failure_classes": {
+          "facts_without_tags": 39,
+          "perception_only": 16,
+          "complete": 13,
+          "perception_and_think_no_answer": 11,
+          "answer_but_malformed": 2,
+          "no_tags": 1
+        },
+        "repetition_loops": 40,
+        "seconds": 157.4
+      },
+      "p0_blind": {
+        "n": 82,
+        "protocol_ok_rate": 0.47560975609756095,
+        "format_rate": 0.45121951219512196,
+        "answer_accuracy": 0.04878048780487805,
+        "answer_status": {
+          "no_answer": 41,
+          "mismatch": 35,
+          "equivalent": 4,
+          "unparsed_prediction": 2
+        },
+        "eos_rate": 0.5609756097560976,
+        "budget_exhausted_rate": 0.43902439024390244,
+        "completion_tokens_mean": 550.6585365853658,
+        "completion_tokens_p50": 277,
+        "completion_tokens_p90": 1024,
+        "completion_tokens_max": 1024,
+        "v5_reward_mean": -0.6918766937669377,
+        "v5_recall_mean": 0.012262872628726287,
+        "v5_false_mean": 3.9634146341463414,
+        "claims_mean": 5.402439024390244,
+        "version": "generate-v3-s3-20261109",
+        "failure_classes": {
+          "complete": 39,
+          "perception_and_think_no_answer": 23,
+          "perception_only": 12,
+          "facts_without_tags": 3,
+          "no_tags": 3,
+          "answer_but_malformed": 2
+        },
+        "repetition_loops": 30,
+        "seconds": 147.0
+      },
+      "answer_only_image": {
+        "n": 82,
+        "protocol_ok_rate": 0.0,
+        "format_rate": 0.0,
+        "answer_accuracy": 0.13414634146341464,
+        "answer_status": {
+          "mismatch": 38,
+          "no_answer": 30,
+          "equivalent": 11,
+          "unparsed_prediction": 3
+        },
+        "eos_rate": 0.9512195121951219,
+        "budget_exhausted_rate": 0.04878048780487805,
+        "completion_tokens_mean": 333.4512195121951,
+        "completion_tokens_p50": 292,
+        "completion_tokens_p90": 506,
+        "completion_tokens_max": 1024,
+        "v5_reward_mean": null,
+        "v5_recall_mean": null,
+        "v5_false_mean": null,
+        "claims_mean": null,
+        "version": "generate-v3-s3-20261109",
+        "failure_classes": {
+          "answer_but_malformed": 52,
+          "no_tags": 26,
+          "other": 4
+        },
+        "repetition_loops": 0,
+        "seconds": 152.0
+      }
+    },
+    "prompt": {
+      "chosen": "p1",
+      "format_gain": 0.36328125,
+      "answer_change": 0.02734375,
+      "rule": "P1 if format gain >= 0.10 and answer change >= -0.02 (temperature-1 samples)",
+      "problems": 64
+    },
+    "warmup": {
+      "needed": false,
+      "format_rate": 0.53125,
+      "threshold": 0.5
+    },
+    "max_completion_length": {
+      "value": 1024,
+      "decided": true,
+      "finished": 215,
+      "p95": 361,
+      "rule": "1024 if p95 <= 870 else 1536"
+    },
+    "grpo_answer_signal": {
+      "problems_with_mixed_answer_reward": 11,
+      "problems": 64
+    },
+    "complete": true
+  },
+  "checks": [
+    {
+      "check": "评测集规则在 VM 上复现了提交的定义（eval_sets.json）",
+      "ok": true
+    },
+    {
+      "check": "全部 CF-Geo 图像由补丁重建，像素哈希一致",
+      "ok": true
+    },
+    {
+      "check": "评测代码路径检查通过（train 输入，五种条件与统计）",
+      "ok": true
+    },
+    {
+      "check": "S3 决策完整（s3_decisions.json，输入检查全部通过）",
+      "ok": true
+    },
+    {
+      "check": "pytest 无失败",
+      "ok": true
+    },
+    {
+      "check": "私有数据与锚点一致",
+      "ok": true
+    }
+  ],
+  "overall": "passed"
+}

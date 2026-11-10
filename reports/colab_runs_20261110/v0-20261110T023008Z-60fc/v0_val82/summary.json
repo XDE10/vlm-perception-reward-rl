@@ -1,0 +1,104 @@
+{
+  "schema": "p3-v0-diagnosis-v1",
+  "problems": 82,
+  "decoding": "greedy",
+  "batch_size": 32,
+  "max_new_tokens": 1024,
+  "conditions": {
+    "p0_image": {
+      "n": 82,
+      "protocol_ok_rate": 0.15853658536585366,
+      "format_rate": 0.15853658536585366,
+      "answer_accuracy": 0.024390243902439025,
+      "answer_status": {
+        "no_answer": 67,
+        "mismatch": 13,
+        "equivalent": 2
+      },
+      "eos_rate": 0.4024390243902439,
+      "budget_exhausted_rate": 0.5975609756097561,
+      "completion_tokens_mean": 662.5365853658536,
+      "completion_tokens_p50": 1024,
+      "completion_tokens_p90": 1024,
+      "completion_tokens_max": 1024,
+      "v5_reward_mean": -0.2606910569105691,
+      "v5_recall_mean": 0.042682926829268296,
+      "v5_false_mean": 1.5365853658536586,
+      "claims_mean": 2.317073170731707,
+      "version": "generate-v3-s3-20261109",
+      "failure_classes": {
+        "facts_without_tags": 39,
+        "perception_only": 16,
+        "complete": 13,
+        "perception_and_think_no_answer": 11,
+        "answer_but_malformed": 2,
+        "no_tags": 1
+      },
+      "repetition_loops": 40,
+      "seconds": 157.4
+    },
+    "p0_blind": {
+      "n": 82,
+      "protocol_ok_rate": 0.47560975609756095,
+      "format_rate": 0.45121951219512196,
+      "answer_accuracy": 0.04878048780487805,
+      "answer_status": {
+        "no_answer": 41,
+        "mismatch": 35,
+        "equivalent": 4,
+        "unparsed_prediction": 2
+      },
+      "eos_rate": 0.5609756097560976,
+      "budget_exhausted_rate": 0.43902439024390244,
+      "completion_tokens_mean": 550.6585365853658,
+      "completion_tokens_p50": 277,
+      "completion_tokens_p90": 1024,
+      "completion_tokens_max": 1024,
+      "v5_reward_mean": -0.6918766937669377,
+      "v5_recall_mean": 0.012262872628726287,
+      "v5_false_mean": 3.9634146341463414,
+      "claims_mean": 5.402439024390244,
+      "version": "generate-v3-s3-20261109",
+      "failure_classes": {
+        "complete": 39,
+        "perception_and_think_no_answer": 23,
+        "perception_only": 12,
+        "facts_without_tags": 3,
+        "no_tags": 3,
+        "answer_but_malformed": 2
+      },
+      "repetition_loops": 30,
+      "seconds": 147.0
+    },
+    "answer_only_image": {
+      "n": 82,
+      "protocol_ok_rate": 0.0,
+      "format_rate": 0.0,
+      "answer_accuracy": 0.13414634146341464,
+      "answer_status": {
+        "mismatch": 38,
+        "no_answer": 30,
+        "equivalent": 11,
+        "unparsed_prediction": 3
+      },
+      "eos_rate": 0.9512195121951219,
+      "budget_exhausted_rate": 0.04878048780487805,
+      "completion_tokens_mean": 333.4512195121951,
+      "completion_tokens_p50": 292,
+      "completion_tokens_p90": 506,
+      "completion_tokens_max": 1024,
+      "v5_reward_mean": null,
+      "v5_recall_mean": null,
+      "v5_false_mean": null,
+      "claims_mean": null,
+      "version": "generate-v3-s3-20261109",
+      "failure_classes": {
+        "answer_but_malformed": 52,
+        "no_tags": 26,
+        "other": 4
+      },
+      "repetition_loops": 0,
+      "seconds": 152.0
+    }
+  }
+}

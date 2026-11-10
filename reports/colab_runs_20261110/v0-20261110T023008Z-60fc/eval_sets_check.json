@@ -1,0 +1,47 @@
+{
+  "schema": "p3-eval-sets-check-v1",
+  "ok": true,
+  "differences": [],
+  "counts": {
+    "test601": 601,
+    "test_vn": 388,
+    "cf_candidates": 224,
+    "cf_candidates_by_split": {
+      "validation": 77,
+      "test": 147
+    },
+    "cf_rounded": 84,
+    "cf_degree": {
+      "1": 161,
+      "2": 63
+    },
+    "joined": {
+      "validation": {
+        "matched": 300
+      },
+      "test": {
+        "matched": 601
+      }
+    }
+  },
+  "committed": "reports/eval_sets_20261109/eval_sets.json",
+  "annotations": "data/project3_audit/intergps_annotations.jsonl",
+  "resolution": {
+    "max_pixels": 802816,
+    "min_pixels": 3136,
+    "validation": {
+      "images": 300,
+      "shrunk": 0,
+      "enlarged": 0,
+      "max_pixels_seen": 462146,
+      "min_pixels_seen": 21870
+    },
+    "test": {
+      "images": 601,
+      "shrunk": 0,
+      "enlarged": 0,
+      "max_pixels_seen": 562830,
+      "min_pixels_seen": 25288
+    }
+  }
+}

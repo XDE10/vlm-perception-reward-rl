@@ -1,0 +1,32 @@
+{
+  "schema": "p3-public-sources-v1",
+  "dest": "/content/p3/public",
+  "ok": true,
+  "files": [
+    {
+      "name": "geometry3k/data/train-00000-of-00001.parquet",
+      "ok": true,
+      "reused": false,
+      "bytes": 41542768,
+      "attempts": 1,
+      "seconds": 1.4
+    },
+    {
+      "name": "geometry3k/data/validation-00000-of-00001.parquet",
+      "ok": true,
+      "reused": false,
+      "bytes": 5885804,
+      "attempts": 1,
+      "seconds": 1.0
+    },
+    {
+      "name": "geometry3k/data/test-00000-of-00001.parquet",
+      "ok": true,
+      "reused": false,
+      "bytes": 11831222,
+      "attempts": 1,
+      "seconds": 1.0
+    }
+  ],
+  "bytes": 59259794
+}

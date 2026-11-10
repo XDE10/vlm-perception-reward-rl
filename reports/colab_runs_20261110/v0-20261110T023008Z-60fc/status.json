@@ -1,0 +1,153 @@
+{
+  "schema": "p3-job-status-v1",
+  "run_id": "v0-20261110T023008Z-60fc",
+  "task": "v0",
+  "state": "packaging",
+  "started_utc": "2026-11-10T02:32:17Z",
+  "updated_utc": "2026-11-10T03:06:57Z",
+  "steps": [
+    {
+      "name": "env_report",
+      "state": "passed",
+      "required": true,
+      "description": "software, GPU and environment lock report",
+      "started_utc": "2026-11-10T02:32:20Z",
+      "log": "logs/env_report.log",
+      "exit_code": 0,
+      "seconds": 2.3,
+      "finished_utc": "2026-11-10T02:32:22Z"
+    },
+    {
+      "name": "verify_pack",
+      "state": "passed",
+      "required": true,
+      "description": "private data matches its anchors",
+      "started_utc": "2026-11-10T02:32:22Z",
+      "log": "logs/verify_pack.log",
+      "exit_code": 0,
+      "seconds": 0.3,
+      "finished_utc": "2026-11-10T02:32:22Z"
+    },
+    {
+      "name": "pytest",
+      "state": "passed",
+      "required": true,
+      "description": "full CPU test suite on the VM (GPU hidden)",
+      "started_utc": "2026-11-10T02:32:22Z",
+      "log": "logs/pytest.log",
+      "exit_code": 0,
+      "seconds": 170.8,
+      "finished_utc": "2026-11-10T02:35:13Z"
+    },
+    {
+      "name": "public_sources",
+      "state": "passed",
+      "required": true,
+      "description": "pinned Geometry3K wrapper parquets, checked against migration_manifest.json",
+      "started_utc": "2026-11-10T02:35:13Z",
+      "log": "logs/public_sources.log",
+      "exit_code": 0,
+      "seconds": 3.5,
+      "finished_utc": "2026-11-10T02:35:17Z"
+    },
+    {
+      "name": "eval_sets",
+      "state": "passed",
+      "required": true,
+      "description": "evaluation-set rules reproduce reports/eval_sets_20261109/eval_sets.json (no model)",
+      "started_utc": "2026-11-10T02:35:17Z",
+      "log": "logs/eval_sets.log",
+      "exit_code": 0,
+      "seconds": 13.5,
+      "finished_utc": "2026-11-10T02:35:30Z"
+    },
+    {
+      "name": "cfgeo_build",
+      "state": "passed",
+      "required": true,
+      "description": "every CF-Geo image rebuilds from its patches to the recorded pixels (no model)",
+      "started_utc": "2026-11-10T02:35:30Z",
+      "log": "logs/cfgeo_build.log",
+      "exit_code": 0,
+      "seconds": 12.9,
+      "finished_utc": "2026-11-10T02:35:43Z"
+    },
+    {
+      "name": "prompt_select",
+      "state": "passed",
+      "required": true,
+      "description": "P0 vs P1, warm-up and length measurements on 64 approved train problems",
+      "started_utc": "2026-11-10T02:35:43Z",
+      "log": "logs/prompt_select.log",
+      "exit_code": 0,
+      "seconds": 760.5,
+      "finished_utc": "2026-11-10T02:48:24Z"
+    },
+    {
+      "name": "v0_val82",
+      "state": "passed",
+      "required": true,
+      "description": "V0 greedy on the 82 validation problems (with image, without, answer-only): measurement only",
+      "started_utc": "2026-11-10T02:48:24Z",
+      "log": "logs/v0_val82.log",
+      "exit_code": 0,
+      "seconds": 466.9,
+      "finished_utc": "2026-11-10T02:56:11Z"
+    },
+    {
+      "name": "harness_check",
+      "state": "passed",
+      "required": true,
+      "description": "the S5 evaluation path on train-only inputs, all five conditions and the statistics",
+      "started_utc": "2026-11-10T02:56:11Z",
+      "log": "logs/harness_check.log",
+      "exit_code": 0,
+      "seconds": 328.9,
+      "finished_utc": "2026-11-10T03:01:39Z"
+    },
+    {
+      "name": "vllm_env",
+      "state": "passed",
+      "required": false,
+      "description": "vLLM venv (CUDA 13 only) for the importance-sampling check",
+      "started_utc": "2026-11-10T03:01:39Z",
+      "log": "logs/vllm_env.log",
+      "exit_code": 0,
+      "seconds": 26.3,
+      "finished_utc": "2026-11-10T03:02:06Z"
+    },
+    {
+      "name": "is_check",
+      "state": "passed",
+      "required": false,
+      "description": "3 GRPO steps with vLLM and the frozen runtime: importance-sampling weights (D41)",
+      "started_utc": "2026-11-10T03:02:06Z",
+      "log": "logs/is_check.log",
+      "exit_code": 0,
+      "seconds": 291.2,
+      "finished_utc": "2026-11-10T03:06:57Z"
+    },
+    {
+      "name": "decide_s3",
+      "state": "passed",
+      "required": true,
+      "description": "apply the pre-registered S3 decision rules (s3_decisions.json)",
+      "started_utc": "2026-11-10T03:06:57Z",
+      "log": "logs/decide_s3.log",
+      "exit_code": 0,
+      "seconds": 0.1,
+      "finished_utc": "2026-11-10T03:06:57Z"
+    }
+  ],
+  "current": null,
+  "github_check": {
+    "mode": "auto",
+    "ok": true,
+    "credentials_present": true,
+    "push_access": true,
+    "branch": "results/v0-20261110T023008Z-60fc",
+    "reason": null,
+    "warning": null
+  },
+  "overall": "passed"
+}

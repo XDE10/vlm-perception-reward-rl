@@ -1,0 +1,11 @@
+......................................................sssssssssss....... [ 26%]
+........................................................................ [ 52%]
+........................................................................ [ 78%]
+............................................................             [100%]
+=============================== warnings summary ===============================
+tests/test_eval_harness.py::test_load_model_with_a_saved_lora_adapter
+  /content/p3/env/base/lib/python3.12/site-packages/transformers/models/qwen2_vl/image_processing_qwen2_vl.py:129: FutureWarning: Passing `min_pixels` and `max_pixels` to a processor call is deprecated and will be removed in v5.23. Pass in `size={'longest_edge': xxx, 'shortest_edge': xxx} to override the target size.`
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+265 passed, 11 skipped, 1 warning in 168.28s (0:02:48)

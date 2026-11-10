@@ -1,0 +1,12 @@
+{
+  "mode": "auto",
+  "branch": "results/v0-20261110T023008Z-60fc",
+  "url": "https://github.com/XDE10/vlm-perception-reward-rl.git",
+  "credentials_file": "/content/gh_credentials",
+  "credentials_present": true,
+  "ok": true,
+  "credentials_mode": "0o600",
+  "push_access": true,
+  "seconds": 2.6,
+  "workdir": "/content/p3/github/v0-20261110T023008Z-60fc"
+}
