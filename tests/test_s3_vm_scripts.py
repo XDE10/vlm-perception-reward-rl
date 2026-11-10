@@ -152,15 +152,23 @@ def test_public_sources_are_checked_against_the_ledger(tmp_path):
             return False
 
     served = {"body": payload}
-    opener = lambda url, timeout: Response(served["body"])  # noqa: E731
+    requested = []
+
+    def opener(request, timeout):
+        requested.append(request.full_url)
+        return Response(served["body"])
+
     names = ["geometry3k/data/x.parquet"]
     first = public_sources.run(tmp_path / "public", names, repo_root=repo, opener=opener, tries=1)
     assert first["ok"] and not first["files"][0]["reused"]
+    assert requested == ["https://huggingface.co/datasets/hiyouga/geometry3k/resolve/"
+                         "fd21e533e1e50d0662a2bf7b223e60511bd5f8b7/data/x.parquet"]
     assert public_sources.run(tmp_path / "public", names, repo_root=repo, opener=opener, tries=1)["files"][0]["reused"]
     (tmp_path / "public/geometry3k/data/x.parquet").write_bytes(b"tampered")
     served["body"] = b"wrong content"
     bad = public_sources.run(tmp_path / "public", names, repo_root=repo, opener=opener, tries=1)
-    assert not bad["ok"] and "differs" in bad["files"][0]["errors"][0] or "size" in bad["files"][0]["errors"][0]
+    assert not bad["ok"] and "size" in bad["files"][0]["errors"][0]
+    assert (tmp_path / "public/geometry3k/data/x.parquet").read_bytes() == b"tampered"  # never replaced by a bad copy
     with pytest.raises(ValueError, match="not pinned"):
         public_sources.run(tmp_path / "public", ["geometry3k/data/other.parquet"], repo_root=repo, opener=opener)
 

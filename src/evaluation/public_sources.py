@@ -63,7 +63,8 @@ def fetch(name, dest_root, expected, tries=4, timeout=300, opener=None):
     for attempt in range(1, tries + 1):
         part = target.with_name(target.name + ".part")
         try:
-            with (opener or urllib.request.urlopen)(url(name), timeout=timeout) as response, open(str(part), "wb") as out:
+            request = urllib.request.Request(url(name), headers={"User-Agent": "p3-public-sources/1"})
+            with (opener or urllib.request.urlopen)(request, timeout=timeout) as response, open(str(part), "wb") as out:
                 while True:
                     block = response.read(1 << 20)
                     if not block:
