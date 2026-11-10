@@ -120,10 +120,28 @@ def build(out_dir):
                "smoke_full_vllm": run_summary(out / "smoke_full_vllm") if (out / "smoke_full_vllm").is_dir() else None,
                "resume": run_summary(out / "resume") if (out / "resume").is_dir() else None,
                "frozen_runtime": _load(out / "frozen_runtime.json"), "drive_probe": _load(out / "drive_probe.json"),
-               "github_check": _load(out / "github_check.json")}
+               "github_check": _load(out / "github_check.json"),
+               "public_sources": _load(out / "public_sources.json"), "eval_sets_check": _load(out / "eval_sets_check.json"),
+               "cfgeo_build": _load(out / "cfgeo_build.json"),
+               "prompt_select": _load(out / "prompt_select" / "summary.json"),
+               "v0_val82": _load(out / "v0_val82" / "summary.json"),
+               "harness_check": _load(out / "harness_check" / "summary.json"),
+               "is_check": run_summary(out / "is_check") if (out / "is_check").is_dir() else None,
+               "s3_decisions": _load(out / "s3_decisions.json")}
     checks = []
     if summary["task"] == "drive-check":
         checks.append(("Drive 写入、读回、哈希校验、删除全部成功", bool((summary["drive_probe"] or {}).get("ok"))))
+    if summary["eval_sets_check"] is not None:
+        checks.append(("评测集规则在 VM 上复现了提交的定义（eval_sets.json）", bool(summary["eval_sets_check"].get("ok"))))
+    if summary["cfgeo_build"] is not None:
+        checks.append(("全部 CF-Geo 图像由补丁重建，像素哈希一致", bool(summary["cfgeo_build"].get("ok"))))
+    if summary["harness_check"] is not None:
+        checks.append(("评测代码路径检查通过（train 输入，五种条件与统计）", bool(summary["harness_check"].get("ok"))))
+    if summary["task"] == "v0":
+        decisions = summary["s3_decisions"] or {}
+        dry = bool(((_load(out / "request.json") or {}).get("options") or {}).get("dry_run"))
+        checks.append(("写出了 S3 决策文件" if dry else "S3 决策完整（s3_decisions.json，输入检查全部通过）",
+                       bool(decisions) and (dry or bool(decisions.get("complete")))))
     if summary["pytest"] is not None:
         checks.append(("pytest 无失败", summary["pytest"]["failures"] == 0 and summary["pytest"]["errors"] == 0))
     if summary["pack"] is not None:
@@ -261,7 +279,7 @@ def markdown(s):
     rows = []
     for name, run in sorted((s.get("smoke") or {}).items()):
         rows.append((name, run))
-    for name in ["smoke_full_hf", "smoke_full_vllm", "resume"]:
+    for name in ["smoke_full_hf", "smoke_full_vllm", "resume", "is_check"]:
         if s.get(name):
             rows.append((name, s[name]))
     if rows:
@@ -276,6 +294,7 @@ def markdown(s):
                 _fmt(train.get("peak_gpu_memory_gb"), 1), _fmt(ro.get("answer_acc")), _fmt(ro.get("format_rate")),
                 _fmt(ro.get("claims_per_completion"), 2),
                 "%s / %s" % (guard["checked_forwards"], guard["left_padded_rows"]) if guard else "—"))
+    lines += s3_lines(s)
     lines += drive_lines(s.get("drive_probe"))
     gh = s.get("github_check") or {}
     if gh and gh.get("mode") != "off":
@@ -296,6 +315,84 @@ def markdown(s):
         for step in failed:
             lines += ["### %s（%s）" % (step["name"], step.get("state")), "", "```text", (step.get("log_tail") or step.get("reason") or "")[-3000:], "```", ""]
     return "\n".join(lines) + "\n"
+
+
+def s3_lines(s):
+    """Sections of a ``v0`` run (docs/plan/S3设计_20261109.md sections 6-7)."""
+    lines = []
+    decisions = s.get("s3_decisions")
+    if decisions:
+        lines += ["", "## S3 决策（`s3_decisions.json`，规则见 S3 设计第 6 节，只用 train 测量）", ""]
+        prompt = decisions.get("prompt")
+        if prompt:
+            lines.append("- 提示：**%s**（P1 相对 P0：格式率 %+.3f，答案准确率 %+.3f；%d 道 train 题）" % (
+                prompt["chosen"].upper(), prompt["format_gain"], prompt["answer_change"], prompt["problems"]))
+            warmup = decisions["warmup"]
+            lines.append("- 格式预热：%s（选定提示在温度 1.0 下的格式率 %.3f，阈值 %.2f）" % (
+                "需要" if warmup["needed"] else "不需要", warmup["format_rate"], warmup["threshold"]))
+            length = decisions["max_completion_length"]
+            lines.append("- 生成长度上限：%s（写完 `</answer>` 的补全 %s 条，第 95 百分位 %s）%s" % (
+                length["value"], length["finished"], _fmt(length.get("p95")),
+                "" if length["decided"] else "；样本不足，未按规则决定，S4 试跑时再测"))
+        else:
+            lines.append("- 提示、格式预热、长度：没有测量（prompt_select 未运行或未完成）")
+        backend = decisions["generation_backend"]
+        lines.append("- S4 生成后端：**%s**（%s）" % (backend["value"], "重要性采样检查通过" if backend.get("passed") else
+                                                 backend.get("reason") or "重要性采样检查未通过"))
+        evaluation = (decisions.get("resolution") or {}).get("evaluation_images") or {}
+        if evaluation:
+            lines.append("- 分辨率：max_pixels 保持 %s；会被缩小的评测图 validation %s/%s、test %s/%s" % (
+                decisions["resolution"]["max_pixels"], evaluation["validation"]["shrunk"],
+                evaluation["validation"]["images"], evaluation["test"]["shrunk"], evaluation["test"]["images"]))
+        steps = backend.get("steps") or []
+        if steps:
+            lines += ["", "| 步 | 平均权重 | 每 token log-prob 差（平均 / 最大） |", "|---|---|---|"]
+            lines += ["| %s | %s | %s / %s |" % (r["step"], _fmt(r["ratio_mean"]), _fmt(r["logp_difference_mean"], 4),
+                                               _fmt(r["logp_difference_max"], 2)) for r in steps]
+    prompt = s.get("prompt_select")
+    if prompt:
+        lines += ["", "## 提示选择的测量（%d 道已批准 train 题，每题 4 个温度 1.0 样本 + 1 个贪心）" % prompt["problems"], "",
+                  "| 提示 | 格式率（采样） | 答案准确率（采样） | 写到上限 | 写完 `</answer>` 条数 / p95 | 答案奖励有差别的题 | 格式率（贪心） | 答案（贪心） |",
+                  "|---|---|---|---|---|---|---|---|"]
+        for name, v in sorted(prompt["variants"].items()):
+            a, g = v["sampled"], v["greedy"]
+            lines.append("| %s | %s | %s | %s | %s / %s | %s / %s | %s | %s |" % (
+                name.upper(), _fmt(a["format_rate"]), _fmt(a["answer_accuracy"]), _fmt(a["budget_exhausted_rate"]),
+                a["finished"], _fmt((a.get("finished_tokens") or {}).get("p95")), a["problems_with_mixed_answer_reward"],
+                a["problems"], _fmt(g["format_rate"]), _fmt(g["answer_accuracy"])))
+    v0 = s.get("v0_val82")
+    if v0:
+        lines += ["", "## V0 诊断（validation 82 题，贪心；只测量，不用于任何决策）", "",
+                  "| 条件 | 答案正确 | 三段协议完整 | 格式奖励 | 写到上限 | 重复循环 | 失败类别 |", "|---|---|---|---|---|---|---|"]
+        labels = {"p0_image": "P0 有图", "p0_blind": "P0 无图", "answer_only_image": "只要答案，有图"}
+        for name, c in v0["conditions"].items():
+            classes = "，".join("%s %d" % (k, n) for k, n in c["failure_classes"].items())
+            lines.append("| %s | %s | %s | %s | %s | %s | %s |" % (
+                labels.get(name, name), _fmt(c["answer_accuracy"]), _fmt(c["protocol_ok_rate"]), _fmt(c["format_rate"]),
+                _fmt(c["budget_exhausted_rate"]), c["repetition_loops"], classes))
+    checks = s.get("eval_sets_check")
+    cfgeo = s.get("cfgeo_build")
+    if checks or cfgeo:
+        lines += ["", "## 评测输入（不运行模型）", ""]
+        if checks:
+            lines.append("- 评测集定义：%s；test 视觉必需 %s 题，CF 候选 %s 题" % (
+                "与提交的 eval_sets.json 完全相同" if checks.get("ok") else "**与提交的不同**：%s" % checks.get("differences"),
+                (checks.get("counts") or {}).get("test_vn"), (checks.get("counts") or {}).get("cf_candidates")))
+        for name, f in sorted(((cfgeo or {}).get("files") or {}).items()):
+            lines.append("- `%s`：%s/%s 题由补丁重建，像素一致%s" % (name, f["rebuilt"], f["items"],
+                                                       "" if not f["failures"] else "；失败：%s" % f["failures"][:3]))
+    harness = s.get("harness_check")
+    if harness:
+        summary = harness.get("summary") or {}
+        lines += ["", "## 评测代码路径检查（只用 train；V0 的数字只说明代码能跑）", "",
+                  "| 条件 | 题数 | 答案正确 | 写到上限 |", "|---|---|---|---|"]
+        for name, c in summary.items():
+            lines.append("| %s | %s | %s | %s |" % (name, c.get("n"), _fmt(c.get("accuracy")), _fmt(c.get("budget_exhausted_rate"))))
+        for name, c in (harness.get("comparisons") or {}).items():
+            lines.append("- %s：差 %s，95%% 区间 %s–%s，p = %s（%s 个图簇）" % (
+                name, _fmt(c["estimate"]), _fmt(c["ci95"][0]), _fmt(c["ci95"][1]), _fmt(c["p_value"], 4), c["clusters"]))
+        lines.append("- 检查：%s" % "，".join("%s %s" % (k, "✅" if v else "❌") for k, v in (harness.get("checks") or {}).items()))
+    return lines
 
 
 def drive_lines(probe):
