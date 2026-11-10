@@ -176,6 +176,31 @@ python -m pytest -q
 失败的仍是上面两项依赖 `data/` 的测试。新增：`tests/test_experiment_configs.py` 中重要性采样设置进入配置哈希且只对 vLLM 生效（D41），
 以及冻结运行时文件只含中性字段（D43）。
 
+### 2026-11-09（S3 实施）
+
+同一沙箱环境：
+
+```text
+python -m pytest -q
+274 passed, 2 failed            # git 工作树
+263 passed, 11 skipped, 2 failed  # git archive 导出副本（与 VM 上相同）
+```
+
+失败的仍是两项依赖 `data/` 的测试；VM 上有 `data/`，预期 265 passed / 11 skipped。新增测试：
+
+- `tests/test_eval_sets.py`：视觉必需与 CF 候选规则的每一条排除原因、取整题答案集合（随机模拟验证集合覆盖所有正确取整）、
+  包装数据与 InterGPS 的对应、换图配对。
+- `tests/test_cfgeo.py`：补丁只替换 alpha 为 255 的像素、重建前后核对像素哈希、编辑器拒绝无法分开的标注、k=1 原样重画、粗体加描边。
+- `tests/test_eval_stats.py`：已知答案的构造数据（相同模型、完全分离、聚类使区间变宽、比率指标先求和再相除、Holm、McNemar）。
+- `tests/test_eval_harness.py`：五种条件的判分（固定输出）、发布数据的图像核对，以及 tiny Qwen2.5-VL 上的完整路径和 LoRA adapter 加载。
+- `tests/test_s3_vm_scripts.py`：S3 决策规则的边界、决策文件与摘要渲染、失败分类、公开数据核对、CF-Geo 重建步骤、`v0` 的步骤与依赖、
+  GPU 显存检查、VM 端锁文件、`colab usage` 解析、vLLM 网格检查，以及 tiny 模型上的三个模型步骤。
+- `tests/test_colab_launcher.py::test_v0_dry_run_with_queue_lost_exec_and_extra_assignment`：`v0` 端到端 dry run，同时注入 503 排队、
+  任务开始前断开和多余的分配。
+
+另外在沙箱里按 VM 的做法运行了不需要模型的步骤（评测集定义与提交的完全相同；198 题 CF-Geo 全部重建；没有评测图会被分辨率上限改变），
+并从 Hugging Face 真实下载了一个固定版本文件。GPU 上的步骤还没有运行。
+
 ### 历史覆盖范围
 
 测试覆盖：数据准入与白名单、几何序列化、split 守卫、感知奖励与文本蕴含、

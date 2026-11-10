@@ -24,6 +24,8 @@
 | `pytest_full.log`、`blueprint_data_revision.diff`、`overnight_execution_summary.md`、`cpu_demo.json` | 测试/差异/执行摘要 |
 | `certified_fact_errata_20261109/` | 第三次预检校准中被几何检验否定的认证事实的看图核对（AI 核对，release 不变） |
 | `s3_planning_estimates_20261109/` | S3 评测规则在 train 上的数量估计与 CF-Geo 原型（不读 validation 和 test） |
+| `eval_sets_20261109/` | 按 S3 预注册规则生成的评测集定义（test 视觉必需子集、CF 候选、换图配对），不含图像 |
+| `cfgeo_20261109/` | CF-Geo 评测集与 train 开发集：编辑补丁、像素哈希、标准答案、两轮看图抽查记录（不含原图） |
 
 ## 约定
 

@@ -47,6 +47,17 @@ python -m scripts.training.train_rl --arm rl_v5 --seed 1 \
 
 决策规则见 [决策记录](plan/决策记录.md) D20–D27。
 
+S3 的 `v0` 任务（`bash colab/launch.sh v0 --session p3`，只在 A100 40/80 GB 或 H100 上运行）依次执行：
+
+1. 环境报告、私有数据复核、完整 CPU 测试套件。
+2. 下载固定版本的公开数据并按 `migration_manifest.json` 核对；按预注册规则重建评测集定义，要求与提交的完全相同；
+   由补丁重建全部 CF-Geo 图像并核对像素。这一步不运行模型。
+3. 在 64 道已批准 train 题上测量提示 P0 与 P1、格式预热和生成长度。
+4. V0 在 82 道 validation 上的贪心诊断（只测量）。
+5. 用 train 输入走一遍 S5 的评测代码。
+6. 用冻结的运行时跑 3 步 vLLM GRPO，检查重要性采样权重（D41）。
+7. 按 [S3 设计](plan/S3设计_20261109.md) 第 6 节的规则写出 `s3_decisions.json`。
+
 以下是旧入口（感知 SFT → 稀疏 GRPO）的说明，作为历史保留。
 
 ## 环境
