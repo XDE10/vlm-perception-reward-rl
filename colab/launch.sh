@@ -2,6 +2,7 @@
 # Project 3 Colab launcher (WSL2 / Linux / macOS; run it with bash, also from zsh). Usage:
 #   bash colab/launch.sh check                 verify local prerequisites, data, Colab auth, git push access
 #   bash colab/launch.sh preflight [options]   run the GPU preflight (fresh VM, or --session NAME)
+#   bash colab/launch.sh v0 [options]          S3: evaluation inputs, train-only decisions, V0 diagnosis (A100/H100 only)
 #   bash colab/launch.sh drive-check [options] cheap test of the optional Google Drive (rclone) setup
 #   bash colab/launch.sh collect RUN_ID        reattach after a disconnect: wait, fetch, push (from GitHub if the VM is gone)
 #   bash colab/launch.sh push RUN_ID           (re)push a run to its results/RUN_ID branch
@@ -12,6 +13,8 @@
 #   --no-vm-push   --no-vllm   --allow-dirty   --dry-run
 # Settings (environment or .colab_local.env): P3_DATA_ROOT, P3_GPU, COLAB_GLOBAL_FLAGS, P3_POLL_SECONDS,
 #   P3_PART_MB, P3_UPLOAD_TRIES, P3_UPLOAD_BACKOFF, P3_UPLOAD_TIMEOUT, P3_RETRY_SLEEP, P3_CODE_SOURCE (auto|upload),
+#   P3_ALLOCATE_TRIES (default 10), P3_ALLOCATE_WAIT (seconds between tries, default 60),
+#   P3_JOB_START_TRIES (default 3), P3_JOB_START_WAIT (seconds before checking that the job started, default 30),
 #   P3_VM_GH_CREDENTIALS (credential file on the VM, default /content/gh_credentials),
 #   Drive: P3_DRIVE_MOUNT_CMD, P3_DRIVE_SETUP_FILE, P3_DRIVE_REMOTE, P3_DRIVE_DIR, P3_DRIVE_MOUNT.
 # See colab/README.md.
@@ -37,6 +40,10 @@ UPLOAD_TRIES="${P3_UPLOAD_TRIES:-6}"
 UPLOAD_BACKOFF="${P3_UPLOAD_BACKOFF:-10}"
 UPLOAD_TIMEOUT="${P3_UPLOAD_TIMEOUT:-600}"
 RETRY_SLEEP="${P3_RETRY_SLEEP:-15}"
+ALLOCATE_TRIES="${P3_ALLOCATE_TRIES:-10}"
+ALLOCATE_WAIT="${P3_ALLOCATE_WAIT:-60}"
+JOB_START_TRIES="${P3_JOB_START_TRIES:-3}"
+JOB_START_WAIT="${P3_JOB_START_WAIT:-30}"
 RUN_LOG=/dev/null
 SESSION=""
 RUN_ID=""
@@ -528,15 +535,91 @@ drive_hooks() {
   fi
 }
 
+allocate_vm() {
+  # One CLI attempt per try (COLAB_CLI_ASSIGN_RETRIES=0): the CLI's own silent retries hid ~5 minutes of 503s per
+  # call in the third preflight. Every try is logged with the time waited so far and the CLI's last line.
+  local gpu_args=() try started rc out="$RUN_DIR/allocate_attempt.out" last
+  [[ -n "$GPU" ]] && gpu_args=(--gpu "$GPU")
+  started=$(date +%s)
+  for ((try = 1; try <= ALLOCATE_TRIES; try++)); do
+    log "allocating Colab VM $SESSION (${GPU:-CPU}), try $try/$ALLOCATE_TRIES, waited $(($(date +%s) - started))s so far"
+    rc=0
+    COLAB_CLI_ASSIGN_RETRIES=0 colab_ new -s "$SESSION" ${gpu_args[@]+"${gpu_args[@]}"} </dev/null > "$out" 2>&1 || rc=$?
+    cat "$out" >> "$RUN_LOG"
+    [[ "$rc" == 0 ]] && return 0
+    if grep -qi "already exists" "$out"; then
+      log "session $SESSION already exists (an earlier try reached Colab); using it"
+      return 0
+    fi
+    last="$(grep -v '^[[:space:]]*$' "$out" | tail -n 1 | "$PY" -m scripts.colab.local_tools redact-stdin | cut -c1-200)"
+    log "no VM yet (exit $rc): ${last:-no output}"
+    ((try < ALLOCATE_TRIES)) && sleep "$ALLOCATE_WAIT"
+  done
+  return 1
+}
+
+warn_active_assignments() {
+  # A VM left running elsewhere keeps charging compute units (the third preflight showed 2 active assignments).
+  local active expected=0
+  active="$("$PY" -m scripts.colab.local_tools active-assignments "$RUN_DIR/usage_before.txt" 2>/dev/null || true)"
+  [[ "$active" =~ ^[0-9]+$ ]] || return 0
+  [[ "$ATTACHED" == 1 ]] && expected=1
+  if ((active > expected)); then
+    log "WARNING: Colab reports $active active assignment(s) before this run (expected $expected); another VM may be using compute units"
+    colab_t 300 sessions </dev/null 2>&1 | "$PY" -m scripts.colab.local_tools redact-stdin | head -n 20 | while IFS= read -r line; do
+      log "  $line"
+    done
+    log "stop the ones you do not use with: colab stop -s NAME"
+  fi
+}
+
+job_started_on_vm() {
+  # kernel_job.py creates out/RUN_ID.lock atomically before it starts the job, so its presence answers the question
+  local i
+  for ((i = 1; i <= 3; i++)); do
+    if colab_t 600 download -s "$SESSION" "$REMOTE/out/$RUN_ID.lock" "$RUN_DIR/job.lock" </dev/null >/dev/null 2>&1; then
+      return 0
+    fi
+    sleep 5
+  done
+  return 1
+}
+
+start_job() {
+  # The job exec can fail before the job starts ("Connection was lost." right after a 0-second bootstrap). Starting
+  # it again is safe: the VM refuses a second start of the same run (lock file), and a repeated exec queued behind a
+  # running job only waits for it.
+  local try
+  : > "$RUN_DIR/job.log"
+  for ((try = 1; try <= JOB_START_TRIES; try++)); do
+    colab_t 87000 exec -s "$SESSION" -f "$RUN_DIR/kernel/kernel_job.py" --timeout 86400 </dev/null 2>&1 |
+      tee -a "$RUN_DIR/job.log" || true
+    grep -q "JOB_DONE" "$RUN_DIR/job.log" && return 0
+    sleep "$JOB_START_WAIT"
+    if job_started_on_vm; then
+      return 0
+    fi
+    if ((try < JOB_START_TRIES)); then
+      log "the job did not start on the VM (try $try/$JOB_START_TRIES): $(tail -n 1 "$RUN_DIR/job.log" |
+        "$PY" -m scripts.colab.local_tools redact-stdin | cut -c1-200); starting it again"
+    fi
+  done
+  log "the job did not start after $JOB_START_TRIES tries; checking the VM once more"
+  return 0
+}
+
 cmd_run() {
   local task=$1 vllm=1 dirty_ok=0 dry=0 needs_data=1 env_mode=gpu drive_persist=results vm_push=auto attach=""
   shift
+  local min_gpu=""
   if [[ "$task" == "drive-check" ]]; then
     needs_data=0
     env_mode=none
     drive_persist=none
     GPU="${P3_DRIVE_CHECK_GPU:-}"
   fi
+  # the frozen runtime (D43) holds on A100 40/80 GB and H100 only: the VM checks this before installing anything
+  [[ "$task" == "v0" ]] && min_gpu=40
   while [[ $# -gt 0 ]]; do
     case "$1" in
       --gpu) GPU="${2:?--gpu needs a value}"; shift 2 ;;
@@ -632,9 +715,9 @@ cmd_run() {
   local colab_version options local_json
   colab_version="$(colab_ version 2>/dev/null | tail -n 1 || true)"
   printf '%s\n' "$colab_version" > "$RUN_DIR/colab_version.txt"
-  options="$("$PY" -c 'import json,sys; a=sys.argv; print(json.dumps({"vllm_probe": a[1] == "1", "dry_run": a[2] == "1", "gpu_requested": a[3], "env": a[4], "drive_persist": a[5], "drive_remote": a[6], "drive_dir": a[7], "drive_mount": a[8]}))' \
+  options="$("$PY" -c 'import json,sys; a=sys.argv; print(json.dumps({"vllm_probe": a[1] == "1", "dry_run": a[2] == "1", "gpu_requested": a[3], "env": a[4], "drive_persist": a[5], "drive_remote": a[6], "drive_dir": a[7], "drive_mount": a[8], "min_gpu_gb": int(a[9]) if a[9] else None}))' \
     "$vllm" "$dry" "${GPU:-none}" "$env_mode" "$drive_persist" "${P3_DRIVE_REMOTE:-mydrive:}" \
-    "${P3_DRIVE_DIR:-ColabProjects/vlm-perception-reward-rl}" "${P3_DRIVE_MOUNT:-/content/mydrive}")"
+    "${P3_DRIVE_DIR:-ColabProjects/vlm-perception-reward-rl}" "${P3_DRIVE_MOUNT:-/content/mydrive}" "$min_gpu")"
   local_json="$("$PY" -c 'import json,platform,sys; print(json.dumps({"colab_version": sys.argv[1], "data_root": sys.argv[2], "host": platform.platform(), "python": platform.python_version()}))' "$colab_version" "$DATA_ROOT")"
   printf '%s\n' "$local_json" > "$RUN_DIR/local.json"
   # VM-side push (D37): only the target and the path of a credential file the user put on the VM travel in the
@@ -658,6 +741,7 @@ cmd_run() {
     --tree-file "$RUN_DIR/tree.bin" --part-mb "$PART_MB" --options "$options" --local "$local_json" \
     --github "$github_json" >/dev/null
   colab_ usage </dev/null > "$RUN_DIR/usage_before.txt" 2>&1 || true
+  warn_active_assignments
 
   trap on_exit EXIT
   trap 'log "interrupted"; exit 130' INT TERM
@@ -666,11 +750,7 @@ cmd_run() {
     log "using your session $SESSION; it is not released at the end unless you pass --release"
     inbox_listing || die "could not run code on session $SESSION (does it exist? check with: colab sessions)"
   else
-    log "allocating Colab VM $SESSION (${GPU:-CPU})"
-    local gpu_args=()
-    [[ -n "$GPU" ]] && gpu_args=(--gpu "$GPU")
-    retry 3 colab_ new -s "$SESSION" ${gpu_args[@]+"${gpu_args[@]}"} </dev/null >> "$RUN_LOG" 2>&1 ||
-      die "could not allocate a ${GPU:-CPU} VM (quota or availability). Try later or with --gpu H100."
+    allocate_vm || die "could not allocate a ${GPU:-CPU} VM after $ALLOCATE_TRIES tries (quota or availability). Try later or with --gpu H100."
     inbox_listing || die "could not run code on the new VM (see $RUN_DIR/inbox.log)"
   fi
   printf 'allocated\n' > "$RUN_DIR/state"
@@ -712,7 +792,7 @@ cmd_run() {
   JOB_STARTED=1
   printf 'running\n' > "$RUN_DIR/state"
   log "job running on the VM; progress lines follow (Ctrl-C detaches, the job keeps running)"
-  colab_t 87000 exec -s "$SESSION" -f "$RUN_DIR/kernel/kernel_job.py" --timeout 86400 </dev/null 2>&1 | tee "$RUN_DIR/job.log" || true
+  start_job
   wait_and_fetch "the VM stopped answering; reattach later with: bash colab/launch.sh collect $RUN_ID"
   release_or_remind
   colab_ usage </dev/null > "$RUN_DIR/usage_after.txt" 2>&1 || true
@@ -788,6 +868,7 @@ main() {
   case "$command" in
     check) cmd_check ;;
     preflight) cmd_run preflight "$@" ;;
+    v0) cmd_run v0 "$@" ;;
     drive-check) cmd_run drive-check "$@" ;;
     collect) cmd_collect "$@" ;;
     push) need git; check_python; load_run "${1:-}"; push_results "$RUN_ID" ;;

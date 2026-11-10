@@ -78,12 +78,13 @@ def build_world(tmp_path):
     wrapper.chmod(0o755)
     env = dict(os.environ, STUB_ROOT=str(stub_root), P3_COLAB_BIN=str(wrapper), P3_PYTHON=sys.executable,
                P3_DATA_ROOT=str(data_parent / "data"), P3_POLL_SECONDS="1", P3_UPLOAD_BACKOFF="0", P3_RETRY_SLEEP="0",
+               P3_ALLOCATE_WAIT="0", P3_JOB_START_WAIT="1",
                PYTHONPATH="",
                # never let a real rclone remote or a real GitHub credential of the developer be used by these tests
                P3_DRIVE_REMOTE="p3-test-no-such-remote:", P3_VM_GH_CREDENTIALS=str(tmp_path / "no_credentials"))
     for name in ["P3_QWEN_PROCESSOR_DIR", "P3_DRIVE_MOUNT_CMD", "P3_DRIVE_SETUP_FILE", "P3_CODE_SOURCE",
                  "P3_CODE_TARBALL_URL", "P3_PART_MB", "P3_GPU", "P3_DRIVE_DIR", "P3_DRIVE_MOUNT", "P3_VM_PUSH_URL",
-                 "P3_UPLOAD_TRIES"]:
+                 "P3_UPLOAD_TRIES", "P3_ALLOCATE_TRIES", "P3_JOB_START_TRIES", "COLAB_CLI_ASSIGN_RETRIES"]:
         env.pop(name, None)
     return repo, origin, stub_root, env
 
@@ -355,3 +356,29 @@ def test_failure_before_the_job_publishes_the_logs(tmp_path):
     published = show(origin, run_dir, "_local/upload.log")
     assert "SECRET-PROXY-TOKEN-123" not in published and "colab-runtime-proxy-token=REDACTED" in published
     assert (run_dir / "state").read_text().strip() == "failed (logs on GitHub)"
+
+
+def test_v0_dry_run_with_queue_lost_exec_and_extra_assignment(tmp_path):
+    """S3: the v0 task end to end, through three faults of the third preflight: an A100 queue (two 503s), a job exec
+    that is lost before the job starts, and another active Colab assignment before the run."""
+    repo, origin, stub_root, env = build_world(tmp_path)
+    env.update(STUB_FAIL_ALLOCATE="2", STUB_LOSE_JOB_EXEC="1",
+               STUB_USAGE="Current balance: 2434.20 compute units\\nUsage rate: 16.78/hr\\nActive assignments: 1")
+    result = launch(repo, env, "v0", "--dry-run", "--no-vllm")
+    assert result.returncode == 0, result.stderr[-4000:]
+    calls = (stub_root / "calls.log").read_text()
+    assert calls.count("new-env ASSIGN_RETRIES=0") == 3  # one CLI attempt per try, the launcher retries
+    assert "try 3/10" in result.stderr and "503 Server Error" in result.stderr
+    assert "WARNING: Colab reports 1 active assignment(s) before this run (expected 0)" in result.stderr
+    assert sum(1 for line in calls.splitlines() if line.startswith("exec") and "kernel_job.py" in line) == 2
+    assert "the job did not start on the VM (try 1/3)" in result.stderr
+    run_dir = only_run(repo)
+    summary = assert_pushed(origin, run_dir, ("summary.md", "summary.json", "status.json", "pack_verification.json",
+                                              "s3_decisions.json", "request.json", "logs/pytest.log", "_local/launch.log"))
+    assert summary["task"] == "v0" and summary["overall"] == "passed"
+    assert [s["name"] for s in summary["steps"]] == ["env_report", "verify_pack", "pytest", "decide_s3"]
+    decisions = json.loads(show(origin, run_dir, "s3_decisions.json"))
+    assert decisions["generation_backend"]["value"] == "hf" and decisions["complete"] is False  # dry run: nothing measured
+    request = json.loads(show(origin, run_dir, "request.json"))
+    assert request["options"]["min_gpu_gb"] == 40 and request["task"] == "v0"
+    assert (stub_root / "vm/p3/out" / (run_dir.name + ".lock")).is_file()

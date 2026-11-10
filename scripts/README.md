@@ -27,6 +27,8 @@
 | --- | --- | --- | --- |
 | `audit_project3_overlap.py` | 本地 CPU 数据关联/重叠审计，写出 `reports/project3_cpu_20261023/`；可选依赖见 `requirements/project3-cpu.txt` | 主线 | `python -m scripts.data.audit_project3_overlap`（先运行 `python scripts/data/prepare_project3_sources.py`） |
 | `calibrate_perception_v5.py` | 只读：在认证正例上扫描 v5 几何证伪阈值（误杀数与对罗列断言的证伪率）；在登记阈值下报告一致性门控、门控后误杀、留一法残余误杀率（Wilson 区间）和每条误杀的测量值；对比 v4/v5（含与不含门控）在罗列探针上的奖励；输出 JSON 与 Markdown | 主线 | `python -m scripts.data.calibrate_perception_v5 --output reports/perception_v5_calibration_<日期>` |
+| `build_eval_sets.py` | 只读：按 S3 设计第 1–3 节的预注册规则（`src/evaluation/eval_sets.py`），从固定版本的公开数据生成评测集定义（视觉必需子集、CF 候选、换图配对）；先按 `migration_manifest.json` 核对每个输入文件；不运行模型 | 主线 | `python -m scripts.data.build_eval_sets --sources data/project3_sources --out reports/eval_sets_20261109/eval_sets.json` |
+| `build_cfgeo.py` | 只读：用 OCR（rapidocr-onnxruntime 1.4.4）为 CF 候选生成编辑补丁（k=1 原样重画、k=2 长度乘 2）并核验；只输出补丁与像素哈希，不输出原图；`--dev-train` 只在 train 上构造开发集 | 主线 | `python -m scripts.data.build_cfgeo --sources <公开数据目录> --spec reports/eval_sets_20261109/eval_sets.json --out reports/cfgeo_20261109/cfgeo.json` |
 | `build_geometry_funnel_v8.py` | 只读：几何出口互斥分类与全池图像重叠统计；`classify` 被 `tests/test_geometry_funnel.py` 直接导入 | 主线 | `python -m scripts.data.build_geometry_funnel_v8` |
 | `build_project3_all_split_candidates.py` | 生成全量唯一匹配 split 候选并隔离模型文本（train/诊断分离） | 历史归档 | `python -m scripts.data.build_project3_all_split_candidates` |
 | `build_project3_perception_preview.py` | 冻结 200 题原型的增量预览补充；输出已存在时拒绝覆盖 | 历史归档 | `python -m scripts.data.build_project3_perception_preview` |
@@ -88,12 +90,18 @@
 | `local_tools.py` | 本地：生成请求与上传清单（含提交的 git 文件清单）、比对 VM 上已收到的分片、读取远端状态、拼接并解压结果、发布前去除凭据 | 主线 | 由 `colab/launch.sh` 调用 |
 | `drive.py` | VM：可选的 Google Drive 持久化，只经 `rclone copy` + `rclone check` 写入并核对，不经 FUSE 挂载；探针只删除自己写的文件 | 主线（可选） | 预检步骤 `drive_probe`、任务 `drive-check`；`python -m scripts.colab.drive probe --out <json>` |
 | `vm_github.py` | VM：用户放在 VM 上的 GitHub 凭据存在时，由 VM 推送 `results/<run_id>`。开始时 dry-run 验证写权限，推送前脱敏；从不读取凭据内容，失败时由本机推送 | 主线（可选） | 由 `runner.py` 调用（任务开始时检查，打包后推送） |
-| `bootstrap.py` | VM：解包数据、按驱动 CUDA 版本选择锁文件建隔离 venv、下载固定 revision 模型（不需要 GPU 的任务跳过 venv 与模型）；可选建 vLLM venv | 主线 | 由 `colab/kernel_bootstrap.py` 调用；`python -m scripts.colab.bootstrap vllm-env --root ...` |
+| `bootstrap.py` | VM：解包数据；任务要求时先检查 GPU 显存（`v0` 至少 40 GB，不足就在安装前停止）；按驱动 CUDA 版本选择锁文件建隔离 venv、下载固定 revision 模型（不需要 GPU 的任务跳过 venv 与模型）；可选建 vLLM venv | 主线 | 由 `colab/kernel_bootstrap.py` 调用；`python -m scripts.colab.bootstrap vllm-env --root ...` |
 | `fetch_model.py` | VM：下载固定 revision 的模型快照并记录每个文件的 SHA256 | 主线 | 由 `bootstrap.py` 调用 |
 | `runner.py` | VM：逐步运行任务（独立进程组、超时、心跳、状态文件），打包并分片结果；可选把结果复制到 Drive 并核对 | 主线 | 由 `colab/kernel_job.py` 调用 |
-| `tasks.py` | 各任务的步骤定义（当前：`preflight`（含 dry-run 版本）与 `drive-check`） | 主线 | 被 `runner.py` 导入 |
+| `tasks.py` | 各任务的步骤定义（当前：`preflight`、`v0`（都含 dry-run 版本）与 `drive-check`） | 主线 | 被 `runner.py` 导入 |
 | `env_report.py` | VM：记录实际软件版本、GPU、内存、磁盘、环境锁与模型文件 SHA | 主线 | 预检步骤 `env_report` |
 | `gpu_probe.py` | VM：真实 3B 权重下的 LoRA 范围、提示长度、峰值显存、生成吞吐、ViT 缓存等价性 | 主线 | 预检步骤 `gpu_probe` |
 | `v0_probe.py` | VM：V0 在 16 道 validation 上的协议 v3 贪心生成（有图/无图），工程信号 | 主线 | 预检步骤 `v0_probe` |
 | `decide_runtime.py` | VM：按预定规则把测量结果冻结成 `frozen_runtime.json` | 主线 | 预检步骤 `decide_runtime` |
+| `public_sources.py` | VM：下载固定版本的 Geometry3K 包装数据，按本次提交的 `migration_manifest.json` 核对大小与 SHA256；已核对过的副本复用 | 主线 | 任务 `v0` 的步骤 `public_sources` |
+| `eval_inputs.py` | VM：用数据包里的 InterGPS 标注按预注册规则重建评测集定义，要求与提交的完全相同；由补丁重建全部 CF-Geo 图像并核对像素；报告会被分辨率上限改变的评测图（不运行模型） | 主线 | 任务 `v0` 的步骤 `eval_sets`、`cfgeo_build` |
+| `prompt_select.py` | VM：在 64 道已批准 train 题上测量 P0 与 P1 的格式率、答案准确率和补全长度（温度 1.0 各 4 个样本，另加贪心） | 主线 | 任务 `v0` 的步骤 `prompt_select` |
+| `v0_diagnosis.py` | VM：V0 在 82 道 validation 上的贪心诊断（P0 有图、P0 无图、只要答案的提示），含失败分类；只测量 | 主线 | 任务 `v0` 的步骤 `v0_val82` |
+| `harness_check.py` | VM：用 train 输入走一遍 S5 的评测代码（五种条件、E1 评分、统计模块） | 主线 | 任务 `v0` 的步骤 `harness_check` |
+| `decide_s3.py` | VM：按 S3 设计第 6 节的预注册规则写出 `s3_decisions.json`（提示、格式预热、长度上限、分辨率、生成后端） | 主线 | 任务 `v0` 的步骤 `decide_s3` |
 | `summarize_run.py` | VM：把一次运行的所有产物汇总成 `summary.json` 与 `summary.md` | 主线 | 运行结束时自动调用 |

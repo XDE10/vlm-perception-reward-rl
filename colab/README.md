@@ -80,7 +80,17 @@ bash colab/launch.sh preflight
 运行在任务开始前就失败了（例如申请不到 VM、上传或安装失败）也一样：运行器会把日志推到同一个
 `results/<run_id>` 分支（附一个 `RUN_STOPPED_EARLY.txt`），告诉我“失败了”即可。
 
-后续阶段的命令（`v0`、`train` 等）会在对应阶段加入，用法相同。
+S3 的 `v0` 任务（约 1–1.5 小时，15–25 CU；只在 A100 40/80 GB 或 H100 上运行，显存不足 40 GB 时 VM 会在安装环境前停下）：
+
+```bash
+bash colab/launch.sh v0 --session p3
+```
+
+它依次检查评测输入（下载固定版本的公开数据、按预注册规则重建评测集定义、由补丁重建 CF-Geo 图像），在 train 上测量
+提示、格式预热和长度的决策，做 V0 在 82 道 validation 上的诊断，走一遍 S5 的评测代码，最后用 3 步 vLLM 训练检查重要性采样，
+把决策写进 `s3_decisions.json`。不用 `--session` 时运行器会新建 VM，同样可用。
+
+后续阶段的命令（`train` 等）会在对应阶段加入，用法相同。
 
 常用选项：
 
@@ -89,7 +99,7 @@ bash colab/launch.sh preflight
 | `--gpu H100` | 申请 A100 失败（没有配额或暂时没有空闲）时改用 H100；同一批实验请保持同一种 GPU |
 | `--session p3` | 在你准备好的 VM 上运行（第八节）；不新建、默认也不释放这台 VM |
 | `--release` | 和 `--session` 一起用：结束后释放你那台 VM |
-| `--no-vllm` | 跳过可选的 vLLM 探测（省约 15 分钟） |
+| `--no-vllm` | 跳过可选的 vLLM 探测（省约 15 分钟）；对 `v0` 来说，跳过后重要性采样检查记为未测量，S4 按规则改用 HF 生成 |
 | `--keep` | 结束后不释放运行器新建的 VM（排查问题用，记得之后 `stop`） |
 | `--no-vm-push` | 即使 VM 上有 GitHub 凭据，也由本机推送结果 |
 | `--allow-dirty` | 允许在有未提交代码改动时运行；改动的 diff 会随结果一起上传 |
@@ -140,7 +150,10 @@ bash colab/launch.sh preflight
 
 | 现象 | 处理 |
 |---|---|
-| `could not allocate a A100 VM` | 暂时没有 A100 或没有配额。稍后重试，或加 `--gpu H100` |
+| `could not allocate a A100 VM after 10 tries` | 暂时没有 A100 或没有配额。运行器每次只让 CLI 尝试一次（`COLAB_CLI_ASSIGN_RETRIES=0`），每次之间等 60 秒，并逐次打印“第几次、已经等了多久、CLI 的最后一行错误”。稍后重试，或加 `--gpu H100`；次数和间隔可用 `P3_ALLOCATE_TRIES`、`P3_ALLOCATE_WAIT` 调整。想看 CLI 自己的进度，在 `.colab_local.env` 里加 `COLAB_GLOBAL_FLAGS="--logtostderr"`，输出会进 `launch.log` |
+| `WARNING: Colab reports N active assignment(s)` | 运行开始前 Colab 显示的活动分配比预期多（新建 VM 时预期 0 个，`--session` 时预期 1 个），可能有别的 VM 在消耗计算单元。按提示用 `colab sessions` 查看，`colab stop -s 名字` 停掉不用的 |
+| `the job did not start on the VM (try 1/3)` | 启动任务的那次连接在任务开始前断了（例如 `RuntimeError: Connection was lost.`）。不用处理：运行器确认 VM 上没有这次运行的锁文件后会重新启动任务；VM 端保证同一次运行只启动一次 |
+| `this task needs a GPU with at least 40 GB` | 这台 VM 的 GPU 太小（例如 L4、T4）。`v0` 及之后的训练、评测只在 A100 40/80 GB 或 H100 上运行：`colab stop -s p3` 后用 `colab new -s p3 --gpu A100` 重新准备 |
 | `data check` 报 `missing` / `hash changed` | `P3_DATA_ROOT` 路径不对，或数据被改动过。先确认路径；如果确实被改动，把 `check` 的输出发给我 |
 | `uncommitted changes in code directories` | 你改过代码但没提交。提交后再运行，或加 `--allow-dirty` |
 | `git push failed` | 结果已安全保存在本地。修好凭据后运行 `bash colab/launch.sh push <run_id>` |
@@ -259,10 +272,10 @@ unset PAT
 bash colab/launch.sh drive-check --session p3
 ```
 
-**5. 运行任务**（在 WSL2 里）：
+**5. 运行任务**（在 WSL2 里；S3 阶段的任务是 `v0`）：
 
 ```bash
-bash colab/launch.sh preflight --session p3
+bash colab/launch.sh v0 --session p3
 ```
 
 终端里出现 `GitHub: the VM will push the results ... (write access verified)` 表示 VM 会自己推送；
