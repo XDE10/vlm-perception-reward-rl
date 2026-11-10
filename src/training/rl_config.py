@@ -57,9 +57,14 @@ def validate_arms(arms):
 
 
 def resolve(experiment_path, arm, seed, arms_path=None, smoke=None, n_rows=None):
+    # imported here so that the rest of this module stays standard-library only (protocol_v3 pulls in sympy)
+    from src.training.protocol_v3 import TRAINING_VARIANTS, variant_for_protocol
+
     base = read_json(experiment_path)
     if base.get("schema") != SCHEMA:
         raise ValueError("experiment schema mismatch")
+    if variant_for_protocol(base.get("protocol")) not in TRAINING_VARIANTS:  # training prompts follow this id
+        raise ValueError("protocol %s cannot be used for training" % base.get("protocol"))
     arms = validate_arms(read_json(arms_path or Path(experiment_path).with_name("arms.json")))
     if arm not in arms["arms"]:
         raise ValueError(f"unknown arm {arm}; known: {sorted(arms['arms'])}")

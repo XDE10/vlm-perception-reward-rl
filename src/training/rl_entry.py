@@ -40,13 +40,14 @@ SOURCE_FILES = [
     "src/training/multimodal_guard.py", "src/training/protocol_v3.py", "src/training/rl_config.py",
     "src/training/rl_data.py",
     "src/training/rl_entry.py", "src/training/rl_rewards.py", "src/training/vision_cache.py",
-    "src/training/vllm_guard.py",
+    "src/training/vllm_guard.py", "src/training/registry.py",
     "src/data/approved_training_inputs.py", "src/data/intergps_index.py", "src/data/perception_v4.py",
     "src/data/project3_perception_v2.py", "src/data/project3_perception_prototype.py",
     "src/training/perception_reward_v4.py", "scripts/training/math_verify_v3_strict_worker.py",
     "scripts/training/math_verify_pilot_worker.py",
 ]
 PACKAGES = ["torch", "transformers", "trl", "peft", "accelerate", "datasets", "math-verify", "sympy", "vllm", "pillow"]
+NON_FINITE_KEYS = ("loss", "grad_norm")
 
 
 def sha256_file(path):
@@ -75,6 +76,16 @@ def git_commit():
                               check=True).stdout.strip()
     except Exception:
         return None
+
+
+def non_finite(logs):
+    """Logged loss / grad-norm values that are NaN or infinite (a pre-registered stop condition, S4 section 7)."""
+    out = {}
+    for key in NON_FINITE_KEYS:
+        value = (logs or {}).get(key)
+        if isinstance(value, (int, float)) and not math.isfinite(value):
+            out[key] = value
+    return out
 
 
 def load_runtime(path):
@@ -126,6 +137,8 @@ def grpo_args(config, runtime, output_dir, cuda, weights):
         num_iterations=1, disable_dropout=True, bf16=bool(cuda), use_cpu=not cuda,
         gradient_checkpointing=checkpointing, gradient_checkpointing_kwargs={"use_reentrant": False},
         logging_steps=t["logging_steps"], save_strategy="steps", save_steps=t["save_steps"], save_only_model=False,
+        # log a NaN/inf loss as it is (the default replaces it by the running mean) so the stop condition sees it
+        logging_nan_inf_filter=False,
         seed=config["seed"], data_seed=config["seed"], report_to="none", remove_unused_columns=False,
         log_completions=False, dataloader_num_workers=0,
         use_vllm=runtime["generation_backend"] == "vllm",
@@ -158,8 +171,19 @@ def load_model_and_processor(config, model_path=None, cuda=True):
     return model, processor
 
 
+def data_sha256(config, root):
+    data = config["data"]
+    return {
+        "manifest": sha256_file(root / data["manifest"]),
+        "train_file": sha256_file((root / data["manifest"]).parent / data["train_file"]),
+        "intergps_annotations": sha256_file(root / data["intergps_annotations"]),
+    }
+
+
 def run(config, root=ROOT, runtime=None, model_path=None, resume=None, model=None, processor=None,
-        extra_reward_funcs=None):
+        extra_reward_funcs=None, registered=None):
+    """``registered``: the expectation from ``src.training.registry.expectation`` for a formal (registered) run; the
+    run stops before loading the model unless config, data, row count and GPU match it."""
     import torch
     from datasets import Dataset
     from transformers import TrainerCallback, set_seed
@@ -179,6 +203,18 @@ def run(config, root=ROOT, runtime=None, model_path=None, resume=None, model=Non
         raise ValueError(f"runtime file has keys that could change the algorithm: {sorted(unknown)}")
     apply_runtime(config, runtime)
     finalize_budget(config, len(rows))
+    data_hashes = data_sha256(config, root)
+    registration = None
+    if registered is not None:
+        from src.training.registry import check
+
+        gpu_name = torch.cuda.get_device_name(0) if cuda else None
+        problems = check(registered, config, data_hashes, len(rows), gpu_name)
+        if problems:
+            raise ValueError("run does not match its registration (%s): %s" % (registered.get("registry"),
+                                                                              "; ".join(problems)))
+        registration = dict(registered, gpu_name_seen=gpu_name, matched=True)
+        print(json.dumps({"event": "registration_matched", **registration}), flush=True)
     out = Path(config["output_dir"])
     if not out.is_absolute():
         out = root / out
@@ -200,7 +236,6 @@ def run(config, root=ROOT, runtime=None, model_path=None, resume=None, model=Non
         from src.training.vision_cache import FrozenVisionCache
 
         cache = FrozenVisionCache(model)
-    data = config["data"]
     identity = {
         "schema": IDENTITY_SCHEMA,
         "config_sha256": config["config_sha256"],
@@ -209,11 +244,7 @@ def run(config, root=ROOT, runtime=None, model_path=None, resume=None, model=Non
         "versions": package_versions(),
         "git_commit": git_commit(),
         "source_sha256": {p: sha256_file(ROOT / p) for p in SOURCE_FILES if (ROOT / p).is_file()},
-        "data_sha256": {
-            "manifest": sha256_file(root / data["manifest"]),
-            "train_file": sha256_file((root / data["manifest"]).parent / data["train_file"]),
-            "intergps_annotations": sha256_file(root / data["intergps_annotations"]),
-        },
+        "data_sha256": data_hashes,
         "rows": len(rows),
         "placebo_mapping_sha256": canonical_sha256(mapping),
         "prompt_report": prompt_report,
@@ -239,7 +270,8 @@ def run(config, root=ROOT, runtime=None, model_path=None, resume=None, model=Non
 
     bank = RewardBank(config["arm"], weights, V5Config.from_dict(config["perception_v5"]), out / "rollouts.jsonl",
                       AnswerVerifier(config["rewards"]["verifier_workers"], config["rewards"]["verifier_timeout"]),
-                      run_meta={"arm": config["arm"]["name"], "seed": config["seed"], "run": config["run_name"]})
+                      run_meta={"arm": config["arm"]["name"], "seed": config["seed"], "run": config["run_name"]},
+                      protocol=config["protocol"])
     reward_funcs = bank.reward_funcs() + list(extra_reward_funcs or [])
     reward_weights = bank.reward_weights() + [1.0] * len(extra_reward_funcs or [])
 
@@ -256,9 +288,18 @@ def run(config, root=ROOT, runtime=None, model_path=None, resume=None, model=Non
             print(json.dumps({"event": "train_log", "step": state.global_step, "max_steps": state.max_steps, **keep}),
                   flush=True)
 
+    class NonFiniteStop(TrainerCallback):
+        """Stop at the first NaN/inf loss or grad norm, before the next checkpoint and before ``final/`` is written."""
+
+        def on_log(self, args, state, control, logs=None, **kwargs):
+            bad = non_finite(logs)
+            if bad:
+                raise FloatingPointError("non-finite %s at step %d; the run stops (S4 pre-registration, section 7)"
+                                         % (bad, state.global_step))
+
     trainer = GRPOTrainer(model=model, args=grpo_args(config, runtime, out, cuda, reward_weights),
                           train_dataset=Dataset.from_list(items), processing_class=processor,
-                          reward_funcs=reward_funcs, callbacks=[IdentityCallback(), ProgressCallback()])
+                          reward_funcs=reward_funcs, callbacks=[IdentityCallback(), ProgressCallback(), NonFiniteStop()])
     parameter_identity(trainer.model)
     guard = MultimodalAlignmentGuard(trainer.model)
     started = time.time()
@@ -267,6 +308,8 @@ def run(config, root=ROOT, runtime=None, model_path=None, resume=None, model=Non
     finally:
         bank.close()
         guard.remove()
+        # written on failure too, so a stopped run still shows its last logged steps
+        (out / "log_history.json").write_text(json.dumps(trainer.state.log_history, indent=1), encoding="utf-8")
     trainer.save_model(str(out / "final"))
     processor.save_pretrained(str(out / "final"))
     summary = {
@@ -280,13 +323,13 @@ def run(config, root=ROOT, runtime=None, model_path=None, resume=None, model=Non
         "mm_alignment": guard.stats(),
         "vllm_image_grid": grid_report,
         "generation_backend": runtime["generation_backend"],
+        "registration": registration,
         "python": sys.version.split()[0],
     }
-    (out / "log_history.json").write_text(json.dumps(trainer.state.log_history, indent=1), encoding="utf-8")
     (out / "train_summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
     print(json.dumps({"event": "train_done", **summary}), flush=True)
     return summary
 
 
-__all__ = ["ALGORITHM_NEUTRAL_RUNTIME_KEYS", "DEFAULT_RUNTIME", "RUNTIME_META_KEYS", "apply_runtime", "finalize_budget",
-           "grpo_args", "load_model_and_processor", "load_runtime", "run"]
+__all__ = ["ALGORITHM_NEUTRAL_RUNTIME_KEYS", "DEFAULT_RUNTIME", "NON_FINITE_KEYS", "RUNTIME_META_KEYS", "apply_runtime",
+           "data_sha256", "finalize_budget", "grpo_args", "load_model_and_processor", "load_runtime", "non_finite", "run"]

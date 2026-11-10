@@ -1,0 +1,251 @@
+{
+  "schema": "p3-registered-runs-v1",
+  "name": "s4_20261110",
+  "preregistration": "docs/plan/S4预注册_20261110.md",
+  "protocol": "perception-think-answer-v3-p1-20261109",
+  "decisions": {
+    "path": "configs/experiments/s3_decisions_20261110.json",
+    "source": "results/v0-20261110T023008Z-60fc commit 15ca2714ba16: reports/colab_runs_20261110/v0-20261110T023008Z-60fc/s3_decisions.json",
+    "sha256": "f3541b88535a8e7cfc1ead30f12c44a64d1c2179f64597c7d55d466051863ed5"
+  },
+  "experiment": {
+    "path": "configs/experiments/rl_v3_p1_20261110.json"
+  },
+  "arms": {
+    "path": "configs/experiments/arms.json"
+  },
+  "runtime": {
+    "path": "configs/experiments/runtime_frozen_20261109.json",
+    "content_sha256": "b952f877ebab922d8d122c79350831144d2e456c44d599e65d1ad66d3a83e71e"
+  },
+  "gpu_name": "NVIDIA A100-SXM4-40GB",
+  "rows": 609,
+  "data_sha256": {
+    "manifest": "ce02856dc5c594d7899539fb67e5b0eac621def38103e91b3f822af4ceaff2ba",
+    "train_file": "49bed0b5a42db8e7051bd2f2a9e3731c84ff8421fe7af05f9ed0e645e5a37fd2",
+    "intergps_annotations": "d83517c40cfb5e864344b0221dcd1698d118e461b16c587822c0b6ee8c67c00b"
+  },
+  "evaluate": "final",
+  "checkpoints": {
+    "save_steps": 38,
+    "drive_remote": "mydrive:",
+    "drive_base": "ColabProjects/vlm-perception-reward-rl",
+    "drive_dir": "s4/{experiment}/{arm}/seed{seed}",
+    "verified_marker": "DRIVE_VERIFIED.json",
+    "keep_full_checkpoints_on_drive": 1
+  },
+  "pilot": {
+    "seed": 1,
+    "learning_run": {
+      "arm": "rl_v5",
+      "smoke": {
+        "max_steps": 40,
+        "save_steps": 20
+      }
+    },
+    "learning_retry": {
+      "arm": "rl_v5",
+      "smoke": {
+        "max_steps": 76,
+        "save_steps": 38
+      }
+    },
+    "arm_runs": [
+      {
+        "arm": "rl_ans",
+        "smoke": {
+          "max_steps": 3
+        }
+      },
+      {
+        "arm": "rl_v4",
+        "smoke": {
+          "max_steps": 3
+        }
+      },
+      {
+        "arm": "rl_v5_placebo",
+        "smoke": {
+          "max_steps": 3
+        }
+      },
+      {
+        "arm": "rl_blind",
+        "smoke": {
+          "max_steps": 3
+        }
+      }
+    ],
+    "resume_run": {
+      "arm": "rl_v5",
+      "smoke": {
+        "max_steps": 2,
+        "num_generations": 2,
+        "prompts_per_step": 2,
+        "per_device_train_batch_size": 2,
+        "max_completion_length": 128,
+        "save_steps": 1
+      },
+      "resume_from": "checkpoint-1 deleted locally, restored from Drive into the same output directory (the run identity includes it)"
+    },
+    "gates": {
+      "G1_importance_sampling": {
+        "ratio_mean_min": 0.9,
+        "ratio_mean_max": 1.1,
+        "logp_difference_mean_max": 0.1
+      },
+      "G2_memory": {
+        "peak_fraction_of_gpu_max": 0.9
+      },
+      "G3_stability": {
+        "verifier_error_rate_max": 0.01
+      },
+      "G4_learning": {
+        "window_steps": 10
+      },
+      "G5_checkpoint_resume": {
+        "drive_copies_verified": true,
+        "resume_identity_matched": true
+      },
+      "G6_protocol": {
+        "rollout_protocol": "perception-think-answer-v3-p1-20261109",
+        "max_prompt_tokens": 1600
+      }
+    }
+  },
+  "stop_rules": {
+    "computation_failure_restarts": 1,
+    "min_compute_units_to_start_a_run": 150,
+    "no_new_run_after_utc": "2026-11-29T00:00:00Z"
+  },
+  "runs": [
+    {
+      "order": 1,
+      "arm": "rl_v5",
+      "seed": 1,
+      "run_name": "rl_v5/seed1",
+      "output_dir": "runs/rl_v3_p1_20261110/rl_v5/seed1",
+      "max_steps": 228,
+      "config_sha256": "bc84e28185f9b3eb7cbd2bef4e15382ded44fde62d38dee68e7d1efd9b00389a"
+    },
+    {
+      "order": 2,
+      "arm": "rl_ans",
+      "seed": 1,
+      "run_name": "rl_ans/seed1",
+      "output_dir": "runs/rl_v3_p1_20261110/rl_ans/seed1",
+      "max_steps": 228,
+      "config_sha256": "2fce5d8f78f5848d57f786d7d9916cff45893152a87119ee2f0cce8b62e0923e"
+    },
+    {
+      "order": 3,
+      "arm": "rl_blind",
+      "seed": 1,
+      "run_name": "rl_blind/seed1",
+      "output_dir": "runs/rl_v3_p1_20261110/rl_blind/seed1",
+      "max_steps": 228,
+      "config_sha256": "2dcba893665768942dee1737218d63872cc6141a4772a6e6fef6e1349fd42688"
+    },
+    {
+      "order": 4,
+      "arm": "rl_v4",
+      "seed": 1,
+      "run_name": "rl_v4/seed1",
+      "output_dir": "runs/rl_v3_p1_20261110/rl_v4/seed1",
+      "max_steps": 228,
+      "config_sha256": "9ff2da3cc067da91c96b34ebd9ae6722a7473c8ab84a4c8388e4c155fc94f416"
+    },
+    {
+      "order": 5,
+      "arm": "rl_v5_placebo",
+      "seed": 1,
+      "run_name": "rl_v5_placebo/seed1",
+      "output_dir": "runs/rl_v3_p1_20261110/rl_v5_placebo/seed1",
+      "max_steps": 228,
+      "config_sha256": "245d617ec94447cca42b8148a86119585b7ad2cac2104b8be11cb2d7ad49f204"
+    },
+    {
+      "order": 6,
+      "arm": "rl_v5",
+      "seed": 2,
+      "run_name": "rl_v5/seed2",
+      "output_dir": "runs/rl_v3_p1_20261110/rl_v5/seed2",
+      "max_steps": 228,
+      "config_sha256": "b843b3ef2b6dc55f2356de61567a377cb46163342cc3636c9c462f7e65f327f8"
+    },
+    {
+      "order": 7,
+      "arm": "rl_ans",
+      "seed": 2,
+      "run_name": "rl_ans/seed2",
+      "output_dir": "runs/rl_v3_p1_20261110/rl_ans/seed2",
+      "max_steps": 228,
+      "config_sha256": "086c6fefefc3a895bcb289f87afcd3fa04cd5c4237c3bffd05a0473b5c948105"
+    },
+    {
+      "order": 8,
+      "arm": "rl_blind",
+      "seed": 2,
+      "run_name": "rl_blind/seed2",
+      "output_dir": "runs/rl_v3_p1_20261110/rl_blind/seed2",
+      "max_steps": 228,
+      "config_sha256": "496bad96b6e92d5126ff011a86a42c5ed3d1c7290bd67419ea45bd41a1b52569"
+    },
+    {
+      "order": 9,
+      "arm": "rl_v4",
+      "seed": 2,
+      "run_name": "rl_v4/seed2",
+      "output_dir": "runs/rl_v3_p1_20261110/rl_v4/seed2",
+      "max_steps": 228,
+      "config_sha256": "525143016e6a196fae12ecec332b0e165d34c700b25162a22664ffe7c9b03727"
+    },
+    {
+      "order": 10,
+      "arm": "rl_v5_placebo",
+      "seed": 2,
+      "run_name": "rl_v5_placebo/seed2",
+      "output_dir": "runs/rl_v3_p1_20261110/rl_v5_placebo/seed2",
+      "max_steps": 228,
+      "config_sha256": "9aadb11f5b3be7ca83ea5a8fd7f08afb419a9ead52815311c121f1e5fd3a8749"
+    },
+    {
+      "order": 11,
+      "arm": "rl_v5",
+      "seed": 3,
+      "run_name": "rl_v5/seed3",
+      "output_dir": "runs/rl_v3_p1_20261110/rl_v5/seed3",
+      "max_steps": 228,
+      "config_sha256": "04acf46feef0247ad06835f7921e828943fc49613f956f9dc7a42ac54ed3b173"
+    },
+    {
+      "order": 12,
+      "arm": "rl_ans",
+      "seed": 3,
+      "run_name": "rl_ans/seed3",
+      "output_dir": "runs/rl_v3_p1_20261110/rl_ans/seed3",
+      "max_steps": 228,
+      "config_sha256": "f7240f35b8f1070024b1f752069ca45518e2ed63abaebf7bc1493b639d23257a"
+    }
+  ],
+  "optional_runs": [
+    {
+      "order": 13,
+      "arm": "rl_v5_groupnorm",
+      "seed": 1,
+      "run_name": "rl_v5_groupnorm/seed1",
+      "output_dir": "runs/rl_v3_p1_20261110/rl_v5_groupnorm/seed1",
+      "max_steps": 228,
+      "config_sha256": "161b3f357c6b08b22186deb5756a8aa11c107ac999cda989f71238a3e4329103"
+    },
+    {
+      "order": 14,
+      "arm": "rl_v5_groupnorm",
+      "seed": 2,
+      "run_name": "rl_v5_groupnorm/seed2",
+      "output_dir": "runs/rl_v3_p1_20261110/rl_v5_groupnorm/seed2",
+      "max_steps": 228,
+      "config_sha256": "3eaacf19edb44e5f616bca333675523cb44d3a524c614041a17c281ed7ed90e7"
+    }
+  ]
+}

@@ -47,7 +47,8 @@
 
 | 脚本 | 用途 | 状态 | 典型入口 |
 | --- | --- | --- | --- |
-| `train_rl.py` | 统一 GRPO 入口（协议 v3，所有实验组共用）：`configs/experiments/` 基础配置 + 组别 + 种子，委托 `src.training.rl_entry.run` | 主线 | `python -m scripts.training.train_rl --arm rl_v5 --seed 1` |
+| `train_rl.py` | 统一 GRPO 入口（协议 v3，所有实验组共用）：`configs/experiments/` 基础配置 + 组别 + 种子，委托 `src.training.rl_entry.run`；S4 正式任务加 `--registered`，必须与登记表完全一致 | 主线 | `python -m scripts.training.train_rl --registered configs/experiments/s4_runs_20261110.json --arm rl_v5 --seed 1` |
+| `register_runs.py` | 生成（`--write`）或核对（`--check`）S4 登记表的派生字段：每个任务的配置哈希、输出目录、步数，运行时内容哈希，数据与决策文件的 SHA256；有 `data/` 时还核对本机数据与批准行数。`--show <组> <种子>` 打印一个任务的完整配置 | 主线 | `python -m scripts.training.register_runs --check` |
 | `train_project3.py` | 旧训练入口（感知 SFT → 稀疏 GRPO），委托 `src.training.approved_hf.cli(expected_vision=True)`；2026-11-09 只修复 LoRA 误入 ViT 与 transformers 5 兼容，新实验不再使用 | 历史归档 | `python -m scripts.training.train_project3 --config configs/...` |
 | `diagnose_project3_vision.py` | 同题原图/黑图/无图/遮挡成对视觉依赖诊断 | 主线 | `python -m scripts.training.diagnose_project3_vision` |
 | `configure_topup_training.py` | 为已批准 V6 行生成版本化 smoke 配置（明确不是 GPU 验收） | 历史归档 | `python -m scripts.training.configure_topup_training` |

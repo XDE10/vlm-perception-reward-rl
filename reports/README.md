@@ -26,6 +26,7 @@
 | `s3_planning_estimates_20261109/` | S3 评测规则在 train 上的数量估计与 CF-Geo 原型（不读 validation 和 test） |
 | `eval_sets_20261109/` | 按 S3 预注册规则生成的评测集定义（test 视觉必需子集、CF 候选、换图配对），不含图像 |
 | `cfgeo_20261109/` | CF-Geo 评测集与 train 开发集：编辑补丁、像素哈希、标准答案、两轮看图抽查记录（不含原图） |
+| `s4_preregistration_20261110/` | S4 预注册引用数字的复现：S3 决策文件副本的核对、P0/P1 格式率按题聚类的 bootstrap 区间（只用 train） |
 
 ## 约定
 

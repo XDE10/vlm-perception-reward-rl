@@ -96,11 +96,12 @@ def make_release(root, n=4, duplicate_image=False, sizes=None, evaluation=0):
     return rows
 
 
-def mini_config(root, arm="rl_v5", seed=1, smoke=None):
+def mini_config(root, arm="rl_v5", seed=1, smoke=None, experiment="configs/experiments/rl_v3.json"):
+    """``experiment``: repository-relative base config (rl_v3.json uses P0; the S4 config uses P1)."""
     from src.training.rl_config import resolve
 
     repo = Path(__file__).resolve().parents[1]
-    config = resolve(repo / "configs/experiments/rl_v3.json", arm, seed, smoke=smoke or {"max_steps": 1}, n_rows=4)
+    config = resolve(repo / experiment, arm, seed, smoke=smoke or {"max_steps": 1}, n_rows=4)
     config["output_root"] = str(Path(root) / "runs")
     config["output_dir"] = str(Path(root) / "runs" / config["run_name"])
     return config

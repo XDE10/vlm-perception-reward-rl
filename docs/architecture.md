@@ -29,16 +29,21 @@ runs/... SFT merged 权重 → 稀疏 GRPO（感知奖励 + math_verify 数学�
 src/evaluation/geometry_perception_parser.py + 视觉诊断脚本 → 评测/诊断记录
 ```
 
+图中从 `configs/*.json → scripts/training/train_project3.py` 开始的训练部分是旧入口（感知 SFT → 稀疏 GRPO），只作历史保留。
+正式实验从 `data/portable_release/` 进入下一节的协议 v3 流水线：所有组都从 V0 出发，不做感知 SFT。
+
 ## 协议 v3 统一 GRPO 流水线（2026-11-09 起的正式实验）
 
 ```text
-configs/experiments/rl_v3.json + arms.json ──► src/training/rl_config.py（基础配置 + 组别 + 种子 → 完整配置与哈希）
-        │
+configs/experiments/rl_v3_p1_20261110.json（S4；rl_v3.json 为 S1–S3 的 P0 版本）+ arms.json
+        │  ──► src/training/rl_config.py（基础配置 + 组别 + 种子 → 完整配置与哈希）
+        │  ──► src/training/registry.py（S4 登记表 s4_runs_20261110.json：正式任务的配置哈希、数据、GPU 必须一致）
         ▼
 src/training/rl_data.py：release manifest 门控 → v4 奖励行契约 → 受保护 dev ID → 图片字节 SHA
         │                 → 与 InterGPS 记录的像素哈希一致 → 安慰剂错位配对 / 去图（blind）
         ▼
-src/training/protocol_v3.py：统一 system prompt；输出 <perception>…</perception><think>…</think><answer>…</answer>
+src/training/protocol_v3.py：统一 system prompt；提示变体由配置的协议编号决定（S4 为 P1）；
+        │                     输出 <perception>…</perception><think>…</think><answer>…</answer>
         │
         ▼
 src/training/rl_entry.py：语言 LoRA（精确模块名，ViT/merger 冻结断言）→ TRL GRPOTrainer
@@ -64,7 +69,8 @@ runs/<实验>/<组>/seed<k>/：rollouts.jsonl（逐条 rollout 与奖励明细�
 | `src/data/perception_v4.py` | 解析审核内容、规范化 Angle→Length→Parallel→Perpendicular→Tangent，计算稀疏范围奖励 | 认证范围外的事实未知（mask），不按“缺标签”惩罚 |
 | `src/data/project3_perception_preview.py` | 独立的预览序列化，供人工/模型审核 | 与生产奖励解析器解耦，避免自证 |
 | `src/training/approved_hf.py` | 旧 HF/TRL SFT 与 GRPO 入口：VL processor、assistant-only labels、LoRA、合并权重身份检查 | 历史入口；2026-11-09 只修复 LoRA 误入 ViT 与 transformers 5 模型类 |
-| `src/training/rl_entry.py` / `rl_config.py` / `rl_data.py` / `rl_rewards.py` | 协议 v3 统一 GRPO 入口：组别配置解析、数据门控、奖励汇总与逐条日志、运行身份与恢复 | 组别只能覆盖白名单字段；CPU 用 tiny Qwen2.5-VL 端到端测试，GPU 待 S2 预检 |
+| `src/training/rl_entry.py` / `rl_config.py` / `rl_data.py` / `rl_rewards.py` | 协议 v3 统一 GRPO 入口：组别配置解析、数据门控、奖励汇总与逐条日志、运行身份与恢复；loss 或梯度范数出现 NaN/inf 立即停止 | 组别只能覆盖白名单字段；CPU 用 tiny Qwen2.5-VL 端到端测试；S2 预检与 S3 `v0` 在 A100 上跑过 3 步冒烟 |
+| `src/training/registry.py` | S4 登记表的派生字段（配置哈希、运行时内容哈希、数据 SHA256）与执行时核对 | 登记运行在加载模型前核对配置、数据、行数与 GPU，不一致就停止；哈希由脚本生成，不手写 |
 | `src/training/protocol_v3.py` | 所有组共用的 system prompt 与输出解析 | 训练与评测提示经 TRL 渲染后逐字一致（有测试） |
 | `src/training/lora_language.py` / `vision_cache.py` | 只挂语言模块的 LoRA 与冻结断言；可选的冻结 ViT 输出缓存 | 缓存只在冻结且等价性检验通过时启用 |
 | `src/training/multimodal_guard.py` | 让 TRL 评分前向的图像 token 类型与 input_ids 对齐（处理器左填充），并在每次前向检查 | 不一致就报错停止，不会带着错误的 M-RoPE 位置训练（D33） |
@@ -98,7 +104,8 @@ runs/<实验>/<组>/seed<k>/：rollouts.jsonl（逐条 rollout 与奖励明细�
 
 ## 明确不在当前实现内的东西
 
-- 没有已验收的 CUDA 训练、显存/恢复结果；协议 v3 入口目前只在 CPU 上用 tiny 模型端到端验证。
+- 没有正式训练结果。GPU 上只跑过 S2 预检与 S3 `v0`（3 步 GRPO 冒烟、显存与步时测量、HF 生成下的断点恢复），属于工程验证；
+  S4 的 12 个正式任务按 [S4 预注册](plan/S4预注册_20261110.md) 运行。
 - 没有 EasyR1 集成；详细方案中的 EasyR1 是设计路线，正式实验沿用 TRL（见决策记录）。
 - 没有完整 V0～V4 SFT 矩阵；正式实验按 [执行计划](plan/执行计划_20261108.md) 的组别进行。
 - 没有全图事实 precision/recall 金标；认证事实是部分覆盖，未知按 mask 处理。

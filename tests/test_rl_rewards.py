@@ -85,6 +85,20 @@ def test_placebo_reward_uses_other_metadata_but_logs_own_score(tmp_path):
     assert all("reward" in r["v5_own"] for r in records)
 
 
+def test_rollout_records_carry_the_run_protocol(tmp_path):
+    from src.training.protocol_v3 import PROTOCOL, protocol_id
+
+    config, kw = batch(tmp_path, "rl_v5")
+    bank = make_bank(tmp_path, config, {"answer": 1.0, "format": 0.05, "perception": 0.1})
+    bank.answer_reward([GOOD.format("2")] * 2, **kw)
+    p1 = RewardBank(config["arm"], {"answer": 1.0, "format": 0.05, "perception": 0.1}, log_path=tmp_path / "p1.jsonl",
+                    verifier=FakeVerifier(), protocol=protocol_id("p1"))
+    p1.answer_reward([GOOD.format("3")] * 2, **kw)
+    read = lambda name: [json.loads(x) for x in (tmp_path / name).read_text().splitlines()]  # noqa: E731
+    assert {r["protocol"] for r in read("rollouts.jsonl")} == {PROTOCOL}  # default: the protocol of rl_v3.json
+    assert {r["protocol"] for r in read("p1.jsonl")} == {protocol_id("p1")}
+
+
 def test_misaligned_metadata_fails_closed(tmp_path):
     config, kw = batch(tmp_path, "rl_v5")
     kw["gold_reward"] = kw["gold_reward"][:1]

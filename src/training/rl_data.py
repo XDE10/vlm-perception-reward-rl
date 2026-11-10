@@ -16,7 +16,7 @@ from pathlib import Path
 from src.data.approved_training_inputs import load_approved
 from src.data.intergps_index import load_index
 from src.training.perception_reward_v4 import validate_reward_rows
-from src.training.protocol_v3 import training_prompt
+from src.training.protocol_v3 import training_prompt, variant_for_protocol
 
 
 def sha256_file(path):
@@ -88,13 +88,14 @@ def build_items(config, rows, index, root=".", load_images=True):
     from PIL import Image
 
     arm = config["arm"]
+    variant = variant_for_protocol(config["protocol"])  # the prompt follows the protocol the config names (S4: P1)
     by_id = {r["sample_id"]: r for r in rows}
     mapping = placebo_mapping(rows, config["placebo_seed"]) if arm["metadata"] == "placebo" else {s: s for s in by_id}
     items = []
     for r in sorted(rows, key=lambda x: x["sample_id"]):
         source = by_id[mapping[r["sample_id"]]]
         item = {
-            "prompt": training_prompt(r["problem"]),
+            "prompt": training_prompt(r["problem"], variant),
             "sample_id": r["sample_id"],
             "original_id": str(r["original_id"]),
             "reference_answer": str(r["reference_answer"]),

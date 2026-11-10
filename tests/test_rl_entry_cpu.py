@@ -133,6 +133,37 @@ def test_scoring_pass_keeps_image_token_types_aligned_under_left_padding(tmp_pat
     assert processor.tokenizer.padding_side == "left"
 
 
+def test_s4_config_trains_on_p1_prompts(tmp_path):
+    """The S4 experiment config (P1) through the real TRL path: the prompts TRL hands to the reward functions carry
+    the P1 sentence, and every rollout record names the P1 protocol."""
+    from transformers import AutoProcessor
+
+    from src.training.protocol_v3 import P1_SUFFIX, protocol_id
+    from src.training.rl_entry import run
+
+    make_release(tmp_path)
+    smoke = dict(SMOKE, max_steps=1)
+    config = mini_config(tmp_path, "rl_v5", smoke=smoke, experiment="configs/experiments/rl_v3_p1_20261110.json")
+    config["train"].update(mask_truncated_completions=False, warmup_steps=0, learning_rate=1e-3)
+    seen = []
+
+    def capture_prompts(completions, prompts=None, **kwargs):
+        seen.extend(prompts or [])
+        return [0.0 for _ in completions]
+
+    run(config, tmp_path, model=tiny_model(), processor=AutoProcessor.from_pretrained(processor_dir()),
+        extra_reward_funcs=[noisy_reward, capture_prompts])
+    out = tmp_path / "runs" / config["run_name"]
+    assert seen
+    for prompt in seen:
+        user = prompt[-1]["content"]
+        text = user if isinstance(user, str) else "".join(p.get("text", "") for p in user if isinstance(p, dict))
+        assert text.endswith("Find x.\n\n" + P1_SUFFIX), text
+    records = [json.loads(x) for x in (out / "rollouts.jsonl").read_text().splitlines()]
+    assert records and {r["protocol"] for r in records} == {protocol_id("p1")}
+    assert json.loads((out / "run_identity.json").read_text())["config"]["protocol"] == protocol_id("p1")
+
+
 def test_runtime_keys_that_could_change_the_algorithm_are_rejected(tmp_path):
     from src.training.rl_entry import apply_runtime, run
 
