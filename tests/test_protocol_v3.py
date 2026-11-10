@@ -65,6 +65,15 @@ def test_prompt_variants_are_the_pre_registered_text():
         eval_messages("Find x.", True, "p2")
 
 
+def test_protocol_ids_map_back_to_their_prompt_variant():
+    from src.training.protocol_v3 import PROMPT_VARIANTS, TRAINING_VARIANTS, protocol_id, variant_for_protocol
+
+    assert all(variant_for_protocol(protocol_id(v)) == v for v in PROMPT_VARIANTS)
+    assert set(TRAINING_VARIANTS) == set(PROMPT_VARIANTS) - {"answer_only"}
+    with pytest.raises(ValueError, match="unknown protocol id"):
+        variant_for_protocol("perception-think-answer-v3-p2")
+
+
 @pytest.mark.skipif(processor_dir() is None, reason="pinned Qwen2.5-VL processor files not available")
 def test_training_and_eval_prompts_render_identically_through_trl():
     from PIL import Image

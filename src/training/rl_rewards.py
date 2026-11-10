@@ -35,7 +35,8 @@ def completion_text(completion):
 
 
 class RewardBank:
-    def __init__(self, arm, weights, v5_config=None, log_path=None, verifier=None, run_meta=None):
+    def __init__(self, arm, weights, v5_config=None, log_path=None, verifier=None, run_meta=None, protocol=PROTOCOL):
+        self.protocol = protocol  # the run's protocol id, written into every rollout record
         self.mode = arm["perception_reward"]
         if self.mode not in {"none", "v4", "v5"}:
             raise ValueError("unknown perception reward mode")
@@ -96,7 +97,7 @@ class RewardBank:
             parsed = parse_completion(text)
             records.append({
                 "schema": RECORD_SCHEMA,
-                "protocol": PROTOCOL,
+                "protocol": self.protocol,
                 **self.run_meta,
                 "global_step": step,
                 "call": self.calls,

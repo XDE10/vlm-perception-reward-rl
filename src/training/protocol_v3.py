@@ -26,14 +26,17 @@ SYSTEM_PROMPT = (
 )
 # Prompt variants pre-registered in docs/plan/S3设计_20261109.md section 6. "p0" is the protocol every run so far used.
 # "p1" adds one fixed sentence at the end of the user turn; S3 adopts it only if the train-only rule says so, and then
-# for every arm and every evaluation. "answer_only" is a diagnostic (how much the three-part protocol costs V0); it is
-# never used for training or for an endpoint.
+# for every arm and every evaluation. The rule chose P1 (configs/experiments/s3_decisions_20261110.json), so the S4
+# experiment config names the P1 protocol id and training builds its prompts from that id (variant_for_protocol).
+# "answer_only" is a diagnostic (how much the three-part protocol costs V0); it is never used for training or for an
+# endpoint.
 P1_SUFFIX = "Respond in the format <perception>...</perception><think>...</think><answer>...</answer>."
 ANSWER_ONLY_SYSTEM_PROMPT = (
     "You solve geometry problems from a diagram. Think step by step, then give the final answer inside "
     "<answer></answer>. The answer must be a single number or expression, without units and without \"x =\"."
 )
 PROMPT_VARIANTS = ("p0", "p1", "answer_only")
+TRAINING_VARIANTS = ("p0", "p1")
 PROTOCOL_IDS = {"p0": PROTOCOL, "p1": "perception-think-answer-v3-p1-20261109",
                 "answer_only": "answer-only-diagnostic-20261109"}
 _SECTION = re.compile(r"\s*<perception>(.*?)</perception>\s*<think>(.*?)</think>\s*<answer>(.*?)</answer>\s*", re.S)
@@ -64,6 +67,14 @@ def user_text(problem, variant="p0"):
 def protocol_id(variant="p0"):
     _check_variant(variant)
     return PROTOCOL_IDS[variant]
+
+
+def variant_for_protocol(protocol):
+    """The prompt variant of a protocol id (an experiment config names its protocol, S4 uses P1)."""
+    for variant, known in PROTOCOL_IDS.items():
+        if known == protocol:
+            return variant
+    raise ValueError("unknown protocol id %r; known: %s" % (protocol, ", ".join(PROTOCOL_IDS.values())))
 
 
 def training_prompt(problem, variant="p0"):
@@ -114,5 +125,5 @@ def format_reward(text, max_claims=MAX_CLAIMS):
 
 
 __all__ = ["ANSWER_ONLY_SYSTEM_PROMPT", "MAX_CLAIMS", "P1_SUFFIX", "PROMPT_VARIANTS", "PROTOCOL", "PROTOCOL_IDS",
-           "SYSTEM_PROMPT", "clean_problem", "eval_messages", "extract_answer", "format_reward", "parse_completion",
-           "protocol_id", "system_prompt", "training_prompt", "user_text"]
+           "SYSTEM_PROMPT", "TRAINING_VARIANTS", "clean_problem", "eval_messages", "extract_answer", "format_reward",
+           "parse_completion", "protocol_id", "system_prompt", "training_prompt", "user_text", "variant_for_protocol"]

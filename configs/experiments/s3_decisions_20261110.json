@@ -1,0 +1,176 @@
+{
+  "schema": "p3-s3-decisions-v1",
+  "design": "docs/plan/S3设计_20261109.md section 6",
+  "inputs": {
+    "eval_sets_identical": true,
+    "cfgeo_rebuilt": true,
+    "harness_check": true
+  },
+  "resolution": {
+    "max_pixels": 802816,
+    "evaluation_images": {
+      "max_pixels": 802816,
+      "min_pixels": 3136,
+      "validation": {
+        "images": 300,
+        "shrunk": 0,
+        "enlarged": 0,
+        "max_pixels_seen": 462146,
+        "min_pixels_seen": 21870
+      },
+      "test": {
+        "images": 601,
+        "shrunk": 0,
+        "enlarged": 0,
+        "max_pixels_seen": 562830,
+        "min_pixels_seen": 25288
+      }
+    }
+  },
+  "generation_backend": {
+    "value": "vllm",
+    "passed": true,
+    "steps": [
+      {
+        "step": 1,
+        "ratio_mean": 0.9997879862785339,
+        "logp_difference_mean": 0.06472377479076385,
+        "logp_difference_max": 3.2233071327209473
+      },
+      {
+        "step": 2,
+        "ratio_mean": 0.9967750310897827,
+        "logp_difference_mean": 0.061375007033348083,
+        "logp_difference_max": 2.7539563179016113
+      },
+      {
+        "step": 3,
+        "ratio_mean": 0.9975651502609253,
+        "logp_difference_mean": 0.0676916241645813,
+        "logp_difference_max": 4.432302474975586
+      }
+    ],
+    "rule": "every step: mean weight in [0.9, 1.1] and mean |dlogp| <= 0.10"
+  },
+  "v0_val82_measured_only": {
+    "p0_image": {
+      "n": 82,
+      "protocol_ok_rate": 0.15853658536585366,
+      "format_rate": 0.15853658536585366,
+      "answer_accuracy": 0.024390243902439025,
+      "answer_status": {
+        "no_answer": 67,
+        "mismatch": 13,
+        "equivalent": 2
+      },
+      "eos_rate": 0.4024390243902439,
+      "budget_exhausted_rate": 0.5975609756097561,
+      "completion_tokens_mean": 662.5365853658536,
+      "completion_tokens_p50": 1024,
+      "completion_tokens_p90": 1024,
+      "completion_tokens_max": 1024,
+      "v5_reward_mean": -0.2606910569105691,
+      "v5_recall_mean": 0.042682926829268296,
+      "v5_false_mean": 1.5365853658536586,
+      "claims_mean": 2.317073170731707,
+      "version": "generate-v3-s3-20261109",
+      "failure_classes": {
+        "facts_without_tags": 39,
+        "perception_only": 16,
+        "complete": 13,
+        "perception_and_think_no_answer": 11,
+        "answer_but_malformed": 2,
+        "no_tags": 1
+      },
+      "repetition_loops": 40,
+      "seconds": 157.4
+    },
+    "p0_blind": {
+      "n": 82,
+      "protocol_ok_rate": 0.47560975609756095,
+      "format_rate": 0.45121951219512196,
+      "answer_accuracy": 0.04878048780487805,
+      "answer_status": {
+        "no_answer": 41,
+        "mismatch": 35,
+        "equivalent": 4,
+        "unparsed_prediction": 2
+      },
+      "eos_rate": 0.5609756097560976,
+      "budget_exhausted_rate": 0.43902439024390244,
+      "completion_tokens_mean": 550.6585365853658,
+      "completion_tokens_p50": 277,
+      "completion_tokens_p90": 1024,
+      "completion_tokens_max": 1024,
+      "v5_reward_mean": -0.6918766937669377,
+      "v5_recall_mean": 0.012262872628726287,
+      "v5_false_mean": 3.9634146341463414,
+      "claims_mean": 5.402439024390244,
+      "version": "generate-v3-s3-20261109",
+      "failure_classes": {
+        "complete": 39,
+        "perception_and_think_no_answer": 23,
+        "perception_only": 12,
+        "facts_without_tags": 3,
+        "no_tags": 3,
+        "answer_but_malformed": 2
+      },
+      "repetition_loops": 30,
+      "seconds": 147.0
+    },
+    "answer_only_image": {
+      "n": 82,
+      "protocol_ok_rate": 0.0,
+      "format_rate": 0.0,
+      "answer_accuracy": 0.13414634146341464,
+      "answer_status": {
+        "mismatch": 38,
+        "no_answer": 30,
+        "equivalent": 11,
+        "unparsed_prediction": 3
+      },
+      "eos_rate": 0.9512195121951219,
+      "budget_exhausted_rate": 0.04878048780487805,
+      "completion_tokens_mean": 333.4512195121951,
+      "completion_tokens_p50": 292,
+      "completion_tokens_p90": 506,
+      "completion_tokens_max": 1024,
+      "v5_reward_mean": null,
+      "v5_recall_mean": null,
+      "v5_false_mean": null,
+      "claims_mean": null,
+      "version": "generate-v3-s3-20261109",
+      "failure_classes": {
+        "answer_but_malformed": 52,
+        "no_tags": 26,
+        "other": 4
+      },
+      "repetition_loops": 0,
+      "seconds": 152.0
+    }
+  },
+  "prompt": {
+    "chosen": "p1",
+    "format_gain": 0.36328125,
+    "answer_change": 0.02734375,
+    "rule": "P1 if format gain >= 0.10 and answer change >= -0.02 (temperature-1 samples)",
+    "problems": 64
+  },
+  "warmup": {
+    "needed": false,
+    "format_rate": 0.53125,
+    "threshold": 0.5
+  },
+  "max_completion_length": {
+    "value": 1024,
+    "decided": true,
+    "finished": 215,
+    "p95": 361,
+    "rule": "1024 if p95 <= 870 else 1536"
+  },
+  "grpo_answer_signal": {
+    "problems_with_mixed_answer_reward": 11,
+    "problems": 64
+  },
+  "complete": true
+}
