@@ -92,6 +92,23 @@ def test_edit_replaces_the_label_keeps_nearby_lines_and_patches_reproduce_it():
             assert set(np.unique(alpha).tolist()) <= {0, 255}
 
 
+def test_k1_redraws_the_printed_string_and_bold_labels_get_a_stroke():
+    """Spot-check round 1 (reports/cfgeo_20261109/spot_check.md): "3.0" must stay "3.0" at k=1, bold digits stay bold."""
+    image, box = _label_image(line_colour=None, text="3.0")
+    label = _box("3.0", box)
+    assert B.edit(image, [label], [label], 1)[1][0]["to"] == "3.0"
+    assert B.edit(image, [label], [label], 2)[1][0]["to"] == "6"
+    image, box = _label_image(line_colour=None)
+    label = _box("12", box)
+    plain = B.edit(image, [label], [label], 1)[1][0]["stroke"]
+    bold = Image.new("RGB", (120, 70), CREAM)
+    font = B.font(16)
+    ImageDraw.Draw(bold).text((20, 20), "12", font=font, fill=BLACK, stroke_width=1, stroke_fill=BLACK)
+    left, top, right, bottom = font.getbbox("12", stroke_width=1)
+    label = _box("12", (20 + left - 1, 20 + top - 1, 20 + right + 1, 20 + bottom + 1))
+    assert B.edit(bold, [label], [label], 1)[1][0]["stroke"] > plain
+
+
 def _decode(text):
     from src.evaluation.cfgeo import decode_patch
 
@@ -111,9 +128,10 @@ def test_edit_refuses_labels_it_cannot_separate():
     B.edit(image, [label], [label], 1)  # the same digit fits
     with pytest.raises(B.Reject, match="cover other ink"):
         B.edit(image, [label], [label], 2)
-    image, box = _label_image(line_colour=None)
-    label, other = _box("12", box), _box("y", (box[2] + 1, box[1], box[2] + 8, box[3]), number="0")
-    with pytest.raises(B.Reject, match="touch the label"):
+    image, box = _label_image(line_colour=None, text="8")
+    label, other = _box("8", box), _box("y", (box[2] + 1, box[1], box[2] + 8, box[3]), number="0")
+    B.edit(image, [label], [label, other], 1)
+    with pytest.raises(B.Reject, match="touch the label"):  # the wider "16" would reach the next label
         B.edit(image, [label], [label, other], 2)
 
 

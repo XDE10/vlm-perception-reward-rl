@@ -16,10 +16,11 @@ k=2 (double every length number):
    and is set to the local background (RGB median of a 3 px ring), together with its faint anti-aliased fringe.
    A stroke that enters the box from outside stays untouched; if any of its pixels has the label's colour (for
    example a black line touching black digits) the label cannot be separated and the item is excluded.
-3. Draw k*v in Pillow's built-in font in the label's colour: the font size matches the ink height of the original
-   string, and the glyphs are condensed so that the redrawn original string has the original ink width (the same
-   size and condensing for k=1 and k=2). The new text is centred on the original ink; text that would cover other
-   ink or touch another label excludes the item.
+3. Draw the new text in Pillow's built-in font in the label's colour: k=1 redraws exactly the printed string, k=2
+   prints k*v with the fewest digits. One style per label serves both: the font size matches the ink height of the
+   original string, the glyphs are condensed to its ink width, and a stroke (drawn at 4x and reduced by area
+   averaging) matches its ink mass, i.e. its weight (editor v3, after the first spot check). The new text is centred
+   on the original ink; text that would cover other ink or touch another label excludes the item.
 4. OCR the edited image: every new number read back at its place (IoU >= 0.3 with the original box), every angle
    label unchanged (IoU >= 0.5), no other number; otherwise the item is excluded.
 
@@ -37,9 +38,9 @@ from decimal import Decimal
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-EDIT_VERSION = "cfgeo-edit-v2-20261109"
+EDIT_VERSION = "cfgeo-edit-v3-20261109"
 PARAMS = {"upscale": 2, "pad": 2, "ring": 3, "bg_tolerance": 24, "ring_background_share": 0.6, "ink_threshold": 64,
-          "text_tolerance": 80, "cover_alpha": 0.2, "squeeze": [0.6, 1.2],
+          "text_tolerance": 80, "cover_alpha": 0.2, "squeeze": [0.6, 1.2], "supersample": 4, "max_stroke": 6,
           "iou_new": 0.3, "iou_angle": 0.5, "font_sizes": [6, 120]}
 DEGREE_MARKS = "°º˚"
 TOKEN = re.compile(r"^(\d+(?:\.\d+)?)(\s*(?:cm|mm|km|m|in\.?|ft|yd|units?))?$")
@@ -137,25 +138,53 @@ def font(size):
     return _FONTS[size]
 
 
-def pick_size(text, ink_height):
-    low, high = PARAMS["font_sizes"]
-    best = None
-    for size in range(low, high + 1):
-        top, bottom = font(size).getbbox(text)[1::2]
-        error = abs((bottom - top) - ink_height)
-        if best is None or error < best[0]:
-            best = (error, size)
-    return best[1]
-
-
-def render(text, size, squeeze):
-    """Anti-aliased coverage (mode L) of ``text`` in Pillow's built-in font, condensed horizontally by ``squeeze``."""
+def render(text, size, squeeze, stroke=0):
+    """Coverage (mode L) of ``text``: drawn at SUPERSAMPLE x the size with ``stroke`` (in supersampled pixels) to
+    match the original weight, condensed by ``squeeze`` and reduced by area averaging (no ringing)."""
     from PIL import Image, ImageDraw
 
-    left, top, right, bottom = font(size).getbbox(text)
-    glyph = Image.new("L", (right - left + 4, bottom - top + 4), 0)
-    ImageDraw.Draw(glyph).text((2 - left, 2 - top), text, font=font(size), fill=255)
-    return glyph.resize((max(1, int(round(glyph.width * squeeze))), glyph.height), Image.LANCZOS)
+    k = PARAMS["supersample"]
+    big = font(size * k)
+    left, top, right, bottom = big.getbbox(text, stroke_width=stroke)
+    canvas = Image.new("L", (right - left + 4 * k, bottom - top + 4 * k), 0)
+    ImageDraw.Draw(canvas).text((2 * k - left, 2 * k - top), text, font=big, fill=255, stroke_width=stroke,
+                                stroke_fill=255)
+    return canvas.resize((max(1, int(round(canvas.width * squeeze / k))), max(1, int(round(canvas.height / k)))),
+                         Image.BOX)
+
+
+def ink_extent(glyph):
+    """Width and height of the pixels with coverage >= 0.1 (comparable to the original ink box)."""
+    import numpy as np
+
+    ys, xs = np.nonzero(np.asarray(glyph) >= 26)
+    return (int(xs.max() - xs.min() + 1), int(ys.max() - ys.min() + 1)) if len(xs) else (0, 0)
+
+
+def fit_style(text, ink_width, ink_height, ink_mass):
+    """Font size, horizontal condensing and stroke so that ``text`` (the original string) has the original ink
+    height, width and ink mass (sum of coverage); S3 design 3.2 step 3, revisions 1 and 3."""
+    import numpy as np
+
+    low, high = PARAMS["font_sizes"]
+    best = None
+    for stroke in range(0, PARAMS["max_stroke"] + 1):
+        guess = min(range(low, high + 1), key=lambda s: abs(ink_extent_estimate(text, s, stroke) - ink_height))
+        sizes = [s for s in range(guess - 2, guess + 3) if low <= s <= high]
+        size = min(sizes, key=lambda s: abs(ink_extent(render(text, s, 1.0, stroke))[1] - ink_height))
+        width = ink_extent(render(text, size, 1.0, stroke))[0]
+        squeeze = min(PARAMS["squeeze"][1], max(PARAMS["squeeze"][0], ink_width / float(width or 1)))
+        glyph = render(text, size, squeeze, stroke)
+        mass = float(np.asarray(glyph, dtype=np.float64).sum() / 255.0)
+        error = abs(mass - ink_mass) / max(ink_mass, 1e-6)
+        if best is None or error < best[0]:
+            best = (error, size, squeeze, stroke)
+    return best[1], best[2], best[3]
+
+
+def ink_extent_estimate(text, size, stroke):
+    left, top, right, bottom = font(size * PARAMS["supersample"]).getbbox(text, stroke_width=stroke)
+    return (bottom - top) / float(PARAMS["supersample"])
 
 
 def dilate(mask):
@@ -264,14 +293,15 @@ def edit(image, length_boxes, all_boxes, factor):
         region[mask] = background
         changed[e[1]:e[3], e[0]:e[2]] |= mask
         original_text = b["number"] + b["suffix"]
-        text = scale_number(b["number"], factor) + b["suffix"]
-        # same font size for k=1 and k=2: the original ink height of the original string; then condense the
-        # glyphs horizontally so the redrawn original string has the original ink width (the textbook font is
-        # narrower than Pillow's)
-        size = pick_size(original_text, ink_box[3] - ink_box[1])
-        left, _, right, _ = font(size).getbbox(original_text)
-        squeeze = min(PARAMS["squeeze"][1], max(PARAMS["squeeze"][0], (ink_box[2] - ink_box[0]) / float(right - left)))
-        glyph = render(text, size, squeeze)
+        # k=1 redraws exactly the printed string (e.g. "3.0" stays "3.0"); k=2 prints k*v with the fewest digits
+        text = original_text if factor == 1 else scale_number(b["number"], factor) + b["suffix"]
+        # one style per label, used for k=1 and k=2: the original string redrawn has the original ink height, width
+        # and ink mass (the textbook font is narrower and often bolder than Pillow's)
+        lift = np.clip(((inside.astype(np.float64) - background) @ (text_colour - background).astype(np.float64))
+                       / max(1.0, float(((text_colour - background).astype(np.float64) ** 2).sum())), 0.0, 1.0)
+        size, squeeze, stroke = fit_style(original_text, ink_box[2] - ink_box[0], ink_box[3] - ink_box[1],
+                                          float(lift[mask].sum()))
+        glyph = render(text, size, squeeze, stroke)
         gx0, gy0, gx1, gy1 = glyph.getbbox()
         x = int(round((ink_box[0] + ink_box[2]) / 2 - (gx0 + gx1) / 2))
         y = int(round((ink_box[1] + ink_box[3]) / 2 - (gy0 + gy1) / 2))
@@ -291,7 +321,7 @@ def edit(image, length_boxes, all_boxes, factor):
             raise Reject("new text for %s would cover other ink" % b["text"])
         work = work * (1 - alpha[..., None]) + text_colour[None, None, :] * alpha[..., None]
         changed |= drawn
-        records.append({"from": b["text"], "to": text, "font_size": size, "squeeze": round(squeeze, 4),
+        records.append({"from": b["text"], "to": text, "font_size": size, "squeeze": round(squeeze, 4), "stroke": stroke,
                         "original_box": list(b["box"]),
                         "new_box": list(new_box), "background": [int(c) for c in background],
                         "text_colour": [int(c) for c in text_colour],
