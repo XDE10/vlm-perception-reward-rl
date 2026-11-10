@@ -38,15 +38,16 @@
   },
   {
    "path": "AGENTS.md",
-   "bytes": 1895,
-   "sha256": "ad6e2586f7b6f57083f1f080a2f733e87b7dea918ea80c7bb0e1050a58f088c3",
+   "bytes": 2466,
+   "sha256": "95dd7b27878210ea5eea0a4dd1265c97325a505b89d6cbaf63cd760fc0fbd0b1",
    "source_sha256": "6462ba3d599c31611f5a676bb6cbad7636ad0294b0db6fd4fa994529f30d313f",
-   "changed_for_portability": true
+   "changed_for_portability": true,
+   "updated_in": "2026-11-10_stage4_prereg"
   },
   {
    "path": "CHANGELOG.md",
-   "bytes": 15952,
-   "sha256": "6be2c4b36b89d1b34d46553241adce9e038ce955946cbe11e414a8b7544e7641",
+   "bytes": 16334,
+   "sha256": "4313e2417867e62da8892b9188480cbd611a65ae2de3628778171aaf4729ed2c",
    "source_sha256": "dbded3caf83f4f16b506d3dc18f8ed0229cd90032081039f38c28fa58306dc50",
    "changed_for_portability": true,
    "updated_in": "2026-11-10_stage4_prereg"
@@ -19875,8 +19876,8 @@
   },
   {
    "path": "docs/architecture.md",
-   "bytes": 10166,
-   "sha256": "9898054021e73750aa61e308558f71f10f9d04b22e02119f8f018af523de10ae",
+   "bytes": 10452,
+   "sha256": "c762189a6c8fabbb4d135334b91ec0fc16b31c9607cf06fcfd65ee87ba096a27",
    "source_sha256": "d4741c763022737eaf77f807b2529d6ff262ae5422e7c8c8ff3ea48a2296fa9a",
    "changed_for_portability": true,
    "updated_in": "2026-11-10_stage4_prereg"
@@ -19932,10 +19933,11 @@
   },
   {
    "path": "docs/guides/argon_review_prompt.md",
-   "bytes": 10968,
-   "sha256": "347dcecfdfcf037f2f12fc6efe9da5c6244bdc9d127ac553ddd78e2cc5c2f527",
+   "bytes": 11493,
+   "sha256": "0058ac2b47387759f4a44862dda0b7a36faa5d8a4767165db7497dd7a3e1094a",
    "source_sha256": "347dcecfdfcf037f2f12fc6efe9da5c6244bdc9d127ac553ddd78e2cc5c2f527",
-   "changed_for_portability": false
+   "changed_for_portability": true,
+   "updated_in": "2026-11-10_stage4_prereg"
   },
   {
    "path": "docs/migration/README_分离清理前_20261108.md",
@@ -20046,11 +20048,12 @@
   },
   {
    "path": "docs/plan/S4预注册_20261110.md",
-   "bytes": 27531,
-   "sha256": "e8c59cf632be25b4ce2d81a150aaa335d7889a6240610c6c5751d15608957b94",
+   "bytes": 28070,
+   "sha256": "1f3278f8bfb0df816b9e0d6634255d02b789f75d992c8ec81a99cdfca91a3515",
    "source_sha256": "e8c59cf632be25b4ce2d81a150aaa335d7889a6240610c6c5751d15608957b94",
-   "changed_for_portability": false,
-   "added_in": "2026-11-10_stage4_prereg"
+   "changed_for_portability": true,
+   "added_in": "2026-11-10_stage4_prereg",
+   "updated_in": "2026-11-10_stage4_prereg"
   },
   {
    "path": "docs/plan/决策记录.md",
@@ -20146,7 +20149,7 @@
   {
    "path": "docs/verification.md",
    "bytes": 16675,
-   "sha256": "53c436919c2bee6b27fa2caf0d0fb05cf762233b75769f44a74115942c6d98dc",
+   "sha256": "3b8739351261e7e13f52d888b476d090aaa89c8e9d6e061306e3984303f742b7",
    "source_sha256": "dafa2e004f067fa92df2b610e7a800d35c350c32016b9dc2035f9a25913dc093",
    "changed_for_portability": true,
    "updated_in": "2026-11-10_stage4_prereg"
@@ -25051,7 +25054,7 @@
    "date": "2026-11-10",
    "label": "2026-11-10_stage4_prereg",
    "mode": "git_tracked_only",
-   "purpose": "S4 pre-registration: S3 decisions accepted (D52), P1 experiment config with training prompts that follow the config protocol (D53), registered runs checked before the model loads (D54), stop rules incl. a non-finite stop (D55), run order (D56), pilot gates (D57), Drive checkpoint policy (D58); docs, supporting report and tests",
+   "purpose": "S4 pre-registration: S3 decisions accepted (D52), P1 experiment config with training prompts that follow the config protocol (D53), registered runs checked before the model loads (D54), stop rules incl. a non-finite stop (D55), run order (D56), pilot gates (D57), Drive checkpoint policy (D58); AGENTS.md states that every formal run starts from V0 (confirmed by the user); docs, supporting report and tests",
    "changes": [
     {
      "path": ".gitattributes",
@@ -25059,9 +25062,14 @@
      "current_sha256": "5222ad7facefdce1807e8f868e728235679b81037d6cba6db0a18ca7b7fd6457"
     },
     {
+     "path": "AGENTS.md",
+     "previous_sha256": "ad6e2586f7b6f57083f1f080a2f733e87b7dea918ea80c7bb0e1050a58f088c3",
+     "current_sha256": "95dd7b27878210ea5eea0a4dd1265c97325a505b89d6cbaf63cd760fc0fbd0b1"
+    },
+    {
      "path": "CHANGELOG.md",
      "previous_sha256": "109c6166630edab005c33034876ae41235219fde33325dc15843b6fb0f8c7bcf",
-     "current_sha256": "6be2c4b36b89d1b34d46553241adce9e038ce955946cbe11e414a8b7544e7641"
+     "current_sha256": "4313e2417867e62da8892b9188480cbd611a65ae2de3628778171aaf4729ed2c"
     },
     {
      "path": "README.md",
@@ -25096,12 +25104,17 @@
     {
      "path": "docs/architecture.md",
      "previous_sha256": "83e8855ec2282e390e1e0d3a02866a7ee97db78f16ff45b51ec832b51af0f039",
-     "current_sha256": "9898054021e73750aa61e308558f71f10f9d04b22e02119f8f018af523de10ae"
+     "current_sha256": "c762189a6c8fabbb4d135334b91ec0fc16b31c9607cf06fcfd65ee87ba096a27"
+    },
+    {
+     "path": "docs/guides/argon_review_prompt.md",
+     "previous_sha256": "347dcecfdfcf037f2f12fc6efe9da5c6244bdc9d127ac553ddd78e2cc5c2f527",
+     "current_sha256": "0058ac2b47387759f4a44862dda0b7a36faa5d8a4767165db7497dd7a3e1094a"
     },
     {
      "path": "docs/plan/S4预注册_20261110.md",
      "previous_sha256": null,
-     "current_sha256": "e8c59cf632be25b4ce2d81a150aaa335d7889a6240610c6c5751d15608957b94"
+     "current_sha256": "1f3278f8bfb0df816b9e0d6634255d02b789f75d992c8ec81a99cdfca91a3515"
     },
     {
      "path": "docs/plan/决策记录.md",
@@ -25116,7 +25129,7 @@
     {
      "path": "docs/verification.md",
      "previous_sha256": "eaee802b0cf33b779b11ff509218acacf6884813f524925f9939d9aad242745b",
-     "current_sha256": "53c436919c2bee6b27fa2caf0d0fb05cf762233b75769f44a74115942c6d98dc"
+     "current_sha256": "3b8739351261e7e13f52d888b476d090aaa89c8e9d6e061306e3984303f742b7"
     },
     {
      "path": "reports/README.md",
