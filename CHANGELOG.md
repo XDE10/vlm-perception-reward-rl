@@ -20,6 +20,9 @@
 - 训练入口：loss 或梯度范数出现 NaN/inf 时立即停止（关闭 `logging_nan_inf_filter`，只影响日志）；训练失败时也写出 `log_history.json`。
 - 新增 `reports/s4_preregistration_20261110/`：S3 决策副本的核对，P0/P1 格式率按题聚类的 bootstrap 区间（只用 train）。
 - `.gitattributes`：S3 决策副本标为 `-text`，保证字节不变。
+- `AGENTS.md`：写明正式实验的所有组都从 V0 出发、不做感知 SFT（你在 2026-11-10 确认），旧入口 `train_project3` 只作历史保留；
+  “GPU 尚未验收”改为以 README 和结果分支为准。`docs/architecture.md` 的旧训练流程和 `docs/guides/argon_review_prompt.md` 的项目事实
+  加注为历史状态；S4 预注册追加修订 1。
 - 测试：本机 WSL2（Python 3.12.3，有 `data/`）全部通过，见 [docs/verification.md](docs/verification.md)。
 
 ## 2026-11-09 — S3 实施：评测集、CF-Geo、统一评测路径、统计与 `v0` 任务

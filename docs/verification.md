@@ -230,7 +230,7 @@ python -m pytest -q
   rollout 和运行身份都记录 P1。
 
 其他检查（清单按 `--git-tracked-only` 刷新之后）：`python tools/verify_migration.py --full` 核对 3,354 个文件，0 个错误，
-批准行 609 / 82；`python tools/check_links.py` 检查 19 个页面的 169 个相对链接，0 个失效；
+批准行 609 / 82；`python tools/check_links.py` 检查 19 个页面的 174 个相对链接，0 个失效；
 `python -m scripts.training.register_runs --check` 通过（含本机数据的 SHA256 与 609 行）。
 
 没有验证的：新代码在 GPU 上的行为（P1 提示下 vLLM 的重要性采样、NaN 停止、登记核对中的 GPU 型号），这些由试跑检查（S4 预注册第 11 节）；

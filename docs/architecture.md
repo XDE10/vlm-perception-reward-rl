@@ -29,6 +29,9 @@ runs/... SFT merged 权重 → 稀疏 GRPO（感知奖励 + math_verify 数学�
 src/evaluation/geometry_perception_parser.py + 视觉诊断脚本 → 评测/诊断记录
 ```
 
+图中从 `configs/*.json → scripts/training/train_project3.py` 开始的训练部分是旧入口（感知 SFT → 稀疏 GRPO），只作历史保留。
+正式实验从 `data/portable_release/` 进入下一节的协议 v3 流水线：所有组都从 V0 出发，不做感知 SFT。
+
 ## 协议 v3 统一 GRPO 流水线（2026-11-09 起的正式实验）
 
 ```text
