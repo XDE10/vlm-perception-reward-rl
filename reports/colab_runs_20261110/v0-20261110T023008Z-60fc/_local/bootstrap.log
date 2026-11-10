@@ -1,0 +1,7 @@
+[p3] code d85f2b816713 from GitHub, verified, extracted to /content/p3/repo
+[p3] 02:30:48 data pack verified: 716 files, anchors ledger,release,row
+[p3] 02:30:48 GPU: NVIDIA A100-SXM4-40GB, 40960.0 MiB, driver 580.82.07 (CUDA [13, 0])
+[p3] 02:31:19 base env ready: torch 2.13.0+cu130, backend cu130
+[p3] 02:31:49 downloading Qwen/Qwen2.5-VL-3B-Instruct@66285546 ... 0m30s elapsed | Fetching 11 files: 100%|██████████| 11/11 [00:19<00:00,  1.74s/it]
+[p3] 02:32:02 model ready: /content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8 (11 files)
+[p3] 02:32:02 BOOTSTRAP_OK in 75s

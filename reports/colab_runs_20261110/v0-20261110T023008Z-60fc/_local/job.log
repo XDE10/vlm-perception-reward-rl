@@ -1,0 +1,59 @@
+[p3] 02:32:20 GitHub: the VM will push the results to results/v0-20261110T023008Z-60fc itself (write access verified)
+[p3] 02:32:20 job v0-20261110T023008Z-60fc: 12 steps
+[p3] 02:32:20 step env_report started: /content/p3/env/base/bin/python -m scripts.colab.env_report --root /content/p3 --out /content/p3/out/v0-20261110T023008Z-60fc/env.json
+[p3] 02:32:22 step env_report PASSED in 0m02s
+[p3] 02:32:22 step verify_pack started: /content/p3/env/base/bin/python -m scripts.colab.verify_pack --repo /content/p3/repo --out /content/p3/out/v0-20261110T023008Z-60fc/pack_verification.json
+[p3] 02:32:22 step verify_pack PASSED in 0m00s
+[p3] 02:32:22 step pytest started: /content/p3/env/base/bin/python -m pytest -q -p no:cacheprovider --junitxml=/content/p3/out/v0-20261110T023008Z-60fc/pytest.xml
+[p3] 02:33:22 pytest running 1m00s | ......................
+[p3] 02:34:22 pytest running 2m00s | .........................
+[p3] 02:35:13 step pytest PASSED in 2m50s
+[p3] 02:35:13 step public_sources started: /content/p3/env/base/bin/python -m scripts.colab.public_sources --dest /content/p3/public --out /content/p3/out/v0-20261110T023008Z-60fc/public_sources.json
+[p3] 02:35:17 step public_sources PASSED in 0m03s
+[p3] 02:35:17 step eval_sets started: /content/p3/env/base/bin/python -m scripts.colab.eval_inputs eval-sets --sources /content/p3/public --out /content/p3/out/v0-20261110T023008Z-60fc/eval_sets_check.json
+[p3] 02:35:30 step eval_sets PASSED in 0m13s
+[p3] 02:35:30 step cfgeo_build started: /content/p3/env/base/bin/python -m scripts.colab.eval_inputs cfgeo --sources /content/p3/public --out /content/p3/out/v0-20261110T023008Z-60fc/cfgeo_build.json
+[p3] 02:35:43 step cfgeo_build PASSED in 0m12s
+[p3] 02:35:43 step prompt_select started: /content/p3/env/base/bin/python -m scripts.colab.prompt_select --model-path /content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8 --out /content/p3/out/v0-20261110T023008Z-60fc/prompt_select
+[p3] 02:36:43 prompt_select running 1m00s |   warnings.warn(
+[p3] 02:37:43 prompt_select running 2m00s |   warnings.warn(
+[p3] 02:38:43 prompt_select running 3m00s |   warnings.warn(
+[p3] 02:39:43 prompt_select running 4m00s |   warnings.warn(
+[p3] 02:40:43 prompt_select running 5m00s |   warnings.warn(
+[p3] 02:41:43 prompt_select running 6m00s | [transformers] The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+[p3] 02:42:43 prompt_select running 7m00s | [transformers] The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+[p3] 02:43:43 prompt_select running 8m00s | [transformers] The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+[p3] 02:44:43 prompt_select running 9m00s | [transformers] The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+[p3] 02:45:43 prompt_select running 10m00s | [transformers] The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+[p3] 02:46:43 prompt_select running 11m00s | [transformers] The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+[p3] 02:47:43 prompt_select running 12m00s | [transformers] The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+[p3] 02:48:24 step prompt_select PASSED in 12m40s
+[p3] 02:48:24 step v0_val82 started: /content/p3/env/base/bin/python -m scripts.colab.v0_diagnosis --model-path /content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8 --out /content/p3/out/v0-20261110T023008Z-60fc/v0_val82
+[p3] 02:49:24 v0_val82 running 1m00s | [transformers] The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+[p3] 02:50:24 v0_val82 running 2m00s | [transformers] The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+[p3] 02:51:24 v0_val82 running 3m00s | Timeout is disabled as timeout_seconds is None or <= 0, you must provide                         the logic for timeout interuption yourself to prevent code getting stuck.
+[p3] 02:52:24 v0_val82 running 4m00s | Timeout is disabled as timeout_seconds is None or <= 0, you must provide                         the logic for timeout interuption yourself to prevent code getting stuck.
+[p3] 02:53:24 v0_val82 running 5m00s | Timeout is disabled as timeout_seconds is None or <= 0, you must provide                         the logic for timeout interuption yourself to prevent code getting stuck.
+[p3] 02:54:24 v0_val82 running 6m00s | Timeout is disabled as timeout_seconds is None or <= 0, you must provide                         the logic for timeout interuption yourself to prevent code getting stuck.
+[p3] 02:55:24 v0_val82 running 7m00s | Timeout is disabled as timeout_seconds is None or <= 0, you must provide                         the logic for timeout interuption yourself to prevent code getting stuck.
+[p3] 02:56:11 step v0_val82 PASSED in 7m46s
+[p3] 02:56:11 step harness_check started: /content/p3/env/base/bin/python -m scripts.colab.harness_check --model-path /content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8 --sources /content/p3/public --out /content/p3/out/v0-20261110T023008Z-60fc/harness_check
+[p3] 02:57:11 harness_check running 1m00s | [transformers] The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+[p3] 02:58:11 harness_check running 2m00s | Timeout is disabled as timeout_seconds is None or <= 0, you must provide                         the logic for timeout interuption yourself to prevent code getting stuck.
+[p3] 02:59:11 harness_check running 3m00s | Timeout is disabled as timeout_seconds is None or <= 0, you must provide                         the logic for timeout interuption yourself to prevent code getting stuck.
+[p3] 03:00:11 harness_check running 4m00s | Timeout is disabled as timeout_seconds is None or <= 0, you must provide                         the logic for timeout interuption yourself to prevent code getting stuck.
+[p3] 03:01:11 harness_check running 5m00s | Timeout is disabled as timeout_seconds is None or <= 0, you must provide                         the logic for timeout interuption yourself to prevent code getting stuck.
+[p3] 03:01:39 step harness_check PASSED in 5m28s
+[p3] 03:01:39 step vllm_env started: /usr/bin/python3 -m scripts.colab.bootstrap vllm-env --root /content/p3
+[p3] 03:02:06 step vllm_env PASSED in 0m26s
+[p3] 03:02:06 step is_check started: /content/p3/env/vllm/bin/python -m scripts.training.train_rl --arm rl_v5 --seed 1 --smoke max_steps=3 --output-dir /content/p3/out/v0-20261110T023008Z-60fc/is_check --model-path /content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8 --runtime /content/p3/repo/configs/experiments/runtime_frozen_20261
+[p3] 03:03:06 is_check running 1m00s |   warnings.warn(
+[p3] 03:04:06 is_check running 2m00s | Capturing CUDA graphs (FULL): 100%|██████████| 2/2 [00:00<00:00, 17.94it/s]
+[p3] 03:05:06 is_check running 3m00s | Timeout is disabled as timeout_seconds is None or <= 0, you must provide                         the logic for timeout interuption yourself to prevent code getting stuck.
+[p3] 03:06:06 is_check running 4m00s |  67%|██████▋   | 2/3 [01:27<00:43, 43.98s/it]
+[p3] 03:06:57 step is_check PASSED in 4m51s
+[p3] 03:06:57 step decide_s3 started: /content/p3/env/base/bin/python -m scripts.colab.decide_s3 --out-dir /content/p3/out/v0-20261110T023008Z-60fc
+[p3] 03:06:57 step decide_s3 PASSED in 0m00s
+[p3] 03:07:00 results pushed from the VM to results/v0-20261110T023008Z-60fc (commit 15ca2714ba16)
+[p3] 03:07:13 Drive copy (results): verified mydrive:ColabProjects/vlm-perception-reward-rl/runs/v0-20261110T023008Z-60fc
+[p3] 03:07:13 JOB_DONE overall=passed package=v0-20261110T023008Z-60fc.results.tar.gz (1 parts, 0.3 MB)

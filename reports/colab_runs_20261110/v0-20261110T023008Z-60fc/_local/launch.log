@@ -1,0 +1,16 @@
+[launch 10:30:09] run v0-20261110T023008Z-60fc (task v0, commit d85f2b816713) on your session p3 (its hardware decides the GPU)
+[launch 10:30:10] code: the VM downloads commit d85f2b816713 from GitHub and verifies every file against its git blob SHA-1
+[launch 10:30:10] building private data pack from /home/xde10/projects/vlm-perception-reward-rl/data
+[launch 10:30:11] data pack: {"pack": "/home/xde10/projects/vlm-perception-reward-rl/.colab_cache/p3_private_082210c90d5b3834.tar.gz", "sha256": "8f571a49c40d45a8226245d4dee0715d05c94e518b64496a2d731b9cb926f5e2", "bytes": 21164679, "content_sha256": "082210c90d5b3834539380c37bb5a43deab0f4354b5ff630910a6c06be06f1a1", "files": 71
+[launch 10:30:16] using your session p3; it is not released at the end unless you pass --release
+[launch 10:30:21] 11 part(s) are already on the VM with the right SHA256; not sending them again
+[launch 10:30:21] upload inputs 1/1 request.json (73 KiB)
+[launch 10:30:37] uploaded inputs: 73 KiB in 16s (~4 KiB/s)
+[launch 10:30:40] all uploaded parts verified on the VM (size and SHA256)
+[launch 10:30:40] bootstrap on the VM (code, environment install and model download; ~10-20 min)
+[launch 10:32:13] job running on the VM; progress lines follow (Ctrl-C detaches, the job keeps running)
+[launch 11:07:14] fetching results
+[launch 11:07:24] the VM pushed the results itself: https://github.com/XDE10/vlm-perception-reward-rl/tree/results/v0-20261110T023008Z-60fc
+[launch 11:07:28] results in /home/xde10/projects/vlm-perception-reward-rl/.colab_runs/v0-20261110T023008Z-60fc/results/v0-20261110T023008Z-60fc (overall: passed)
+[launch 11:07:28] Drive copy verified: mydrive:ColabProjects/vlm-perception-reward-rl/runs/v0-20261110T023008Z-60fc
+[launch 11:07:28] your session p3 stays up and keeps using compute units; when you are done: colab stop -s p3
