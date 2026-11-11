@@ -1,0 +1,2 @@
+[p3] 16:04:44 env vllm already installed (cu130), reusing
+{"name": "vllm", "python": "/content/p3/env/vllm/bin/python", "torch_backend": "cu130", "lock": "requirements/locks/colab-gpu-vllm-cu130.txt", "lock_sha256": "1047b6de62d9641b0d6934666aca338f7fb41c93dcd5e2fb771cb6d490fc6cda", "install_seconds": 56.8059515953064, "ok": true, "freeze_sha256": "9f6264ba1d4c4a1827384afe7c3a1b0ae692cd7a57735b3718aff199262eeb50", "vllm_import": "VLLM 0.32.0"}

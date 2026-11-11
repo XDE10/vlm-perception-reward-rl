@@ -1,0 +1,88 @@
+{
+  "schema": "p3-job-status-v1",
+  "run_id": "train-20261111T160222Z-a456",
+  "task": "train",
+  "state": "packaging",
+  "started_utc": "2026-11-11T16:03:54Z",
+  "updated_utc": "2026-11-11T16:04:59Z",
+  "steps": [
+    {
+      "name": "env_report",
+      "state": "passed",
+      "required": true,
+      "description": "software, GPU and environment lock report",
+      "started_utc": "2026-11-11T16:03:55Z",
+      "log": "logs/env_report.log",
+      "exit_code": 0,
+      "seconds": 2.3,
+      "finished_utc": "2026-11-11T16:03:58Z"
+    },
+    {
+      "name": "verify_pack",
+      "state": "passed",
+      "required": true,
+      "description": "private data matches its anchors",
+      "started_utc": "2026-11-11T16:03:58Z",
+      "log": "logs/verify_pack.log",
+      "exit_code": 0,
+      "seconds": 0.3,
+      "finished_utc": "2026-11-11T16:03:58Z"
+    },
+    {
+      "name": "register_check",
+      "state": "passed",
+      "required": true,
+      "description": "registered runs equal the configs; data on this VM equals the registered SHA256 and rows",
+      "started_utc": "2026-11-11T16:03:58Z",
+      "log": "logs/register_check.log",
+      "exit_code": 0,
+      "seconds": 0.6,
+      "finished_utc": "2026-11-11T16:03:59Z"
+    },
+    {
+      "name": "drive_probe",
+      "state": "passed",
+      "required": true,
+      "description": "Google Drive via rclone: write, read back, hash check, delete (optional unless drive-check)",
+      "started_utc": "2026-11-11T16:03:59Z",
+      "log": "logs/drive_probe.log",
+      "exit_code": 0,
+      "seconds": 45.5,
+      "finished_utc": "2026-11-11T16:04:44Z"
+    },
+    {
+      "name": "vllm_env",
+      "state": "passed",
+      "required": true,
+      "description": "vLLM venv (CUDA 13): the frozen runtime generates with vLLM",
+      "started_utc": "2026-11-11T16:04:44Z",
+      "log": "logs/vllm_env.log",
+      "exit_code": 0,
+      "seconds": 5.0,
+      "finished_utc": "2026-11-11T16:04:49Z"
+    },
+    {
+      "name": "train_runs",
+      "state": "failed",
+      "required": true,
+      "description": "registered runs in order: claim, restore from Drive, train, verify on Drive",
+      "started_utc": "2026-11-11T16:04:49Z",
+      "log": "logs/train_runs.log",
+      "exit_code": 1,
+      "seconds": 9.9,
+      "finished_utc": "2026-11-11T16:04:59Z",
+      "log_tail": "[p3] 16:04:59 train: stop (setup): training code differs from the code baseline of the first formal run (job train-20261111T064626Z-27c7, 2026-11-11T06:49:49Z); a code change during S4 needs a new decision (pre-registration section 9)"
+    }
+  ],
+  "current": null,
+  "github_check": {
+    "mode": "auto",
+    "ok": true,
+    "credentials_present": true,
+    "push_access": true,
+    "branch": "results/train-20261111T160222Z-a456",
+    "reason": null,
+    "warning": null
+  },
+  "overall": "failed"
+}

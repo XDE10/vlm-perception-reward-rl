@@ -1,0 +1,14 @@
+{
+  "schema": "p3-pack-verification-v1",
+  "content_sha256": "082210c90d5b3834539380c37bb5a43deab0f4354b5ff630910a6c06be06f1a1",
+  "recomputed_content_sha256": "082210c90d5b3834539380c37bb5a43deab0f4354b5ff630910a6c06be06f1a1",
+  "files": 716,
+  "anchors": [
+    "ledger",
+    "release",
+    "row"
+  ],
+  "missing_optional": [],
+  "problems": [],
+  "ok": true
+}
