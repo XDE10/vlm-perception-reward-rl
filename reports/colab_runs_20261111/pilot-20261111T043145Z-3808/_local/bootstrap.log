@@ -1,0 +1,11 @@
+
+[colab] A new version of Colab CLI is available: 0.8.0 (current: 0.7.5)
+[colab] Run 'colab update' to update.
+[colab] To silence this check, set "enable_update_check": false in ~/.config/colab-cli/settings.json
+
+[p3] 04:34:15 data pack verified: 716 files, anchors ledger,release,row
+[p3] 04:34:16 GPU: NVIDIA A100-SXM4-40GB, 40960.0 MiB, driver 580.82.07 (CUDA [13, 0])
+[p3] 04:34:48 base env ready: torch 2.13.0+cu130, backend cu130
+[p3] 04:35:18 downloading Qwen/Qwen2.5-VL-3B-Instruct@66285546 ... 0m30s elapsed | Fetching 11 files: 100%|██████████| 11/11 [00:20<00:00,  1.82s/it]
+[p3] 04:35:32 model ready: /content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8 (11 files)
+[p3] 04:35:32 BOOTSTRAP_OK in 77s

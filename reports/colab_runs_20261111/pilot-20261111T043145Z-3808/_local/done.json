@@ -1,0 +1,42 @@
+{
+  "run_id": "pilot-20261111T043145Z-3808",
+  "overall": "passed",
+  "package": {
+    "name": "pilot-20261111T043145Z-3808.results.tar.gz",
+    "sha256": "b03a80913483d71ed38b2c53838bb96c05b50c3b451ce5e252003c11394a632a",
+    "bytes": 1089411,
+    "parts": [
+      {
+        "name": "pilot-20261111T043145Z-3808.results.tar.gz.part000",
+        "bytes": 1089411,
+        "sha256": "b03a80913483d71ed38b2c53838bb96c05b50c3b451ce5e252003c11394a632a"
+      }
+    ],
+    "skipped": 0,
+    "gzipped": []
+  },
+  "github": {
+    "attempted": true,
+    "ok": true,
+    "branch": "results/pilot-20261111T043145Z-3808",
+    "skipped_large": 0,
+    "redacted": 0,
+    "files": 86,
+    "bytes": 8676220,
+    "commit": "58633e6f13db4f61d0fabc828a77026c79c3de2a",
+    "seconds": 4.8
+  },
+  "drive": {
+    "ok": true,
+    "attempted": true,
+    "verified": true,
+    "target": "mydrive:ColabProjects/vlm-perception-reward-rl/runs/pilot-20261111T043145Z-3808",
+    "files": 2,
+    "bytes": 1089873,
+    "copy_seconds": 8.9,
+    "check_seconds": 2.4,
+    "reason": null,
+    "mode": "results"
+  },
+  "finished_utc": "2026-11-11T05:47:10Z"
+}
