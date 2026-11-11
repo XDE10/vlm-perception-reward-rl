@@ -14,7 +14,8 @@ Design (D31 in docs/plan/决策记录.md):
 * Training reads and writes only the local disk (/content); Drive receives verified
   copies at the end of a run (and, from S4 on, at checkpoint boundaries).
 * Nothing outside ``<remote><base dir>`` is touched; the probe deletes only the exact
-  files it created a moment earlier.
+  files it created a moment earlier. The S4 helpers (``copy_verify`` ... ``purge``) take
+  paths relative to that directory and refuse anything that is not a plain relative path.
 
     python -m scripts.colab.drive probe   --out <json> [--remote mydrive:] [--dir ColabProjects/...] [--mount /content/mydrive]
     python -m scripts.colab.drive persist --src <dir> --dest runs/<run_id> --out <json> [...]
@@ -23,6 +24,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -220,16 +222,43 @@ def persist(src, dest_rel, remote=None, base_dir=None, mount=None, excludes=(), 
     if not info["usable"]:
         result["reason"] = "; ".join(info["notes"]) or "Drive not configured"
         return result
+    result.update(copy_verify(info, src, dest_rel, excludes=excludes, timeout=timeout))
     result["attempted"] = True
+    return result
+
+
+# ---- relative-path operations for the S4 runner (scripts/colab/s4_state.py) ---------------------------------------
+# Every path is relative to <remote><base dir> and must match SAFE_REL, so nothing outside the project directory can
+# be read, written or deleted. ``info`` is the dict returned by ``detect`` (detect once, reuse it: each rclone call
+# costs seconds). None of these raise on an rclone failure; they report it.
+SAFE_REL = re.compile(r"^[A-Za-z0-9._@+=-]+(/[A-Za-z0-9._@+=-]+)*$")
+MISSING_RC = (3, 4)  # rclone exit codes: directory not found, file not found
+
+
+def check_rel(rel):
+    """``rel`` stripped of surrounding slashes; raises ValueError unless it is a plain relative path."""
+    rel = str(rel).strip("/")
+    if not rel or not SAFE_REL.match(rel) or any(part in (".", "..") for part in rel.split("/")):
+        raise ValueError("unsafe Drive path %r" % rel)
+    return rel
+
+
+def target_of(info, rel):
+    return remote_path(info["remote"], info["base_dir"], check_rel(rel))
+
+
+def copy_verify(info, src, rel, excludes=(), timeout=6 * 3600):
+    """rclone copy a local directory to ``rel`` and ``rclone check --one-way`` it; {ok, verified, files, bytes, ...}."""
     src = Path(src)
     files = [p for p in src.rglob("*") if p.is_file()]
-    target = remote_path(info["remote"], info["base_dir"], dest_rel)
+    target = target_of(info, rel)
     extra = []
     for pattern in excludes:
         extra += ["--exclude", pattern]
+    result = {"ok": False, "verified": False, "target": target, "files": len(files),
+              "bytes": sum(p.stat().st_size for p in files)}
     rc, out, err, seconds = _run(rclone_cmd(info, "copy", src, target, *(COPY_FLAGS + extra)), timeout=timeout)
-    result.update(target=target, files=len(files), bytes=sum(p.stat().st_size for p in files), copy_rc=rc,
-                  copy_seconds=round(seconds, 1), copy_log=(err or out).strip()[-1500:])
+    result.update(copy_rc=rc, copy_seconds=round(seconds, 1), copy_log=(err or out).strip()[-1500:])
     if rc != 0:
         result["reason"] = "rclone copy failed (rc %s)" % rc
         return result
@@ -239,6 +268,111 @@ def persist(src, dest_rel, remote=None, base_dir=None, mount=None, excludes=(), 
     if rc != 0:
         result["reason"] = "rclone check found differences or failed (rc %s)" % rc
     return result
+
+
+def fetch_verify(info, rel, dest, timeout=6 * 3600):
+    """rclone copy ``rel`` (a directory) into the local ``dest`` and check every remote file arrived intact."""
+    target = target_of(info, rel)
+    Path(dest).mkdir(parents=True, exist_ok=True)
+    result = {"ok": False, "source": target, "dest": str(dest)}
+    rc, out, err, seconds = _run(rclone_cmd(info, "copy", target, dest, *COPY_FLAGS), timeout=timeout)
+    result.update(copy_rc=rc, copy_seconds=round(seconds, 1), copy_log=(err or out).strip()[-1500:])
+    if rc != 0:
+        result["reason"] = "rclone copy from Drive failed (rc %s)" % rc
+        return result
+    rc, out, err, check_seconds = _run(rclone_cmd(info, "check", target, dest, "--one-way"), timeout=timeout)
+    result.update(check_rc=rc, check_seconds=round(check_seconds, 1), ok=rc == 0)
+    if rc != 0:
+        result["reason"] = "rclone check after the download failed (rc %s)" % rc
+    return result
+
+
+def put_text(info, rel, text, scratch, timeout=600):
+    """Write a small text file to ``rel`` (copyto replaces it) and read it back; {ok, seconds, reason}."""
+    scratch = Path(scratch)
+    scratch.mkdir(parents=True, exist_ok=True)
+    local_file = scratch / ("put-%d-%s" % (os.getpid(), Path(check_rel(rel)).name))
+    local_file.write_text(text, encoding="utf-8")
+    started = time.time()
+    try:
+        rc, out, err, _ = _run(rclone_cmd(info, "copyto", local_file, target_of(info, rel)), timeout=timeout)
+        if rc != 0:
+            return {"ok": False, "reason": "rclone copyto failed (rc %s): %s" % (rc, (err or out).strip()[-300:])}
+        back, status = get_text(info, rel, timeout=timeout)
+        if back != text:
+            return {"ok": False, "reason": "read-back differs (%s)" % status}
+        return {"ok": True, "seconds": round(time.time() - started, 1)}
+    finally:
+        try:
+            local_file.unlink()
+        except OSError:
+            pass
+
+
+def get_text(info, rel, timeout=600):
+    """(text, "ok") for an existing file; (None, "missing") when it does not exist; (None, "error: ...") otherwise."""
+    rc, out, err, _ = _run(rclone_cmd(info, "cat", target_of(info, rel)), timeout=timeout)
+    if rc == 0:
+        return out, "ok"
+    if rc in MISSING_RC or "not found" in (err or "").lower():
+        return None, "missing"
+    return None, "error: rclone cat rc %s: %s" % (rc, (err or out).strip()[-300:])
+
+
+def list_entries(info, rel, dirs_only=False, timeout=600):
+    """[{"Name", "IsDir", "Size", ...}] of the entries directly under ``rel``; [] when it does not exist; None on error."""
+    args = ["lsjson", target_of(info, rel)] + (["--dirs-only"] if dirs_only else [])
+    rc, out, err, _ = _run(rclone_cmd(info, *args), timeout=timeout)
+    if rc in MISSING_RC or (rc != 0 and "directory not found" in (err or "").lower()):
+        return []
+    if rc != 0:
+        return None
+    try:
+        return json.loads(out or "[]")
+    except ValueError:
+        return None
+
+
+def list_tree(info, rel, max_depth=4, timeout=900):
+    """Every entry under ``rel`` down to ``max_depth`` levels in one rclone call ("Path" is relative to ``rel``);
+    [] when ``rel`` does not exist; None on error. One call instead of one per directory: each rclone call costs
+    5-10 s on Colab (drive_probe of preflight-20261109T122305Z-e6cd)."""
+    rc, out, err, _ = _run(rclone_cmd(info, "lsjson", target_of(info, rel), "-R", "--max-depth", str(int(max_depth))),
+                           timeout=timeout)
+    if rc in MISSING_RC or (rc != 0 and "directory not found" in (err or "").lower()):
+        return []
+    if rc != 0:
+        return None
+    try:
+        return json.loads(out or "[]")
+    except ValueError:
+        return None
+
+
+def delete_file(info, rel, timeout=600):
+    rc, out, err, _ = _run(rclone_cmd(info, "deletefile", target_of(info, rel)), timeout=timeout)
+    return rc == 0 or rc in MISSING_RC
+
+
+def purge(info, rel, timeout=1800):
+    """Delete the directory ``rel`` and everything under it, permanently. Callers decide what may be deleted
+    (s4_state.py only purges older checkpoint directories of the run it is writing, after a newer one was verified).
+    Without --drive-use-trash=false, Google Drive moves the directory to its trash, which still counts against the
+    storage quota for 30 days: the retention rule (D58) would then free nothing."""
+    rc, out, err, _ = _run(rclone_cmd(info, "purge", target_of(info, rel), "--drive-use-trash=false"), timeout=timeout)
+    return {"ok": rc == 0 or rc in MISSING_RC, "rc": rc, "log": (err or out).strip()[-300:]}
+
+
+def about(info, timeout=300):
+    """{"total", "used", "free"} bytes of the remote as rclone reports them, or None."""
+    rc, out, err, _ = _run(rclone_cmd(info, "about", info["remote"], "--json"), timeout=timeout)
+    if rc != 0:
+        return None
+    try:
+        data = json.loads(out)
+    except ValueError:
+        return None
+    return {key: data.get(key) for key in ("total", "used", "free")}
 
 
 def main(argv=None):

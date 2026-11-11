@@ -236,6 +236,29 @@ python -m pytest -q
 没有验证的：新代码在 GPU 上的行为（P1 提示下 vLLM 的重要性采样、NaN 停止、登记核对中的 GPU 型号），这些由试跑检查（S4 预注册第 11 节）；
 `pilot` 与 `train` 两个 Colab 任务还没有实现。
 
+### 2026-11-10（S4 运行器）
+
+环境与上一节相同（本机 WSL2，Python 3.12.3，`~/.venvs/p3-dev`，有 `data/`，`HF_HUB_OFFLINE=1`）。
+
+```text
+python -m pytest -q
+296 passed                # 改动前，master 1d1bd91
+314 passed                # 本阶段改动后，0 失败，0 跳过
+```
+
+新增 18 项测试：
+
+- `tests/test_s4_runner.py`（17 项）：训练进程用 `tests/fake_train_rl.py` 代替（参数、输出文件和事件与 rl_entry 相同，可以按设定
+  在某一步失败、只失败一次、挂起或报设置问题），Drive 用扩展后的 `tests/rclone_stub.py` 模拟。覆盖 Drive 上的标记与逐文件核对的恢复、
+  上传或核对失败时不写标记、保留规则（永久删除，不碰别的配置）、认领与心跳、试跑的上传与恢复、G1–G6 的判定、认领丢失时停下训练，
+  以及正式任务的顺序、截止时间、恢复、一次重启、第二次失败、设置问题、空间不足、余额与日期规则、可选任务和代码冻结。
+- `tests/test_colab_launcher.py::test_s4_pilot_and_train_dry_runs`：两个任务在 stub VM 和模拟 Drive 上的端到端 dry run；
+  不带 `--session` 的正式运行被拒绝；dry run 不写 Drive。
+- `tests/test_rl_entry_cpu.py`（已有测试中加断言）：真实 TRL 路径上每个 checkpoint 打印一次 `checkpoint_saved`。
+
+没有验证的：GPU 上训练进程在监督进程下的行为；真实 rclone 与 Google Drive 的行为（递归列目录、永久删除与配额、`about` 的输出）；
+VM 最长 24 小时的假设；两台 VM 同时运行。见 [S4 运行器报告](plan/阶段报告_S4_运行器_20261110.md) 第五节。
+
 ### 历史覆盖范围
 
 测试覆盖：数据准入与白名单、几何序列化、split 守卫、感知奖励与文本蕴含、

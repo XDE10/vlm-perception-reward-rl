@@ -57,6 +57,11 @@ src/training/rl_rewards.py：每批算一次，三个奖励头
 runs/<实验>/<组>/seed<k>/：rollouts.jsonl（逐条 rollout 与奖励明细）、run_identity.json、final/ adapter
 ```
 
+S4 在 Colab 上的执行（`scripts/colab/`，决策 D59–D64）：`train_s4.py` 按登记顺序认领任务、从 Google Drive 恢复，经
+`s4_supervise.py` 在独立进程组里运行 `train_rl --registered`；每个 checkpoint 写完后由后台线程经 `s4_state.py` 复制到 Drive
+并核对（`rclone copy` + `rclone check`，再写 `DRIVE_VERIFIED.json`），恢复只用带这个标记的 checkpoint。试跑的门槛由
+`decide_pilot.py` 判定。这些脚本只用标准库，不在运行身份的 `source_sha256` 里，所以不受代码冻结的核对约束。
+
 ## 模块职责
 
 | 模块 | 职责 | 关键边界 |
@@ -105,7 +110,7 @@ runs/<实验>/<组>/seed<k>/：rollouts.jsonl（逐条 rollout 与奖励明细�
 ## 明确不在当前实现内的东西
 
 - 没有正式训练结果。GPU 上只跑过 S2 预检与 S3 `v0`（3 步 GRPO 冒烟、显存与步时测量、HF 生成下的断点恢复），属于工程验证；
-  S4 的 12 个正式任务按 [S4 预注册](plan/S4预注册_20261110.md) 运行。
+  S4 的 12 个正式任务按 [S4 预注册](plan/S4预注册_20261110.md) 运行，`pilot` 与 `train` 任务已实现但还没有在 GPU 上运行。
 - 没有 EasyR1 集成；详细方案中的 EasyR1 是设计路线，正式实验沿用 TRL（见决策记录）。
 - 没有完整 V0～V4 SFT 矩阵；正式实验按 [执行计划](plan/执行计划_20261108.md) 的组别进行。
 - 没有全图事实 precision/recall 金标；认证事实是部分覆盖，未知按 mask 处理。

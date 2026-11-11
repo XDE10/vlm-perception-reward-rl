@@ -280,6 +280,10 @@ def run(config, root=ROOT, runtime=None, model_path=None, resume=None, model=Non
             target = Path(args.output_dir) / f"checkpoint-{state.global_step}" / "run_identity.json"
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(json.dumps(identity, ensure_ascii=False, indent=2), encoding="utf-8")
+            # HF Trainer calls on_save after the checkpoint files are written; with the identity in place the
+            # directory is complete, so a supervisor may copy it now (scripts/colab/s4_supervise.py, S4 section 12)
+            print(json.dumps({"event": "checkpoint_saved", "step": state.global_step, "path": str(target.parent),
+                              "config_sha256": config["config_sha256"]}), flush=True)
 
     class ProgressCallback(TrainerCallback):
         def on_log(self, args, state, control, logs=None, **kwargs):

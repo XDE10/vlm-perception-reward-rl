@@ -88,13 +88,17 @@
 | `common.py` | 本地与 VM 共用的标准库辅助：原子 JSON、分片/拼接校验、心跳输出 | 主线 | 被其余脚本导入 |
 | `pack_private_data.py` | 本地：按 release / 行内 SHA / 迁移清单三类锚点逐个校验后，打包运行所需的私有数据；VM：解包与复核 | 主线 | `python3 -m scripts.colab.pack_private_data --data-root <data 目录> --check-only` |
 | `verify_pack.py` | VM：复核解包后的数据与锚点一致 | 主线 | 预检步骤 `verify_pack` |
-| `local_tools.py` | 本地：生成请求与上传清单（含提交的 git 文件清单）、比对 VM 上已收到的分片、读取远端状态、拼接并解压结果、发布前去除凭据 | 主线 | 由 `colab/launch.sh` 调用 |
-| `drive.py` | VM：可选的 Google Drive 持久化，只经 `rclone copy` + `rclone check` 写入并核对，不经 FUSE 挂载；探针只删除自己写的文件 | 主线（可选） | 预检步骤 `drive_probe`、任务 `drive-check`；`python -m scripts.colab.drive probe --out <json>` |
+| `local_tools.py` | 本地：生成请求与上传清单（含提交的 git 文件清单）、比对 VM 上已收到的分片、读取远端状态、拼接并解压结果、发布前去除凭据、读出 `colab usage` 的余额与费率 | 主线 | 由 `colab/launch.sh` 调用 |
+| `drive.py` | VM：Google Drive 持久化，只经 `rclone copy` + `rclone check` 写入并核对，不经 FUSE 挂载；探针只删除自己写的文件。S4 用的相对路径操作（复制核对、取回核对、小文件读写、列目录、删除旧 checkpoint）拒绝项目目录之外的路径 | 主线（S4 起必需） | 步骤 `drive_probe`、任务 `drive-check`；`python -m scripts.colab.drive probe --out <json>` |
+| `s4_state.py` | VM：S4 在 Drive 上的状态：checkpoint 上传与 `DRIVE_VERIFIED.json`、只保留最新一个、逐文件核对的恢复、`STARTED`/`COMPLETED`/`FAILED` 标记、每个任务一个文件的认领（claim）与心跳 | 主线 | 被 `s4_supervise.py`、`train_s4.py`、`decide_pilot.py` 导入 |
+| `s4_supervise.py` | VM：在独立进程组里运行一个训练进程，读取它的事件，checkpoint 一写完就在后台复制到 Drive，按期限或指令停止，判断结束类型（完成、中断、设置问题、计算失败）；S4 试跑的 `pilot-run` 与 `pilot-resume` | 主线 | 任务 `pilot` 的步骤 `pilot_*` |
+| `decide_pilot.py` | VM：按 S4 预注册第 11 节计算试跑门槛 G1–G6，写 `pilot_gates.json`，并把结论（通过或不通过）写成 Drive 上的 `PILOT_LATEST.json` | 主线 | 任务 `pilot` 的步骤 `decide_pilot` |
+| `train_s4.py` | VM：S4 正式任务：核对试跑与代码冻结，按登记顺序认领、从 Drive 恢复、训练、核对；按 VM 剩余时间和预注册的收尾规则决定开始哪些任务 | 主线 | 任务 `train` 的步骤 `train_runs` |
 | `vm_github.py` | VM：用户放在 VM 上的 GitHub 凭据存在时，由 VM 推送 `results/<run_id>`。开始时 dry-run 验证写权限，推送前脱敏；从不读取凭据内容，失败时由本机推送 | 主线（可选） | 由 `runner.py` 调用（任务开始时检查，打包后推送） |
-| `bootstrap.py` | VM：解包数据；任务要求时先检查 GPU 显存（`v0` 至少 40 GB，不足就在安装前停止）；按驱动 CUDA 版本选择锁文件建隔离 venv、下载固定 revision 模型（不需要 GPU 的任务跳过 venv 与模型）；可选建 vLLM venv | 主线 | 由 `colab/kernel_bootstrap.py` 调用；`python -m scripts.colab.bootstrap vllm-env --root ...` |
+| `bootstrap.py` | VM：解包数据；任务要求时先检查 GPU（`v0` 显存至少 40 GB；`pilot`、`train` 必须是登记的 NVIDIA A100-SXM4-40GB），不符就在安装前停止；按驱动 CUDA 版本选择锁文件建隔离 venv、下载固定 revision 模型（不需要 GPU 的任务跳过 venv 与模型）；可选建 vLLM venv | 主线 | 由 `colab/kernel_bootstrap.py` 调用；`python -m scripts.colab.bootstrap vllm-env --root ...` |
 | `fetch_model.py` | VM：下载固定 revision 的模型快照并记录每个文件的 SHA256 | 主线 | 由 `bootstrap.py` 调用 |
 | `runner.py` | VM：逐步运行任务（独立进程组、超时、心跳、状态文件），打包并分片结果；可选把结果复制到 Drive 并核对 | 主线 | 由 `colab/kernel_job.py` 调用 |
-| `tasks.py` | 各任务的步骤定义（当前：`preflight`、`v0`（都含 dry-run 版本）与 `drive-check`） | 主线 | 被 `runner.py` 导入 |
+| `tasks.py` | 各任务的步骤定义（当前：`preflight`、`v0`、`pilot`、`train`（都含 dry-run 版本）与 `drive-check`） | 主线 | 被 `runner.py` 导入 |
 | `env_report.py` | VM：记录实际软件版本、GPU、内存、磁盘、环境锁与模型文件 SHA | 主线 | 预检步骤 `env_report` |
 | `gpu_probe.py` | VM：真实 3B 权重下的 LoRA 范围、提示长度、峰值显存、生成吞吐、ViT 缓存等价性 | 主线 | 预检步骤 `gpu_probe` |
 | `v0_probe.py` | VM：V0 在 16 道 validation 上的协议 v3 贪心生成（有图/无图），工程信号 | 主线 | 预检步骤 `v0_probe` |

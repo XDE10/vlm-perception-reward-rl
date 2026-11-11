@@ -27,7 +27,7 @@ def noisy_reward(completions, **kwargs):
 
 
 @pytest.mark.parametrize("arm", ["rl_v5", "rl_blind"])
-def test_unified_entry_runs_two_grpo_steps_on_cpu(tmp_path, arm):
+def test_unified_entry_runs_two_grpo_steps_on_cpu(tmp_path, arm, capsys):
     import torch
     from transformers import AutoProcessor
 
@@ -44,6 +44,13 @@ def test_unified_entry_runs_two_grpo_steps_on_cpu(tmp_path, arm):
     summary = run(config, tmp_path, model=model, processor=processor, extra_reward_funcs=[noisy_reward])
     out = tmp_path / "runs" / config["run_name"]
     assert summary["global_step"] == 2
+    # the event the S4 supervisor copies checkpoints on: printed after the directory is complete (identity included)
+    saved = [json.loads(line) for line in capsys.readouterr().out.splitlines()
+             if line.startswith('{"event": "checkpoint_saved"')]
+    assert [e["step"] for e in saved] == [1, 2] and {e["config_sha256"] for e in saved} == {summary["config_sha256"]}
+    from pathlib import Path
+
+    assert all((Path(e["path"]) / "run_identity.json").is_file() and Path(e["path"]).is_absolute() for e in saved)
     records = [json.loads(x) for x in (out / "rollouts.jsonl").read_text().splitlines()]
     assert len(records) == 2 * 2 * 2  # steps x prompts x generations
     assert {r["arm"] for r in records} == {arm}

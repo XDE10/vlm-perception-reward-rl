@@ -4,6 +4,28 @@
 [README](README.md) 和版本化报告为准；历史细节见
 [docs/migration/](docs/migration/)。
 
+## 2026-11-10 — S4 运行器：`pilot` 与 `train` 任务
+
+决策见 [决策记录](docs/plan/决策记录.md) D59–D64，阶段报告见
+[docs/plan/阶段报告_S4_运行器_20261110.md](docs/plan/阶段报告_S4_运行器_20261110.md)，执行细节作为 S4 预注册的修订 2 追加。
+没有 GPU 运行，没有写过真实的 Google Drive；没有改动已批准数据、实验配置或登记表，所有 `config_sha256` 不变。
+
+- 新任务 `bash colab/launch.sh pilot --session p3`：预注册第 11 节的全部试跑，判定 G1–G6（`scripts/colab/decide_pilot.py`），
+  结论写到 Drive 的 `s4/rl_v3_p1_20261110/PILOT_LATEST.json`。
+- 新任务 `bash colab/launch.sh train --session p3`（`scripts/colab/train_s4.py`）：核对试跑与代码冻结，按登记顺序认领任务、
+  从 Drive 上已核对的 checkpoint 恢复、训练、核对；按 VM 剩余时间（`--max-hours`、`--vm-hours`）和预注册的收尾规则决定开始哪些任务；
+  计算失败只重启一次。
+- 新增 `scripts/colab/s4_supervise.py`（监督训练进程、后台上传 checkpoint、判断结束类型）与 `scripts/colab/s4_state.py`
+  （Drive 上的标记、逐文件核对的恢复、保留规则、认领与心跳）；`scripts/colab/drive.py` 增加只在项目目录内的相对路径操作。
+  被替换的 checkpoint 永久删除（Drive 回收站里的文件仍占配额）；Drive 剩余不足 2 GB 时 `train` 不开始任务。
+- 训练入口：checkpoint 的运行身份写好后打印 `checkpoint_saved` 事件（只改变 `source_sha256`）。
+- 运行器：`pilot` 与 `train` 在安装环境前核对 GPU 型号等于登记值，不带 `--session` 时拒绝运行，不接受 `--no-vllm`；
+  请求里带会话名和 `colab usage` 的余额与费率；摘要新增“S4 试跑门槛”“S4 正式任务”两节。
+- 测试：新增 `tests/test_s4_runner.py`、`tests/fake_train_rl.py`（代替训练进程），扩展 `tests/rclone_stub.py`；
+  本机 WSL2 全部通过，见 [docs/verification.md](docs/verification.md)。
+- 文档：`colab/README.md` 新增第九节（试跑与正式训练、Drive 上的文件），README、`docs/training.md`、`docs/architecture.md`、
+  `scripts/README.md` 同步。
+
 ## 2026-11-10 — S4 预注册：正式训练的配置、登记表与终止判据
 
 决策见 [决策记录](docs/plan/决策记录.md) D52–D58，预注册见

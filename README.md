@@ -11,10 +11,10 @@
 | --- | --- |
 | 批准数据 | 609 条训练事实（458 幅图）/ 82 条 validation 事实（77 幅图），部分认证事实，不是全图金标 |
 | 模型 | `Qwen/Qwen2.5-VL-3B-Instruct` revision `66285546d2b821cf421d4f5eb2576359d3770cd3` |
-| 训练阶段 | S4 已预注册（[docs/plan/S4预注册_20261110.md](docs/plan/S4预注册_20261110.md)）：12 个正式任务（+2 个可选）全部从 V0 出发、用 S3 选定的提示 P1，配置哈希登记在 `configs/experiments/s4_runs_20261110.json`；**还没有正式训练**。旧的感知 SFT → 稀疏 GRPO 入口保留为历史 |
+| 训练阶段 | S4 已预注册（[docs/plan/S4预注册_20261110.md](docs/plan/S4预注册_20261110.md)）：12 个正式任务（+2 个可选）全部从 V0 出发、用 S3 选定的提示 P1，配置哈希登记在 `configs/experiments/s4_runs_20261110.json`。试跑与正式训练的 Colab 任务（`pilot`、`train`）已实现，只在本机测试过（[运行器报告](docs/plan/阶段报告_S4_运行器_20261110.md)）；**还没有试跑，也没有正式训练**。旧的感知 SFT → 稀疏 GRPO 入口保留为历史 |
 | GPU | A100-SXM4-40GB 上 S2 预检（18/18）与 S3 `v0`（12/12）通过：环境、数据核对、3 步 GRPO 冒烟、断点恢复、V0 诊断。这是工程验证，不是训练结果 |
 | 测试 | 本机 WSL2（Python 3.12.3，有 `data/` 和固定 revision 的处理器文件）全部通过，见 [docs/verification.md](docs/verification.md) |
-| 历史 | 2026-10-24 迁移、2026-11-08 清理与结构整理、2026-11-09 S1–S3、2026-11-10 S4 预注册，均记录在 [CHANGELOG.md](CHANGELOG.md) |
+| 历史 | 2026-10-24 迁移、2026-11-08 清理与结构整理、2026-11-09 S1–S3、2026-11-10 S4 预注册与运行器，均记录在 [CHANGELOG.md](CHANGELOG.md) |
 
 “已实现代码”“CPU 测试通过”“真实 GPU 跑通”“能力提升”是四种不同结论，报告
 时必须分开陈述。2 步 smoke 或 ZIP 完整性检查不代表训练成功。
@@ -83,10 +83,13 @@ CUDA、模型前后向或新环境依赖已安装。
 bash colab/launch.sh check
 bash colab/launch.sh preflight
 bash colab/launch.sh v0 --session p3
+bash colab/launch.sh pilot --session p3
+bash colab/launch.sh train --session p3
 ```
 
 `check` 是本地自检（colab 认证、数据 SHA、git 推送权限，不建 VM）；`preflight` 是 S2 的 GPU 预检；`v0` 是 S3 的评测输入核对、
-train 上的决策测量与 V0 诊断，在你准备好的 VM `p3` 上运行。S4 的 `pilot` 与 `train` 任务在下一个 PR 中加入。
+train 上的决策测量与 V0 诊断，在你准备好的 VM `p3` 上运行。`pilot` 是 S4 的试跑与开跑门槛，`train` 按登记顺序跑正式任务
+（每次跑到 VM 的时间用完，需要多次运行）；两者只在 A100-SXM4-40GB 上、挂好 Google Drive 的 VM 上运行（colab/README.md 第九节）。
 
 ## 训练入口
 

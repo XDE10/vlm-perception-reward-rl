@@ -44,7 +44,17 @@ python -m scripts.training.train_rl --registered configs/experiments/s4_runs_202
   loss 或梯度范数出现 NaN/inf 时立即停止，不再写 checkpoint 和 `final/`。
 - 登记表的派生字段由 `python -m scripts.training.register_runs --write` 生成；改动任何实验配置后先运行 `--check`。
   `--show rl_v5 1` 打印一个任务合成后的完整配置。
-- 在 Colab 上的 `pilot` 与 `train` 任务（试跑、Drive 上的 checkpoint 与恢复）在下一个 PR 中实现。
+
+在 Colab 上分两步（用法见 [colab/README.md](../colab/README.md) 第九节，实现见
+[S4 运行器报告](plan/阶段报告_S4_运行器_20261110.md)）：
+
+1. `bash colab/launch.sh pilot --session p3`：预注册第 11 节的试跑（只用 train，冒烟标记），判定 G1–G6，
+   结论写到 Google Drive 的 `s4/rl_v3_p1_20261110/PILOT_LATEST.json`。
+2. `bash colab/launch.sh train --session p3`：试跑通过、代码与试跑相同时，按登记顺序认领任务、从 Drive 上已核对的
+   checkpoint 恢复、在监督进程下运行上面的命令；checkpoint 写完就在后台复制到 Drive 并核对，`final/` 核对后写 `COMPLETED.json`。
+   每次跑到 VM 的时间用完为止，需要多次运行；两台 VM 可以同时运行。
+
+这两个任务都还没有在 GPU 上运行过。
 
 ## 在 Colab 上运行（S2 起）
 
