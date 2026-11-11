@@ -1,0 +1,255 @@
+SSLError: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of 
+protocol (_ssl.c:1000)
+
+The above exception was the direct cause of the following exception:
+
+╭───────────────────── Traceback (most recent call last) ──────────────────────╮
+│ /home/xde10/.local/share/uv/tools/google-colab-cli/lib/python3.12/site-packa │
+│ ges/requests/adapters.py:696 in send                                         │
+│                                                                              │
+│   693 │   │   │   resolved_timeout = TimeoutSauce(connect=timeout,           │
+│       read=timeout)                                                          │
+│   694 │   │                                                                  │
+│   695 │   │   try:                                                           │
+│ ❱ 696 │   │   │   resp = conn.urlopen(                                       │
+│   697 │   │   │   │   method=request.method,                                 │
+│   698 │   │   │   │   url=url,                                               │
+│   699 │   │   │   │   body=request.body,  # type: ignore[arg-type]  #        │
+│       urllib3 stubs don't accept Iterable[bytes | str]                       │
+│                                                                              │
+│ /home/xde10/.local/share/uv/tools/google-colab-cli/lib/python3.12/site-packa │
+│ ges/urllib3/connectionpool.py:847 in urlopen                                 │
+│                                                                              │
+│    844 │   │   │   elif isinstance(new_e, (OSError, HTTPException)):         │
+│    845 │   │   │   │   new_e = ProtocolError("Connection aborted.", new_e)   │
+│    846 │   │   │                                                             │
+│ ❱  847 │   │   │   retries = retries.increment(                              │
+│    848 │   │   │   │   method, url, error=new_e, _pool=self,                 │
+│        _stacktrace=sys.exc_info()[2]                                         │
+│    849 │   │   │   )                                                         │
+│    850 │   │   │   retries.sleep()                                           │
+│                                                                              │
+│ /home/xde10/.local/share/uv/tools/google-colab-cli/lib/python3.12/site-packa │
+│ ges/urllib3/util/retry.py:555 in increment                                   │
+│                                                                              │
+│   552 │   │                                                                  │
+│   553 │   │   if new_retry.is_exhausted():                                   │
+│   554 │   │   │   reason = error or ResponseError(cause)                     │
+│ ❱ 555 │   │   │   raise MaxRetryError(_pool, url, reason) from reason  #     │
+│       type: ignore[arg-type]                                                 │
+│   556 │   │                                                                  │
+│   557 │   │   log.debug("Incremented Retry for (url='%s'): %r", url,         │
+│       new_retry)                                                             │
+│   558                                                                        │
+╰──────────────────────────────────────────────────────────────────────────────╯
+MaxRetryError: 
+HTTPSConnectionPool(host='8080-gpu-a100-s-usc1b0-wgxgyg8qrqgo-b.us-central1.prod
+.r.colab.dev', port=443): Max retries exceeded with url: 
+/api/kernels/0d8354f7-8971-438b-86a7-2f4d3732292c (Caused by 
+SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in 
+violation of protocol (_ssl.c:1000)')))
+
+During handling of the above exception, another exception occurred:
+
+╭───────────────────── Traceback (most recent call last) ──────────────────────╮
+│ /home/xde10/.local/share/uv/tools/google-colab-cli/lib/python3.12/site-packa │
+│ ges/colab_cli/commands/execution.py:235 in exec_command                      │
+│                                                                              │
+│   232 │   │   │   )                                                          │
+│   233 │   │   │   state.prune_session(name)                                  │
+│   234 │   │   │   raise typer.Exit(1)                                        │
+│ ❱ 235 │   │   raise e                                                        │
+│   236 │                                                                      │
+│   237 │   try:                                                               │
+│   238 │   │   is_nb = file and file.endswith(".ipynb")                       │
+│                                                                              │
+│ /home/xde10/.local/share/uv/tools/google-colab-cli/lib/python3.12/site-packa │
+│ ges/colab_cli/commands/execution.py:225 in exec_command                      │
+│                                                                              │
+│   222 │   )                                                                  │
+│   223 │   try:                                                               │
+│   224 │   │   # Ensure we are in /content which is the standard Colab        │
+│       working directory                                                      │
+│ ❱ 225 │   │   runtime.execute_code(                                          │
+│   226 │   │   │   "import os; os.makedirs('/content', exist_ok=True);        │
+│       os.chdir('/content')"                                                  │
+│   227 │   │   )                                                              │
+│   228 │   except Exception as e:                                             │
+│                                                                              │
+│ /home/xde10/.local/share/uv/tools/google-colab-cli/lib/python3.12/site-packa │
+│ ges/colab_cli/runtime.py:259 in execute_code                                 │
+│                                                                              │
+│   256 │   │   │   │   │   │   if idx < len(outputs):                         │
+│   257 │   │   │   │   │   │   │   output_hook(outputs[idx])                  │
+│   258 │   │   │                                                              │
+│ ❱ 259 │   │   │   reply = self._execute_streaming(code, wrapped_output_hook, │
+│       timeout)                                                               │
+│   260 │   │   │   reply_content = reply["content"] if reply else {"status":  │
+│       "error"}                                                               │
+│   261 │   │                                                                  │
+│   262 │   │   # If there's an error status but no error in outputs,          │
+│       synthesize one                                                         │
+│                                                                              │
+│ /home/xde10/.local/share/uv/tools/google-colab-cli/lib/python3.12/site-packa │
+│ ges/colab_cli/runtime.py:298 in _execute_streaming                           │
+│                                                                              │
+│   295 │   │   """                                                            │
+│   296 │   │   if timeout is not None and timeout <= 0:                       │
+│   297 │   │   │   timeout = None                                             │
+│ ❱ 298 │   │   client = self.kernel_client._manager.client                    │
+│   299 │   │   msg_id = client.execute(code, allow_stdin=False)               │
+│   300 │   │                                                                  │
+│   301 │   │   def next_message(get_msg, waiting_for):                        │
+│                                                                              │
+│ /home/xde10/.local/share/uv/tools/google-colab-cli/lib/python3.12/site-packa │
+│ ges/colab_cli/runtime.py:177 in kernel_client                                │
+│                                                                              │
+│   174 │   │   │   │   │   else:                                              │
+│   175 │   │   │   │   │   │   raise last_err                                 │
+│   176 │   │   │   │   except Exception as e:                                 │
+│ ❱ 177 │   │   │   │   │   raise e                                            │
+│   178 │   │                                                                  │
+│   179 │   │   return self._kernel_client                                     │
+│   180                                                                        │
+│                                                                              │
+│ /home/xde10/.local/share/uv/tools/google-colab-cli/lib/python3.12/site-packa │
+│ ges/colab_cli/runtime.py:129 in kernel_client                                │
+│                                                                              │
+│   126 │   │   │   │   │   else:                                              │
+│   127 │   │   │   │   │   │   _ClientCls =                                   │
+│       jupyter_kernel_client.JupyterKernelClient                              │
+│   128 │   │   │   │   │   │   _token_kw = "token"                            │
+│ ❱ 129 │   │   │   │   │   self._kernel_client = _ClientCls(                  │
+│   130 │   │   │   │   │   │   server_url=self.url,                           │
+│   131 │   │   │   │   │   │   **{_token_kw: self.token},                     │
+│   132 │   │   │   │   │   │   kernel_id=self.kernel_id,                      │
+│                                                                              │
+│ /home/xde10/.local/share/uv/tools/google-colab-cli/lib/python3.12/site-packa │
+│ ges/jupyter_kernel_client/client.py:166 in __init__                          │
+│                                                                              │
+│   163 │   │   self, kernel_id: str | None = None, log: logging.Logger | None │
+│       = None, **kwargs                                                       │
+│   164 │   ) -> None:                                                         │
+│   165 │   │   super().__init__(log=log or get_logger())                      │
+│ ❱ 166 │   │   self._manager = self.kernel_manager_class(parent=self,         │
+│       kernel_id=kernel_id, **kwargs)                                         │
+│   167 │   │   # Set it after the manager as if a kernel_id is provided,      │
+│   168 │   │   # we will try to connect to it.                                │
+│   169 │   │   self._own_kernel = self._manager.kernel is None                │
+│                                                                              │
+│ /home/xde10/.local/share/uv/tools/google-colab-cli/lib/python3.12/site-packa │
+│ ges/jupyter_kernel_client/manager.py:101 in __init__                         │
+│                                                                              │
+│    98 │   │   │   │   "execution_state": "unknown",                          │
+│    99 │   │   │   │   "last_activity": datetime.datetime.strftime(utcnow(),  │
+│       "%Y-%m-%dT%H:%M:%S.%fZ"),                                              │
+│   100 │   │   │   }                                                          │
+│ ❱ 101 │   │   │   self.refresh_model()                                       │
+│   102 │                                                                      │
+│   103 │   @property                                                          │
+│   104 │   def has_kernel(self):                                              │
+│                                                                              │
+│ /home/xde10/.local/share/uv/tools/google-colab-cli/lib/python3.12/site-packa │
+│ ges/jupyter_kernel_client/manager.py:176 in refresh_model                    │
+│                                                                              │
+│   173 │   │                                                                  │
+│   174 │   │   self.log.debug("Request kernel at: %s", self.kernel_url)       │
+│   175 │   │   try:                                                           │
+│ ❱ 176 │   │   │   response = fetch(self.kernel_url, token=REDACTED        │
+│       method="GET", timeout=timeout, headers=self.__extra_headers)           │
+│   177 │   │   except HTTPError as error:                                     │
+│   178 │   │   │   if error.response.status_code == 404:                      │
+│   179 │   │   │   │   self.log.warning("Kernel not found at: %s",            │
+│       self.kernel_url)                                                       │
+│                                                                              │
+│ /home/xde10/.local/share/uv/tools/google-colab-cli/lib/python3.12/site-packa │
+│ ges/jupyter_kernel_client/manager.py:44 in fetch                             │
+│                                                                              │
+│    41 │   │   headers["Authorization"] = f"Bearer {token}"                   │
+│    42 │   if "timeout" not in kwargs:                                        │
+│    43 │   │   kwargs["timeout"] = REQUEST_TIMEOUT                            │
+│ ❱  44 │   response = f(request, headers=headers, **kwargs)                   │
+│    45 │   response.raise_for_status()                                        │
+│    46 │   return response                                                    │
+│    47                                                                        │
+│                                                                              │
+│ /home/xde10/.local/share/uv/tools/google-colab-cli/lib/python3.12/site-packa │
+│ ges/requests/api.py:87 in get                                                │
+│                                                                              │
+│    84 │   :rtype: requests.Response                                          │
+│    85 │   """                                                                │
+│    86 │                                                                      │
+│ ❱  87 │   return request("get", url, params=params, **kwargs)                │
+│    88                                                                        │
+│    89                                                                        │
+│    90 def options(url: _t.UriType, **kwargs: Unpack[_t.RequestKwargs]) ->    │
+│       Response:                                                              │
+│                                                                              │
+│ /home/xde10/.local/share/uv/tools/google-colab-cli/lib/python3.12/site-packa │
+│ ges/requests/api.py:71 in request                                            │
+│                                                                              │
+│    68 │   # avoid leaving sockets open which can trigger a ResourceWarning   │
+│       in some                                                                │
+│    69 │   # cases, and look like a memory leak in others.                    │
+│    70 │   with sessions.Session() as session:                                │
+│ ❱  71 │   │   return session.request(method=method, url=url, **kwargs)       │
+│    72                                                                        │
+│    73                                                                        │
+│    74 def get(                                                               │
+│                                                                              │
+│ /home/xde10/.local/share/uv/tools/google-colab-cli/lib/python3.12/site-packa │
+│ ges/requests/sessions.py:651 in request                                      │
+│                                                                              │
+│   648 │   │   │   "allow_redirects": allow_redirects,                        │
+│   649 │   │   }                                                              │
+│   650 │   │   send_kwargs.update(settings)                                   │
+│ ❱ 651 │   │   resp = self.send(prep, **send_kwargs)                          │
+│   652 │   │                                                                  │
+│   653 │   │   return resp                                                    │
+│   654                                                                        │
+│                                                                              │
+│ /home/xde10/.local/share/uv/tools/google-colab-cli/lib/python3.12/site-packa │
+│ ges/requests/sessions.py:784 in send                                         │
+│                                                                              │
+│   781 │   │   start = preferred_clock()                                      │
+│   782 │   │                                                                  │
+│   783 │   │   # Send the request                                             │
+│ ❱ 784 │   │   r = adapter.send(request, **kwargs)                            │
+│   785 │   │                                                                  │
+│   786 │   │   # Total elapsed time of the request (approximately)            │
+│   787 │   │   elapsed = preferred_clock() - start                            │
+│                                                                              │
+│ /home/xde10/.local/share/uv/tools/google-colab-cli/lib/python3.12/site-packa │
+│ ges/requests/adapters.py:727 in send                                         │
+│                                                                              │
+│   724 │   │   │                                                              │
+│   725 │   │   │   if isinstance(e.reason, _SSLError):                        │
+│   726 │   │   │   │   # This branch is for urllib3 v1.22 and later.          │
+│ ❱ 727 │   │   │   │   raise SSLError(e, request=request)                     │
+│   728 │   │   │                                                              │
+│   729 │   │   │   raise ConnectionError(e, request=request)                  │
+│   730                                                                        │
+╰──────────────────────────────────────────────────────────────────────────────╯
+SSLError: 
+HTTPSConnectionPool(host='8080-gpu-a100-s-usc1b0-wgxgyg8qrqgo-b.us-central1.prod
+.r.colab.dev', port=443): Max retries exceeded with url: 
+/api/kernels/0d8354f7-8971-438b-86a7-2f4d3732292c (Caused by 
+SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in 
+violation of protocol (_ssl.c:1000)')))
+[p3] 16:03:55 GitHub: the VM will push the results to results/train-20261111T160222Z-a456 itself (write access verified)
+[p3] 16:03:55 job train-20261111T160222Z-a456: 6 steps
+[p3] 16:03:55 step env_report started: /content/p3/env/base/bin/python -m scripts.colab.env_report --root /content/p3 --out /content/p3/out/train-20261111T160222Z-a456/env.json
+[p3] 16:03:58 step env_report PASSED in 0m02s
+[p3] 16:03:58 step verify_pack started: /content/p3/env/base/bin/python -m scripts.colab.verify_pack --repo /content/p3/repo --out /content/p3/out/train-20261111T160222Z-a456/pack_verification.json
+[p3] 16:03:58 step verify_pack PASSED in 0m00s
+[p3] 16:03:58 step register_check started: /content/p3/env/base/bin/python -m scripts.training.register_runs --check
+[p3] 16:03:59 step register_check PASSED in 0m00s
+[p3] 16:03:59 step drive_probe started: /usr/bin/python3 -m scripts.colab.drive probe --out /content/p3/out/train-20261111T160222Z-a456/drive_probe.json --run-id train-20261111T160222Z-a456 --scratch /content/p3/out/train-20261111T160222Z-a456/.drive_scratch --remote mydrive: --dir ColabProjects/vlm-perception-reward-rl --mount /content/m
+[p3] 16:04:44 step drive_probe PASSED in 0m45s
+[p3] 16:04:44 step vllm_env started: /usr/bin/python3 -m scripts.colab.bootstrap vllm-env --root /content/p3
+[p3] 16:04:49 step vllm_env PASSED in 0m05s
+[p3] 16:04:49 step train_runs started: /content/p3/env/base/bin/python -m scripts.colab.train_s4 --repo /content/p3/repo --root /content/p3 --out /content/p3/out/train-20261111T160222Z-a456 --job train-20261111T160222Z-a456 --session p3 --drive-remote mydrive: --drive-dir ColabProjects/vlm-perception-reward-rl --drive-mount /content/mydr
+[p3] 16:04:59 step train_runs FAILED in 0m09s
+[p3] 16:05:01 results pushed from the VM to results/train-20261111T160222Z-a456 (commit 28bbe44d3054)
+[p3] 16:05:08 Drive copy (results): verified mydrive:ColabProjects/vlm-perception-reward-rl/runs/train-20261111T160222Z-a456
+[p3] 16:05:08 JOB_DONE overall=failed package=train-20261111T160222Z-a456.results.tar.gz (1 parts, 0.0 MB)

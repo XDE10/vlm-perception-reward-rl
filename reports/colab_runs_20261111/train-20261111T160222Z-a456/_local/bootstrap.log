@@ -1,0 +1,7 @@
+[p3] 16:02:55 data pack verified: 716 files, anchors ledger,release,row
+[p3] 16:02:56 GPU: NVIDIA A100-SXM4-40GB, 40960.0 MiB, driver 580.82.07 (CUDA [13, 0])
+[p3] 16:02:56 env base already installed (cu130), reusing
+[p3] 16:02:56 base env ready: torch 2.13.0+cu130, backend cu130
+[p3] 16:02:56 model snapshot already present, reusing
+[p3] 16:02:56 model ready: /content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8 (11 files)
+[p3] 16:02:56 BOOTSTRAP_OK in 1s

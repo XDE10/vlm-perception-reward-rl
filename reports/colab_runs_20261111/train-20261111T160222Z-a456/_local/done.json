@@ -1,0 +1,42 @@
+{
+  "run_id": "train-20261111T160222Z-a456",
+  "overall": "failed",
+  "package": {
+    "name": "train-20261111T160222Z-a456.results.tar.gz",
+    "sha256": "f85eb5a730e071cdf627f771c3c17268e3b5dc893f65987b89ef9b03d500d52a",
+    "bytes": 30511,
+    "parts": [
+      {
+        "name": "train-20261111T160222Z-a456.results.tar.gz.part000",
+        "bytes": 30511,
+        "sha256": "f85eb5a730e071cdf627f771c3c17268e3b5dc893f65987b89ef9b03d500d52a"
+      }
+    ],
+    "skipped": 0,
+    "gzipped": []
+  },
+  "github": {
+    "attempted": true,
+    "ok": true,
+    "branch": "results/train-20261111T160222Z-a456",
+    "skipped_large": 0,
+    "redacted": 0,
+    "files": 22,
+    "bytes": 106842,
+    "commit": "28bbe44d3054aa3523873b1225ebdbc828ceed11",
+    "seconds": 2.2
+  },
+  "drive": {
+    "ok": true,
+    "attempted": true,
+    "verified": true,
+    "target": "mydrive:ColabProjects/vlm-perception-reward-rl/runs/train-20261111T160222Z-a456",
+    "files": 2,
+    "bytes": 30969,
+    "copy_seconds": 5.4,
+    "check_seconds": 1.1,
+    "reason": null,
+    "mode": "results"
+  },
+  "finished_utc": "2026-11-11T16:05:08Z"
+}
