@@ -1,0 +1,30 @@
+[launch 22:26:49] run pilot-20261111T142648Z-a507 (task pilot, commit e583ecdcd865) on your session p3 (its hardware decides the GPU)
+[launch 22:26:51] code: the VM downloads commit e583ecdcd865 from GitHub and verifies every file against its git blob SHA-1
+[launch 22:26:51] building private data pack from /home/xde10/projects/vlm-perception-reward-rl/data
+[launch 22:26:52] data pack: {"pack": "/home/xde10/projects/vlm-perception-reward-rl/.colab_cache/p3_private_082210c90d5b3834.tar.gz", "sha256": "8f571a49c40d45a8226245d4dee0715d05c94e518b64496a2d731b9cb926f5e2", "bytes": 21164679, "content_sha256": "082210c90d5b3834539380c37bb5a43deab0f4354b5ff630910a6c06be06f1a1", "files": 71
+[launch 22:26:56] WARNING: Colab reports 2 active assignment(s) before this run (expected 1); another VM may be using compute units
+[launch 22:26:58]   [p3] gpu-a100-s-usc1b0-wgxgyg8qrqgo | Hardware: A100 | Shape: Standard | Variant: GPU
+[launch 22:26:58]   [opd] gpu-g4-s-use5a0-2aw8cwugkt34u | Hardware: G4 | Shape: Standard | Variant: GPU
+[launch 22:26:58] stop the ones you do not use with: colab stop -s NAME
+[launch 22:26:58] using your session p3; it is not released at the end unless you pass --release
+[launch 22:27:04] upload inputs 1/12 p3_private_082210c90d5b3834.tar.gz.part000 (2048 KiB)
+[launch 22:27:22] upload inputs 2/12 p3_private_082210c90d5b3834.tar.gz.part001 (2048 KiB)
+[launch 22:27:30] upload inputs 3/12 p3_private_082210c90d5b3834.tar.gz.part002 (2048 KiB)
+[launch 22:27:50] upload inputs 4/12 p3_private_082210c90d5b3834.tar.gz.part003 (2048 KiB)
+[launch 22:28:03] upload inputs 5/12 p3_private_082210c90d5b3834.tar.gz.part004 (2048 KiB)
+[launch 22:28:40] upload inputs 6/12 p3_private_082210c90d5b3834.tar.gz.part005 (2048 KiB)
+[launch 22:29:22] upload inputs 7/12 p3_private_082210c90d5b3834.tar.gz.part006 (2048 KiB)
+[launch 22:29:27] upload inputs 8/12 p3_private_082210c90d5b3834.tar.gz.part007 (2048 KiB)
+[launch 22:29:36] upload inputs 9/12 p3_private_082210c90d5b3834.tar.gz.part008 (2048 KiB)
+[launch 22:30:08] upload inputs 10/12 p3_private_082210c90d5b3834.tar.gz.part009 (2048 KiB)
+[launch 22:30:20] upload inputs 11/12 p3_private_082210c90d5b3834.tar.gz.part010 (188 KiB)
+[launch 22:30:24] upload inputs 12/12 request.json (75 KiB)
+[launch 22:30:27] uploaded inputs: 20744 KiB in 203s (~102 KiB/s)
+[launch 22:30:32] all uploaded parts verified on the VM (size and SHA256)
+[launch 22:30:32] bootstrap on the VM (code, environment install and model download; ~10-20 min)
+[launch 22:35:46] job running on the VM; progress lines follow (Ctrl-C detaches, the job keeps running)
+[launch 23:44:43] fetching results
+[launch 23:44:48] the VM pushed the results itself: https://github.com/XDE10/vlm-perception-reward-rl/tree/results/pilot-20261111T142648Z-a507
+[launch 23:44:53] results in /home/xde10/projects/vlm-perception-reward-rl/.colab_runs/pilot-20261111T142648Z-a507/results/pilot-20261111T142648Z-a507 (overall: passed)
+[launch 23:44:54] Drive copy verified: mydrive:ColabProjects/vlm-perception-reward-rl/runs/pilot-20261111T142648Z-a507
+[launch 23:44:54] your session p3 stays up and keeps using compute units; when you are done: colab stop -s p3

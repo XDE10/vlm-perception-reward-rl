@@ -1,0 +1,98 @@
+[p3] 14:36:01 GitHub: the VM will push the results to results/pilot-20261111T142648Z-a507 itself (write access verified)
+[p3] 14:36:01 job pilot-20261111T142648Z-a507: 14 steps
+[p3] 14:36:01 step env_report started: /content/p3/env/base/bin/python -m scripts.colab.env_report --root /content/p3 --out /content/p3/out/pilot-20261111T142648Z-a507/env.json
+[p3] 14:36:03 step env_report PASSED in 0m02s
+[p3] 14:36:03 step verify_pack started: /content/p3/env/base/bin/python -m scripts.colab.verify_pack --repo /content/p3/repo --out /content/p3/out/pilot-20261111T142648Z-a507/pack_verification.json
+[p3] 14:36:04 step verify_pack PASSED in 0m00s
+[p3] 14:36:04 step pytest started: /content/p3/env/base/bin/python -m pytest -q -p no:cacheprovider --junitxml=/content/p3/out/pilot-20261111T142648Z-a507/pytest.xml
+[p3] 14:37:04 pytest running 1m00s | .............................
+[p3] 14:38:04 pytest running 2m00s | ................................
+[p3] 14:39:04 pytest running 3m00s | ............
+[p3] 14:40:04 pytest running 4m00s | ...............
+[p3] 14:40:25 step pytest PASSED in 4m21s
+[p3] 14:40:25 step register_check started: /content/p3/env/base/bin/python -m scripts.training.register_runs --check
+[p3] 14:40:26 step register_check PASSED in 0m00s
+[p3] 14:40:26 step drive_probe started: /usr/bin/python3 -m scripts.colab.drive probe --out /content/p3/out/pilot-20261111T142648Z-a507/drive_probe.json --run-id pilot-20261111T142648Z-a507 --scratch /content/p3/out/pilot-20261111T142648Z-a507/.drive_scratch --remote mydrive: --dir ColabProjects/vlm-perception-reward-rl --mount /content/m
+[p3] 14:41:08 step drive_probe PASSED in 0m42s
+[p3] 14:41:08 step vllm_env started: /usr/bin/python3 -m scripts.colab.bootstrap vllm-env --root /content/p3
+[p3] 14:42:08 vllm_env running 1m00s | [p3] 14:41:39 installing vllm (cu130) ... 0m30s elapsed |  Downloaded llvmlite
+[p3] 14:42:21 step vllm_env PASSED in 1m13s
+[p3] 14:42:21 step pilot_v5 started: /content/p3/env/base/bin/python -m scripts.colab.s4_supervise pilot-run --kind learning_run --name pilot_v5 --out /content/p3/out/pilot-20261111T142648Z-a507/pilot_v5 --drive --repo /content/p3/repo --job pilot-20261111T142648Z-a507 --python /content/p3/env/vllm/bin/python --model-path /content/p3/m
+[p3] 14:43:21 pilot_v5 running 1m00s | 
+[p3] 14:44:21 pilot_v5 running 2m00s | 
+[p3] 14:45:21 pilot_v5 running 3m00s | 
+[p3] 14:46:21 pilot_v5 running 4m00s | [p3] 14:45:43 [pilot_v5] step 1/40 | 52.1 s/step | eta 33m53s | format 0.5781 | answer 0.0469
+[p3] 14:47:21 pilot_v5 running 5m00s | [p3] 14:46:33 [pilot_v5] step 2/40 | 49.7 s/step | eta 31m27s | format 0.625 | answer 0.0312
+[p3] 14:48:21 pilot_v5 running 6m00s | [p3] 14:47:25 [pilot_v5] step 3/40 | 50.3 s/step | eta 31m02s | format 0.5469 | answer 0.0312
+[p3] 14:49:21 pilot_v5 running 7m00s | [p3] 14:48:39 [pilot_v5] step 4/40 | 50.3 s/step | eta 30m11s | format 0.5625 | answer 0.1094
+[p3] 14:50:21 pilot_v5 running 8m00s | [p3] 14:49:49 [pilot_v5] step 5/40 | 52.1 s/step | eta 30m24s | format 0.6406 | answer 0.0469
+[p3] 14:51:21 pilot_v5 running 9m00s | [p3] 14:50:51 [pilot_v5] step 6/40 | 52.1 s/step | eta 29m32s | format 0.5 | answer 0.0625
+[p3] 14:52:21 pilot_v5 running 10m00s | [p3] 14:51:56 [pilot_v5] step 7/40 | 61.0 s/step | eta 33m32s | format 0.625 | answer 0.0938
+[p3] 14:53:21 pilot_v5 running 11m00s | [p3] 14:52:54 [pilot_v5] step 8/40 | 57.0 s/step | eta 30m24s | format 0.7656 | answer 0.0156
+[p3] 14:54:21 pilot_v5 running 12m00s | [p3] 14:54:01 [pilot_v5] step 9/40 | 61.0 s/step | eta 31m30s | format 0.5156 | answer 0.0469
+[p3] 14:55:21 pilot_v5 running 13m00s | [p3] 14:55:15 [pilot_v5] step 10/40 | 61.0 s/step | eta 30m29s | format 0.7188 | answer 0.0781
+[p3] 14:56:21 pilot_v5 running 14m00s | [p3] 14:55:58 [pilot_v5] step 11/40 | 61.0 s/step | eta 29m28s | format 0.7031 | answer 0.0469
+[p3] 14:57:21 pilot_v5 running 15m00s | [p3] 14:56:48 [pilot_v5] step 12/40 | 57.0 s/step | eta 26m36s | format 0.5781 | answer 0.1094
+[p3] 14:58:21 pilot_v5 running 16m00s | [p3] 14:57:40 [pilot_v5] step 13/40 | 57.0 s/step | eta 25m39s | format 0.5938 | answer 0.0312
+[p3] 14:59:21 pilot_v5 running 17m00s | [p3] 14:59:18 [pilot_v5] step 15/40 | 52.1 s/step | eta 21m43s | format 0.5625 | answer 0.0312
+[p3] 15:00:21 pilot_v5 running 18m00s | [p3] 15:00:11 [pilot_v5] step 16/40 | 52.1 s/step | eta 20m51s | format 0.6875 | answer 0.1094
+[p3] 15:01:21 pilot_v5 running 19m00s | [p3] 15:01:14 [pilot_v5] step 17/40 | 52.3 s/step | eta 20m02s | format 0.6719 | answer 0.0
+[p3] 15:02:21 pilot_v5 running 20m00s | [p3] 15:02:14 [pilot_v5] step 18/40 | 52.3 s/step | eta 19m09s | format 0.7188 | answer 0.0
+[p3] 15:03:21 pilot_v5 running 21m00s | [p3] 15:03:15 [pilot_v5] step 19/40 | 57.0 s/step | eta 19m57s | format 0.7031 | answer 0.125
+[p3] 15:04:21 pilot_v5 running 22m00s | [p3] 15:04:03 [pilot_v5] step 20/40 | 52.3 s/step | eta 17m25s | format 0.5469 | answer 0.0469
+[p3] 15:05:21 pilot_v5 running 23m00s | [p3] 15:05:01 [pilot_v5] step 21/40 | 55.3 s/step | eta 17m31s | format 0.6406 | answer 0.2031
+[p3] 15:06:21 pilot_v5 running 24m00s | [p3] 15:06:14 [pilot_v5] step 22/40 | 55.3 s/step | eta 16m35s | format 0.6094 | answer 0.1719
+[p3] 15:07:21 pilot_v5 running 25m00s | [p3] 15:07:15 [pilot_v5] step 23/40 | 57.0 s/step | eta 16m09s | format 0.6875 | answer 0.0625
+[p3] 15:08:21 pilot_v5 running 26m00s | [p3] 15:08:03 [pilot_v5] step 24/40 | 55.3 s/step | eta 14m45s | format 0.7344 | answer 0.0469
+[p3] 15:09:21 pilot_v5 running 27m00s | [p3] 15:09:07 [pilot_v5] step 25/40 | 57.0 s/step | eta 14m15s | format 0.6719 | answer 0.0781
+[p3] 15:10:21 pilot_v5 running 28m00s | [p3] 15:10:08 [pilot_v5] step 26/40 | 57.0 s/step | eta 13m18s | format 0.7188 | answer 0.0312
+[p3] 15:11:21 pilot_v5 running 29m00s | [p3] 15:11:03 [pilot_v5] step 27/40 | 57.0 s/step | eta 12m21s | format 0.7031 | answer 0.125
+[p3] 15:12:21 pilot_v5 running 30m00s | [p3] 15:12:03 [pilot_v5] step 28/40 | 57.0 s/step | eta 11m24s | format 0.6719 | answer 0.0312
+[p3] 15:13:21 pilot_v5 running 31m00s | [p3] 15:13:08 [pilot_v5] step 29/40 | 58.2 s/step | eta 10m40s | format 0.5781 | answer 0.0781
+[p3] 15:14:21 pilot_v5 running 32m00s | [p3] 15:14:12 [pilot_v5] step 30/40 | 58.2 s/step | eta 9m41s | format 0.7031 | answer 0.0625
+[p3] 15:15:21 pilot_v5 running 33m00s | [p3] 15:15:05 [pilot_v5] step 31/40 | 58.2 s/step | eta 8m43s | format 0.6875 | answer 0.0469
+[p3] 15:16:21 pilot_v5 running 34m00s | [p3] 15:15:54 [pilot_v5] step 32/40 | 57.0 s/step | eta 7m36s | format 0.5781 | answer 0.0
+[p3] 15:17:21 pilot_v5 running 35m00s | [p3] 15:16:45 [pilot_v5] step 33/40 | 57.0 s/step | eta 6m39s | format 0.7812 | answer 0.0469
+[p3] 15:18:21 pilot_v5 running 36m00s | [p3] 15:18:21 [pilot_v5] step 35/40 | 55.3 s/step | eta 4m36s | format 0.7031 | answer 0.0781
+[p3] 15:19:21 pilot_v5 running 37m00s | [p3] 15:18:21 [pilot_v5] step 35/40 | 55.3 s/step | eta 4m36s | format 0.7031 | answer 0.0781
+[p3] 15:20:21 pilot_v5 running 38m00s | [p3] 15:19:41 [pilot_v5] step 36/40 | 55.3 s/step | eta 3m41s | format 0.5938 | answer 0.0
+[p3] 15:21:21 pilot_v5 running 39m00s | [p3] 15:20:37 [pilot_v5] step 37/40 | 55.3 s/step | eta 2m45s | format 0.7031 | answer 0.0938
+[p3] 15:22:21 pilot_v5 running 40m00s | [p3] 15:21:39 [pilot_v5] step 38/40 | 55.3 s/step | eta 1m50s | format 0.5781 | answer 0.0312
+[p3] 15:23:21 pilot_v5 running 41m00s | [p3] 15:23:19 [pilot_v5] step 40/40 | 54.9 s/step | eta 0m00s | format 0.6094 | answer 0.0938
+[p3] 15:24:15 step pilot_v5 PASSED in 41m54s
+[p3] 15:24:15 step pilot_resume started: /content/p3/env/base/bin/python -m scripts.colab.s4_supervise pilot-resume --name pilot_resume --out /content/p3/out/pilot-20261111T142648Z-a507/pilot_resume --repo /content/p3/repo --job pilot-20261111T142648Z-a507 --python /content/p3/env/vllm/bin/python --model-path /content/p3/models/Qwen2.5-VL-
+[p3] 15:25:15 pilot_resume running 1m00s | 
+[p3] 15:26:15 pilot_resume running 2m00s | 
+[p3] 15:27:15 pilot_resume running 3m00s | [p3] 15:26:48 [pilot_resume/a] ended: interrupted (pilot: stop right after checkpoint-1 (emulates a lost VM)) after 2m05s
+[p3] 15:28:15 pilot_resume running 4m00s | [p3] 15:26:48 [pilot_resume/a] ended: interrupted (pilot: stop right after checkpoint-1 (emulates a lost VM)) after 2m05s
+[p3] 15:29:15 pilot_resume running 5m00s | [p3] 15:28:54 [pilot_resume/b] checkpoint-2 on Drive: verified
+[p3] 15:29:16 step pilot_resume PASSED in 5m00s
+[p3] 15:29:16 step pilot_rl_ans started: /content/p3/env/base/bin/python -m scripts.colab.s4_supervise pilot-run --kind arm_runs --index 0 --name pilot_rl_ans --out /content/p3/out/pilot-20261111T142648Z-a507/pilot_rl_ans --repo /content/p3/repo --job pilot-20261111T142648Z-a507 --python /content/p3/env/vllm/bin/python --model-path /conten
+[p3] 15:30:16 pilot_rl_ans running 1m00s | 
+[p3] 15:31:16 pilot_rl_ans running 2m00s | 
+[p3] 15:32:16 pilot_rl_ans running 3m00s | [p3] 15:31:38 [pilot_rl_ans] step 1/3 | 51.4 s/step | eta 1m42s | format 0.5781 | answer 0.0469
+[p3] 15:33:16 pilot_rl_ans running 4m00s | [p3] 15:32:29 [pilot_rl_ans] step 2/3 | 49.9 s/step | eta 0m49s | format 0.625 | answer 0.0312
+[p3] 15:33:26 step pilot_rl_ans PASSED in 4m10s
+[p3] 15:33:26 step pilot_rl_v4 started: /content/p3/env/base/bin/python -m scripts.colab.s4_supervise pilot-run --kind arm_runs --index 1 --name pilot_rl_v4 --out /content/p3/out/pilot-20261111T142648Z-a507/pilot_rl_v4 --repo /content/p3/repo --job pilot-20261111T142648Z-a507 --python /content/p3/env/vllm/bin/python --model-path /content/
+[p3] 15:34:26 pilot_rl_v4 running 1m00s | 
+[p3] 15:35:26 pilot_rl_v4 running 2m00s | 
+[p3] 15:36:26 pilot_rl_v4 running 3m00s | [p3] 15:35:48 [pilot_rl_v4] step 1/3 | 51.2 s/step | eta 1m42s | format 0.5781 | answer 0.0469
+[p3] 15:37:26 pilot_rl_v4 running 4m00s | [p3] 15:36:39 [pilot_rl_v4] step 2/3 | 49.9 s/step | eta 0m49s | format 0.625 | answer 0.0312
+[p3] 15:37:50 step pilot_rl_v4 PASSED in 4m24s
+[p3] 15:37:50 step pilot_rl_v5_placebo started: /content/p3/env/base/bin/python -m scripts.colab.s4_supervise pilot-run --kind arm_runs --index 2 --name pilot_rl_v5_placebo --out /content/p3/out/pilot-20261111T142648Z-a507/pilot_rl_v5_placebo --repo /content/p3/repo --job pilot-20261111T142648Z-a507 --python /content/p3/env/vllm/bin/python --mode
+[p3] 15:38:50 pilot_rl_v5_placebo running 1m00s | 
+[p3] 15:39:50 pilot_rl_v5_placebo running 2m00s | 
+[p3] 15:40:50 pilot_rl_v5_placebo running 3m00s | [p3] 15:40:46 [pilot_rl_v5_placebo] step 2/3 | 50.3 s/step | eta 0m50s | format 0.625 | answer 0.0312
+[p3] 15:41:50 pilot_rl_v5_placebo running 4m00s | [p3] 15:40:46 [pilot_rl_v5_placebo] step 2/3 | 50.3 s/step | eta 0m50s | format 0.625 | answer 0.0312
+[p3] 15:41:58 step pilot_rl_v5_placebo PASSED in 4m08s
+[p3] 15:41:58 step pilot_rl_blind started: /content/p3/env/base/bin/python -m scripts.colab.s4_supervise pilot-run --kind arm_runs --index 3 --name pilot_rl_blind --out /content/p3/out/pilot-20261111T142648Z-a507/pilot_rl_blind --repo /content/p3/repo --job pilot-20261111T142648Z-a507 --python /content/p3/env/vllm/bin/python --model-path /co
+[p3] 15:42:58 pilot_rl_blind running 1m00s | 
+[p3] 15:43:58 pilot_rl_blind running 2m00s | [p3] 15:43:56 [pilot_rl_blind] step 2/3 | 24.5 s/step | eta 0m24s | format 0.5312 | answer 0.0156
+[p3] 15:44:26 step pilot_rl_blind PASSED in 2m27s
+[p3] 15:44:26 step pilot_v5_retry started: /content/p3/env/base/bin/python -m scripts.colab.s4_supervise pilot-run --kind learning_retry --name pilot_v5_retry --out /content/p3/out/pilot-20261111T142648Z-a507/pilot_v5_retry --only-if-g4-failed /content/p3/out/pilot-20261111T142648Z-a507/pilot_v5 --repo /content/p3/repo --job pilot-20261111T1
+[p3] 15:44:26 step pilot_v5_retry PASSED in 0m00s
+[p3] 15:44:26 step decide_pilot started: /content/p3/env/base/bin/python -m scripts.colab.decide_pilot --out-dir /content/p3/out/pilot-20261111T142648Z-a507 --repo /content/p3/repo --job pilot-20261111T142648Z-a507 --python /content/p3/env/vllm/bin/python --drive-remote mydrive: --drive-dir ColabProjects/vlm-perception-reward-rl --drive-mo
+[p3] 15:44:40 step decide_pilot PASSED in 0m14s
+[p3] 15:44:45 results pushed from the VM to results/pilot-20261111T142648Z-a507 (commit 2f3df6ab4626)
+[p3] 15:44:51 Drive copy (results): verified mydrive:ColabProjects/vlm-perception-reward-rl/runs/pilot-20261111T142648Z-a507
+[p3] 15:44:51 JOB_DONE overall=passed package=pilot-20261111T142648Z-a507.results.tar.gz (1 parts, 1.1 MB)
