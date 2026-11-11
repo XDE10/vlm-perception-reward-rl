@@ -1,0 +1,1516 @@
+{
+  "run_id": "pilot-20261111T142648Z-a507",
+  "task": "pilot",
+  "steps": [
+    {
+      "name": "env_report",
+      "state": "passed",
+      "required": true,
+      "description": "software, GPU and environment lock report",
+      "started_utc": "2026-11-11T14:36:01Z",
+      "log": "logs/env_report.log",
+      "exit_code": 0,
+      "seconds": 2.3,
+      "finished_utc": "2026-11-11T14:36:03Z"
+    },
+    {
+      "name": "verify_pack",
+      "state": "passed",
+      "required": true,
+      "description": "private data matches its anchors",
+      "started_utc": "2026-11-11T14:36:03Z",
+      "log": "logs/verify_pack.log",
+      "exit_code": 0,
+      "seconds": 0.3,
+      "finished_utc": "2026-11-11T14:36:04Z"
+    },
+    {
+      "name": "pytest",
+      "state": "passed",
+      "required": true,
+      "description": "full CPU test suite on the VM (GPU hidden)",
+      "started_utc": "2026-11-11T14:36:04Z",
+      "log": "logs/pytest.log",
+      "exit_code": 0,
+      "seconds": 261.8,
+      "finished_utc": "2026-11-11T14:40:25Z"
+    },
+    {
+      "name": "register_check",
+      "state": "passed",
+      "required": true,
+      "description": "registered runs equal the configs; data on this VM equals the registered SHA256 and rows",
+      "started_utc": "2026-11-11T14:40:25Z",
+      "log": "logs/register_check.log",
+      "exit_code": 0,
+      "seconds": 0.6,
+      "finished_utc": "2026-11-11T14:40:26Z"
+    },
+    {
+      "name": "drive_probe",
+      "state": "passed",
+      "required": true,
+      "description": "Google Drive via rclone: write, read back, hash check, delete (optional unless drive-check)",
+      "started_utc": "2026-11-11T14:40:26Z",
+      "log": "logs/drive_probe.log",
+      "exit_code": 0,
+      "seconds": 42.3,
+      "finished_utc": "2026-11-11T14:41:08Z"
+    },
+    {
+      "name": "vllm_env",
+      "state": "passed",
+      "required": true,
+      "description": "vLLM venv (CUDA 13): the frozen runtime generates with vLLM",
+      "started_utc": "2026-11-11T14:41:08Z",
+      "log": "logs/vllm_env.log",
+      "exit_code": 0,
+      "seconds": 73.0,
+      "finished_utc": "2026-11-11T14:42:21Z"
+    },
+    {
+      "name": "pilot_v5",
+      "state": "passed",
+      "required": true,
+      "description": "rl_v5 seed 1, formal shape, 40 steps, checkpoints every 20 steps copied to Drive (G1-G6)",
+      "started_utc": "2026-11-11T14:42:21Z",
+      "log": "logs/pilot_v5.log",
+      "exit_code": 0,
+      "seconds": 2514.1,
+      "finished_utc": "2026-11-11T15:24:15Z"
+    },
+    {
+      "name": "pilot_resume",
+      "state": "passed",
+      "required": true,
+      "description": "small shape: stop after checkpoint-1, restore it from Drive, resume to step 2 (G5)",
+      "started_utc": "2026-11-11T15:24:15Z",
+      "log": "logs/pilot_resume.log",
+      "exit_code": 0,
+      "seconds": 300.2,
+      "finished_utc": "2026-11-11T15:29:16Z"
+    },
+    {
+      "name": "pilot_rl_ans",
+      "state": "passed",
+      "required": true,
+      "description": "rl_ans seed 1, formal shape, 3 steps (G1-G3, G6)",
+      "started_utc": "2026-11-11T15:29:16Z",
+      "log": "logs/pilot_rl_ans.log",
+      "exit_code": 0,
+      "seconds": 250.2,
+      "finished_utc": "2026-11-11T15:33:26Z"
+    },
+    {
+      "name": "pilot_rl_v4",
+      "state": "passed",
+      "required": true,
+      "description": "rl_v4 seed 1, formal shape, 3 steps (G1-G3, G6)",
+      "started_utc": "2026-11-11T15:33:26Z",
+      "log": "logs/pilot_rl_v4.log",
+      "exit_code": 0,
+      "seconds": 264.3,
+      "finished_utc": "2026-11-11T15:37:50Z"
+    },
+    {
+      "name": "pilot_rl_v5_placebo",
+      "state": "passed",
+      "required": true,
+      "description": "rl_v5_placebo seed 1, formal shape, 3 steps (G1-G3, G6)",
+      "started_utc": "2026-11-11T15:37:50Z",
+      "log": "logs/pilot_rl_v5_placebo.log",
+      "exit_code": 0,
+      "seconds": 248.2,
+      "finished_utc": "2026-11-11T15:41:58Z"
+    },
+    {
+      "name": "pilot_rl_blind",
+      "state": "passed",
+      "required": true,
+      "description": "rl_blind seed 1, formal shape, 3 steps (G1-G3, G6)",
+      "started_utc": "2026-11-11T15:41:58Z",
+      "log": "logs/pilot_rl_blind.log",
+      "exit_code": 0,
+      "seconds": 147.2,
+      "finished_utc": "2026-11-11T15:44:26Z"
+    },
+    {
+      "name": "pilot_v5_retry",
+      "state": "passed",
+      "required": true,
+      "description": "only if G4 failed and the other gates passed: rl_v5, 76 steps",
+      "started_utc": "2026-11-11T15:44:26Z",
+      "log": "logs/pilot_v5_retry.log",
+      "exit_code": 0,
+      "seconds": 0.3,
+      "finished_utc": "2026-11-11T15:44:26Z"
+    },
+    {
+      "name": "decide_pilot",
+      "state": "passed",
+      "required": true,
+      "description": "gates G1-G6; pilot_gates.json and PILOT_LATEST.json on Drive",
+      "started_utc": "2026-11-11T15:44:26Z",
+      "log": "logs/decide_pilot.log",
+      "exit_code": 0,
+      "seconds": 14.6,
+      "finished_utc": "2026-11-11T15:44:40Z"
+    }
+  ],
+  "error": null,
+  "env": {
+    "python": "3.12.3",
+    "platform": "Linux-6.6.159+-x86_64-with-glibc2.39",
+    "cpu_count": 12,
+    "ram_gb": 87.5,
+    "disk_free_gb": 239.8,
+    "packages": {
+      "torch": "2.13.0+cu130",
+      "torchvision": "0.28.0+cu130",
+      "transformers": "5.19.0",
+      "trl": "1.17.1",
+      "peft": "0.21.2",
+      "accelerate": "1.15.0",
+      "datasets": "4.8.5",
+      "math-verify": "0.9.0",
+      "sympy": "1.14.0",
+      "huggingface-hub": "1.33.0",
+      "numpy": "2.5.4",
+      "pillow": "13.0.0",
+      "pytest": "9.2.0",
+      "vllm": null
+    },
+    "torch": {
+      "version": "2.13.0+cu130",
+      "cuda_runtime": "13.0",
+      "cudnn": 92000,
+      "cuda_available": true
+    },
+    "gpu": {
+      "name": "NVIDIA A100-SXM4-40GB",
+      "total_gb": 42.41,
+      "capability": [
+        8,
+        0
+      ],
+      "count": 1,
+      "bf16": true
+    },
+    "env": {
+      "torch_backend": "cu130",
+      "lock": "requirements/locks/colab-gpu-cu130.txt",
+      "lock_sha256": "d009cd2e1a7848a1e21326b601d8f849fbf03052b34d07d808afe9c8bb065d2e",
+      "freeze_sha256": "ff9316bc44f93d48a284d806fc493dc0ad16c5237d84f7eb0acc0cc848f26f6a",
+      "install_seconds": 259.424795627594
+    },
+    "driver": {
+      "available": true,
+      "name": "NVIDIA A100-SXM4-40GB",
+      "memory_mib": 40960.0,
+      "driver": "580.82.07",
+      "driver_cuda": [
+        13,
+        0
+      ]
+    },
+    "model": {
+      "repo": "Qwen/Qwen2.5-VL-3B-Instruct",
+      "revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+      "local_dir": "/content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8",
+      "total_bytes": 7520892432,
+      "download_seconds": 19.448798179626465
+    },
+    "model_files_sha256": {
+      "chat_template.json": "ad60d90252ed0b0705ba14e2d0ad0fec0beac1ea955642b54059b36052d8bc96",
+      "config.json": "7ed3eed5be6924cc800e8a5e53fc405c1aab1aaf36bad65c33403b36c56827f5",
+      "generation_config.json": "533f191cc257b7de37a4fccd0a7a1706d75e1aa660f93efaa54e5a2a9f9aace9",
+      "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+      "model-00001-of-00002.safetensors": "41a8895c164b4d32bae6b302f4603fcbc1797f32dafa45c7e9bcda23c6755df8",
+      "model-00002-of-00002.safetensors": "365531ff8752420e89dee707b79d021fb2d6e25abafe486f080555a4fe6972e4",
+      "model.safetensors.index.json": "c7dd78a4c6bea60b51332f1baf37b8f8124ecab2c35395a29a29825bf2619768",
+      "preprocessor_config.json": "f2058c716eef96ccaed1cc1e2d0c08306b62586d535b28d9d08e691b2fab7ca0",
+      "tokenizer.json": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+      "tokenizer_config.json": "4abd3520120e266da84c0864fee064d1fb10806f02225911a47253dd38dc5f56",
+      "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+    }
+  },
+  "pack": {
+    "schema": "p3-pack-verification-v1",
+    "content_sha256": "082210c90d5b3834539380c37bb5a43deab0f4354b5ff630910a6c06be06f1a1",
+    "recomputed_content_sha256": "082210c90d5b3834539380c37bb5a43deab0f4354b5ff630910a6c06be06f1a1",
+    "files": 716,
+    "anchors": [
+      "ledger",
+      "release",
+      "row"
+    ],
+    "missing_optional": [],
+    "problems": [],
+    "ok": true
+  },
+  "pytest": {
+    "tests": 317,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 12,
+    "passed": 305,
+    "failed_tests": [],
+    "seconds": 259.3
+  },
+  "calibration": null,
+  "gpu_probe": null,
+  "v0_probe": null,
+  "smoke": {},
+  "smoke_full_hf": null,
+  "smoke_full_vllm": null,
+  "resume": null,
+  "frozen_runtime": null,
+  "drive_probe": {
+    "schema": "p3-drive-probe-v1",
+    "detect": {
+      "remote": "mydrive:",
+      "base_dir": "ColabProjects/vlm-perception-reward-rl",
+      "mount": "/content/mydrive",
+      "rclone": "/usr/bin/rclone",
+      "rclone_version": "rclone v1.60.1-DEV",
+      "config": null,
+      "config_source": "default",
+      "remote_configured": true,
+      "mount_present": true,
+      "usable": true,
+      "method": "rclone",
+      "notes": [],
+      "remotes": [
+        "mydrive:"
+      ]
+    },
+    "ok": true,
+    "steps": {
+      "upload_text": {
+        "rc": 0,
+        "seconds": 6.51,
+        "error": null
+      },
+      "read_back_text": {
+        "rc": 0,
+        "seconds": 2.95,
+        "matches": true
+      },
+      "upload_blob": {
+        "rc": 0,
+        "seconds": 3.05,
+        "mb_per_s": 5.3
+      },
+      "download_blob": {
+        "rc": 0,
+        "seconds": 3.5,
+        "mb_per_s": 4.6,
+        "md5_matches": true
+      },
+      "rclone_check": {
+        "rc": 0,
+        "identical": true
+      },
+      "mount_write": {
+        "visible_on_remote": true,
+        "seconds_until_visible": 10.0
+      }
+    },
+    "deleted_probe_files": [
+      "probe.txt",
+      "probe.bin",
+      "via_mount.txt"
+    ],
+    "target": "mydrive:ColabProjects/vlm-perception-reward-rl/_p3_probe/pilot-20261111T142648Z-a507",
+    "size_mb": 16
+  },
+  "github_check": {
+    "mode": "auto",
+    "branch": "results/pilot-20261111T142648Z-a507",
+    "url": "https://github.com/XDE10/vlm-perception-reward-rl.git",
+    "credentials_file": "/content/gh_credentials",
+    "credentials_present": true,
+    "ok": true,
+    "credentials_mode": "0o600",
+    "push_access": true,
+    "seconds": 1.8,
+    "workdir": "/content/p3/github/pilot-20261111T142648Z-a507"
+  },
+  "public_sources": null,
+  "eval_sets_check": null,
+  "cfgeo_build": null,
+  "prompt_select": null,
+  "v0_val82": null,
+  "harness_check": null,
+  "is_check": null,
+  "s3_decisions": null,
+  "pilot_gates": {
+    "schema": "p3-pilot-gates-v1",
+    "job": "pilot-20261111T142648Z-a507",
+    "rules": "docs/plan/S4预注册_20261110.md section 11",
+    "gates": {
+      "G1_importance_sampling": {
+        "ok": true,
+        "detail": {
+          "pilot_v5": {
+            "steps": 40,
+            "measured_steps": 40,
+            "failing_steps": [],
+            "ratio_mean_range": [
+              0.9963163733482361,
+              1.0016560554504395
+            ],
+            "logp_difference_mean_max": 0.0720764547586441
+          },
+          "pilot_rl_ans": {
+            "steps": 3,
+            "measured_steps": 3,
+            "failing_steps": [],
+            "ratio_mean_range": [
+              0.9990262985229492,
+              1.000789999961853
+            ],
+            "logp_difference_mean_max": 0.06391328573226929
+          },
+          "pilot_rl_v4": {
+            "steps": 3,
+            "measured_steps": 3,
+            "failing_steps": [],
+            "ratio_mean_range": [
+              0.997967541217804,
+              1.000789999961853
+            ],
+            "logp_difference_mean_max": 0.0642329528927803
+          },
+          "pilot_rl_v5_placebo": {
+            "steps": 3,
+            "measured_steps": 3,
+            "failing_steps": [],
+            "ratio_mean_range": [
+              0.9982722401618958,
+              1.000789999961853
+            ],
+            "logp_difference_mean_max": 0.06891313195228577
+          },
+          "pilot_rl_blind": {
+            "steps": 3,
+            "measured_steps": 3,
+            "failing_steps": [],
+            "ratio_mean_range": [
+              1.0001473426818848,
+              1.000644326210022
+            ],
+            "logp_difference_mean_max": 0.020071741193532944
+          }
+        }
+      },
+      "G2_memory": {
+        "ok": true,
+        "detail": {
+          "limit_gb": 38.17,
+          "total_gb": 42.41,
+          "peak_gb": {
+            "pilot_v5": 26.58724608,
+            "pilot_rl_ans": 23.564536832,
+            "pilot_rl_v4": 24.61732096,
+            "pilot_rl_v5_placebo": 24.61732096,
+            "pilot_rl_blind": 21.23102976
+          }
+        }
+      },
+      "G3_stability": {
+        "ok": true,
+        "detail": {
+          "pilot_v5": {
+            "completed": true,
+            "finite_loss_and_grad_norm": true,
+            "verifier_error_rate": 0.0,
+            "verifier_ok": true,
+            "image_grid_ok": true,
+            "alignment_checked": true,
+            "nonfinite_steps": [],
+            "outcome": "completed",
+            "detail": null
+          },
+          "pilot_rl_ans": {
+            "completed": true,
+            "finite_loss_and_grad_norm": true,
+            "verifier_error_rate": 0.0,
+            "verifier_ok": true,
+            "image_grid_ok": true,
+            "alignment_checked": true,
+            "nonfinite_steps": [],
+            "outcome": "completed",
+            "detail": null
+          },
+          "pilot_rl_v4": {
+            "completed": true,
+            "finite_loss_and_grad_norm": true,
+            "verifier_error_rate": 0.0,
+            "verifier_ok": true,
+            "image_grid_ok": true,
+            "alignment_checked": true,
+            "nonfinite_steps": [],
+            "outcome": "completed",
+            "detail": null
+          },
+          "pilot_rl_v5_placebo": {
+            "completed": true,
+            "finite_loss_and_grad_norm": true,
+            "verifier_error_rate": 0.0,
+            "verifier_ok": true,
+            "image_grid_ok": true,
+            "alignment_checked": true,
+            "nonfinite_steps": [],
+            "outcome": "completed",
+            "detail": null
+          },
+          "pilot_rl_blind": {
+            "completed": true,
+            "finite_loss_and_grad_norm": true,
+            "verifier_error_rate": 0.0,
+            "verifier_ok": true,
+            "image_grid_ok": true,
+            "alignment_checked": true,
+            "nonfinite_steps": [],
+            "outcome": "completed",
+            "detail": null
+          },
+          "pilot_resume": {
+            "completed": true
+          }
+        }
+      },
+      "G4_learning": {
+        "ok": true,
+        "detail": {
+          "pilot_v5": {
+            "steps": [
+              1,
+              10,
+              31,
+              40
+            ],
+            "early_mean": 0.6078125,
+            "late_mean": 0.6515625,
+            "early_steps": 10,
+            "late_steps": 10,
+            "ok": true
+          },
+          "retry": null
+        }
+      },
+      "G5_checkpoint_resume": {
+        "ok": true,
+        "detail": {
+          "pilot_v5_checkpoints_verified": {
+            "20": true,
+            "40": true
+          },
+          "pilot_v5_final_verified": true,
+          "resume_ok": true,
+          "resume_reason": null,
+          "restore_seconds": 9.7,
+          "restore_files": 15
+        }
+      },
+      "G6_protocol": {
+        "ok": true,
+        "detail": {
+          "pilot_v5": {
+            "protocols": [
+              "perception-think-answer-v3-p1-20261109"
+            ],
+            "rollouts": 2560,
+            "max_prompt_tokens": 1176,
+            "ok": true
+          },
+          "pilot_rl_ans": {
+            "protocols": [
+              "perception-think-answer-v3-p1-20261109"
+            ],
+            "rollouts": 192,
+            "max_prompt_tokens": 1176,
+            "ok": true
+          },
+          "pilot_rl_v4": {
+            "protocols": [
+              "perception-think-answer-v3-p1-20261109"
+            ],
+            "rollouts": 192,
+            "max_prompt_tokens": 1176,
+            "ok": true
+          },
+          "pilot_rl_v5_placebo": {
+            "protocols": [
+              "perception-think-answer-v3-p1-20261109"
+            ],
+            "rollouts": 192,
+            "max_prompt_tokens": 1176,
+            "ok": true
+          },
+          "pilot_rl_blind": {
+            "protocols": [
+              "perception-think-answer-v3-p1-20261109"
+            ],
+            "rollouts": 192,
+            "max_prompt_tokens": 319,
+            "ok": true
+          },
+          "pilot_resume": {
+            "protocols": [
+              "perception-think-answer-v3-p1-20261109"
+            ],
+            "rollouts": 8,
+            "max_prompt_tokens": 1176,
+            "ok": true
+          }
+        }
+      }
+    },
+    "passed": true,
+    "recorded": {
+      "pilot_v5": {
+        "step_seconds_median": 55.11,
+        "step_seconds_p90": 68.69,
+        "truncated_fraction": 0.002,
+        "completion_length_mean": 218.8348,
+        "answer_acc": 0.0617,
+        "format_rate": 0.6402,
+        "claims_per_completion": 6.3219,
+        "kl": 0.0008,
+        "entropy": 1.0242,
+        "rollouts": 2560
+      },
+      "pilot_rl_ans": {
+        "step_seconds_median": 49.91,
+        "step_seconds_p90": 51.43,
+        "truncated_fraction": 0.0,
+        "completion_length_mean": 218.3854,
+        "answer_acc": 0.0365,
+        "format_rate": 0.599,
+        "claims_per_completion": 6.1979,
+        "kl": 0.0005,
+        "entropy": 1.1147,
+        "rollouts": 192
+      },
+      "pilot_rl_v4": {
+        "step_seconds_median": 51.18,
+        "step_seconds_p90": 63.08,
+        "truncated_fraction": 0.0052,
+        "completion_length_mean": 225.7448,
+        "answer_acc": 0.0312,
+        "format_rate": 0.5938,
+        "claims_per_completion": 6.0729,
+        "kl": 0.0004,
+        "entropy": 1.1502,
+        "rollouts": 192
+      },
+      "pilot_rl_v5_placebo": {
+        "step_seconds_median": 51.35,
+        "step_seconds_p90": 63.95,
+        "truncated_fraction": 0.0052,
+        "completion_length_mean": 221.6667,
+        "answer_acc": 0.0365,
+        "format_rate": 0.5833,
+        "claims_per_completion": 6.0885,
+        "kl": 0.0005,
+        "entropy": 1.1789,
+        "rollouts": 192
+      },
+      "pilot_rl_blind": {
+        "step_seconds_median": 24.51,
+        "step_seconds_p90": 28.71,
+        "truncated_fraction": 0.0,
+        "completion_length_mean": 230.8906,
+        "answer_acc": 0.0208,
+        "format_rate": 0.599,
+        "claims_per_completion": 5.8125,
+        "kl": 0.0002,
+        "entropy": 0.9946,
+        "rollouts": 192
+      }
+    },
+    "consistency": {
+      "runs_with_identity": [
+        "pilot_resume",
+        "pilot_rl_ans",
+        "pilot_rl_blind",
+        "pilot_rl_v4",
+        "pilot_rl_v5_placebo",
+        "pilot_v5"
+      ],
+      "one_source": true,
+      "one_package_set": true
+    },
+    "code_now": {
+      "error": null,
+      "matches_pilot": true
+    },
+    "timing": {
+      "step_seconds_median": 55.11,
+      "step_seconds_p90": 68.69,
+      "truncated_fraction": 0.002,
+      "completion_length_mean": 218.8348,
+      "answer_acc": 0.0617,
+      "format_rate": 0.6402,
+      "claims_per_completion": 6.3219,
+      "kl": 0.0008,
+      "entropy": 1.0242,
+      "rollouts": 2560,
+      "startup_seconds": 204.1,
+      "checkpoint_upload_seconds": 33.0,
+      "final_upload_seconds": 22.2,
+      "restore_seconds": 9.7
+    },
+    "latest": {
+      "schema": "p3-pilot-latest-v1",
+      "passed": true,
+      "job": "pilot-20261111T142648Z-a507",
+      "decided_utc": "2026-11-11T15:44:27Z",
+      "registry_sha256": "c0d61ad1929b3afdda0e980814b8e2580841291b52e1ea54a1f3f651be463d27",
+      "runtime_content_sha256": "b952f877ebab922d8d122c79350831144d2e456c44d599e65d1ad66d3a83e71e",
+      "experiment": "rl_v3_p1_20261110",
+      "protocol": "perception-think-answer-v3-p1-20261109",
+      "gpu_name": "NVIDIA A100-SXM4-40GB",
+      "source_sha256": {
+        "src/rewards/answer.py": "cb6dc6be4992a605e35591f4696a8a926abe1978c7251465531dc94d522c0adf",
+        "src/rewards/attacks.py": "2457f206b5d707533ae90370ed44e06e03c5ffe0a472dcd3372c74e2122b7540",
+        "src/rewards/claims.py": "675427118c48e7d3a8ac96933ff40495cb30e0258bc2255945e142990f4bdd57",
+        "src/rewards/geometry_oracle.py": "0741399cd53c4e5c5e44abe52a5f33ba729337f5d82a5f471eb7276f446bb6f3",
+        "src/rewards/perception_v5.py": "f5f18a50b7f4ae794f14804b692709554033cd3ad90c27c74761b752e142b9e2",
+        "src/training/hf_compat.py": "42389d329355d3d76726560b201e145c8c620c13fe755eade56f96a2307dc41e",
+        "src/training/lora_language.py": "fa247ff5700b08eb915a3c8472aedc7624b692d75c092b63976bf0c22cfb8138",
+        "src/training/multimodal_guard.py": "9b3ab6ed2a1746bbc6205e6662c420efccfa354afe362c2bcb319a087d3ae7f7",
+        "src/training/protocol_v3.py": "3d3e95acb42dfd3b8c0bde8365c500138a491797c20ec97d94d6c041c5e0dd11",
+        "src/training/rl_config.py": "627909d5da37c380333fef11b4fd2da1e286aa455172a300fd4c70ff45bd2d70",
+        "src/training/rl_data.py": "12308c7b84f8288044d1aa9677833eb91038bae110556776a58422db110c30e1",
+        "src/training/rl_entry.py": "e53262c005313f58770347c379ae875bac3ebde812ef57c91a6f38120aac3314",
+        "src/training/rl_rewards.py": "c2ac44fccdb2b0590124d21eb16bf7bb7b51f725f6de728b75eff89ffd7f6ff5",
+        "src/training/vision_cache.py": "363b932b40e55af497fdead5c57f52d801de65b9b9a0cd4447a416e6f30d5885",
+        "src/training/vllm_guard.py": "e4192370ee7bb2bc33b9066824dcbb316f75070429ec65d363f616a902251aac",
+        "src/training/registry.py": "36be5190dc655c5272afcb874097dfeef241fa0eb26e49bca0d0d5910f220535",
+        "src/data/approved_training_inputs.py": "236ba095002d723ae3b544e9159c930292bbc4ade1eefe5ba85e1ac72d10e2ac",
+        "src/data/intergps_index.py": "45b286111594331a12e714d08bf5ab1e08ca12c2624ae51540c8a2ecacbf9b9d",
+        "src/data/perception_v4.py": "841ac3c3a15fb1ed11f6be35543ba1028b1ccca1574c5dd30881b0dbde77b5ea",
+        "src/data/project3_perception_v2.py": "51b00daf3d9b1363754863ff9f0425e197eaaba5c54707604c378e7a298d3c86",
+        "src/data/project3_perception_prototype.py": "986f06c64d89dfbca6ced1204b094614d13213bfa9457dd0ec98e242c366ef82",
+        "src/training/perception_reward_v4.py": "d05fc197c5303621ad27c5ee5f0c63b8408669d9ed49419efd2411c44a1f9d68",
+        "scripts/training/math_verify_v3_strict_worker.py": "af68188e5d710c796b31bcbc16edd1649d983a306eef6f184057ae8221ea61e8",
+        "scripts/training/math_verify_pilot_worker.py": "6a427decd4481126546d2d3c46a24ac19b0be4e81954237dc56de420b23ccb0a"
+      },
+      "versions": {
+        "torch": "2.13.0+cu130",
+        "transformers": "5.19.0",
+        "trl": "1.17.1",
+        "peft": "0.21.2",
+        "accelerate": "1.15.0",
+        "datasets": "4.8.5",
+        "math-verify": "0.9.0",
+        "sympy": "1.14.0",
+        "vllm": "0.32.0",
+        "pillow": "13.0.0"
+      },
+      "git_commit": "e583ecdcd865180aaad9eeb0caba8a50dc9f5c3d",
+      "timing": {
+        "step_seconds_median": 55.11,
+        "step_seconds_p90": 68.69,
+        "truncated_fraction": 0.002,
+        "completion_length_mean": 218.8348,
+        "answer_acc": 0.0617,
+        "format_rate": 0.6402,
+        "claims_per_completion": 6.3219,
+        "kl": 0.0008,
+        "entropy": 1.0242,
+        "rollouts": 2560,
+        "startup_seconds": 204.1,
+        "checkpoint_upload_seconds": 33.0,
+        "final_upload_seconds": 22.2,
+        "restore_seconds": 9.7
+      },
+      "gates": {
+        "G1_importance_sampling": true,
+        "G2_memory": true,
+        "G3_stability": true,
+        "G4_learning": true,
+        "G5_checkpoint_resume": true,
+        "G6_protocol": true
+      }
+    },
+    "drive": {
+      "written": true,
+      "path": "s4/rl_v3_p1_20261110/PILOT_LATEST.json",
+      "reason": null
+    }
+  },
+  "pilot_runs": {
+    "pilot_resume": {
+      "train": {
+        "run": "rl_v5/seed1_smoke",
+        "config_sha256": "ff9d18c60e23c6a86430b6b665dfbb92f5e8abf6b563ec8e653d3844ef89fe52",
+        "global_step": 2,
+        "max_steps": 2,
+        "wall_seconds": 9.382148265838623,
+        "peak_gpu_memory_gb": 19.037956608,
+        "vision_cache": null,
+        "mm_alignment": {
+          "version": "mm-alignment-guard-v1-20261109",
+          "checked_forwards": 6,
+          "left_padded_rows": 6,
+          "max_left_padding": 68
+        },
+        "vllm_image_grid": {
+          "images": 609,
+          "distinct_sizes": 456,
+          "train_limits": [
+            3136,
+            802816
+          ],
+          "vllm_limits": [
+            3136,
+            12845056
+          ],
+          "factor": 28,
+          "mismatches": 0
+        },
+        "generation_backend": "vllm",
+        "registration": null,
+        "python": "3.12.3"
+      },
+      "rollouts": {
+        "rollouts": 8,
+        "steps": 2,
+        "answer_acc": 0.0,
+        "format_rate": 0.0,
+        "protocol_ok": 0.0,
+        "perception_reward_mean": -0.7458,
+        "v5_own_mean": -0.7458,
+        "claims_per_completion": 2.12,
+        "completion_tokens_mean": 111.6,
+        "completion_tokens_max": 128,
+        "verifier_errors": 0,
+        "block_fail_rate": 0.5,
+        "unknown_share": 0.6471,
+        "gated_rate": 0.0,
+        "valid_format_below_broken_rate": 0.0
+      },
+      "mm_alignment": {
+        "version": "mm-alignment-guard-v1-20261109",
+        "checked_forwards": 6,
+        "left_padded_rows": 6,
+        "max_left_padding": 68
+      },
+      "step_time_median": 6.53,
+      "trainable_parameters": 29933568,
+      "vision_frozen": true,
+      "config_sha256": "ff9d18c60e23c6a86430b6b665dfbb92f5e8abf6b563ec8e653d3844ef89fe52",
+      "prompt_report": {
+        "prompts": 609,
+        "max_tokens": 1176,
+        "mean_tokens": 475.8735632183908,
+        "limit": 1600
+      },
+      "supervisor": null
+    },
+    "pilot_rl_ans": {
+      "train": {
+        "run": "rl_ans/seed1_smoke",
+        "config_sha256": "e0c02ba3bdf65d0855b39d2bd9e3f08dc48ee0b2238d799c3033e26c2cbb0b71",
+        "global_step": 3,
+        "max_steps": 3,
+        "wall_seconds": 154.999431848526,
+        "peak_gpu_memory_gb": 23.564536832,
+        "vision_cache": null,
+        "mm_alignment": {
+          "version": "mm-alignment-guard-v1-20261109",
+          "checked_forwards": 72,
+          "left_padded_rows": 504,
+          "max_left_padding": 326
+        },
+        "vllm_image_grid": {
+          "images": 609,
+          "distinct_sizes": 456,
+          "train_limits": [
+            3136,
+            802816
+          ],
+          "vllm_limits": [
+            3136,
+            12845056
+          ],
+          "factor": 28,
+          "mismatches": 0
+        },
+        "generation_backend": "vllm",
+        "registration": null,
+        "python": "3.12.3"
+      },
+      "rollouts": {
+        "rollouts": 192,
+        "steps": 3,
+        "answer_acc": 0.0365,
+        "format_rate": 0.599,
+        "protocol_ok": 0.6771,
+        "perception_reward_mean": 0.0,
+        "v5_own_mean": -0.7726,
+        "claims_per_completion": 6.2,
+        "completion_tokens_mean": 218.4,
+        "completion_tokens_max": 799,
+        "verifier_errors": 0,
+        "block_fail_rate": 0.1458,
+        "unknown_share": 0.2914,
+        "gated_rate": 0.0417,
+        "valid_format_below_broken_rate": 0.0
+      },
+      "mm_alignment": {
+        "version": "mm-alignment-guard-v1-20261109",
+        "checked_forwards": 72,
+        "left_padded_rows": 504,
+        "max_left_padding": 326
+      },
+      "step_time_median": 49.17,
+      "trainable_parameters": 29933568,
+      "vision_frozen": true,
+      "config_sha256": "e0c02ba3bdf65d0855b39d2bd9e3f08dc48ee0b2238d799c3033e26c2cbb0b71",
+      "prompt_report": {
+        "prompts": 609,
+        "max_tokens": 1176,
+        "mean_tokens": 475.8735632183908,
+        "limit": 1600
+      },
+      "supervisor": {
+        "outcome": "completed",
+        "detail": null,
+        "skipped": null,
+        "reason": null,
+        "last_step": 3,
+        "max_steps": 3,
+        "wall_seconds": 250.1,
+        "startup_seconds": 100.3,
+        "checkpoints_saved": [
+          3
+        ]
+      }
+    },
+    "pilot_rl_blind": {
+      "train": {
+        "run": "rl_blind/seed1_smoke",
+        "config_sha256": "915c4484a118e3378a63cc3ebf51dbd889f842044089d117ead65f9373caad83",
+        "global_step": 3,
+        "max_steps": 3,
+        "wall_seconds": 78.90513372421265,
+        "peak_gpu_memory_gb": 21.23102976,
+        "vision_cache": null,
+        "mm_alignment": {
+          "version": "mm-alignment-guard-v1-20261109",
+          "checked_forwards": 0,
+          "left_padded_rows": 0,
+          "max_left_padding": 0
+        },
+        "vllm_image_grid": {
+          "images": 0,
+          "distinct_sizes": 0,
+          "train_limits": [
+            3136,
+            802816
+          ],
+          "vllm_limits": [
+            3136,
+            12845056
+          ],
+          "factor": 28,
+          "mismatches": 0
+        },
+        "generation_backend": "vllm",
+        "registration": null,
+        "python": "3.12.3"
+      },
+      "rollouts": {
+        "rollouts": 192,
+        "steps": 3,
+        "answer_acc": 0.0208,
+        "format_rate": 0.599,
+        "protocol_ok": 0.6771,
+        "perception_reward_mean": 0.0,
+        "v5_own_mean": -0.8333,
+        "claims_per_completion": 5.81,
+        "completion_tokens_mean": 230.9,
+        "completion_tokens_max": 706,
+        "verifier_errors": 0,
+        "block_fail_rate": 0.1198,
+        "unknown_share": 0.2555,
+        "gated_rate": 0.0417,
+        "valid_format_below_broken_rate": 0.0
+      },
+      "mm_alignment": {
+        "version": "mm-alignment-guard-v1-20261109",
+        "checked_forwards": 0,
+        "left_padded_rows": 0,
+        "max_left_padding": 0
+      },
+      "step_time_median": 23.73,
+      "trainable_parameters": 29933568,
+      "vision_frozen": true,
+      "config_sha256": "915c4484a118e3378a63cc3ebf51dbd889f842044089d117ead65f9373caad83",
+      "prompt_report": {
+        "prompts": 609,
+        "max_tokens": 319,
+        "mean_tokens": 260.2840722495895,
+        "limit": 1600
+      },
+      "supervisor": {
+        "outcome": "completed",
+        "detail": null,
+        "skipped": null,
+        "reason": null,
+        "last_step": 3,
+        "max_steps": 3,
+        "wall_seconds": 147.1,
+        "startup_seconds": 70.9,
+        "checkpoints_saved": [
+          3
+        ]
+      }
+    },
+    "pilot_rl_v4": {
+      "train": {
+        "run": "rl_v4/seed1_smoke",
+        "config_sha256": "53fe70d5c70fb92b4c5aac3cde901e4d4a3e87da6e198f010247b4cad30dddde",
+        "global_step": 3,
+        "max_steps": 3,
+        "wall_seconds": 169.33763241767883,
+        "peak_gpu_memory_gb": 24.61732096,
+        "vision_cache": null,
+        "mm_alignment": {
+          "version": "mm-alignment-guard-v1-20261109",
+          "checked_forwards": 72,
+          "left_padded_rows": 504,
+          "max_left_padding": 326
+        },
+        "vllm_image_grid": {
+          "images": 609,
+          "distinct_sizes": 456,
+          "train_limits": [
+            3136,
+            802816
+          ],
+          "vllm_limits": [
+            3136,
+            12845056
+          ],
+          "factor": 28,
+          "mismatches": 0
+        },
+        "generation_backend": "vllm",
+        "registration": null,
+        "python": "3.12.3"
+      },
+      "rollouts": {
+        "rollouts": 192,
+        "steps": 3,
+        "answer_acc": 0.0312,
+        "format_rate": 0.5938,
+        "protocol_ok": 0.6875,
+        "perception_reward_mean": 0.0122,
+        "v5_own_mean": -0.7829,
+        "claims_per_completion": 6.07,
+        "completion_tokens_mean": 225.7,
+        "completion_tokens_max": 1024,
+        "verifier_errors": 0,
+        "block_fail_rate": 0.1562,
+        "unknown_share": 0.2931,
+        "gated_rate": 0.0417,
+        "valid_format_below_broken_rate": 0.0
+      },
+      "mm_alignment": {
+        "version": "mm-alignment-guard-v1-20261109",
+        "checked_forwards": 72,
+        "left_padded_rows": 504,
+        "max_left_padding": 326
+      },
+      "step_time_median": 56.47,
+      "trainable_parameters": 29933568,
+      "vision_frozen": true,
+      "config_sha256": "53fe70d5c70fb92b4c5aac3cde901e4d4a3e87da6e198f010247b4cad30dddde",
+      "prompt_report": {
+        "prompts": 609,
+        "max_tokens": 1176,
+        "mean_tokens": 475.8735632183908,
+        "limit": 1600
+      },
+      "supervisor": {
+        "outcome": "completed",
+        "detail": null,
+        "skipped": null,
+        "reason": null,
+        "last_step": 3,
+        "max_steps": 3,
+        "wall_seconds": 264.3,
+        "startup_seconds": 100.2,
+        "checkpoints_saved": [
+          3
+        ]
+      }
+    },
+    "pilot_rl_v5_placebo": {
+      "train": {
+        "run": "rl_v5_placebo/seed1_smoke",
+        "config_sha256": "98f99f81fccd8e06ebdd667d8938ecce741e55fe3a04f52db4f8d224ea1be59e",
+        "global_step": 3,
+        "max_steps": 3,
+        "wall_seconds": 170.7747678756714,
+        "peak_gpu_memory_gb": 24.61732096,
+        "vision_cache": null,
+        "mm_alignment": {
+          "version": "mm-alignment-guard-v1-20261109",
+          "checked_forwards": 72,
+          "left_padded_rows": 504,
+          "max_left_padding": 326
+        },
+        "vllm_image_grid": {
+          "images": 609,
+          "distinct_sizes": 456,
+          "train_limits": [
+            3136,
+            802816
+          ],
+          "vllm_limits": [
+            3136,
+            12845056
+          ],
+          "factor": 28,
+          "mismatches": 0
+        },
+        "generation_backend": "vllm",
+        "registration": null,
+        "python": "3.12.3"
+      },
+      "rollouts": {
+        "rollouts": 192,
+        "steps": 3,
+        "answer_acc": 0.0365,
+        "format_rate": 0.5833,
+        "protocol_ok": 0.6719,
+        "perception_reward_mean": -0.8544,
+        "v5_own_mean": -0.7726,
+        "claims_per_completion": 6.09,
+        "completion_tokens_mean": 221.7,
+        "completion_tokens_max": 1024,
+        "verifier_errors": 0,
+        "block_fail_rate": 0.1458,
+        "unknown_share": 0.1055,
+        "gated_rate": 0.0,
+        "valid_format_below_broken_rate": 0.4844
+      },
+      "mm_alignment": {
+        "version": "mm-alignment-guard-v1-20261109",
+        "checked_forwards": 72,
+        "left_padded_rows": 504,
+        "max_left_padding": 326
+      },
+      "step_time_median": 57.12,
+      "trainable_parameters": 29933568,
+      "vision_frozen": true,
+      "config_sha256": "98f99f81fccd8e06ebdd667d8938ecce741e55fe3a04f52db4f8d224ea1be59e",
+      "prompt_report": {
+        "prompts": 609,
+        "max_tokens": 1176,
+        "mean_tokens": 475.8735632183908,
+        "limit": 1600
+      },
+      "supervisor": {
+        "outcome": "completed",
+        "detail": null,
+        "skipped": null,
+        "reason": null,
+        "last_step": 3,
+        "max_steps": 3,
+        "wall_seconds": 248.1,
+        "startup_seconds": 82.5,
+        "checkpoints_saved": [
+          3
+        ]
+      }
+    },
+    "pilot_v5": {
+      "train": {
+        "run": "rl_v5/seed1_smoke",
+        "config_sha256": "8100f6cdd234bdb9d411b890a80edb1f309a5e8ad6fbd64492e53afd66fb0c3c",
+        "global_step": 40,
+        "max_steps": 40,
+        "wall_seconds": 2311.834284543991,
+        "peak_gpu_memory_gb": 26.58724608,
+        "vision_cache": null,
+        "mm_alignment": {
+          "version": "mm-alignment-guard-v1-20261109",
+          "checked_forwards": 960,
+          "left_padded_rows": 6720,
+          "max_left_padding": 879
+        },
+        "vllm_image_grid": {
+          "images": 609,
+          "distinct_sizes": 456,
+          "train_limits": [
+            3136,
+            802816
+          ],
+          "vllm_limits": [
+            3136,
+            12845056
+          ],
+          "factor": 28,
+          "mismatches": 0
+        },
+        "generation_backend": "vllm",
+        "registration": null,
+        "python": "3.12.3"
+      },
+      "rollouts": {
+        "rollouts": 2560,
+        "steps": 40,
+        "answer_acc": 0.0617,
+        "format_rate": 0.6402,
+        "protocol_ok": 0.7445,
+        "perception_reward_mean": -0.7332,
+        "v5_own_mean": -0.7332,
+        "claims_per_completion": 6.32,
+        "completion_tokens_mean": 218.8,
+        "completion_tokens_max": 1024,
+        "verifier_errors": 0,
+        "block_fail_rate": 0.0688,
+        "unknown_share": 0.2883,
+        "gated_rate": 0.0281,
+        "valid_format_below_broken_rate": 0.4789
+      },
+      "mm_alignment": {
+        "version": "mm-alignment-guard-v1-20261109",
+        "checked_forwards": 960,
+        "left_padded_rows": 6720,
+        "max_left_padding": 879
+      },
+      "step_time_median": 55.33,
+      "trainable_parameters": 29933568,
+      "vision_frozen": true,
+      "config_sha256": "8100f6cdd234bdb9d411b890a80edb1f309a5e8ad6fbd64492e53afd66fb0c3c",
+      "prompt_report": {
+        "prompts": 609,
+        "max_tokens": 1176,
+        "mean_tokens": 475.8735632183908,
+        "limit": 1600
+      },
+      "supervisor": {
+        "outcome": "completed",
+        "detail": null,
+        "skipped": null,
+        "reason": null,
+        "last_step": 40,
+        "max_steps": 40,
+        "wall_seconds": 2465.7,
+        "startup_seconds": 204.1,
+        "checkpoints_saved": [
+          20,
+          40
+        ]
+      }
+    },
+    "pilot_v5_retry": {
+      "train": null,
+      "rollouts": null,
+      "mm_alignment": null,
+      "step_time_median": null,
+      "trainable_parameters": null,
+      "vision_frozen": null,
+      "config_sha256": null,
+      "prompt_report": null,
+      "supervisor": {
+        "outcome": null,
+        "detail": null,
+        "skipped": true,
+        "reason": "G4 passed on pilot_v5",
+        "last_step": null,
+        "max_steps": null,
+        "wall_seconds": null,
+        "startup_seconds": null,
+        "checkpoints_saved": null
+      }
+    }
+  },
+  "pilot_resume": {
+    "schema": "p3-s4-pilot-resume-v1",
+    "name": "pilot_resume",
+    "spec": {
+      "arm": "rl_v5",
+      "smoke": {
+        "max_steps": 2,
+        "num_generations": 2,
+        "prompts_per_step": 2,
+        "per_device_train_batch_size": 2,
+        "max_completion_length": 128,
+        "save_steps": 1
+      },
+      "resume_from": "checkpoint-1 deleted locally, restored from Drive into the same output directory (the run identity includes it)",
+      "seed": 1
+    },
+    "legs": {
+      "a": {
+        "schema": "p3-s4-supervised-v1",
+        "name": "pilot_resume/a",
+        "cmd": [
+          "/content/p3/env/vllm/bin/python",
+          "-m",
+          "scripts.training.train_rl",
+          "--experiment",
+          "/content/p3/repo/configs/experiments/rl_v3_p1_20261110.json",
+          "--arm",
+          "rl_v5",
+          "--seed",
+          "1",
+          "--smoke",
+          "max_completion_length=128,max_steps=2,num_generations=2,per_device_train_batch_size=2,prompts_per_step=2,save_steps=1",
+          "--runtime",
+          "/content/p3/repo/configs/experiments/runtime_frozen_20261109.json",
+          "--output-dir",
+          "/content/p3/out/pilot-20261111T142648Z-a507/pilot_resume",
+          "--model-path",
+          "/content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8"
+        ],
+        "started_utc": "2026-11-11T15:24:15Z",
+        "out_dir": "/content/p3/out/pilot-20261111T142648Z-a507/pilot_resume",
+        "log": "/content/p3/out/pilot-20261111T142648Z-a507/pilot_resume/train.log",
+        "registration": null,
+        "train_done": null,
+        "last_step": 1,
+        "max_steps": 2,
+        "step_seconds": {
+          "1": 6.9726
+        },
+        "format_rate": {
+          "1": 0.0
+        },
+        "checkpoints_saved": [
+          1
+        ],
+        "uploads": [
+          {
+            "step": 1,
+            "ok": true,
+            "started_utc": "2026-11-11T15:26:20Z",
+            "copy": {
+              "ok": true,
+              "target": "mydrive:ColabProjects/vlm-perception-reward-rl/s4/rl_v3_p1_20261110/pilot/pilot-20261111T142648Z-a507/pilot_resume/checkpoint-1",
+              "files": 16,
+              "bytes": 490998622,
+              "copy_seconds": 14.9,
+              "check_seconds": 2.4,
+              "copy_rc": 0,
+              "check_rc": 0
+            },
+            "bytes": 490998622,
+            "files": 16,
+            "marker": "DRIVE_VERIFIED.json",
+            "retained": {
+              "ok": true,
+              "purged": [],
+              "failed": [],
+              "kept": [
+                1
+              ],
+              "left_alone": []
+            },
+            "seconds": 27.7
+          }
+        ],
+        "uploads_superseded": [],
+        "interrupted": "pilot: stop right after checkpoint-1 (emulates a lost VM)",
+        "final_upload": null,
+        "key": {
+          "runtime_content_sha256": "b952f877ebab922d8d122c79350831144d2e456c44d599e65d1ad66d3a83e71e",
+          "config_sha256": "ff9d18c60e23c6a86430b6b665dfbb92f5e8abf6b563ec8e653d3844ef89fe52"
+        },
+        "exit_code": -15,
+        "wall_seconds": 125.2,
+        "startup_seconds": 118.2,
+        "outcome": "interrupted",
+        "detail": "pilot: stop right after checkpoint-1 (emulates a lost VM)",
+        "log_tail": "\nLoading safetensors checkpoint shards:   0% Completed | 0/2 [00:00<?, ?it/s]\n\nLoading safetensors checkpoint shards:  50% Completed | 1/2 [00:01<00:01,  1.16s/it]\n\nLoading safetensors checkpoint shards: 100% Completed | 2/2 [00:02<00:00,  1.09s/it]\n\nLoading safetensors checkpoint shards: 100% Completed | 2/2 [00:02<00:00,  1.10s/it]\n\n[transformers] Qwen2VL video processing does not apply the per-frame pixel cap the reference implementation (qwen-vl-utils) applies, so some videos cost far more tokens than they would there. In v5.22 the capped behavior will become the default and `cap_pixels_per_frame` will be removed. Pass `cap_pixels_per_frame=True` to adopt the reference behavior now, or `False` to keep the current behavior and silence this warning.\n\nCapturing CUDA graphs (PIECEWISE):   0%|          | 0/4 [00:00<?, ?it/s]\nCapturing CUDA graphs (PIECEWISE):  25%|██▌       | 1/4 [00:00<00:00,  8.69it/s]\nCapturing CUDA graphs (PIECEWISE):  75%|███████▌  | 3/4 [00:00<00:00, 12.34it/s]\nCapturing CUDA graphs (PIECEWISE): 100%|██████████| 4/4 [00:00<00:00, 11.81it/s]\n\nCapturing CUDA graphs (FULL):   0%|          | 0/2 [00:00<?, ?it/s]\nCapturing CUDA graphs (FULL): 100%|██████████| 2/2 [00:00<00:00, 18.21it/s]\nCapturing CUDA graphs (FULL): 100%|██████████| 2/2 [00:00<00:00, 18.18it/s]\n\nCapturing CUDA graphs (PIECEWISE):   0%|          | 0/4 [00:00<?, ?it/s]\nCapturing CUDA graphs (PIECEWISE):  50%|█████     | 2/4 [00:00<00:00, 16.02it/s]\nCapturing CUDA graphs (PIECEWISE): 100%|██████████| 4/4 [00:00<00:00, 15.94it/s]\nCapturing CUDA graphs (PIECEWISE): 100%|██████████| 4/4 [00:00<00:00, 15.94it/s]\n\nCapturing CUDA graphs (FULL):   0%|          | 0/3 [00:00<?, ?it/s]\nCapturing CUDA graphs (FULL):  67%|██████▋   | 2/3 [00:00<00:00, 18.40it/s]\nCapturing CUDA graphs (FULL): 100%|██████████| 3/3 [00:00<00:00, 18.55it/s]\n\n  0%|          | 0/2 [00:00<?, ?it/s]/content/p3/env/vllm/lib/python3.12/site-packages/transformers/models/qwen2_vl/image_processing_qwen2_vl.py:129: FutureWarning: Passing `min_pixels` and `max_pixels` to a processor call is deprecated and will be removed in v5.23. Pass in `size={'longest_edge': xxx, 'shortest_edge': xxx} to override the target size.`\n  warnings.warn(\n\n 50%|█████     | 1/2 [00:07<00:07,  7.15s/it]{\"event\": \"train_log\", \"step\": 1, \"max_steps\": 2, \"loss\": 0.0, \"grad_norm\": 0.0, \"completions/mean_length\": 114.75, \"completions/min_length\": 75.0, \"completions/max_length\": 128.0, \"completions/clipped_ratio\": 0.75, \"completions/mean_terminated_length\": 75.0, \"completions/min_terminated_length\": 75.0, \"completions/max_terminated_length\": 75.0, \"rewards/answer_reward/mean\": 0.0, \"rewards/answer_reward/std\": 0.0, \"rewards/format_reward/mean\": 0.0, \"rewards/format_reward/std\": 0.0, \"rewards/perception_reward/mean\": -0.7, \"rewards/perception_reward/std\": 0.3631, \"reward\": -0.07, \"reward_std\": 0.0363, \"p3/answer_acc\": 0.0, \"p3/claims_per_completion\": 3.0, \"p3/format_rate\": 0.0, \"p3/perception_reward\": -0.7, \"p3/protocol_ok\": 0.0, \"p3/unknown_fraction\": 0.6667, \"p3/v4_f1\": 0.0, \"p3/v5_own_false_per_completion\": 1.0, \"p3/v5_own_recall\": 0.0, \"p3/v5_own_reward\": -0.7, \"p3/verifier_errors\": 0.0, \"kl\": 0.0, \"entropy\": 0.5467, \"step_time\": 6.9726}\n\n                                             \n{'loss': '0', 'grad_norm': '0', 'learning_rate': '0', 'num_tokens': '2565', 'completions/mean_length': '114.8', 'completions/min_length': '75', 'completions/max_length': '128', 'completions/clipped_ratio': '0.75', 'completions/mean_terminated_length': '75', 'completions/min_terminated_length': '75', 'completions/max_terminated_length': '75', 'rewards/answer_reward/mean': '0', 'rewards/answer_reward/std': '0', 'rewards/format_reward/mean': '0', 'rewards/format_reward/std': '0', 'rewards/perception_reward/mean': '-0.7', 'rewards/perception_reward/std': '0.3631', 'reward': '-0.07', 'reward_std': '0.03631', 'frac_reward_zero_std': '0.5', 'p3/answer_acc': '0', 'p3/claims_per_completion': '3', 'p3/format_rate': '0', 'p3/perception_reward': '-0.7', 'p3/protocol_ok': '0', 'p3/unknown_fraction': '0.6667', 'p3/v4_f1': '0', 'p3/v5_own_false_per_completion': '1', 'p3/v5_own_recall': '0', 'p3/v5_own_reward': '-0.7', 'p3/verifier_errors': '0', 'sampling/sampling_logp_difference/mean': '0.06204', 'sampling/sampling_logp_difference/max': '0.3304', 'sampling/importance_sampling_ratio/min': '0.7545', 'sampling/importance_sampling_ratio/mean': '1.005', 'sampling/importance_sampling_ratio/max': '1.392', 'kl': '0', 'entropy': '0.5467', 'clip_ratio/low_mean': '0', 'clip_ratio/high_mean': '0', 'clip_ratio/region_mean': '0', 'clip_ratio/low_min': '0', 'clip_ratio/high_max': '0', 'step_time': '6.973', 'epoch': '0.003289'}\n\n 50%|█████     | 1/2 [00:07<00:07,  7.15s/it]{\"event\": \"checkpoint_saved\", \"step\": 1, \"path\": \"/content/p3/out/pilot-20261111T142648Z-a507/pilot_resume/checkpoint-1\", \"config_sha256\": \"ff9d18c60e23c6a86430b6b665dfbb92f5e8abf6b563ec8e653d3844ef89fe52\"}\n/usr/lib/python3.12/multiprocessing/resource_tracker.py:254: UserWarning: resource_tracker: There appear to be 5 leaked semaphore objects to clean up at shutdown\n  warnings.warn('resource_tracker: There appear to be %d '",
+        "finished_utc": "2026-11-11T15:26:48Z"
+      },
+      "b": {
+        "schema": "p3-s4-supervised-v1",
+        "name": "pilot_resume/b",
+        "cmd": [
+          "/content/p3/env/vllm/bin/python",
+          "-m",
+          "scripts.training.train_rl",
+          "--experiment",
+          "/content/p3/repo/configs/experiments/rl_v3_p1_20261110.json",
+          "--arm",
+          "rl_v5",
+          "--seed",
+          "1",
+          "--smoke",
+          "max_completion_length=128,max_steps=2,num_generations=2,per_device_train_batch_size=2,prompts_per_step=2,save_steps=1",
+          "--runtime",
+          "/content/p3/repo/configs/experiments/runtime_frozen_20261109.json",
+          "--output-dir",
+          "/content/p3/out/pilot-20261111T142648Z-a507/pilot_resume",
+          "--model-path",
+          "/content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8",
+          "--resume",
+          "/content/p3/out/pilot-20261111T142648Z-a507/pilot_resume/checkpoint-1"
+        ],
+        "started_utc": "2026-11-11T15:27:03Z",
+        "out_dir": "/content/p3/out/pilot-20261111T142648Z-a507/pilot_resume",
+        "log": "/content/p3/out/pilot-20261111T142648Z-a507/pilot_resume/train.log",
+        "registration": null,
+        "train_done": {
+          "event": "train_done",
+          "run": "rl_v5/seed1_smoke",
+          "config_sha256": "ff9d18c60e23c6a86430b6b665dfbb92f5e8abf6b563ec8e653d3844ef89fe52",
+          "global_step": 2,
+          "max_steps": 2,
+          "wall_seconds": 9.382148265838623,
+          "peak_gpu_memory_gb": 19.037956608,
+          "vision_cache": null,
+          "mm_alignment": {
+            "version": "mm-alignment-guard-v1-20261109",
+            "checked_forwards": 6,
+            "left_padded_rows": 6,
+            "max_left_padding": 68
+          },
+          "vllm_image_grid": {
+            "images": 609,
+            "distinct_sizes": 456,
+            "train_limits": [
+              3136,
+              802816
+            ],
+            "vllm_limits": [
+              3136,
+              12845056
+            ],
+            "factor": 28,
+            "mismatches": 0
+          },
+          "generation_backend": "vllm",
+          "registration": null,
+          "python": "3.12.3"
+        },
+        "last_step": 2,
+        "max_steps": 2,
+        "step_seconds": {
+          "2": 6.5299
+        },
+        "format_rate": {
+          "2": 0.0
+        },
+        "checkpoints_saved": [
+          2
+        ],
+        "uploads": [
+          {
+            "step": 2,
+            "ok": true,
+            "started_utc": "2026-11-11T15:28:22Z",
+            "copy": {
+              "ok": true,
+              "target": "mydrive:ColabProjects/vlm-perception-reward-rl/s4/rl_v3_p1_20261110/pilot/pilot-20261111T142648Z-a507/pilot_resume/checkpoint-2",
+              "files": 16,
+              "bytes": 491006839,
+              "copy_seconds": 15.3,
+              "check_seconds": 2.5,
+              "copy_rc": 0,
+              "check_rc": 0
+            },
+            "bytes": 491006839,
+            "files": 16,
+            "marker": "DRIVE_VERIFIED.json",
+            "retained": {
+              "ok": true,
+              "purged": [
+                1
+              ],
+              "failed": [],
+              "kept": [
+                2
+              ],
+              "left_alone": []
+            },
+            "seconds": 32.3
+          }
+        ],
+        "uploads_superseded": [],
+        "interrupted": null,
+        "final_upload": {
+          "ok": true,
+          "started_utc": "2026-11-11T15:28:54Z",
+          "copy": {
+            "ok": true,
+            "target": "mydrive:ColabProjects/vlm-perception-reward-rl/s4/rl_v3_p1_20261110/pilot/pilot-20261111T142648Z-a507/pilot_resume",
+            "files": 15,
+            "bytes": 251136956,
+            "copy_seconds": 12.6,
+            "check_seconds": 2.2,
+            "copy_rc": 0,
+            "check_rc": 0
+          },
+          "files": 15,
+          "bytes": 251136956,
+          "marker": "COMPLETED.json",
+          "seconds": 21.6
+        },
+        "key": {
+          "runtime_content_sha256": "b952f877ebab922d8d122c79350831144d2e456c44d599e65d1ad66d3a83e71e",
+          "config_sha256": "ff9d18c60e23c6a86430b6b665dfbb92f5e8abf6b563ec8e653d3844ef89fe52"
+        },
+        "exit_code": 0,
+        "wall_seconds": 83.9,
+        "startup_seconds": 77.4,
+        "outcome": "completed",
+        "detail": null,
+        "finished_utc": "2026-11-11T15:29:16Z"
+      }
+    },
+    "ok": true,
+    "drive_rel": "s4/rl_v3_p1_20261110/pilot/pilot-20261111T142648Z-a507/pilot_resume",
+    "latest_verified": 1,
+    "restore": {
+      "step": 1,
+      "ok": true,
+      "started_utc": "2026-11-11T15:26:54Z",
+      "fetch": {
+        "ok": true,
+        "source": "mydrive:ColabProjects/vlm-perception-reward-rl/s4/rl_v3_p1_20261110/pilot/pilot-20261111T142648Z-a507/pilot_resume/checkpoint-1",
+        "copy_seconds": 6.1,
+        "check_seconds": 2.2,
+        "copy_rc": 0,
+        "check_rc": 0
+      },
+      "path": "/content/p3/out/pilot-20261111T142648Z-a507/pilot_resume/checkpoint-1",
+      "files": 15,
+      "rollouts_kept": 4,
+      "rollouts_dropped_after_checkpoint": 0,
+      "seconds": 9.7
+    }
+  },
+  "train_job": null,
+  "checks": [
+    {
+      "check": "试跑门槛 G1–G6 全部通过（S4 预注册第 11 节）",
+      "ok": true
+    },
+    {
+      "check": "试跑结论 PILOT_LATEST.json 已写到 Google Drive",
+      "ok": true
+    },
+    {
+      "check": "pytest 无失败",
+      "ok": true
+    },
+    {
+      "check": "私有数据与锚点一致",
+      "ok": true
+    }
+  ],
+  "overall": "passed"
+}

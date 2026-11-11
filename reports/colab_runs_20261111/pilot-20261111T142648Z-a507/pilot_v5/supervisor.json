@@ -1,0 +1,250 @@
+{
+  "schema": "p3-s4-supervised-v1",
+  "name": "pilot_v5",
+  "cmd": [
+    "/content/p3/env/vllm/bin/python",
+    "-m",
+    "scripts.training.train_rl",
+    "--experiment",
+    "/content/p3/repo/configs/experiments/rl_v3_p1_20261110.json",
+    "--arm",
+    "rl_v5",
+    "--seed",
+    "1",
+    "--smoke",
+    "max_steps=40,save_steps=20",
+    "--runtime",
+    "/content/p3/repo/configs/experiments/runtime_frozen_20261109.json",
+    "--output-dir",
+    "/content/p3/out/pilot-20261111T142648Z-a507/pilot_v5",
+    "--model-path",
+    "/content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8"
+  ],
+  "started_utc": "2026-11-11T14:42:21Z",
+  "out_dir": "/content/p3/out/pilot-20261111T142648Z-a507/pilot_v5",
+  "log": "/content/p3/out/pilot-20261111T142648Z-a507/pilot_v5/train.log",
+  "registration": null,
+  "train_done": {
+    "event": "train_done",
+    "run": "rl_v5/seed1_smoke",
+    "config_sha256": "8100f6cdd234bdb9d411b890a80edb1f309a5e8ad6fbd64492e53afd66fb0c3c",
+    "global_step": 40,
+    "max_steps": 40,
+    "wall_seconds": 2311.834284543991,
+    "peak_gpu_memory_gb": 26.58724608,
+    "vision_cache": null,
+    "mm_alignment": {
+      "version": "mm-alignment-guard-v1-20261109",
+      "checked_forwards": 960,
+      "left_padded_rows": 6720,
+      "max_left_padding": 879
+    },
+    "vllm_image_grid": {
+      "images": 609,
+      "distinct_sizes": 456,
+      "train_limits": [
+        3136,
+        802816
+      ],
+      "vllm_limits": [
+        3136,
+        12845056
+      ],
+      "factor": 28,
+      "mismatches": 0
+    },
+    "generation_backend": "vllm",
+    "registration": null,
+    "python": "3.12.3"
+  },
+  "last_step": 40,
+  "max_steps": 40,
+  "step_seconds": {
+    "1": 52.1411,
+    "2": 49.6618,
+    "3": 50.3315,
+    "4": 72.3871,
+    "5": 68.6949,
+    "6": 60.9989,
+    "7": 63.1651,
+    "8": 57.0215,
+    "9": 65.9935,
+    "10": 72.2333,
+    "11": 41.5629,
+    "12": 49.4132,
+    "13": 50.7896,
+    "14": 45.2257,
+    "15": 51.0414,
+    "16": 52.2617,
+    "17": 61.9197,
+    "18": 58.6269,
+    "19": 60.2925,
+    "20": 46.8022,
+    "21": 55.3264,
+    "22": 72.0749,
+    "23": 58.998,
+    "24": 47.3715,
+    "25": 62.5653,
+    "26": 59.9705,
+    "27": 53.7952,
+    "28": 58.1985,
+    "29": 63.6078,
+    "30": 62.8142,
+    "31": 51.8732,
+    "32": 48.7274,
+    "33": 49.2182,
+    "34": 51.2425,
+    "35": 42.6828,
+    "36": 78.5474,
+    "37": 54.8838,
+    "38": 60.5535,
+    "39": 46.9212,
+    "40": 51.6552
+  },
+  "format_rate": {
+    "1": 0.5781,
+    "2": 0.625,
+    "3": 0.5469,
+    "4": 0.5625,
+    "5": 0.6406,
+    "6": 0.5,
+    "7": 0.625,
+    "8": 0.7656,
+    "9": 0.5156,
+    "10": 0.7188,
+    "11": 0.7031,
+    "12": 0.5781,
+    "13": 0.5938,
+    "14": 0.5312,
+    "15": 0.5625,
+    "16": 0.6875,
+    "17": 0.6719,
+    "18": 0.7188,
+    "19": 0.7031,
+    "20": 0.5469,
+    "21": 0.6406,
+    "22": 0.6094,
+    "23": 0.6875,
+    "24": 0.7344,
+    "25": 0.6719,
+    "26": 0.7188,
+    "27": 0.7031,
+    "28": 0.6719,
+    "29": 0.5781,
+    "30": 0.7031,
+    "31": 0.6875,
+    "32": 0.5781,
+    "33": 0.7812,
+    "34": 0.5625,
+    "35": 0.7031,
+    "36": 0.5938,
+    "37": 0.7031,
+    "38": 0.5781,
+    "39": 0.7188,
+    "40": 0.6094
+  },
+  "checkpoints_saved": [
+    20,
+    40
+  ],
+  "uploads": [
+    {
+      "step": 20,
+      "ok": true,
+      "started_utc": "2026-11-11T15:04:04Z",
+      "copy": {
+        "ok": true,
+        "target": "mydrive:ColabProjects/vlm-perception-reward-rl/s4/rl_v3_p1_20261110/pilot/pilot-20261111T142648Z-a507/pilot_v5/checkpoint-20",
+        "files": 16,
+        "bytes": 494050299,
+        "copy_seconds": 17.9,
+        "check_seconds": 2.6,
+        "copy_rc": 0,
+        "check_rc": 0
+      },
+      "bytes": 494050299,
+      "files": 16,
+      "marker": "DRIVE_VERIFIED.json",
+      "retained": {
+        "ok": true,
+        "purged": [],
+        "failed": [],
+        "kept": [
+          20
+        ],
+        "left_alone": []
+      },
+      "seconds": 31.8
+    },
+    {
+      "step": 40,
+      "ok": true,
+      "started_utc": "2026-11-11T15:23:20Z",
+      "copy": {
+        "ok": true,
+        "target": "mydrive:ColabProjects/vlm-perception-reward-rl/s4/rl_v3_p1_20261110/pilot/pilot-20261111T142648Z-a507/pilot_v5/checkpoint-40",
+        "files": 16,
+        "bytes": 497130660,
+        "copy_seconds": 16.4,
+        "check_seconds": 2.6,
+        "copy_rc": 0,
+        "check_rc": 0
+      },
+      "bytes": 497130660,
+      "files": 16,
+      "marker": "DRIVE_VERIFIED.json",
+      "retained": {
+        "ok": true,
+        "purged": [
+          20
+        ],
+        "failed": [],
+        "kept": [
+          40
+        ],
+        "left_alone": []
+      },
+      "seconds": 33.0
+    }
+  ],
+  "uploads_superseded": [],
+  "interrupted": null,
+  "final_upload": {
+    "ok": true,
+    "started_utc": "2026-11-11T15:23:53Z",
+    "copy": {
+      "ok": true,
+      "target": "mydrive:ColabProjects/vlm-perception-reward-rl/s4/rl_v3_p1_20261110/pilot/pilot-20261111T142648Z-a507/pilot_v5",
+      "files": 15,
+      "bytes": 257253561,
+      "copy_seconds": 13.0,
+      "check_seconds": 2.3,
+      "copy_rc": 0,
+      "check_rc": 0
+    },
+    "files": 15,
+    "bytes": 257253561,
+    "marker": "COMPLETED.json",
+    "seconds": 22.2
+  },
+  "key": {
+    "runtime_content_sha256": "b952f877ebab922d8d122c79350831144d2e456c44d599e65d1ad66d3a83e71e",
+    "config_sha256": "8100f6cdd234bdb9d411b890a80edb1f309a5e8ad6fbd64492e53afd66fb0c3c"
+  },
+  "exit_code": 0,
+  "wall_seconds": 2465.7,
+  "startup_seconds": 204.1,
+  "outcome": "completed",
+  "detail": null,
+  "finished_utc": "2026-11-11T15:24:15Z",
+  "kind": "learning_run",
+  "spec": {
+    "arm": "rl_v5",
+    "smoke": {
+      "max_steps": 40,
+      "save_steps": 20
+    },
+    "seed": 1
+  },
+  "drive_rel": "s4/rl_v3_p1_20261110/pilot/pilot-20261111T142648Z-a507/pilot_v5"
+}

@@ -1,0 +1,32 @@
+{
+  "run": "rl_blind/seed1_smoke",
+  "config_sha256": "915c4484a118e3378a63cc3ebf51dbd889f842044089d117ead65f9373caad83",
+  "global_step": 3,
+  "max_steps": 3,
+  "wall_seconds": 78.90513372421265,
+  "peak_gpu_memory_gb": 21.23102976,
+  "vision_cache": null,
+  "mm_alignment": {
+    "version": "mm-alignment-guard-v1-20261109",
+    "checked_forwards": 0,
+    "left_padded_rows": 0,
+    "max_left_padding": 0
+  },
+  "vllm_image_grid": {
+    "images": 0,
+    "distinct_sizes": 0,
+    "train_limits": [
+      3136,
+      802816
+    ],
+    "vllm_limits": [
+      3136,
+      12845056
+    ],
+    "factor": 28,
+    "mismatches": 0
+  },
+  "generation_backend": "vllm",
+  "registration": null,
+  "python": "3.12.3"
+}

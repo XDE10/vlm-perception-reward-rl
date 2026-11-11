@@ -1,0 +1,181 @@
+{
+  "schema": "rl-run-identity-v1",
+  "config_sha256": "53fe70d5c70fb92b4c5aac3cde901e4d4a3e87da6e198f010247b4cad30dddde",
+  "config": {
+    "schema": "rl-experiment-v1",
+    "name": "rl_v3_p1_20261110",
+    "protocol": "perception-think-answer-v3-p1-20261109",
+    "data": {
+      "manifest": "data/portable_release/manifest.json",
+      "train_file": "project3_train_fact_pruned.jsonl",
+      "intergps_annotations": "data/project3_audit/intergps_annotations.jsonl"
+    },
+    "model": {
+      "id": "Qwen/Qwen2.5-VL-3B-Instruct",
+      "revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+      "max_pixels": 802816,
+      "min_pixels": 3136,
+      "attn_implementation": "sdpa"
+    },
+    "lora": {
+      "r": 16,
+      "alpha": 32,
+      "dropout": 0.0
+    },
+    "train": {
+      "epochs": 3,
+      "prompts_per_step": 8,
+      "num_generations": 8,
+      "per_device_train_batch_size": 8,
+      "learning_rate": 1e-05,
+      "lr_scheduler_type": "constant_with_warmup",
+      "warmup_steps": 10,
+      "max_grad_norm": 1.0,
+      "beta": 0.01,
+      "loss_type": "dapo",
+      "scale_rewards": "none",
+      "epsilon": 0.2,
+      "epsilon_high": 0.28,
+      "temperature": 1.0,
+      "top_p": 1.0,
+      "max_completion_length": 1024,
+      "max_prompt_tokens": 1600,
+      "mask_truncated_completions": true,
+      "vllm_importance_sampling_mode": "token_truncate",
+      "vllm_importance_sampling_clip_max": 2.0,
+      "save_steps": 38,
+      "logging_steps": 1,
+      "gradient_accumulation_steps": 8,
+      "generation_batch_size": 64,
+      "max_steps": 3
+    },
+    "rewards": {
+      "answer_weight": 1.0,
+      "format_weight": 0.05,
+      "verifier_workers": 4,
+      "verifier_timeout": 10.0
+    },
+    "perception_v5": {
+      "alpha": 1.0,
+      "beta": 0.1,
+      "max_claims": 24,
+      "consistency_gate": true,
+      "oracle": {
+        "line_distance": 0.06,
+        "parallel_deg": 15.0,
+        "perpendicular_deg": 15.0,
+        "circle_relative": 0.15,
+        "check_point_existence": true,
+        "check_circle_existence": true,
+        "check_angle_value": false,
+        "angle_value_deg": 35.0,
+        "check_congruent_length": false,
+        "congruent_length_ratio": 1.5,
+        "check_congruent_angle": false,
+        "congruent_angle_deg": 25.0
+      }
+    },
+    "placebo_seed": 20261109,
+    "output_root": "runs/rl_v3_p1_20261110",
+    "arm": {
+      "name": "rl_v4",
+      "perception_reward": "v4",
+      "perception_weight": 0.2,
+      "train_with_image": true,
+      "metadata": "own"
+    },
+    "seed": 1,
+    "smoke": {
+      "max_steps": 3
+    },
+    "run_name": "rl_v4/seed1_smoke",
+    "output_dir": "/content/p3/out/pilot-20261111T142648Z-a507/pilot_rl_v4",
+    "config_sha256": "53fe70d5c70fb92b4c5aac3cde901e4d4a3e87da6e198f010247b4cad30dddde"
+  },
+  "runtime": {
+    "generation_backend": "vllm",
+    "vllm_gpu_memory_utilization": 0.3,
+    "vllm_max_model_length": 4096,
+    "vision_cache": false,
+    "per_device_train_batch_size": 8,
+    "gradient_checkpointing": true,
+    "source": "preflight preflight-20261109T122305Z-e6cd",
+    "schema": "p3-frozen-runtime-v1",
+    "gpu": {
+      "name": "NVIDIA A100-SXM4-40GB",
+      "total_gb": 42.41
+    },
+    "torch_backend": "cu130",
+    "env_lock_sha256": "d009cd2e1a7848a1e21326b601d8f849fbf03052b34d07d808afe9c8bb065d2e",
+    "rationale": [
+      "micro-batch 8: measured fwd+bwd peak 18.0 GB <= 80% of 42.4 GB",
+      "generation vLLM: smoke passed, 47.1s/step vs HF 127.5s/step (<= 0.7x)",
+      "frozen-ViT cache off: ViT is 0.4041 of a forward pass, cached-vs-uncached max |dlogp| = 0.40537071228027344"
+    ],
+    "decided_utc": "2026-11-09T12:56:34Z"
+  },
+  "versions": {
+    "torch": "2.13.0+cu130",
+    "transformers": "5.19.0",
+    "trl": "1.17.1",
+    "peft": "0.21.2",
+    "accelerate": "1.15.0",
+    "datasets": "4.8.5",
+    "math-verify": "0.9.0",
+    "sympy": "1.14.0",
+    "vllm": "0.32.0",
+    "pillow": "13.0.0"
+  },
+  "git_commit": "e583ecdcd865180aaad9eeb0caba8a50dc9f5c3d",
+  "source_sha256": {
+    "src/rewards/answer.py": "cb6dc6be4992a605e35591f4696a8a926abe1978c7251465531dc94d522c0adf",
+    "src/rewards/attacks.py": "2457f206b5d707533ae90370ed44e06e03c5ffe0a472dcd3372c74e2122b7540",
+    "src/rewards/claims.py": "675427118c48e7d3a8ac96933ff40495cb30e0258bc2255945e142990f4bdd57",
+    "src/rewards/geometry_oracle.py": "0741399cd53c4e5c5e44abe52a5f33ba729337f5d82a5f471eb7276f446bb6f3",
+    "src/rewards/perception_v5.py": "f5f18a50b7f4ae794f14804b692709554033cd3ad90c27c74761b752e142b9e2",
+    "src/training/hf_compat.py": "42389d329355d3d76726560b201e145c8c620c13fe755eade56f96a2307dc41e",
+    "src/training/lora_language.py": "fa247ff5700b08eb915a3c8472aedc7624b692d75c092b63976bf0c22cfb8138",
+    "src/training/multimodal_guard.py": "9b3ab6ed2a1746bbc6205e6662c420efccfa354afe362c2bcb319a087d3ae7f7",
+    "src/training/protocol_v3.py": "3d3e95acb42dfd3b8c0bde8365c500138a491797c20ec97d94d6c041c5e0dd11",
+    "src/training/rl_config.py": "627909d5da37c380333fef11b4fd2da1e286aa455172a300fd4c70ff45bd2d70",
+    "src/training/rl_data.py": "12308c7b84f8288044d1aa9677833eb91038bae110556776a58422db110c30e1",
+    "src/training/rl_entry.py": "e53262c005313f58770347c379ae875bac3ebde812ef57c91a6f38120aac3314",
+    "src/training/rl_rewards.py": "c2ac44fccdb2b0590124d21eb16bf7bb7b51f725f6de728b75eff89ffd7f6ff5",
+    "src/training/vision_cache.py": "363b932b40e55af497fdead5c57f52d801de65b9b9a0cd4447a416e6f30d5885",
+    "src/training/vllm_guard.py": "e4192370ee7bb2bc33b9066824dcbb316f75070429ec65d363f616a902251aac",
+    "src/training/registry.py": "36be5190dc655c5272afcb874097dfeef241fa0eb26e49bca0d0d5910f220535",
+    "src/data/approved_training_inputs.py": "236ba095002d723ae3b544e9159c930292bbc4ade1eefe5ba85e1ac72d10e2ac",
+    "src/data/intergps_index.py": "45b286111594331a12e714d08bf5ab1e08ca12c2624ae51540c8a2ecacbf9b9d",
+    "src/data/perception_v4.py": "841ac3c3a15fb1ed11f6be35543ba1028b1ccca1574c5dd30881b0dbde77b5ea",
+    "src/data/project3_perception_v2.py": "51b00daf3d9b1363754863ff9f0425e197eaaba5c54707604c378e7a298d3c86",
+    "src/data/project3_perception_prototype.py": "986f06c64d89dfbca6ced1204b094614d13213bfa9457dd0ec98e242c366ef82",
+    "src/training/perception_reward_v4.py": "d05fc197c5303621ad27c5ee5f0c63b8408669d9ed49419efd2411c44a1f9d68",
+    "scripts/training/math_verify_v3_strict_worker.py": "af68188e5d710c796b31bcbc16edd1649d983a306eef6f184057ae8221ea61e8",
+    "scripts/training/math_verify_pilot_worker.py": "6a427decd4481126546d2d3c46a24ac19b0be4e81954237dc56de420b23ccb0a"
+  },
+  "data_sha256": {
+    "manifest": "ce02856dc5c594d7899539fb67e5b0eac621def38103e91b3f822af4ceaff2ba",
+    "train_file": "49bed0b5a42db8e7051bd2f2a9e3731c84ff8421fe7af05f9ed0e645e5a37fd2",
+    "intergps_annotations": "d83517c40cfb5e864344b0221dcd1698d118e461b16c587822c0b6ee8c67c00b"
+  },
+  "rows": 609,
+  "placebo_mapping_sha256": "5078dd8332337be5ede01a4655537849fb219863607ad5f4fd1bae085c328378",
+  "prompt_report": {
+    "prompts": 609,
+    "max_tokens": 1176,
+    "mean_tokens": 475.8735632183908,
+    "limit": 1600
+  },
+  "lora_targets_sha256": "595ee3feaf919bb4d7173b96183c94547ed026fa499c3fbdd78b4596b1267e16",
+  "parameters": {
+    "trainable_tensors": 504,
+    "trainable_parameters": 29933568,
+    "total_parameters": 3784556544,
+    "vision_tensors": 390,
+    "vision_parameters": 668684288,
+    "vision_frozen": true,
+    "trainable_names_sha256": "f1752f3acb59d5beab27990fae3e4ae85936b7a91f9665c23cdd8e1fff68b472"
+  },
+  "model_source": "Qwen/Qwen2.5-VL-3B-Instruct@66285546d2b821cf421d4f5eb2576359d3770cd3",
+  "model_local_path": "/content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8"
+}

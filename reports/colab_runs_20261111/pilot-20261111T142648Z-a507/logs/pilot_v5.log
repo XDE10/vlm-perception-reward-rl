@@ -1,0 +1,44 @@
+[p3] 14:45:43 [pilot_v5] step 1/40 | 52.1 s/step | eta 33m53s | format 0.5781 | answer 0.0469
+[p3] 14:46:33 [pilot_v5] step 2/40 | 49.7 s/step | eta 31m27s | format 0.625 | answer 0.0312
+[p3] 14:47:25 [pilot_v5] step 3/40 | 50.3 s/step | eta 31m02s | format 0.5469 | answer 0.0312
+[p3] 14:48:39 [pilot_v5] step 4/40 | 50.3 s/step | eta 30m11s | format 0.5625 | answer 0.1094
+[p3] 14:49:49 [pilot_v5] step 5/40 | 52.1 s/step | eta 30m24s | format 0.6406 | answer 0.0469
+[p3] 14:50:51 [pilot_v5] step 6/40 | 52.1 s/step | eta 29m32s | format 0.5 | answer 0.0625
+[p3] 14:51:56 [pilot_v5] step 7/40 | 61.0 s/step | eta 33m32s | format 0.625 | answer 0.0938
+[p3] 14:52:54 [pilot_v5] step 8/40 | 57.0 s/step | eta 30m24s | format 0.7656 | answer 0.0156
+[p3] 14:54:01 [pilot_v5] step 9/40 | 61.0 s/step | eta 31m30s | format 0.5156 | answer 0.0469
+[p3] 14:55:15 [pilot_v5] step 10/40 | 61.0 s/step | eta 30m29s | format 0.7188 | answer 0.0781
+[p3] 14:55:58 [pilot_v5] step 11/40 | 61.0 s/step | eta 29m28s | format 0.7031 | answer 0.0469
+[p3] 14:56:48 [pilot_v5] step 12/40 | 57.0 s/step | eta 26m36s | format 0.5781 | answer 0.1094
+[p3] 14:57:40 [pilot_v5] step 13/40 | 57.0 s/step | eta 25m39s | format 0.5938 | answer 0.0312
+[p3] 14:58:26 [pilot_v5] step 14/40 | 52.1 s/step | eta 22m35s | format 0.5312 | answer 0.0625
+[p3] 14:59:18 [pilot_v5] step 15/40 | 52.1 s/step | eta 21m43s | format 0.5625 | answer 0.0312
+[p3] 15:00:11 [pilot_v5] step 16/40 | 52.1 s/step | eta 20m51s | format 0.6875 | answer 0.1094
+[p3] 15:01:14 [pilot_v5] step 17/40 | 52.3 s/step | eta 20m02s | format 0.6719 | answer 0.0
+[p3] 15:02:14 [pilot_v5] step 18/40 | 52.3 s/step | eta 19m09s | format 0.7188 | answer 0.0
+[p3] 15:03:15 [pilot_v5] step 19/40 | 57.0 s/step | eta 19m57s | format 0.7031 | answer 0.125
+[p3] 15:04:03 [pilot_v5] step 20/40 | 52.3 s/step | eta 17m25s | format 0.5469 | answer 0.0469
+[p3] 15:04:36 [pilot_v5] checkpoint-20 on Drive: verified
+[p3] 15:05:01 [pilot_v5] step 21/40 | 55.3 s/step | eta 17m31s | format 0.6406 | answer 0.2031
+[p3] 15:06:14 [pilot_v5] step 22/40 | 55.3 s/step | eta 16m35s | format 0.6094 | answer 0.1719
+[p3] 15:07:15 [pilot_v5] step 23/40 | 57.0 s/step | eta 16m09s | format 0.6875 | answer 0.0625
+[p3] 15:08:03 [pilot_v5] step 24/40 | 55.3 s/step | eta 14m45s | format 0.7344 | answer 0.0469
+[p3] 15:09:07 [pilot_v5] step 25/40 | 57.0 s/step | eta 14m15s | format 0.6719 | answer 0.0781
+[p3] 15:10:08 [pilot_v5] step 26/40 | 57.0 s/step | eta 13m18s | format 0.7188 | answer 0.0312
+[p3] 15:11:03 [pilot_v5] step 27/40 | 57.0 s/step | eta 12m21s | format 0.7031 | answer 0.125
+[p3] 15:12:03 [pilot_v5] step 28/40 | 57.0 s/step | eta 11m24s | format 0.6719 | answer 0.0312
+[p3] 15:13:08 [pilot_v5] step 29/40 | 58.2 s/step | eta 10m40s | format 0.5781 | answer 0.0781
+[p3] 15:14:12 [pilot_v5] step 30/40 | 58.2 s/step | eta 9m41s | format 0.7031 | answer 0.0625
+[p3] 15:15:05 [pilot_v5] step 31/40 | 58.2 s/step | eta 8m43s | format 0.6875 | answer 0.0469
+[p3] 15:15:54 [pilot_v5] step 32/40 | 57.0 s/step | eta 7m36s | format 0.5781 | answer 0.0
+[p3] 15:16:45 [pilot_v5] step 33/40 | 57.0 s/step | eta 6m39s | format 0.7812 | answer 0.0469
+[p3] 15:17:37 [pilot_v5] step 34/40 | 55.3 s/step | eta 5m31s | format 0.5625 | answer 0.0625
+[p3] 15:18:21 [pilot_v5] step 35/40 | 55.3 s/step | eta 4m36s | format 0.7031 | answer 0.0781
+[p3] 15:19:41 [pilot_v5] step 36/40 | 55.3 s/step | eta 3m41s | format 0.5938 | answer 0.0
+[p3] 15:20:37 [pilot_v5] step 37/40 | 55.3 s/step | eta 2m45s | format 0.7031 | answer 0.0938
+[p3] 15:21:39 [pilot_v5] step 38/40 | 55.3 s/step | eta 1m50s | format 0.5781 | answer 0.0312
+[p3] 15:22:27 [pilot_v5] step 39/40 | 55.3 s/step | eta 0m55s | format 0.7188 | answer 0.0
+[p3] 15:23:19 [pilot_v5] step 40/40 | 54.9 s/step | eta 0m00s | format 0.6094 | answer 0.0938
+[p3] 15:23:53 [pilot_v5] checkpoint-40 on Drive: verified
+[p3] 15:24:15 [pilot_v5] final/ and run files on Drive: verified, COMPLETED.json written
+[p3] 15:24:15 [pilot_v5] ended: completed after 41m05s
