@@ -21,7 +21,7 @@ from src.training.protocol_v3 import PROTOCOL, extract_answer, format_reward, pa
 
 RECORD_SCHEMA = "rl-rollout-v1"
 V5_FIELDS = ["reward", "status", "tp", "false", "unknown", "chunks", "unique", "recall", "verified_precision",
-             "false_reasons"]
+             "false_reasons", "gated"]
 
 
 def completion_text(completion):

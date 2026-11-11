@@ -4,6 +4,27 @@
 [README](README.md) 和版本化报告为准；历史细节见
 [docs/migration/](docs/migration/)。
 
+## 2026-11-11 — S4 采纳路线 B 消偏与防避风港方案（预注册修订 4）
+
+决策见 [决策记录](docs/plan/决策记录.md) D66，作为 S4 预注册的修订 4 追加。没有 GPU 运行；重新派生 14 个任务的配置哈希。
+
+- `configs/experiments/rl_v3_p1_20261110.json`：`train.scale_rewards` 由 `"batch"` 改为 `"none"`（采用 Dr.GRPO 恒定尺度基线，防止零命中步 λ 梯度畸变）。
+- `src/rewards/perception_v5.py`：`score_v5` 中 `extract_block` 状态不为 `"ok"` 时返回 reward 由 0.0 改为 -1.0（与 `over_cap` 惩罚对齐，彻底消除破坏感知块格式避风港漏洞）。
+- `configs/experiments/s4_runs_20261110.json`：重新运行 `python -m scripts.training.register_runs --write` 重新生成派生配置哈希。
+- `docs/plan/S4预注册_20261110.md`：更新第 9 节任务配置哈希表，末尾追加修订 4。
+- 测试：更新 `tests/test_perception_v5.py`（断言破坏块为 -1.0）与 `tests/test_s4_registration.py`（允许 `train.scale_rewards` 差异）。
+
+## 2026-11-11 — S4 外部审查后的修正
+
+决策见 [决策记录](docs/plan/决策记录.md) D65，作为 S4 预注册的修订 3 追加。没有 GPU 运行；没有改动已批准数据、实验配置或登记表，
+所有 `config_sha256` 不变。
+
+- `scripts/colab/summarize_run.py`：rollout 统计新增描述性监测 `block_fail_rate`、`unknown_share`、`gated_rate`、
+  `valid_format_below_broken_rate`（不是门槛）。
+- `src/training/rl_rewards.py`：rollout 记录的 `v5` / `v5_own` 多记 `gated`（只改变 `source_sha256`）。
+- S4 预注册修订 3：`rl_v5_placebo` 结论的解读限定与上述监测。
+- 测试：新增 `tests/test_perception_monitor.py`。
+
 ## 2026-11-10 — S4 运行器：`pilot` 与 `train` 任务
 
 决策见 [决策记录](docs/plan/决策记录.md) D59–D64，阶段报告见

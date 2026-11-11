@@ -45,8 +45,39 @@ def test_certified_constant_conflict_is_false():
 def test_over_cap_and_missing_block():
     assert v5([f"Length(A,B)={i}" for i in range(1, 26)])["reward"] == -1.0
     missing = score_v5("<think>.</think><answer>4</answer>", GOLD, geometry_1670())
-    assert missing["status"] == "block_missing" and missing["reward"] == 0.0
+    assert missing["status"] == "block_missing" and missing["reward"] == -1.0
+    multiple = score_v5("<perception></perception><perception></perception><think>.</think><answer>4</answer>", GOLD, geometry_1670())
+    assert multiple["status"] == "block_multiple" and multiple["reward"] == -1.0
+    unclosed = score_v5("<perception>Length(A,B)=3<think>.</think><answer>4</answer>", GOLD, geometry_1670())
+    assert unclosed["status"] == "block_missing" and unclosed["reward"] == -1.0
+    mismatched = score_v5("<perception>Length(A,B)=3</perception></perception><think>.</think><answer>4</answer>", GOLD, geometry_1670())
+    assert mismatched["status"] == "block_multiple" and mismatched["reward"] == -1.0
+    empty = score_v5("<perception></perception><think>.</think><answer>4</answer>", GOLD, geometry_1670())
+    assert empty["status"] == "empty" and empty["reward"] == 0.0
     assert score_v5(as_completion(GOLD), [], geometry_1670())["mask"] is False
+
+
+def test_broken_block_cannot_be_used_as_safe_haven_against_negative_perception():
+    from src.training.protocol_v3 import format_reward
+
+    # Broken perception block gives format=0 and perception=-1.0
+    broken_text = "<think>reasoning</think><answer>4</answer>"
+    assert format_reward(broken_text) == 0.0
+    assert score_v5(broken_text, GOLD, geometry_1670())["reward"] == -1.0
+    # Under rl_v5 weights (format: 0.05, perception: 0.1), broken total contribution is -0.1
+    broken_weighted = 0.05 * format_reward(broken_text) + 0.1 * score_v5(broken_text, GOLD, geometry_1670())["reward"]
+    assert broken_weighted == -0.1
+
+    # Even worst-case valid format completion (format=1, all perception claims false -> perception reward=-1.0)
+    # gives 0.05 * 1.0 + 0.1 * (-1.0) = -0.05, which is strictly higher than a broken block (-0.1).
+    six_refuted_claims = [f"PointLiesOnLine({p},({l1},{l2}))" for p, l1, l2 in
+                          [("D", "A", "B"), ("E", "A", "B"), ("C", "D", "E"), ("A", "D", "E"), ("B", "D", "E"), ("D", "B", "C")]]
+    worst_valid_text = f"<perception>{'; '.join(six_refuted_claims)}</perception><think>t</think><answer>4</answer>"
+    assert format_reward(worst_valid_text) == 1.0
+    assert score_v5(worst_valid_text, GOLD, geometry_1670())["reward"] == -1.0
+    worst_valid_weighted = 0.05 * format_reward(worst_valid_text) + 0.1 * score_v5(worst_valid_text, GOLD, geometry_1670())["reward"]
+    assert worst_valid_weighted == -0.05
+    assert worst_valid_weighted > broken_weighted
 
 
 def test_spray_attacks_beat_honest_reading_under_v4_but_not_under_v5():

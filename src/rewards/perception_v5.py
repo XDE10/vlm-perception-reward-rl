@@ -80,7 +80,7 @@ def score_v5(text, gold_tokens, geometry, negative_tokens=(), config=V5Config())
         return _empty("no_trusted_gold", mask=False)
     block, status = extract_block(text)
     if status != "ok":
-        return _empty("block_" + status)
+        return _empty("block_" + status, reward=-1.0)
     claims, info = parse_block(block, config.max_claims)
     if info["over_cap"]:
         result = _empty("over_cap", reward=-1.0, chunks=info["chunks"])

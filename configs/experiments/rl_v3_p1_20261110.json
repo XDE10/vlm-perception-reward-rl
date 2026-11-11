@@ -30,7 +30,7 @@
     "max_grad_norm": 1.0,
     "beta": 0.01,
     "loss_type": "dapo",
-    "scale_rewards": "batch",
+    "scale_rewards": "none",
     "epsilon": 0.2,
     "epsilon_high": 0.28,
     "temperature": 1.0,

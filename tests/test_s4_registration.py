@@ -80,9 +80,9 @@ def test_s4_config_follows_the_s3_decisions():
     assert s4["model"]["max_pixels"] == decisions["resolution"]["max_pixels"] == 802816
 
 
-def test_s4_config_differs_from_rl_v3_only_in_name_protocol_and_output_root():
+def test_s4_config_differs_from_rl_v3_only_in_name_protocol_output_root_and_scale_rewards():
     diff = {k for k, v in flat(read_json(S4)).items() if flat(read_json(RL_V3)).get(k) != v}
-    assert diff == {"name", "protocol", "output_root"}
+    assert diff == {"name", "protocol", "output_root", "train.scale_rewards"}
     assert set(flat(read_json(S4))) == set(flat(read_json(RL_V3)))
 
 

@@ -1,6 +1,6 @@
 {
  "project": "项目三_多模态几何推理",
- "date": "2026-11-08",
+ "date": "2026-11-11",
  "schema_version": 2,
  "source_root": "D:\\Users\\Mr.Z\\Desktop\\modern_genai",
  "files": [
@@ -4080,10 +4080,11 @@
   },
   {
    "path": "CHANGELOG.md",
-   "bytes": 18590,
-   "sha256": "5a2ba0bf98252f26248d0f328879ee954d7f8f612f33cf9777b409fe0abd5c29",
+   "bytes": 20331,
+   "sha256": "72e340d0dd8dc98ac0aacb0ac050499c323a8d4617496cc98a91be8f7ea4c7a6",
    "source_sha256": "dbded3caf83f4f16b506d3dc18f8ed0229cd90032081039f38c28fa58306dc50",
-   "changed_for_portability": true
+   "changed_for_portability": true,
+   "updated_in": "2026-11-11_stage4_rev4"
   },
   {
    "path": "README.md",
@@ -4129,10 +4130,11 @@
   },
   {
    "path": "configs/README.md",
-   "bytes": 4127,
-   "sha256": "46cf3f64cbd855db0bb7c825b99ecb9c6f7aaccccb93f76177a885a32b7c0542",
+   "bytes": 4178,
+   "sha256": "b71fca6c18a653bc6e84eade1837a8d8fb08b742b157af923ab1df36984b1df2",
    "source_sha256": "b8d6c44d1b44f128f8af2ff8ae4f7ab31dd48efaa69c665542bfb6cc26ba1709",
-   "changed_for_portability": true
+   "changed_for_portability": true,
+   "updated_in": "2026-11-11_stage4_rev4"
   },
   {
    "path": "configs/experiments/arms.json",
@@ -4150,10 +4152,11 @@
   },
   {
    "path": "configs/experiments/rl_v3_p1_20261110.json",
-   "bytes": 2004,
-   "sha256": "94fcf1f8ec19252d369929d119ebad67988abcd714d2c17e510e9f0928266a70",
+   "bytes": 2003,
+   "sha256": "8f02580d576756c12202bf520aec230a3c8d441b01e013e533b2992e1b31b26e",
    "source_sha256": "94fcf1f8ec19252d369929d119ebad67988abcd714d2c17e510e9f0928266a70",
-   "changed_for_portability": false
+   "changed_for_portability": true,
+   "updated_in": "2026-11-11_stage4_rev4"
   },
   {
    "path": "configs/experiments/runtime_frozen_20261109.json",
@@ -4172,9 +4175,10 @@
   {
    "path": "configs/experiments/s4_runs_20261110.json",
    "bytes": 7357,
-   "sha256": "32ecef20609d22c0e940e1105b5cd3e000b4ec76c9060dae62cbe24b7dffb6f1",
+   "sha256": "c0d61ad1929b3afdda0e980814b8e2580841291b52e1ea54a1f3f651be463d27",
    "source_sha256": "32ecef20609d22c0e940e1105b5cd3e000b4ec76c9060dae62cbe24b7dffb6f1",
-   "changed_for_portability": false
+   "changed_for_portability": true,
+   "updated_in": "2026-11-11_stage4_rev4"
   },
   {
    "path": "configs/project3_fact_sft_smoke.json",
@@ -23945,6 +23949,14 @@
    "changed_for_portability": false
   },
   {
+   "path": "docs/guides/00_项目全貌与审查指南_S4.md",
+   "bytes": 14163,
+   "sha256": "66e502e2ad6c1be53273bf20cb30f777bda0bd8c127ff4fc4a739014c13d992a",
+   "source_sha256": "66e502e2ad6c1be53273bf20cb30f777bda0bd8c127ff4fc4a739014c13d992a",
+   "changed_for_portability": false,
+   "added_in": "2026-11-11_stage4_rev4"
+  },
+  {
    "path": "docs/guides/argon_review_prompt.md",
    "bytes": 11493,
    "sha256": "0058ac2b47387759f4a44862dda0b7a36faa5d8a4767165db7497dd7a3e1094a",
@@ -24058,17 +24070,19 @@
   },
   {
    "path": "docs/plan/S4预注册_20261110.md",
-   "bytes": 30538,
-   "sha256": "c3336d95a11eeb5cf752737ea88567d40c89d06e4d76ef7fd86e283f7c59b4e0",
+   "bytes": 33347,
+   "sha256": "82c2b5028bb911abecc05e425f2882c20ddc0f6b9acd4c747d0c2cf9468ebf88",
    "source_sha256": "e8c59cf632be25b4ce2d81a150aaa335d7889a6240610c6c5751d15608957b94",
-   "changed_for_portability": true
+   "changed_for_portability": true,
+   "updated_in": "2026-11-11_stage4_rev4"
   },
   {
    "path": "docs/plan/决策记录.md",
-   "bytes": 49216,
-   "sha256": "82964a65e6430eb85bdd284273360b860bac2d2b546812312d4389ddfa5bd358",
+   "bytes": 52251,
+   "sha256": "7e904a29a49fd21d72591779099986f16d5f0f5cc32acefe6b64d9ab95175a52",
    "source_sha256": "6270abf217d11dc49d0ffe5901cd3faa58aa3d56e47cfa8506fb765e952e9790",
-   "changed_for_portability": true
+   "changed_for_portability": true,
+   "updated_in": "2026-11-11_stage4_rev4"
   },
   {
    "path": "docs/plan/执行计划_20261108.md",
@@ -26564,10 +26578,11 @@
   },
   {
    "path": "scripts/colab/summarize_run.py",
-   "bytes": 41282,
-   "sha256": "797690737cdbad329e0bba04bc6295f44f5f87a1a85699fe1ec580c6f59e9129",
+   "bytes": 42471,
+   "sha256": "1dd36d24bdee9742da565d020df05f0deb678634b29aebb7feaa6f856105e073",
    "source_sha256": "c84812cd525dc0c458e805f3c9f20cf01f234f7678f257b4d4c1936423aea5c3",
-   "changed_for_portability": true
+   "changed_for_portability": true,
+   "updated_in": "2026-11-11_stage4_rev4"
   },
   {
    "path": "scripts/colab/tasks.py",
@@ -27075,10 +27090,11 @@
   },
   {
    "path": "src/rewards/perception_v5.py",
-   "bytes": 5641,
-   "sha256": "2b079214c7dd2c032f1329576fd34fb0f3c99aa32879a2e2664a7cb326038986",
+   "bytes": 5654,
+   "sha256": "f5f18a50b7f4ae794f14804b692709554033cd3ad90c27c74761b752e142b9e2",
    "source_sha256": "8441d04687232e3f8c18b59bfba38881d38151658cb4dff5a944c08cbcb37a39",
-   "changed_for_portability": true
+   "changed_for_portability": true,
+   "updated_in": "2026-11-11_stage4_rev4"
   },
   {
    "path": "src/teachers/__init__.py",
@@ -27166,10 +27182,11 @@
   },
   {
    "path": "src/training/rl_rewards.py",
-   "bytes": 8454,
-   "sha256": "895fc568af4e2ee07bd92811575b4cc1ce9d1609464330265820caa78188e04f",
+   "bytes": 8463,
+   "sha256": "c2ac44fccdb2b0590124d21eb16bf7bb7b51f725f6de728b75eff89ffd7f6ff5",
    "source_sha256": "b653a46582539da5f46e5195bb4ea3687a8c29e41b911d0a1d4f5f39c48c7fbb",
-   "changed_for_portability": true
+   "changed_for_portability": true,
+   "updated_in": "2026-11-11_stage4_rev4"
   },
   {
    "path": "src/training/vision_cache.py",
@@ -27417,6 +27434,14 @@
    "changed_for_portability": false
   },
   {
+   "path": "tests/test_perception_monitor.py",
+   "bytes": 1307,
+   "sha256": "9e8baf61e8578c1707d24814c0496c2dea4eea17cc44ce961cac204b46ec62c2",
+   "source_sha256": "9e8baf61e8578c1707d24814c0496c2dea4eea17cc44ce961cac204b46ec62c2",
+   "changed_for_portability": false,
+   "added_in": "2026-11-11_stage4_rev4"
+  },
+  {
    "path": "tests/test_perception_v4.py",
    "bytes": 4793,
    "sha256": "138551852c3114b29e28e80ad09f6805ace0e95935289295bc67f1ed82bff730",
@@ -27425,10 +27450,11 @@
   },
   {
    "path": "tests/test_perception_v5.py",
-   "bytes": 5520,
-   "sha256": "94b45f0d5d36cc35c3abd481e830297103f300ada428cdc1f49fd3b838294d0c",
+   "bytes": 7849,
+   "sha256": "b43d18f72b6e6f6bdbe2ffcc7dfdbefb0cd61638db2df0a2eaa40937d1abf1c1",
    "source_sha256": "ed1f7c4b0719de2339e12c02f3713b3d6292c249089af64e7aeae376fd42ffff",
-   "changed_for_portability": true
+   "changed_for_portability": true,
+   "updated_in": "2026-11-11_stage4_rev4"
   },
   {
    "path": "tests/test_project3_audit.py",
@@ -27502,10 +27528,11 @@
   },
   {
    "path": "tests/test_s4_registration.py",
-   "bytes": 11597,
-   "sha256": "e7aeaf20cfd58939dda6e82a51bab2efc307631ac3e7340001a1302019f9fb62",
+   "bytes": 11634,
+   "sha256": "5ee9f88a1167b91b617a13dbe8184b4db2f23ae82bd65f28fbbab25042c56733",
    "source_sha256": "e7aeaf20cfd58939dda6e82a51bab2efc307631ac3e7340001a1302019f9fb62",
-   "changed_for_portability": false
+   "changed_for_portability": true,
+   "updated_in": "2026-11-11_stage4_rev4"
   },
   {
    "path": "tests/test_s4_runner.py",
@@ -29113,6 +29140,82 @@
     ]
    },
    "note": "Manifest semantics updated: files[] is now the current tree. source_sha256 is the sha256 recorded for the nearest historical version (same path or moved_from path). changed_for_portability=true means the current bytes differ from that source version. See docs/migration/整理记录_20261108.md."
+  },
+  {
+   "date": "2026-11-11",
+   "label": "2026-11-11_stage4_rev4",
+   "mode": "git_tracked_only",
+   "purpose": "D66: Route B de-biasing and anti-safe-haven (scale_rewards='none', broken block reward=-1.0)",
+   "changes": [
+    {
+     "path": "CHANGELOG.md",
+     "previous_sha256": "5a2ba0bf98252f26248d0f328879ee954d7f8f612f33cf9777b409fe0abd5c29",
+     "current_sha256": "72e340d0dd8dc98ac0aacb0ac050499c323a8d4617496cc98a91be8f7ea4c7a6"
+    },
+    {
+     "path": "configs/README.md",
+     "previous_sha256": "46cf3f64cbd855db0bb7c825b99ecb9c6f7aaccccb93f76177a885a32b7c0542",
+     "current_sha256": "b71fca6c18a653bc6e84eade1837a8d8fb08b742b157af923ab1df36984b1df2"
+    },
+    {
+     "path": "configs/experiments/rl_v3_p1_20261110.json",
+     "previous_sha256": "94fcf1f8ec19252d369929d119ebad67988abcd714d2c17e510e9f0928266a70",
+     "current_sha256": "8f02580d576756c12202bf520aec230a3c8d441b01e013e533b2992e1b31b26e"
+    },
+    {
+     "path": "configs/experiments/s4_runs_20261110.json",
+     "previous_sha256": "32ecef20609d22c0e940e1105b5cd3e000b4ec76c9060dae62cbe24b7dffb6f1",
+     "current_sha256": "c0d61ad1929b3afdda0e980814b8e2580841291b52e1ea54a1f3f651be463d27"
+    },
+    {
+     "path": "docs/guides/00_项目全貌与审查指南_S4.md",
+     "previous_sha256": null,
+     "current_sha256": "66e502e2ad6c1be53273bf20cb30f777bda0bd8c127ff4fc4a739014c13d992a"
+    },
+    {
+     "path": "docs/plan/S4预注册_20261110.md",
+     "previous_sha256": "c3336d95a11eeb5cf752737ea88567d40c89d06e4d76ef7fd86e283f7c59b4e0",
+     "current_sha256": "82c2b5028bb911abecc05e425f2882c20ddc0f6b9acd4c747d0c2cf9468ebf88"
+    },
+    {
+     "path": "docs/plan/决策记录.md",
+     "previous_sha256": "82964a65e6430eb85bdd284273360b860bac2d2b546812312d4389ddfa5bd358",
+     "current_sha256": "7e904a29a49fd21d72591779099986f16d5f0f5cc32acefe6b64d9ab95175a52"
+    },
+    {
+     "path": "scripts/colab/summarize_run.py",
+     "previous_sha256": "797690737cdbad329e0bba04bc6295f44f5f87a1a85699fe1ec580c6f59e9129",
+     "current_sha256": "1dd36d24bdee9742da565d020df05f0deb678634b29aebb7feaa6f856105e073"
+    },
+    {
+     "path": "src/rewards/perception_v5.py",
+     "previous_sha256": "2b079214c7dd2c032f1329576fd34fb0f3c99aa32879a2e2664a7cb326038986",
+     "current_sha256": "f5f18a50b7f4ae794f14804b692709554033cd3ad90c27c74761b752e142b9e2"
+    },
+    {
+     "path": "src/training/rl_rewards.py",
+     "previous_sha256": "895fc568af4e2ee07bd92811575b4cc1ce9d1609464330265820caa78188e04f",
+     "current_sha256": "c2ac44fccdb2b0590124d21eb16bf7bb7b51f725f6de728b75eff89ffd7f6ff5"
+    },
+    {
+     "path": "tests/test_perception_monitor.py",
+     "previous_sha256": null,
+     "current_sha256": "9e8baf61e8578c1707d24814c0496c2dea4eea17cc44ce961cac204b46ec62c2"
+    },
+    {
+     "path": "tests/test_perception_v5.py",
+     "previous_sha256": "94b45f0d5d36cc35c3abd481e830297103f300ada428cdc1f49fd3b838294d0c",
+     "current_sha256": "b43d18f72b6e6f6bdbe2ffcc7dfdbefb0cd61638db2df0a2eaa40937d1abf1c1"
+    },
+    {
+     "path": "tests/test_s4_registration.py",
+     "previous_sha256": "e7aeaf20cfd58939dda6e82a51bab2efc307631ac3e7340001a1302019f9fb62",
+     "current_sha256": "5ee9f88a1167b91b617a13dbe8184b4db2f23ae82bd65f28fbbab25042c56733"
+    }
+   ],
+   "dropped_tracked_paths": [],
+   "untracked_entries_kept_verbatim": 3425,
+   "note": "Only git-visible files were re-hashed; git-ignored payload entries (data/) were carried over unchanged. Run the full rebuild on a machine that has data/ to re-hash the payload."
   }
  ]
 }

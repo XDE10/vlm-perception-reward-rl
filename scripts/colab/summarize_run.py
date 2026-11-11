@@ -77,7 +77,27 @@ def rollout_stats(path):
             "claims_per_completion": round(sum(r["v5_own"].get("unique") or 0 for r in rows) / n, 2),
             "completion_tokens_mean": round(statistics.fmean(tokens), 1) if tokens else None,
             "completion_tokens_max": max(tokens) if tokens else None,
-            "verifier_errors": sum(r["answer"]["status"] in ("verifier_timeout", "verifier_crashed") for r in rows)}
+            "verifier_errors": sum(r["answer"]["status"] in ("verifier_timeout", "verifier_crashed") for r in rows),
+            **perception_monitor(rows)}
+
+
+def perception_monitor(rows):
+    """Descriptive reward-hacking monitors (not gates): broken perception blocks, unknown share, gated diagrams, and
+    completions whose valid format plus negative perception reward totals below a broken block (0)."""
+    n = len(rows)
+    v5 = [r.get("v5") or {} for r in rows]
+    counted = sum((x.get("tp") or 0) + (x.get("false") or 0) + (x.get("unknown") or 0) for x in v5)
+    def below_broken(r):
+        rewards, weights = r.get("rewards") or {}, r.get("weights") or {}
+        if rewards.get("format") != 1.0 or "format" not in weights or "perception" not in weights:
+            return False
+        return weights["format"] + weights["perception"] * (rewards.get("perception") or 0.0) < 0
+
+    below = sum(below_broken(r) for r in rows)
+    return {"block_fail_rate": round(sum(str(x.get("status") or "").startswith("block_") for x in v5) / n, 4),
+            "unknown_share": round(sum(x.get("unknown") or 0 for x in v5) / counted, 4) if counted else None,
+            "gated_rate": round(sum(bool(x.get("gated")) for x in v5) / n, 4),
+            "valid_format_below_broken_rate": round(below / n, 4)}
 
 
 def run_summary(run_dir):
