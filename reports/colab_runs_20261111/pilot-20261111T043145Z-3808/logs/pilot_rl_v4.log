@@ -1,0 +1,4 @@
+[p3] 05:37:50 [pilot_rl_v4] step 1/3 | 50.8 s/step | eta 1m41s | format 0.5781 | answer 0.0469
+[p3] 05:38:41 [pilot_rl_v4] step 2/3 | 49.7 s/step | eta 0m49s | format 0.625 | answer 0.0312
+[p3] 05:39:30 [pilot_rl_v4] step 3/3 | 49.7 s/step | eta 0m00s | format 0.5625 | answer 0.0469
+[p3] 05:39:36 [pilot_rl_v4] ended: completed after 3m50s

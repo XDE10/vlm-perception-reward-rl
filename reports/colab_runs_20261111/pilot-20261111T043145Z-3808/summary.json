@@ -1,0 +1,1492 @@
+{
+  "run_id": "pilot-20261111T043145Z-3808",
+  "task": "pilot",
+  "steps": [
+    {
+      "name": "env_report",
+      "state": "passed",
+      "required": true,
+      "description": "software, GPU and environment lock report",
+      "started_utc": "2026-11-11T04:35:40Z",
+      "log": "logs/env_report.log",
+      "exit_code": 0,
+      "seconds": 2.3,
+      "finished_utc": "2026-11-11T04:35:43Z"
+    },
+    {
+      "name": "verify_pack",
+      "state": "passed",
+      "required": true,
+      "description": "private data matches its anchors",
+      "started_utc": "2026-11-11T04:35:43Z",
+      "log": "logs/verify_pack.log",
+      "exit_code": 0,
+      "seconds": 0.3,
+      "finished_utc": "2026-11-11T04:35:43Z"
+    },
+    {
+      "name": "pytest",
+      "state": "passed",
+      "required": true,
+      "description": "full CPU test suite on the VM (GPU hidden)",
+      "started_utc": "2026-11-11T04:35:43Z",
+      "log": "logs/pytest.log",
+      "exit_code": 0,
+      "seconds": 263.7,
+      "finished_utc": "2026-11-11T04:40:07Z"
+    },
+    {
+      "name": "register_check",
+      "state": "passed",
+      "required": true,
+      "description": "registered runs equal the configs; data on this VM equals the registered SHA256 and rows",
+      "started_utc": "2026-11-11T04:40:07Z",
+      "log": "logs/register_check.log",
+      "exit_code": 0,
+      "seconds": 0.6,
+      "finished_utc": "2026-11-11T04:40:07Z"
+    },
+    {
+      "name": "drive_probe",
+      "state": "passed",
+      "required": true,
+      "description": "Google Drive via rclone: write, read back, hash check, delete (optional unless drive-check)",
+      "started_utc": "2026-11-11T04:40:07Z",
+      "log": "logs/drive_probe.log",
+      "exit_code": 0,
+      "seconds": 76.0,
+      "finished_utc": "2026-11-11T04:41:23Z"
+    },
+    {
+      "name": "vllm_env",
+      "state": "passed",
+      "required": true,
+      "description": "vLLM venv (CUDA 13): the frozen runtime generates with vLLM",
+      "started_utc": "2026-11-11T04:41:23Z",
+      "log": "logs/vllm_env.log",
+      "exit_code": 0,
+      "seconds": 28.0,
+      "finished_utc": "2026-11-11T04:41:51Z"
+    },
+    {
+      "name": "pilot_v5",
+      "state": "passed",
+      "required": true,
+      "description": "rl_v5 seed 1, formal shape, 40 steps, checkpoints every 20 steps copied to Drive (G1-G6)",
+      "started_utc": "2026-11-11T04:41:51Z",
+      "log": "logs/pilot_v5.log",
+      "exit_code": 0,
+      "seconds": 2587.0,
+      "finished_utc": "2026-11-11T05:24:58Z"
+    },
+    {
+      "name": "pilot_resume",
+      "state": "passed",
+      "required": true,
+      "description": "small shape: stop after checkpoint-1, restore it from Drive, resume to step 2 (G5)",
+      "started_utc": "2026-11-11T05:24:58Z",
+      "log": "logs/pilot_resume.log",
+      "exit_code": 0,
+      "seconds": 388.5,
+      "finished_utc": "2026-11-11T05:31:27Z"
+    },
+    {
+      "name": "pilot_rl_ans",
+      "state": "passed",
+      "required": true,
+      "description": "rl_ans seed 1, formal shape, 3 steps (G1-G3, G6)",
+      "started_utc": "2026-11-11T05:31:27Z",
+      "log": "logs/pilot_rl_ans.log",
+      "exit_code": 0,
+      "seconds": 259.1,
+      "finished_utc": "2026-11-11T05:35:46Z"
+    },
+    {
+      "name": "pilot_rl_v4",
+      "state": "passed",
+      "required": true,
+      "description": "rl_v4 seed 1, formal shape, 3 steps (G1-G3, G6)",
+      "started_utc": "2026-11-11T05:35:46Z",
+      "log": "logs/pilot_rl_v4.log",
+      "exit_code": 0,
+      "seconds": 230.3,
+      "finished_utc": "2026-11-11T05:39:36Z"
+    },
+    {
+      "name": "pilot_rl_v5_placebo",
+      "state": "passed",
+      "required": true,
+      "description": "rl_v5_placebo seed 1, formal shape, 3 steps (G1-G3, G6)",
+      "started_utc": "2026-11-11T05:39:36Z",
+      "log": "logs/pilot_rl_v5_placebo.log",
+      "exit_code": 0,
+      "seconds": 246.5,
+      "finished_utc": "2026-11-11T05:43:43Z"
+    },
+    {
+      "name": "pilot_rl_blind",
+      "state": "passed",
+      "required": true,
+      "description": "rl_blind seed 1, formal shape, 3 steps (G1-G3, G6)",
+      "started_utc": "2026-11-11T05:43:43Z",
+      "log": "logs/pilot_rl_blind.log",
+      "exit_code": 0,
+      "seconds": 161.6,
+      "finished_utc": "2026-11-11T05:46:24Z"
+    },
+    {
+      "name": "pilot_v5_retry",
+      "state": "passed",
+      "required": true,
+      "description": "only if G4 failed and the other gates passed: rl_v5, 76 steps",
+      "started_utc": "2026-11-11T05:46:24Z",
+      "log": "logs/pilot_v5_retry.log",
+      "exit_code": 0,
+      "seconds": 0.3,
+      "finished_utc": "2026-11-11T05:46:25Z"
+    },
+    {
+      "name": "decide_pilot",
+      "state": "passed",
+      "required": true,
+      "description": "gates G1-G6; pilot_gates.json and PILOT_LATEST.json on Drive",
+      "started_utc": "2026-11-11T05:46:25Z",
+      "log": "logs/decide_pilot.log",
+      "exit_code": 0,
+      "seconds": 28.6,
+      "finished_utc": "2026-11-11T05:46:53Z"
+    }
+  ],
+  "error": null,
+  "env": {
+    "python": "3.12.3",
+    "platform": "Linux-6.6.159+-x86_64-with-glibc2.39",
+    "cpu_count": 12,
+    "ram_gb": 87.5,
+    "disk_free_gb": 239.8,
+    "packages": {
+      "torch": "2.13.0+cu130",
+      "torchvision": "0.28.0+cu130",
+      "transformers": "5.19.0",
+      "trl": "1.17.1",
+      "peft": "0.21.2",
+      "accelerate": "1.15.0",
+      "datasets": "4.8.5",
+      "math-verify": "0.9.0",
+      "sympy": "1.14.0",
+      "huggingface-hub": "1.33.0",
+      "numpy": "2.5.4",
+      "pillow": "13.0.0",
+      "pytest": "9.2.0",
+      "vllm": null
+    },
+    "torch": {
+      "version": "2.13.0+cu130",
+      "cuda_runtime": "13.0",
+      "cudnn": 92000,
+      "cuda_available": true
+    },
+    "gpu": {
+      "name": "NVIDIA A100-SXM4-40GB",
+      "total_gb": 42.41,
+      "capability": [
+        8,
+        0
+      ],
+      "count": 1,
+      "bf16": true
+    },
+    "env": {
+      "torch_backend": "cu130",
+      "lock": "requirements/locks/colab-gpu-cu130.txt",
+      "lock_sha256": "d009cd2e1a7848a1e21326b601d8f849fbf03052b34d07d808afe9c8bb065d2e",
+      "freeze_sha256": "ff9316bc44f93d48a284d806fc493dc0ad16c5237d84f7eb0acc0cc848f26f6a",
+      "install_seconds": 23.08829641342163
+    },
+    "driver": {
+      "available": true,
+      "name": "NVIDIA A100-SXM4-40GB",
+      "memory_mib": 40960.0,
+      "driver": "580.82.07",
+      "driver_cuda": [
+        13,
+        0
+      ]
+    },
+    "model": {
+      "repo": "Qwen/Qwen2.5-VL-3B-Instruct",
+      "revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+      "local_dir": "/content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8",
+      "total_bytes": 7520892432,
+      "download_seconds": 20.570626974105835
+    },
+    "model_files_sha256": {
+      "chat_template.json": "ad60d90252ed0b0705ba14e2d0ad0fec0beac1ea955642b54059b36052d8bc96",
+      "config.json": "7ed3eed5be6924cc800e8a5e53fc405c1aab1aaf36bad65c33403b36c56827f5",
+      "generation_config.json": "533f191cc257b7de37a4fccd0a7a1706d75e1aa660f93efaa54e5a2a9f9aace9",
+      "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+      "model-00001-of-00002.safetensors": "41a8895c164b4d32bae6b302f4603fcbc1797f32dafa45c7e9bcda23c6755df8",
+      "model-00002-of-00002.safetensors": "365531ff8752420e89dee707b79d021fb2d6e25abafe486f080555a4fe6972e4",
+      "model.safetensors.index.json": "c7dd78a4c6bea60b51332f1baf37b8f8124ecab2c35395a29a29825bf2619768",
+      "preprocessor_config.json": "f2058c716eef96ccaed1cc1e2d0c08306b62586d535b28d9d08e691b2fab7ca0",
+      "tokenizer.json": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+      "tokenizer_config.json": "4abd3520120e266da84c0864fee064d1fb10806f02225911a47253dd38dc5f56",
+      "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+    }
+  },
+  "pack": {
+    "schema": "p3-pack-verification-v1",
+    "content_sha256": "082210c90d5b3834539380c37bb5a43deab0f4354b5ff630910a6c06be06f1a1",
+    "recomputed_content_sha256": "082210c90d5b3834539380c37bb5a43deab0f4354b5ff630910a6c06be06f1a1",
+    "files": 716,
+    "anchors": [
+      "ledger",
+      "release",
+      "row"
+    ],
+    "missing_optional": [],
+    "problems": [],
+    "ok": true
+  },
+  "pytest": {
+    "tests": 314,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 12,
+    "passed": 302,
+    "failed_tests": [],
+    "seconds": 261.2
+  },
+  "calibration": null,
+  "gpu_probe": null,
+  "v0_probe": null,
+  "smoke": {},
+  "smoke_full_hf": null,
+  "smoke_full_vllm": null,
+  "resume": null,
+  "frozen_runtime": null,
+  "drive_probe": {
+    "schema": "p3-drive-probe-v1",
+    "detect": {
+      "remote": "mydrive:",
+      "base_dir": "ColabProjects/vlm-perception-reward-rl",
+      "mount": "/content/mydrive",
+      "rclone": "/usr/bin/rclone",
+      "rclone_version": "rclone v1.60.1-DEV",
+      "config": null,
+      "config_source": "default",
+      "remote_configured": true,
+      "mount_present": true,
+      "usable": true,
+      "method": "rclone",
+      "notes": [],
+      "remotes": [
+        "mydrive:"
+      ]
+    },
+    "ok": true,
+    "steps": {
+      "upload_text": {
+        "rc": 0,
+        "seconds": 8.53,
+        "error": null
+      },
+      "read_back_text": {
+        "rc": 0,
+        "seconds": 6.89,
+        "matches": true
+      },
+      "upload_blob": {
+        "rc": 0,
+        "seconds": 6.11,
+        "mb_per_s": 2.6
+      },
+      "download_blob": {
+        "rc": 0,
+        "seconds": 7.41,
+        "mb_per_s": 2.2,
+        "md5_matches": true
+      },
+      "rclone_check": {
+        "rc": 0,
+        "identical": true
+      },
+      "mount_write": {
+        "visible_on_remote": true,
+        "seconds_until_visible": 16.1
+      }
+    },
+    "deleted_probe_files": [
+      "probe.txt",
+      "probe.bin",
+      "via_mount.txt"
+    ],
+    "target": "mydrive:ColabProjects/vlm-perception-reward-rl/_p3_probe/pilot-20261111T043145Z-3808",
+    "size_mb": 16
+  },
+  "github_check": {
+    "mode": "auto",
+    "branch": "results/pilot-20261111T043145Z-3808",
+    "url": "https://github.com/XDE10/vlm-perception-reward-rl.git",
+    "credentials_file": "/content/gh_credentials",
+    "credentials_present": true,
+    "ok": true,
+    "credentials_mode": "0o600",
+    "push_access": true,
+    "seconds": 2.6,
+    "workdir": "/content/p3/github/pilot-20261111T043145Z-3808"
+  },
+  "public_sources": null,
+  "eval_sets_check": null,
+  "cfgeo_build": null,
+  "prompt_select": null,
+  "v0_val82": null,
+  "harness_check": null,
+  "is_check": null,
+  "s3_decisions": null,
+  "pilot_gates": {
+    "schema": "p3-pilot-gates-v1",
+    "job": "pilot-20261111T043145Z-3808",
+    "rules": "docs/plan/S4预注册_20261110.md section 11",
+    "gates": {
+      "G1_importance_sampling": {
+        "ok": true,
+        "detail": {
+          "pilot_v5": {
+            "steps": 40,
+            "measured_steps": 40,
+            "failing_steps": [],
+            "ratio_mean_range": [
+              0.9971298575401306,
+              1.003109097480774
+            ],
+            "logp_difference_mean_max": 0.08065980672836304
+          },
+          "pilot_rl_ans": {
+            "steps": 3,
+            "measured_steps": 3,
+            "failing_steps": [],
+            "ratio_mean_range": [
+              0.9993767142295837,
+              1.000789999961853
+            ],
+            "logp_difference_mean_max": 0.0642949789762497
+          },
+          "pilot_rl_v4": {
+            "steps": 3,
+            "measured_steps": 3,
+            "failing_steps": [],
+            "ratio_mean_range": [
+              0.9979062080383301,
+              1.000789999961853
+            ],
+            "logp_difference_mean_max": 0.06666427850723267
+          },
+          "pilot_rl_v5_placebo": {
+            "steps": 3,
+            "measured_steps": 3,
+            "failing_steps": [],
+            "ratio_mean_range": [
+              0.997791588306427,
+              1.000789999961853
+            ],
+            "logp_difference_mean_max": 0.06525146216154099
+          },
+          "pilot_rl_blind": {
+            "steps": 3,
+            "measured_steps": 3,
+            "failing_steps": [],
+            "ratio_mean_range": [
+              1.0001473426818848,
+              1.000644326210022
+            ],
+            "logp_difference_mean_max": 0.020071741193532944
+          }
+        }
+      },
+      "G2_memory": {
+        "ok": true,
+        "detail": {
+          "limit_gb": 38.17,
+          "total_gb": 42.41,
+          "peak_gb": {
+            "pilot_v5": 27.248504832,
+            "pilot_rl_ans": 24.1548032,
+            "pilot_rl_v4": 23.564536832,
+            "pilot_rl_v5_placebo": 24.61732096,
+            "pilot_rl_blind": 22.450100736
+          }
+        }
+      },
+      "G3_stability": {
+        "ok": true,
+        "detail": {
+          "pilot_v5": {
+            "completed": true,
+            "finite_loss_and_grad_norm": true,
+            "verifier_error_rate": 0.0,
+            "verifier_ok": true,
+            "image_grid_ok": true,
+            "alignment_checked": true,
+            "nonfinite_steps": [],
+            "outcome": "completed",
+            "detail": null
+          },
+          "pilot_rl_ans": {
+            "completed": true,
+            "finite_loss_and_grad_norm": true,
+            "verifier_error_rate": 0.0,
+            "verifier_ok": true,
+            "image_grid_ok": true,
+            "alignment_checked": true,
+            "nonfinite_steps": [],
+            "outcome": "completed",
+            "detail": null
+          },
+          "pilot_rl_v4": {
+            "completed": true,
+            "finite_loss_and_grad_norm": true,
+            "verifier_error_rate": 0.0,
+            "verifier_ok": true,
+            "image_grid_ok": true,
+            "alignment_checked": true,
+            "nonfinite_steps": [],
+            "outcome": "completed",
+            "detail": null
+          },
+          "pilot_rl_v5_placebo": {
+            "completed": true,
+            "finite_loss_and_grad_norm": true,
+            "verifier_error_rate": 0.0,
+            "verifier_ok": true,
+            "image_grid_ok": true,
+            "alignment_checked": true,
+            "nonfinite_steps": [],
+            "outcome": "completed",
+            "detail": null
+          },
+          "pilot_rl_blind": {
+            "completed": true,
+            "finite_loss_and_grad_norm": true,
+            "verifier_error_rate": 0.0,
+            "verifier_ok": true,
+            "image_grid_ok": true,
+            "alignment_checked": true,
+            "nonfinite_steps": [],
+            "outcome": "completed",
+            "detail": null
+          },
+          "pilot_resume": {
+            "completed": true
+          }
+        }
+      },
+      "G4_learning": {
+        "ok": true,
+        "detail": {
+          "pilot_v5": {
+            "steps": [
+              1,
+              10,
+              31,
+              40
+            ],
+            "early_mean": 0.5921875,
+            "late_mean": 0.6046875,
+            "early_steps": 10,
+            "late_steps": 10,
+            "ok": true
+          },
+          "retry": null
+        }
+      },
+      "G5_checkpoint_resume": {
+        "ok": true,
+        "detail": {
+          "pilot_v5_checkpoints_verified": {
+            "20": true,
+            "40": true
+          },
+          "pilot_v5_final_verified": true,
+          "resume_ok": true,
+          "resume_reason": null,
+          "restore_seconds": 16.0,
+          "restore_files": 15
+        }
+      },
+      "G6_protocol": {
+        "ok": true,
+        "detail": {
+          "pilot_v5": {
+            "protocols": [
+              "perception-think-answer-v3-p1-20261109"
+            ],
+            "rollouts": 2560,
+            "max_prompt_tokens": 1176,
+            "ok": true
+          },
+          "pilot_rl_ans": {
+            "protocols": [
+              "perception-think-answer-v3-p1-20261109"
+            ],
+            "rollouts": 192,
+            "max_prompt_tokens": 1176,
+            "ok": true
+          },
+          "pilot_rl_v4": {
+            "protocols": [
+              "perception-think-answer-v3-p1-20261109"
+            ],
+            "rollouts": 192,
+            "max_prompt_tokens": 1176,
+            "ok": true
+          },
+          "pilot_rl_v5_placebo": {
+            "protocols": [
+              "perception-think-answer-v3-p1-20261109"
+            ],
+            "rollouts": 192,
+            "max_prompt_tokens": 1176,
+            "ok": true
+          },
+          "pilot_rl_blind": {
+            "protocols": [
+              "perception-think-answer-v3-p1-20261109"
+            ],
+            "rollouts": 192,
+            "max_prompt_tokens": 319,
+            "ok": true
+          },
+          "pilot_resume": {
+            "protocols": [
+              "perception-think-answer-v3-p1-20261109"
+            ],
+            "rollouts": 8,
+            "max_prompt_tokens": 1176,
+            "ok": true
+          }
+        }
+      }
+    },
+    "passed": true,
+    "recorded": {
+      "pilot_v5": {
+        "step_seconds_median": 55.06,
+        "step_seconds_p90": 70.16,
+        "truncated_fraction": 0.002,
+        "completion_length_mean": 213.5078,
+        "answer_acc": 0.0645,
+        "format_rate": 0.6062,
+        "claims_per_completion": 6.0191,
+        "kl": 0.0008,
+        "entropy": 1.0478,
+        "rollouts": 2560
+      },
+      "pilot_rl_ans": {
+        "step_seconds_median": 51.18,
+        "step_seconds_p90": 58.55,
+        "truncated_fraction": 0.0,
+        "completion_length_mean": 219.9635,
+        "answer_acc": 0.0312,
+        "format_rate": 0.5885,
+        "claims_per_completion": 6.2656,
+        "kl": 0.0004,
+        "entropy": 1.1309,
+        "rollouts": 192
+      },
+      "pilot_rl_v4": {
+        "step_seconds_median": 49.7,
+        "step_seconds_p90": 50.79,
+        "truncated_fraction": 0.0,
+        "completion_length_mean": 219.1771,
+        "answer_acc": 0.0417,
+        "format_rate": 0.5885,
+        "claims_per_completion": 5.9844,
+        "kl": 0.0005,
+        "entropy": 1.16,
+        "rollouts": 192
+      },
+      "pilot_rl_v5_placebo": {
+        "step_seconds_median": 51.04,
+        "step_seconds_p90": 63.23,
+        "truncated_fraction": 0.0052,
+        "completion_length_mean": 220.7969,
+        "answer_acc": 0.0312,
+        "format_rate": 0.6042,
+        "claims_per_completion": 5.9271,
+        "kl": 0.0005,
+        "entropy": 1.1315,
+        "rollouts": 192
+      },
+      "pilot_rl_blind": {
+        "step_seconds_median": 28.67,
+        "step_seconds_p90": 36.67,
+        "truncated_fraction": 0.0052,
+        "completion_length_mean": 238.6927,
+        "answer_acc": 0.0104,
+        "format_rate": 0.5729,
+        "claims_per_completion": 5.9115,
+        "kl": 0.0002,
+        "entropy": 1.0018,
+        "rollouts": 192
+      }
+    },
+    "consistency": {
+      "runs_with_identity": [
+        "pilot_resume",
+        "pilot_rl_ans",
+        "pilot_rl_blind",
+        "pilot_rl_v4",
+        "pilot_rl_v5_placebo",
+        "pilot_v5"
+      ],
+      "one_source": true,
+      "one_package_set": true
+    },
+    "code_now": {
+      "error": null,
+      "matches_pilot": true
+    },
+    "timing": {
+      "step_seconds_median": 55.06,
+      "step_seconds_p90": 70.16,
+      "truncated_fraction": 0.002,
+      "completion_length_mean": 213.5078,
+      "answer_acc": 0.0645,
+      "format_rate": 0.6062,
+      "claims_per_completion": 6.0191,
+      "kl": 0.0008,
+      "entropy": 1.0478,
+      "rollouts": 2560,
+      "startup_seconds": 205.8,
+      "checkpoint_upload_seconds": 60.9,
+      "final_upload_seconds": 42.1,
+      "restore_seconds": 16.0
+    },
+    "latest": {
+      "schema": "p3-pilot-latest-v1",
+      "passed": true,
+      "job": "pilot-20261111T043145Z-3808",
+      "decided_utc": "2026-11-11T05:46:25Z",
+      "registry_sha256": "32ecef20609d22c0e940e1105b5cd3e000b4ec76c9060dae62cbe24b7dffb6f1",
+      "runtime_content_sha256": "b952f877ebab922d8d122c79350831144d2e456c44d599e65d1ad66d3a83e71e",
+      "experiment": "rl_v3_p1_20261110",
+      "protocol": "perception-think-answer-v3-p1-20261109",
+      "gpu_name": "NVIDIA A100-SXM4-40GB",
+      "source_sha256": {
+        "src/rewards/answer.py": "cb6dc6be4992a605e35591f4696a8a926abe1978c7251465531dc94d522c0adf",
+        "src/rewards/attacks.py": "2457f206b5d707533ae90370ed44e06e03c5ffe0a472dcd3372c74e2122b7540",
+        "src/rewards/claims.py": "675427118c48e7d3a8ac96933ff40495cb30e0258bc2255945e142990f4bdd57",
+        "src/rewards/geometry_oracle.py": "0741399cd53c4e5c5e44abe52a5f33ba729337f5d82a5f471eb7276f446bb6f3",
+        "src/rewards/perception_v5.py": "2b079214c7dd2c032f1329576fd34fb0f3c99aa32879a2e2664a7cb326038986",
+        "src/training/hf_compat.py": "42389d329355d3d76726560b201e145c8c620c13fe755eade56f96a2307dc41e",
+        "src/training/lora_language.py": "fa247ff5700b08eb915a3c8472aedc7624b692d75c092b63976bf0c22cfb8138",
+        "src/training/multimodal_guard.py": "9b3ab6ed2a1746bbc6205e6662c420efccfa354afe362c2bcb319a087d3ae7f7",
+        "src/training/protocol_v3.py": "3d3e95acb42dfd3b8c0bde8365c500138a491797c20ec97d94d6c041c5e0dd11",
+        "src/training/rl_config.py": "627909d5da37c380333fef11b4fd2da1e286aa455172a300fd4c70ff45bd2d70",
+        "src/training/rl_data.py": "12308c7b84f8288044d1aa9677833eb91038bae110556776a58422db110c30e1",
+        "src/training/rl_entry.py": "e53262c005313f58770347c379ae875bac3ebde812ef57c91a6f38120aac3314",
+        "src/training/rl_rewards.py": "895fc568af4e2ee07bd92811575b4cc1ce9d1609464330265820caa78188e04f",
+        "src/training/vision_cache.py": "363b932b40e55af497fdead5c57f52d801de65b9b9a0cd4447a416e6f30d5885",
+        "src/training/vllm_guard.py": "e4192370ee7bb2bc33b9066824dcbb316f75070429ec65d363f616a902251aac",
+        "src/training/registry.py": "36be5190dc655c5272afcb874097dfeef241fa0eb26e49bca0d0d5910f220535",
+        "src/data/approved_training_inputs.py": "236ba095002d723ae3b544e9159c930292bbc4ade1eefe5ba85e1ac72d10e2ac",
+        "src/data/intergps_index.py": "45b286111594331a12e714d08bf5ab1e08ca12c2624ae51540c8a2ecacbf9b9d",
+        "src/data/perception_v4.py": "841ac3c3a15fb1ed11f6be35543ba1028b1ccca1574c5dd30881b0dbde77b5ea",
+        "src/data/project3_perception_v2.py": "51b00daf3d9b1363754863ff9f0425e197eaaba5c54707604c378e7a298d3c86",
+        "src/data/project3_perception_prototype.py": "986f06c64d89dfbca6ced1204b094614d13213bfa9457dd0ec98e242c366ef82",
+        "src/training/perception_reward_v4.py": "d05fc197c5303621ad27c5ee5f0c63b8408669d9ed49419efd2411c44a1f9d68",
+        "scripts/training/math_verify_v3_strict_worker.py": "af68188e5d710c796b31bcbc16edd1649d983a306eef6f184057ae8221ea61e8",
+        "scripts/training/math_verify_pilot_worker.py": "6a427decd4481126546d2d3c46a24ac19b0be4e81954237dc56de420b23ccb0a"
+      },
+      "versions": {
+        "torch": "2.13.0+cu130",
+        "transformers": "5.19.0",
+        "trl": "1.17.1",
+        "peft": "0.21.2",
+        "accelerate": "1.15.0",
+        "datasets": "4.8.5",
+        "math-verify": "0.9.0",
+        "sympy": "1.14.0",
+        "vllm": "0.32.0",
+        "pillow": "13.0.0"
+      },
+      "git_commit": "84b3a06f68b78953e406a5015d7de0d36d11f023",
+      "timing": {
+        "step_seconds_median": 55.06,
+        "step_seconds_p90": 70.16,
+        "truncated_fraction": 0.002,
+        "completion_length_mean": 213.5078,
+        "answer_acc": 0.0645,
+        "format_rate": 0.6062,
+        "claims_per_completion": 6.0191,
+        "kl": 0.0008,
+        "entropy": 1.0478,
+        "rollouts": 2560,
+        "startup_seconds": 205.8,
+        "checkpoint_upload_seconds": 60.9,
+        "final_upload_seconds": 42.1,
+        "restore_seconds": 16.0
+      },
+      "gates": {
+        "G1_importance_sampling": true,
+        "G2_memory": true,
+        "G3_stability": true,
+        "G4_learning": true,
+        "G5_checkpoint_resume": true,
+        "G6_protocol": true
+      }
+    },
+    "drive": {
+      "written": true,
+      "path": "s4/rl_v3_p1_20261110/PILOT_LATEST.json",
+      "reason": null
+    }
+  },
+  "pilot_runs": {
+    "pilot_resume": {
+      "train": {
+        "run": "rl_v5/seed1_smoke",
+        "config_sha256": "3d33036a816c495d9758ff64c74f52b3314e584de721b11ea4195a59a0cc8249",
+        "global_step": 2,
+        "max_steps": 2,
+        "wall_seconds": 9.369984865188599,
+        "peak_gpu_memory_gb": 19.037956608,
+        "vision_cache": null,
+        "mm_alignment": {
+          "version": "mm-alignment-guard-v1-20261109",
+          "checked_forwards": 6,
+          "left_padded_rows": 6,
+          "max_left_padding": 68
+        },
+        "vllm_image_grid": {
+          "images": 609,
+          "distinct_sizes": 456,
+          "train_limits": [
+            3136,
+            802816
+          ],
+          "vllm_limits": [
+            3136,
+            12845056
+          ],
+          "factor": 28,
+          "mismatches": 0
+        },
+        "generation_backend": "vllm",
+        "registration": null,
+        "python": "3.12.3"
+      },
+      "rollouts": {
+        "rollouts": 8,
+        "steps": 2,
+        "answer_acc": 0.0,
+        "format_rate": 0.0,
+        "protocol_ok": 0.0,
+        "perception_reward_mean": -0.2458,
+        "v5_own_mean": -0.2458,
+        "claims_per_completion": 2.12,
+        "completion_tokens_mean": 111.6,
+        "completion_tokens_max": 128,
+        "verifier_errors": 0
+      },
+      "mm_alignment": {
+        "version": "mm-alignment-guard-v1-20261109",
+        "checked_forwards": 6,
+        "left_padded_rows": 6,
+        "max_left_padding": 68
+      },
+      "step_time_median": 6.51,
+      "trainable_parameters": 29933568,
+      "vision_frozen": true,
+      "config_sha256": "3d33036a816c495d9758ff64c74f52b3314e584de721b11ea4195a59a0cc8249",
+      "prompt_report": {
+        "prompts": 609,
+        "max_tokens": 1176,
+        "mean_tokens": 475.8735632183908,
+        "limit": 1600
+      },
+      "supervisor": null
+    },
+    "pilot_rl_ans": {
+      "train": {
+        "run": "rl_ans/seed1_smoke",
+        "config_sha256": "c0ebbec8912027cadac9f6b03cd565841d06b605375a8b0316f9dbe92318f616",
+        "global_step": 3,
+        "max_steps": 3,
+        "wall_seconds": 164.65820479393005,
+        "peak_gpu_memory_gb": 24.1548032,
+        "vision_cache": null,
+        "mm_alignment": {
+          "version": "mm-alignment-guard-v1-20261109",
+          "checked_forwards": 72,
+          "left_padded_rows": 504,
+          "max_left_padding": 326
+        },
+        "vllm_image_grid": {
+          "images": 609,
+          "distinct_sizes": 456,
+          "train_limits": [
+            3136,
+            802816
+          ],
+          "vllm_limits": [
+            3136,
+            12845056
+          ],
+          "factor": 28,
+          "mismatches": 0
+        },
+        "generation_backend": "vllm",
+        "registration": null,
+        "python": "3.12.3"
+      },
+      "rollouts": {
+        "rollouts": 192,
+        "steps": 3,
+        "answer_acc": 0.0312,
+        "format_rate": 0.5885,
+        "protocol_ok": 0.6875,
+        "perception_reward_mean": 0.0,
+        "v5_own_mean": -0.6443,
+        "claims_per_completion": 6.27,
+        "completion_tokens_mean": 220.0,
+        "completion_tokens_max": 877,
+        "verifier_errors": 0
+      },
+      "mm_alignment": {
+        "version": "mm-alignment-guard-v1-20261109",
+        "checked_forwards": 72,
+        "left_padded_rows": 504,
+        "max_left_padding": 326
+      },
+      "step_time_median": 54.15,
+      "trainable_parameters": 29933568,
+      "vision_frozen": true,
+      "config_sha256": "c0ebbec8912027cadac9f6b03cd565841d06b605375a8b0316f9dbe92318f616",
+      "prompt_report": {
+        "prompts": 609,
+        "max_tokens": 1176,
+        "mean_tokens": 475.8735632183908,
+        "limit": 1600
+      },
+      "supervisor": {
+        "outcome": "completed",
+        "detail": null,
+        "skipped": null,
+        "reason": null,
+        "last_step": 3,
+        "max_steps": 3,
+        "wall_seconds": 259.0,
+        "startup_seconds": 99.5,
+        "checkpoints_saved": [
+          3
+        ]
+      }
+    },
+    "pilot_rl_blind": {
+      "train": {
+        "run": "rl_blind/seed1_smoke",
+        "config_sha256": "328233eb2597767d596feafa9f1c55b3e8a992542a93bbb1507acec6ff5750c1",
+        "global_step": 3,
+        "max_steps": 3,
+        "wall_seconds": 92.77240920066833,
+        "peak_gpu_memory_gb": 22.450100736,
+        "vision_cache": null,
+        "mm_alignment": {
+          "version": "mm-alignment-guard-v1-20261109",
+          "checked_forwards": 0,
+          "left_padded_rows": 0,
+          "max_left_padding": 0
+        },
+        "vllm_image_grid": {
+          "images": 0,
+          "distinct_sizes": 0,
+          "train_limits": [
+            3136,
+            802816
+          ],
+          "vllm_limits": [
+            3136,
+            12845056
+          ],
+          "factor": 28,
+          "mismatches": 0
+        },
+        "generation_backend": "vllm",
+        "registration": null,
+        "python": "3.12.3"
+      },
+      "rollouts": {
+        "rollouts": 192,
+        "steps": 3,
+        "answer_acc": 0.0104,
+        "format_rate": 0.5729,
+        "protocol_ok": 0.6667,
+        "perception_reward_mean": 0.0,
+        "v5_own_mean": -0.7069,
+        "claims_per_completion": 5.91,
+        "completion_tokens_mean": 238.7,
+        "completion_tokens_max": 1024,
+        "verifier_errors": 0
+      },
+      "mm_alignment": {
+        "version": "mm-alignment-guard-v1-20261109",
+        "checked_forwards": 0,
+        "left_padded_rows": 0,
+        "max_left_padding": 0
+      },
+      "step_time_median": 30.59,
+      "trainable_parameters": 29933568,
+      "vision_frozen": true,
+      "config_sha256": "328233eb2597767d596feafa9f1c55b3e8a992542a93bbb1507acec6ff5750c1",
+      "prompt_report": {
+        "prompts": 609,
+        "max_tokens": 319,
+        "mean_tokens": 260.2840722495895,
+        "limit": 1600
+      },
+      "supervisor": {
+        "outcome": "completed",
+        "detail": null,
+        "skipped": null,
+        "reason": null,
+        "last_step": 3,
+        "max_steps": 3,
+        "wall_seconds": 161.5,
+        "startup_seconds": 71.6,
+        "checkpoints_saved": [
+          3
+        ]
+      }
+    },
+    "pilot_rl_v4": {
+      "train": {
+        "run": "rl_v4/seed1_smoke",
+        "config_sha256": "72ceee96a0bc2cfdbd69f012384de31b65add64f0df70d898c89f7d9069447fa",
+        "global_step": 3,
+        "max_steps": 3,
+        "wall_seconds": 153.30807995796204,
+        "peak_gpu_memory_gb": 23.564536832,
+        "vision_cache": null,
+        "mm_alignment": {
+          "version": "mm-alignment-guard-v1-20261109",
+          "checked_forwards": 72,
+          "left_padded_rows": 504,
+          "max_left_padding": 326
+        },
+        "vllm_image_grid": {
+          "images": 609,
+          "distinct_sizes": 456,
+          "train_limits": [
+            3136,
+            802816
+          ],
+          "vllm_limits": [
+            3136,
+            12845056
+          ],
+          "factor": 28,
+          "mismatches": 0
+        },
+        "generation_backend": "vllm",
+        "registration": null,
+        "python": "3.12.3"
+      },
+      "rollouts": {
+        "rollouts": 192,
+        "steps": 3,
+        "answer_acc": 0.0417,
+        "format_rate": 0.5885,
+        "protocol_ok": 0.6771,
+        "perception_reward_mean": 0.0129,
+        "v5_own_mean": -0.6239,
+        "claims_per_completion": 5.98,
+        "completion_tokens_mean": 219.2,
+        "completion_tokens_max": 799,
+        "verifier_errors": 0
+      },
+      "mm_alignment": {
+        "version": "mm-alignment-guard-v1-20261109",
+        "checked_forwards": 72,
+        "left_padded_rows": 504,
+        "max_left_padding": 326
+      },
+      "step_time_median": 48.64,
+      "trainable_parameters": 29933568,
+      "vision_frozen": true,
+      "config_sha256": "72ceee96a0bc2cfdbd69f012384de31b65add64f0df70d898c89f7d9069447fa",
+      "prompt_report": {
+        "prompts": 609,
+        "max_tokens": 1176,
+        "mean_tokens": 475.8735632183908,
+        "limit": 1600
+      },
+      "supervisor": {
+        "outcome": "completed",
+        "detail": null,
+        "skipped": null,
+        "reason": null,
+        "last_step": 3,
+        "max_steps": 3,
+        "wall_seconds": 230.2,
+        "startup_seconds": 82.1,
+        "checkpoints_saved": [
+          3
+        ]
+      }
+    },
+    "pilot_rl_v5_placebo": {
+      "train": {
+        "run": "rl_v5_placebo/seed1_smoke",
+        "config_sha256": "ed23f70145684fdc554ad1ec29c7470015633e81e8a9b85115cae24c229930b6",
+        "global_step": 3,
+        "max_steps": 3,
+        "wall_seconds": 169.31877875328064,
+        "peak_gpu_memory_gb": 24.61732096,
+        "vision_cache": null,
+        "mm_alignment": {
+          "version": "mm-alignment-guard-v1-20261109",
+          "checked_forwards": 72,
+          "left_padded_rows": 504,
+          "max_left_padding": 326
+        },
+        "vllm_image_grid": {
+          "images": 609,
+          "distinct_sizes": 456,
+          "train_limits": [
+            3136,
+            802816
+          ],
+          "vllm_limits": [
+            3136,
+            12845056
+          ],
+          "factor": 28,
+          "mismatches": 0
+        },
+        "generation_backend": "vllm",
+        "registration": null,
+        "python": "3.12.3"
+      },
+      "rollouts": {
+        "rollouts": 192,
+        "steps": 3,
+        "answer_acc": 0.0312,
+        "format_rate": 0.6042,
+        "protocol_ok": 0.6823,
+        "perception_reward_mean": -0.7078,
+        "v5_own_mean": -0.627,
+        "claims_per_completion": 5.93,
+        "completion_tokens_mean": 220.8,
+        "completion_tokens_max": 1024,
+        "verifier_errors": 0
+      },
+      "mm_alignment": {
+        "version": "mm-alignment-guard-v1-20261109",
+        "checked_forwards": 72,
+        "left_padded_rows": 504,
+        "max_left_padding": 326
+      },
+      "step_time_median": 56.54,
+      "trainable_parameters": 29933568,
+      "vision_frozen": true,
+      "config_sha256": "ed23f70145684fdc554ad1ec29c7470015633e81e8a9b85115cae24c229930b6",
+      "prompt_report": {
+        "prompts": 609,
+        "max_tokens": 1176,
+        "mean_tokens": 475.8735632183908,
+        "limit": 1600
+      },
+      "supervisor": {
+        "outcome": "completed",
+        "detail": null,
+        "skipped": null,
+        "reason": null,
+        "last_step": 3,
+        "max_steps": 3,
+        "wall_seconds": 246.5,
+        "startup_seconds": 82.4,
+        "checkpoints_saved": [
+          3
+        ]
+      }
+    },
+    "pilot_v5": {
+      "train": {
+        "run": "rl_v5/seed1_smoke",
+        "config_sha256": "c51e8ba7910c5e396d0a540cfa7424de8a373ccc08cc92c51c632e97bcb821c3",
+        "global_step": 40,
+        "max_steps": 40,
+        "wall_seconds": 2335.2870037555695,
+        "peak_gpu_memory_gb": 27.248504832,
+        "vision_cache": null,
+        "mm_alignment": {
+          "version": "mm-alignment-guard-v1-20261109",
+          "checked_forwards": 960,
+          "left_padded_rows": 6720,
+          "max_left_padding": 879
+        },
+        "vllm_image_grid": {
+          "images": 609,
+          "distinct_sizes": 456,
+          "train_limits": [
+            3136,
+            802816
+          ],
+          "vllm_limits": [
+            3136,
+            12845056
+          ],
+          "factor": 28,
+          "mismatches": 0
+        },
+        "generation_backend": "vllm",
+        "registration": null,
+        "python": "3.12.3"
+      },
+      "rollouts": {
+        "rollouts": 2560,
+        "steps": 40,
+        "answer_acc": 0.0645,
+        "format_rate": 0.6062,
+        "protocol_ok": 0.7109,
+        "perception_reward_mean": -0.6297,
+        "v5_own_mean": -0.6297,
+        "claims_per_completion": 6.02,
+        "completion_tokens_mean": 213.5,
+        "completion_tokens_max": 1024,
+        "verifier_errors": 0
+      },
+      "mm_alignment": {
+        "version": "mm-alignment-guard-v1-20261109",
+        "checked_forwards": 960,
+        "left_padded_rows": 6720,
+        "max_left_padding": 879
+      },
+      "step_time_median": 55.48,
+      "trainable_parameters": 29933568,
+      "vision_frozen": true,
+      "config_sha256": "c51e8ba7910c5e396d0a540cfa7424de8a373ccc08cc92c51c632e97bcb821c3",
+      "prompt_report": {
+        "prompts": 609,
+        "max_tokens": 1176,
+        "mean_tokens": 475.8735632183908,
+        "limit": 1600
+      },
+      "supervisor": {
+        "outcome": "completed",
+        "detail": null,
+        "skipped": null,
+        "reason": null,
+        "last_step": 40,
+        "max_steps": 40,
+        "wall_seconds": 2490.8,
+        "startup_seconds": 205.8,
+        "checkpoints_saved": [
+          20,
+          40
+        ]
+      }
+    },
+    "pilot_v5_retry": {
+      "train": null,
+      "rollouts": null,
+      "mm_alignment": null,
+      "step_time_median": null,
+      "trainable_parameters": null,
+      "vision_frozen": null,
+      "config_sha256": null,
+      "prompt_report": null,
+      "supervisor": {
+        "outcome": null,
+        "detail": null,
+        "skipped": true,
+        "reason": "G4 passed on pilot_v5",
+        "last_step": null,
+        "max_steps": null,
+        "wall_seconds": null,
+        "startup_seconds": null,
+        "checkpoints_saved": null
+      }
+    }
+  },
+  "pilot_resume": {
+    "schema": "p3-s4-pilot-resume-v1",
+    "name": "pilot_resume",
+    "spec": {
+      "arm": "rl_v5",
+      "smoke": {
+        "max_steps": 2,
+        "num_generations": 2,
+        "prompts_per_step": 2,
+        "per_device_train_batch_size": 2,
+        "max_completion_length": 128,
+        "save_steps": 1
+      },
+      "resume_from": "checkpoint-1 deleted locally, restored from Drive into the same output directory (the run identity includes it)",
+      "seed": 1
+    },
+    "legs": {
+      "a": {
+        "schema": "p3-s4-supervised-v1",
+        "name": "pilot_resume/a",
+        "cmd": [
+          "/content/p3/env/vllm/bin/python",
+          "-m",
+          "scripts.training.train_rl",
+          "--experiment",
+          "/content/p3/repo/configs/experiments/rl_v3_p1_20261110.json",
+          "--arm",
+          "rl_v5",
+          "--seed",
+          "1",
+          "--smoke",
+          "max_completion_length=128,max_steps=2,num_generations=2,per_device_train_batch_size=2,prompts_per_step=2,save_steps=1",
+          "--runtime",
+          "/content/p3/repo/configs/experiments/runtime_frozen_20261109.json",
+          "--output-dir",
+          "/content/p3/out/pilot-20261111T043145Z-3808/pilot_resume",
+          "--model-path",
+          "/content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8"
+        ],
+        "started_utc": "2026-11-11T05:24:58Z",
+        "out_dir": "/content/p3/out/pilot-20261111T043145Z-3808/pilot_resume",
+        "log": "/content/p3/out/pilot-20261111T043145Z-3808/pilot_resume/train.log",
+        "registration": null,
+        "train_done": null,
+        "last_step": 1,
+        "max_steps": 2,
+        "step_seconds": {
+          "1": 6.9624
+        },
+        "format_rate": {
+          "1": 0.0
+        },
+        "checkpoints_saved": [
+          1
+        ],
+        "uploads": [
+          {
+            "step": 1,
+            "ok": true,
+            "started_utc": "2026-11-11T05:27:04Z",
+            "copy": {
+              "ok": true,
+              "target": "mydrive:ColabProjects/vlm-perception-reward-rl/s4/rl_v3_p1_20261110/pilot/pilot-20261111T043145Z-3808/pilot_resume/checkpoint-1",
+              "files": 16,
+              "bytes": 490998518,
+              "copy_seconds": 26.7,
+              "check_seconds": 5.0,
+              "copy_rc": 0,
+              "check_rc": 0
+            },
+            "bytes": 490998518,
+            "files": 16,
+            "marker": "DRIVE_VERIFIED.json",
+            "retained": {
+              "ok": true,
+              "purged": [],
+              "failed": [],
+              "kept": [
+                1
+              ],
+              "left_alone": []
+            },
+            "seconds": 53.7
+          }
+        ],
+        "uploads_superseded": [],
+        "interrupted": "pilot: stop right after checkpoint-1 (emulates a lost VM)",
+        "final_upload": null,
+        "key": {
+          "runtime_content_sha256": "b952f877ebab922d8d122c79350831144d2e456c44d599e65d1ad66d3a83e71e",
+          "config_sha256": "3d33036a816c495d9758ff64c74f52b3314e584de721b11ea4195a59a0cc8249"
+        },
+        "exit_code": -15,
+        "wall_seconds": 125.7,
+        "startup_seconds": 118.7,
+        "outcome": "interrupted",
+        "detail": "pilot: stop right after checkpoint-1 (emulates a lost VM)",
+        "log_tail": "\nLoading safetensors checkpoint shards:   0% Completed | 0/2 [00:00<?, ?it/s]\n\nLoading safetensors checkpoint shards:  50% Completed | 1/2 [00:01<00:01,  1.15s/it]\n\nLoading safetensors checkpoint shards: 100% Completed | 2/2 [00:02<00:00,  1.09s/it]\n\nLoading safetensors checkpoint shards: 100% Completed | 2/2 [00:02<00:00,  1.09s/it]\n\n[transformers] Qwen2VL video processing does not apply the per-frame pixel cap the reference implementation (qwen-vl-utils) applies, so some videos cost far more tokens than they would there. In v5.22 the capped behavior will become the default and `cap_pixels_per_frame` will be removed. Pass `cap_pixels_per_frame=True` to adopt the reference behavior now, or `False` to keep the current behavior and silence this warning.\n\nCapturing CUDA graphs (PIECEWISE):   0%|          | 0/4 [00:00<?, ?it/s]\nCapturing CUDA graphs (PIECEWISE):  25%|██▌       | 1/4 [00:00<00:00,  8.92it/s]\nCapturing CUDA graphs (PIECEWISE):  75%|███████▌  | 3/4 [00:00<00:00, 12.59it/s]\nCapturing CUDA graphs (PIECEWISE): 100%|██████████| 4/4 [00:00<00:00, 12.01it/s]\n\nCapturing CUDA graphs (FULL):   0%|          | 0/2 [00:00<?, ?it/s]\nCapturing CUDA graphs (FULL): 100%|██████████| 2/2 [00:00<00:00, 18.73it/s]\nCapturing CUDA graphs (FULL): 100%|██████████| 2/2 [00:00<00:00, 18.69it/s]\n\nCapturing CUDA graphs (PIECEWISE):   0%|          | 0/4 [00:00<?, ?it/s]\nCapturing CUDA graphs (PIECEWISE):  50%|█████     | 2/4 [00:00<00:00, 15.73it/s]\nCapturing CUDA graphs (PIECEWISE): 100%|██████████| 4/4 [00:00<00:00, 15.71it/s]\nCapturing CUDA graphs (PIECEWISE): 100%|██████████| 4/4 [00:00<00:00, 15.70it/s]\n\nCapturing CUDA graphs (FULL):   0%|          | 0/3 [00:00<?, ?it/s]\nCapturing CUDA graphs (FULL):  67%|██████▋   | 2/3 [00:00<00:00, 19.55it/s]\nCapturing CUDA graphs (FULL): 100%|██████████| 3/3 [00:00<00:00, 19.72it/s]\n\n  0%|          | 0/2 [00:00<?, ?it/s]/content/p3/env/vllm/lib/python3.12/site-packages/transformers/models/qwen2_vl/image_processing_qwen2_vl.py:129: FutureWarning: Passing `min_pixels` and `max_pixels` to a processor call is deprecated and will be removed in v5.23. Pass in `size={'longest_edge': xxx, 'shortest_edge': xxx} to override the target size.`\n  warnings.warn(\n\n 50%|█████     | 1/2 [00:07<00:07,  7.14s/it]{\"event\": \"train_log\", \"step\": 1, \"max_steps\": 2, \"loss\": 0.0, \"grad_norm\": 0.0, \"completions/mean_length\": 114.75, \"completions/min_length\": 75.0, \"completions/max_length\": 128.0, \"completions/clipped_ratio\": 0.75, \"completions/mean_terminated_length\": 75.0, \"completions/min_terminated_length\": 75.0, \"completions/max_terminated_length\": 75.0, \"rewards/answer_reward/mean\": 0.0, \"rewards/answer_reward/std\": 0.0, \"rewards/format_reward/mean\": 0.0, \"rewards/format_reward/std\": 0.0, \"rewards/perception_reward/mean\": -0.2, \"rewards/perception_reward/std\": 0.2553, \"reward\": -0.02, \"reward_std\": 0.0255, \"p3/answer_acc\": 0.0, \"p3/claims_per_completion\": 3.0, \"p3/format_rate\": 0.0, \"p3/perception_reward\": -0.2, \"p3/protocol_ok\": 0.0, \"p3/unknown_fraction\": 0.6667, \"p3/v4_f1\": 0.0, \"p3/v5_own_false_per_completion\": 1.0, \"p3/v5_own_recall\": 0.0, \"p3/v5_own_reward\": -0.2, \"p3/verifier_errors\": 0.0, \"kl\": 0.0, \"entropy\": 0.5467, \"step_time\": 6.9624}\n\n                                             \n{'loss': '0', 'grad_norm': '0', 'learning_rate': '0', 'num_tokens': '2565', 'completions/mean_length': '114.8', 'completions/min_length': '75', 'completions/max_length': '128', 'completions/clipped_ratio': '0.75', 'completions/mean_terminated_length': '75', 'completions/min_terminated_length': '75', 'completions/max_terminated_length': '75', 'rewards/answer_reward/mean': '0', 'rewards/answer_reward/std': '0', 'rewards/format_reward/mean': '0', 'rewards/format_reward/std': '0', 'rewards/perception_reward/mean': '-0.2', 'rewards/perception_reward/std': '0.2553', 'reward': '-0.02', 'reward_std': '0.02553', 'frac_reward_zero_std': '0', 'p3/answer_acc': '0', 'p3/claims_per_completion': '3', 'p3/format_rate': '0', 'p3/perception_reward': '-0.2', 'p3/protocol_ok': '0', 'p3/unknown_fraction': '0.6667', 'p3/v4_f1': '0', 'p3/v5_own_false_per_completion': '1', 'p3/v5_own_recall': '0', 'p3/v5_own_reward': '-0.2', 'p3/verifier_errors': '0', 'sampling/sampling_logp_difference/mean': '0.06204', 'sampling/sampling_logp_difference/max': '0.3304', 'sampling/importance_sampling_ratio/min': '0.7545', 'sampling/importance_sampling_ratio/mean': '1.005', 'sampling/importance_sampling_ratio/max': '1.392', 'kl': '0', 'entropy': '0.5467', 'clip_ratio/low_mean': '0', 'clip_ratio/high_mean': '0', 'clip_ratio/region_mean': '0', 'clip_ratio/low_min': '0', 'clip_ratio/high_max': '0', 'step_time': '6.962', 'epoch': '0.003289'}\n\n 50%|█████     | 1/2 [00:07<00:07,  7.14s/it]{\"event\": \"checkpoint_saved\", \"step\": 1, \"path\": \"/content/p3/out/pilot-20261111T043145Z-3808/pilot_resume/checkpoint-1\", \"config_sha256\": \"3d33036a816c495d9758ff64c74f52b3314e584de721b11ea4195a59a0cc8249\"}\n/usr/lib/python3.12/multiprocessing/resource_tracker.py:254: UserWarning: resource_tracker: There appear to be 5 leaked semaphore objects to clean up at shutdown\n  warnings.warn('resource_tracker: There appear to be %d '",
+        "finished_utc": "2026-11-11T05:27:57Z"
+      },
+      "b": {
+        "schema": "p3-s4-supervised-v1",
+        "name": "pilot_resume/b",
+        "cmd": [
+          "/content/p3/env/vllm/bin/python",
+          "-m",
+          "scripts.training.train_rl",
+          "--experiment",
+          "/content/p3/repo/configs/experiments/rl_v3_p1_20261110.json",
+          "--arm",
+          "rl_v5",
+          "--seed",
+          "1",
+          "--smoke",
+          "max_completion_length=128,max_steps=2,num_generations=2,per_device_train_batch_size=2,prompts_per_step=2,save_steps=1",
+          "--runtime",
+          "/content/p3/repo/configs/experiments/runtime_frozen_20261109.json",
+          "--output-dir",
+          "/content/p3/out/pilot-20261111T043145Z-3808/pilot_resume",
+          "--model-path",
+          "/content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8",
+          "--resume",
+          "/content/p3/out/pilot-20261111T043145Z-3808/pilot_resume/checkpoint-1"
+        ],
+        "started_utc": "2026-11-11T05:28:27Z",
+        "out_dir": "/content/p3/out/pilot-20261111T043145Z-3808/pilot_resume",
+        "log": "/content/p3/out/pilot-20261111T043145Z-3808/pilot_resume/train.log",
+        "registration": null,
+        "train_done": {
+          "event": "train_done",
+          "run": "rl_v5/seed1_smoke",
+          "config_sha256": "3d33036a816c495d9758ff64c74f52b3314e584de721b11ea4195a59a0cc8249",
+          "global_step": 2,
+          "max_steps": 2,
+          "wall_seconds": 9.369984865188599,
+          "peak_gpu_memory_gb": 19.037956608,
+          "vision_cache": null,
+          "mm_alignment": {
+            "version": "mm-alignment-guard-v1-20261109",
+            "checked_forwards": 6,
+            "left_padded_rows": 6,
+            "max_left_padding": 68
+          },
+          "vllm_image_grid": {
+            "images": 609,
+            "distinct_sizes": 456,
+            "train_limits": [
+              3136,
+              802816
+            ],
+            "vllm_limits": [
+              3136,
+              12845056
+            ],
+            "factor": 28,
+            "mismatches": 0
+          },
+          "generation_backend": "vllm",
+          "registration": null,
+          "python": "3.12.3"
+        },
+        "last_step": 2,
+        "max_steps": 2,
+        "step_seconds": {
+          "2": 6.5059
+        },
+        "format_rate": {
+          "2": 0.0
+        },
+        "checkpoints_saved": [
+          2
+        ],
+        "uploads": [
+          {
+            "step": 2,
+            "ok": true,
+            "started_utc": "2026-11-11T05:29:46Z",
+            "copy": {
+              "ok": true,
+              "target": "mydrive:ColabProjects/vlm-perception-reward-rl/s4/rl_v3_p1_20261110/pilot/pilot-20261111T043145Z-3808/pilot_resume/checkpoint-2",
+              "files": 16,
+              "bytes": 491006619,
+              "copy_seconds": 28.2,
+              "check_seconds": 5.5,
+              "copy_rc": 0,
+              "check_rc": 0
+            },
+            "bytes": 491006619,
+            "files": 16,
+            "marker": "DRIVE_VERIFIED.json",
+            "retained": {
+              "ok": true,
+              "purged": [
+                1
+              ],
+              "failed": [],
+              "kept": [
+                2
+              ],
+              "left_alone": []
+            },
+            "seconds": 59.1
+          }
+        ],
+        "uploads_superseded": [],
+        "interrupted": null,
+        "final_upload": {
+          "ok": true,
+          "started_utc": "2026-11-11T05:30:45Z",
+          "copy": {
+            "ok": true,
+            "target": "mydrive:ColabProjects/vlm-perception-reward-rl/s4/rl_v3_p1_20261110/pilot/pilot-20261111T043145Z-3808/pilot_resume",
+            "files": 15,
+            "bytes": 251136735,
+            "copy_seconds": 21.1,
+            "check_seconds": 5.3,
+            "copy_rc": 0,
+            "check_rc": 0
+          },
+          "files": 15,
+          "bytes": 251136735,
+          "marker": "COMPLETED.json",
+          "seconds": 41.8
+        },
+        "key": {
+          "runtime_content_sha256": "b952f877ebab922d8d122c79350831144d2e456c44d599e65d1ad66d3a83e71e",
+          "config_sha256": "3d33036a816c495d9758ff64c74f52b3314e584de721b11ea4195a59a0cc8249"
+        },
+        "exit_code": 0,
+        "wall_seconds": 84.9,
+        "startup_seconds": 78.4,
+        "outcome": "completed",
+        "detail": null,
+        "finished_utc": "2026-11-11T05:31:27Z"
+      }
+    },
+    "ok": true,
+    "drive_rel": "s4/rl_v3_p1_20261110/pilot/pilot-20261111T043145Z-3808/pilot_resume",
+    "latest_verified": 1,
+    "restore": {
+      "step": 1,
+      "ok": true,
+      "started_utc": "2026-11-11T05:28:11Z",
+      "fetch": {
+        "ok": true,
+        "source": "mydrive:ColabProjects/vlm-perception-reward-rl/s4/rl_v3_p1_20261110/pilot/pilot-20261111T043145Z-3808/pilot_resume/checkpoint-1",
+        "copy_seconds": 10.1,
+        "check_seconds": 4.4,
+        "copy_rc": 0,
+        "check_rc": 0
+      },
+      "path": "/content/p3/out/pilot-20261111T043145Z-3808/pilot_resume/checkpoint-1",
+      "files": 15,
+      "rollouts_kept": 4,
+      "rollouts_dropped_after_checkpoint": 0,
+      "seconds": 16.0
+    }
+  },
+  "train_job": null,
+  "checks": [
+    {
+      "check": "试跑门槛 G1–G6 全部通过（S4 预注册第 11 节）",
+      "ok": true
+    },
+    {
+      "check": "试跑结论 PILOT_LATEST.json 已写到 Google Drive",
+      "ok": true
+    },
+    {
+      "check": "pytest 无失败",
+      "ok": true
+    },
+    {
+      "check": "私有数据与锚点一致",
+      "ok": true
+    }
+  ],
+  "overall": "passed"
+}

@@ -1,0 +1,6 @@
+{
+  "schema": "p3-s4-supervised-v1",
+  "name": "pilot_v5_retry",
+  "skipped": true,
+  "reason": "G4 passed on pilot_v5"
+}

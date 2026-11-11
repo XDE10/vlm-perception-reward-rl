@@ -1,0 +1,95 @@
+{
+  "schema": "p3-s4-supervised-v1",
+  "name": "pilot_rl_ans",
+  "cmd": [
+    "/content/p3/env/vllm/bin/python",
+    "-m",
+    "scripts.training.train_rl",
+    "--experiment",
+    "/content/p3/repo/configs/experiments/rl_v3_p1_20261110.json",
+    "--arm",
+    "rl_ans",
+    "--seed",
+    "1",
+    "--smoke",
+    "max_steps=3",
+    "--runtime",
+    "/content/p3/repo/configs/experiments/runtime_frozen_20261109.json",
+    "--output-dir",
+    "/content/p3/out/pilot-20261111T043145Z-3808/pilot_rl_ans",
+    "--model-path",
+    "/content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8"
+  ],
+  "started_utc": "2026-11-11T05:31:27Z",
+  "out_dir": "/content/p3/out/pilot-20261111T043145Z-3808/pilot_rl_ans",
+  "log": "/content/p3/out/pilot-20261111T043145Z-3808/pilot_rl_ans/train.log",
+  "registration": null,
+  "train_done": {
+    "event": "train_done",
+    "run": "rl_ans/seed1_smoke",
+    "config_sha256": "c0ebbec8912027cadac9f6b03cd565841d06b605375a8b0316f9dbe92318f616",
+    "global_step": 3,
+    "max_steps": 3,
+    "wall_seconds": 164.65820479393005,
+    "peak_gpu_memory_gb": 24.1548032,
+    "vision_cache": null,
+    "mm_alignment": {
+      "version": "mm-alignment-guard-v1-20261109",
+      "checked_forwards": 72,
+      "left_padded_rows": 504,
+      "max_left_padding": 326
+    },
+    "vllm_image_grid": {
+      "images": 609,
+      "distinct_sizes": 456,
+      "train_limits": [
+        3136,
+        802816
+      ],
+      "vllm_limits": [
+        3136,
+        12845056
+      ],
+      "factor": 28,
+      "mismatches": 0
+    },
+    "generation_backend": "vllm",
+    "registration": null,
+    "python": "3.12.3"
+  },
+  "last_step": 3,
+  "max_steps": 3,
+  "step_seconds": {
+    "1": 51.1804,
+    "2": 49.7551,
+    "3": 58.5457
+  },
+  "format_rate": {
+    "1": 0.5781,
+    "2": 0.625,
+    "3": 0.5625
+  },
+  "checkpoints_saved": [
+    3
+  ],
+  "uploads": [],
+  "uploads_superseded": [],
+  "interrupted": null,
+  "final_upload": null,
+  "key": null,
+  "exit_code": 0,
+  "wall_seconds": 259.0,
+  "startup_seconds": 99.5,
+  "outcome": "completed",
+  "detail": null,
+  "finished_utc": "2026-11-11T05:35:46Z",
+  "kind": "arm_runs",
+  "spec": {
+    "arm": "rl_ans",
+    "smoke": {
+      "max_steps": 3
+    },
+    "seed": 1
+  },
+  "drive_rel": null
+}

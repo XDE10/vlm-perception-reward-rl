@@ -1,0 +1,88 @@
+{
+  "run": "pilot_resume",
+  "step": 1,
+  "marker": {
+    "schema": "p3-drive-verified-v1",
+    "run": "pilot_resume",
+    "key": {
+      "runtime_content_sha256": "b952f877ebab922d8d122c79350831144d2e456c44d599e65d1ad66d3a83e71e",
+      "config_sha256": "3d33036a816c495d9758ff64c74f52b3314e584de721b11ea4195a59a0cc8249"
+    },
+    "step": 1,
+    "job": "pilot-20261111T043145Z-3808",
+    "files": {
+      "README.md": {
+        "bytes": 5275,
+        "sha256": "aac8f8280b33ffb28f3aa3c1f80c36b6df114ef46e7c6ab06d5437bc8352a8ac"
+      },
+      "adapter_config.json": {
+        "bytes": 4322,
+        "sha256": "1229245c803cf808749ddaf62b73a4b22a7ef57e51048da391fe923215c0b03a"
+      },
+      "adapter_model.safetensors": {
+        "bytes": 119809088,
+        "sha256": "75904162c2d8b4a0a942ef4c0db0057f2c2847a54dc236048dba4bd01aff475a"
+      },
+      "chat_template.jinja": {
+        "bytes": 1017,
+        "sha256": "a0bc6f6fc7a29a80017a433e8f03a1cc1236e838a944a2d034295a60c4f2fddb"
+      },
+      "optimizer.pt": {
+        "bytes": 239900363,
+        "sha256": "23c30d7d7f65317a22f27269ee79588269b97a1ddb0f4f300edefadb21015675"
+      },
+      "processor_config.json": {
+        "bytes": 1290,
+        "sha256": "ac7afa39de481841714cf7ac338e0f1bb6b10c4c1e028655966d8d81dad4051b"
+      },
+      "ref/adapter_config.json": {
+        "bytes": 4322,
+        "sha256": "1229245c803cf808749ddaf62b73a4b22a7ef57e51048da391fe923215c0b03a"
+      },
+      "ref/adapter_model.safetensors": {
+        "bytes": 119809088,
+        "sha256": "75904162c2d8b4a0a942ef4c0db0057f2c2847a54dc236048dba4bd01aff475a"
+      },
+      "rng_state.pth": {
+        "bytes": 14581,
+        "sha256": "e50f5316bb54e1955238c78a5ac6e3977de6da02a5180ebad5a1d0b45cd9c087"
+      },
+      "run_identity.json": {
+        "bytes": 7813,
+        "sha256": "7bf4246b5d5ae5f3e94369d209aaaf055f43597a01a9be9e327b984993f2a9ce"
+      },
+      "scheduler.pt": {
+        "bytes": 1465,
+        "sha256": "32e8d476c97a63727e471c528bcb48f6a4c9edb41bbd0abc64143ac257cfcd38"
+      },
+      "tokenizer.json": {
+        "bytes": 11422059,
+        "sha256": "f7f96da3a872b5e901575b2067c744ad336c3a3d77a21584d20024557b1bd7f0"
+      },
+      "tokenizer_config.json": {
+        "bytes": 783,
+        "sha256": "4d5ff76f60a3edf69aab1fe6d1a414b7492b6a1b6e06133066c217fc370b37db"
+      },
+      "trainer_state.json": {
+        "bytes": 2651,
+        "sha256": "cc277676f98f62860a1763a7a74de20dac6bec6c8423ece02f0d63efa2e1e0cc"
+      },
+      "training_args.bin": {
+        "bytes": 7697,
+        "sha256": "cc96ce42e78adc9834a165c4cad5f20659ebf17fc700f7fb1e2fd21898f78cbe"
+      }
+    },
+    "rollouts": {
+      "lines": 4,
+      "bytes": 6704,
+      "sha256": "7f945e5bce77f96f7884c883b9d565cf806165ca9596d922658ab51206e238b1"
+    },
+    "verified_utc": "2026-11-11T05:27:37Z",
+    "copy_seconds": 26.7,
+    "check_seconds": 5.0
+  },
+  "restored_utc": "2026-11-11T05:28:27Z",
+  "job": "pilot-20261111T043145Z-3808",
+  "rollouts_kept": 4,
+  "rollouts_dropped_after_checkpoint": 0
+}

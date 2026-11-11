@@ -1,0 +1,9 @@
+[p3] 05:27:03 [pilot_resume/a] step 1/2 | 7.0 s/step | eta 0m06s | format 0.0 | answer 0.0
+[p3] 05:27:04 [pilot_resume/a] stopping the training process: pilot: stop right after checkpoint-1 (emulates a lost VM)
+[p3] 05:27:57 [pilot_resume/a] checkpoint-1 on Drive: verified
+[p3] 05:27:57 [pilot_resume/a] ended: interrupted (pilot: stop right after checkpoint-1 (emulates a lost VM)) after 2m05s
+[p3] 05:29:45 [pilot_resume/b] step 2/2 | 6.5 s/step | eta 0m00s | format 0.0 | answer 0.0
+[p3] 05:30:45 [pilot_resume/b] checkpoint-2 on Drive: verified
+[p3] 05:31:27 [pilot_resume/b] final/ and run files on Drive: verified, COMPLETED.json written
+[p3] 05:31:27 [pilot_resume/b] ended: completed after 1m24s
+[p3] 05:31:27 [pilot_resume] resume from Drive passed

@@ -1,0 +1,175 @@
+{
+  "schema": "p3-job-status-v1",
+  "run_id": "pilot-20261111T043145Z-3808",
+  "task": "pilot",
+  "state": "packaging",
+  "started_utc": "2026-11-11T04:35:38Z",
+  "updated_utc": "2026-11-11T05:46:54Z",
+  "steps": [
+    {
+      "name": "env_report",
+      "state": "passed",
+      "required": true,
+      "description": "software, GPU and environment lock report",
+      "started_utc": "2026-11-11T04:35:40Z",
+      "log": "logs/env_report.log",
+      "exit_code": 0,
+      "seconds": 2.3,
+      "finished_utc": "2026-11-11T04:35:43Z"
+    },
+    {
+      "name": "verify_pack",
+      "state": "passed",
+      "required": true,
+      "description": "private data matches its anchors",
+      "started_utc": "2026-11-11T04:35:43Z",
+      "log": "logs/verify_pack.log",
+      "exit_code": 0,
+      "seconds": 0.3,
+      "finished_utc": "2026-11-11T04:35:43Z"
+    },
+    {
+      "name": "pytest",
+      "state": "passed",
+      "required": true,
+      "description": "full CPU test suite on the VM (GPU hidden)",
+      "started_utc": "2026-11-11T04:35:43Z",
+      "log": "logs/pytest.log",
+      "exit_code": 0,
+      "seconds": 263.7,
+      "finished_utc": "2026-11-11T04:40:07Z"
+    },
+    {
+      "name": "register_check",
+      "state": "passed",
+      "required": true,
+      "description": "registered runs equal the configs; data on this VM equals the registered SHA256 and rows",
+      "started_utc": "2026-11-11T04:40:07Z",
+      "log": "logs/register_check.log",
+      "exit_code": 0,
+      "seconds": 0.6,
+      "finished_utc": "2026-11-11T04:40:07Z"
+    },
+    {
+      "name": "drive_probe",
+      "state": "passed",
+      "required": true,
+      "description": "Google Drive via rclone: write, read back, hash check, delete (optional unless drive-check)",
+      "started_utc": "2026-11-11T04:40:07Z",
+      "log": "logs/drive_probe.log",
+      "exit_code": 0,
+      "seconds": 76.0,
+      "finished_utc": "2026-11-11T04:41:23Z"
+    },
+    {
+      "name": "vllm_env",
+      "state": "passed",
+      "required": true,
+      "description": "vLLM venv (CUDA 13): the frozen runtime generates with vLLM",
+      "started_utc": "2026-11-11T04:41:23Z",
+      "log": "logs/vllm_env.log",
+      "exit_code": 0,
+      "seconds": 28.0,
+      "finished_utc": "2026-11-11T04:41:51Z"
+    },
+    {
+      "name": "pilot_v5",
+      "state": "passed",
+      "required": true,
+      "description": "rl_v5 seed 1, formal shape, 40 steps, checkpoints every 20 steps copied to Drive (G1-G6)",
+      "started_utc": "2026-11-11T04:41:51Z",
+      "log": "logs/pilot_v5.log",
+      "exit_code": 0,
+      "seconds": 2587.0,
+      "finished_utc": "2026-11-11T05:24:58Z"
+    },
+    {
+      "name": "pilot_resume",
+      "state": "passed",
+      "required": true,
+      "description": "small shape: stop after checkpoint-1, restore it from Drive, resume to step 2 (G5)",
+      "started_utc": "2026-11-11T05:24:58Z",
+      "log": "logs/pilot_resume.log",
+      "exit_code": 0,
+      "seconds": 388.5,
+      "finished_utc": "2026-11-11T05:31:27Z"
+    },
+    {
+      "name": "pilot_rl_ans",
+      "state": "passed",
+      "required": true,
+      "description": "rl_ans seed 1, formal shape, 3 steps (G1-G3, G6)",
+      "started_utc": "2026-11-11T05:31:27Z",
+      "log": "logs/pilot_rl_ans.log",
+      "exit_code": 0,
+      "seconds": 259.1,
+      "finished_utc": "2026-11-11T05:35:46Z"
+    },
+    {
+      "name": "pilot_rl_v4",
+      "state": "passed",
+      "required": true,
+      "description": "rl_v4 seed 1, formal shape, 3 steps (G1-G3, G6)",
+      "started_utc": "2026-11-11T05:35:46Z",
+      "log": "logs/pilot_rl_v4.log",
+      "exit_code": 0,
+      "seconds": 230.3,
+      "finished_utc": "2026-11-11T05:39:36Z"
+    },
+    {
+      "name": "pilot_rl_v5_placebo",
+      "state": "passed",
+      "required": true,
+      "description": "rl_v5_placebo seed 1, formal shape, 3 steps (G1-G3, G6)",
+      "started_utc": "2026-11-11T05:39:36Z",
+      "log": "logs/pilot_rl_v5_placebo.log",
+      "exit_code": 0,
+      "seconds": 246.5,
+      "finished_utc": "2026-11-11T05:43:43Z"
+    },
+    {
+      "name": "pilot_rl_blind",
+      "state": "passed",
+      "required": true,
+      "description": "rl_blind seed 1, formal shape, 3 steps (G1-G3, G6)",
+      "started_utc": "2026-11-11T05:43:43Z",
+      "log": "logs/pilot_rl_blind.log",
+      "exit_code": 0,
+      "seconds": 161.6,
+      "finished_utc": "2026-11-11T05:46:24Z"
+    },
+    {
+      "name": "pilot_v5_retry",
+      "state": "passed",
+      "required": true,
+      "description": "only if G4 failed and the other gates passed: rl_v5, 76 steps",
+      "started_utc": "2026-11-11T05:46:24Z",
+      "log": "logs/pilot_v5_retry.log",
+      "exit_code": 0,
+      "seconds": 0.3,
+      "finished_utc": "2026-11-11T05:46:25Z"
+    },
+    {
+      "name": "decide_pilot",
+      "state": "passed",
+      "required": true,
+      "description": "gates G1-G6; pilot_gates.json and PILOT_LATEST.json on Drive",
+      "started_utc": "2026-11-11T05:46:25Z",
+      "log": "logs/decide_pilot.log",
+      "exit_code": 0,
+      "seconds": 28.6,
+      "finished_utc": "2026-11-11T05:46:53Z"
+    }
+  ],
+  "current": null,
+  "github_check": {
+    "mode": "auto",
+    "ok": true,
+    "credentials_present": true,
+    "push_access": true,
+    "branch": "results/pilot-20261111T043145Z-3808",
+    "reason": null,
+    "warning": null
+  },
+  "overall": "passed"
+}
