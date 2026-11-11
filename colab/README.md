@@ -90,16 +90,27 @@ bash colab/launch.sh v0 --session p3
 提示、格式预热和长度的决策，做 V0 在 82 道 validation 上的诊断，走一遍 S5 的评测代码，最后用 3 步 vLLM 训练检查重要性采样，
 把决策写进 `s3_decisions.json`。不用 `--session` 时运行器会新建 VM，同样可用。
 
-后续阶段的命令（`train` 等）会在对应阶段加入，用法相同。
+S4 的试跑（约 1.5–2.5 小时）与正式训练（每次一台 VM 的剩余时间，约 23 小时以内）。两者都只在 NVIDIA A100-SXM4-40GB 上运行，
+而且需要 VM 上能用 Google Drive，所以都用第八节准备好的 VM（不带 `--session` 时运行器直接拒绝，不会新建 VM）：
+
+```bash
+bash colab/launch.sh pilot --session p3
+bash colab/launch.sh train --session p3
+```
+
+先运行 `pilot`，它的门槛全部通过后才运行 `train`（`train` 会自己核对）；`train` 每次跑到 VM 时间用完为止，需要再次运行。
+详见第九节。
 
 常用选项：
 
 | 选项 | 作用 |
 |---|---|
-| `--gpu H100` | 申请 A100 失败（没有配额或暂时没有空闲）时改用 H100；同一批实验请保持同一种 GPU |
+| `--gpu H100` | 申请 A100 失败（没有配额或暂时没有空闲）时改用 H100；同一批实验请保持同一种 GPU。S4 的 `pilot` 与 `train` 只在 A100-SXM4-40GB 上运行（D54），不能换 |
 | `--session p3` | 在你准备好的 VM 上运行（第八节）；不新建、默认也不释放这台 VM |
 | `--release` | 和 `--session` 一起用：结束后释放你那台 VM |
-| `--no-vllm` | 跳过可选的 vLLM 探测（省约 15 分钟）；对 `v0` 来说，跳过后重要性采样检查记为未测量，S4 按规则改用 HF 生成 |
+| `--no-vllm` | 跳过可选的 vLLM 探测（省约 15 分钟）；对 `v0` 来说，跳过后重要性采样检查记为未测量，S4 按规则改用 HF 生成。`pilot` 和 `train` 不接受这个选项 |
+| `--max-hours 10` | 只用于 `train`：本次最多运行 10 小时；预计在这之前跑不完的任务不开始，到时仍在运行的任务停下（下次从 Drive 上的 checkpoint 继续） |
+| `--vm-hours 24` | 只用于 `train`：VM 的最长寿命，从 VM 启动算起（默认 24）；`0` 表示不按 VM 寿命限制 |
 | `--keep` | 结束后不释放运行器新建的 VM（排查问题用，记得之后 `stop`） |
 | `--no-vm-push` | 即使 VM 上有 GitHub 凭据，也由本机推送结果 |
 | `--allow-dirty` | 允许在有未提交代码改动时运行；改动的 diff 会随结果一起上传 |
@@ -169,8 +180,8 @@ bash colab/launch.sh v0 --session p3
 
 ## 七、可选：把结果另存到 Google Drive
 
-不配置也完全可以：每次运行的结果都会推到 GitHub 的 `results/<run_id>` 分支。Drive 的用处是给后面的长时间训练
-多一份不依赖本机网络的副本（S4 起会用来保存 LoRA adapter 和 checkpoint）。
+对 `preflight`、`v0` 等任务，不配置也完全可以：每次运行的结果都会推到 GitHub 的 `results/<run_id>` 分支。
+S4 的 `pilot` 和 `train` 则必须有 Drive：checkpoint 和训练好的 adapter 存在 Drive 上，恢复也只从 Drive 恢复（第九节）。
 
 规则（理由见 `docs/plan/决策记录.md` D31）：
 
@@ -286,3 +297,64 @@ bash colab/launch.sh v0 --session p3
 ```bash
 colab stop -s p3
 ```
+
+## 九、S4：试跑与正式训练
+
+规则见 `docs/plan/S4预注册_20261110.md`（第 8–12 节）。两个任务都在第八节准备好的 VM 上运行：GPU 必须是
+NVIDIA A100-SXM4-40GB（不是的话 VM 在安装环境前就停下），Drive 必须挂好（checkpoint 要复制到 Drive，恢复也只从 Drive 恢复），
+最好也写入 GitHub 凭据（长任务时结果由 VM 自己推送，你的电脑可以休眠）。
+
+**1. 准备 VM**：按第八节第 1–3 步新建 `p3`、上传 rclone 配置、在 VM 里挂载 Drive 并写入 PAT。Google Drive 要有至少
+10 GB 空闲（见本节末尾）。
+
+**2. 试跑**（约 1.5–2.5 小时，只用 train，结果不进入任何分析）：
+
+```bash
+bash colab/launch.sh pilot --session p3
+```
+
+它先跑完整 CPU 测试、核对登记表与这台 VM 上的数据、检查 Drive 和 vLLM 环境，然后依次运行：`pilot_v5`（`rl_v5` 正式形状 40 步，
+第 20、40 步的 checkpoint 复制到 Drive 并核对）、`pilot_resume`（小形状，第 1 步后停下，从 Drive 取回 checkpoint-1 再恢复到第 2 步）、
+另外四组各 3 步，必要时再跑 76 步的 G4 重试，最后按预注册第 11 节判定 G1–G6。结论写进结果里的 `pilot_gates.json`，
+同时写成 Drive 上的 `s4/rl_v3_p1_20261110/PILOT_LATEST.json`（通过或不通过都写）。摘要的“S4 试跑门槛”一节逐条列出结果。
+告诉我“试跑跑完了”，我读结果后告诉你能否开始正式训练。
+
+**3. 正式训练**（门槛全部通过之后）：
+
+```bash
+bash colab/launch.sh train --session p3
+```
+
+- 开始前它核对：Drive 上最新的试跑通过了，登记表、冻结的运行时、训练代码和包版本都与那次试跑相同（代码冻结）；
+  第一个正式任务开始时写下代码基准，之后每个任务都必须与它相同。任何一项不符就一个任务也不开始。
+- 按登记顺序（种子 1 的五组，然后种子 2，最后种子 3 的两组）逐个处理：Drive 上已完成或已失败的跳过；
+  另一台 VM 正在跑的跳过；跑到一半的从 Drive 上最新一个已核对的 checkpoint 恢复；其余从头开始。
+- 每个任务开始前估计它要多久（按试跑实测的步时），在这台 VM 的剩余时间里跑不完就不开始，本次运行到此结束。
+  VM 快到期时（默认按启动后 24 小时算，提前 30 分钟）仍在运行的任务会停下，下次从它最新的 checkpoint 继续。
+- 2026-11-29 00:00 UTC 之后、或计算单元余额（按本次开始时 `colab usage` 的余额和费率推算）低于 150 时，不再开始新任务；
+  已经开始的任务照常恢复和跑完。
+- 每 38 步的 checkpoint 写完就在后台复制到 Drive 并核对，训练不等它；Drive 上每个任务只保留最新一个已核对的 checkpoint。
+  任务结束后 `final/`（第 228 步的 adapter）和运行文件也复制到 Drive 并核对，然后写 `COMPLETED.json`。
+- 训练本身出错（显存不足、loss 为 NaN 等）时，按预注册只重启一次（从最新的 checkpoint）；第二次出错记为失败（`FAILED.json`）。
+
+一次 `train` 跑完后（或 VM 到期后），重新准备 VM（第八节第 1–3 步）并再次运行同一条命令，直到摘要里说没有任务可做了。
+想同时用两台 A100 时，另准备一台（例如 `p3b`）并运行 `bash colab/launch.sh train --session p3b`：两台 VM 通过 Drive 上的认领文件
+（`claims/`）分开各自的任务，不会跑同一个任务。每次运行结束后告诉我“跑完了”和 run_id，我从结果分支读取。
+
+**Drive 上的文件**（`mydrive:ColabProjects/vlm-perception-reward-rl/s4/rl_v3_p1_20261110/`）：
+
+| 路径 | 内容 |
+|---|---|
+| `PILOT_LATEST.json` | 最新一次试跑的结论；`pilot/<run_id>/` 是各次试跑的文件 |
+| `code_baseline/<run_id>.json` | 第一个正式任务开始时的训练代码 SHA256 |
+| `<组>/seed<k>/checkpoint-<步>/` | 最新一个 checkpoint；里面的 `DRIVE_VERIFIED.json` 在核对通过后才写，恢复只用有它的 checkpoint |
+| `<组>/seed<k>/final/` 与 `COMPLETED.json` | 训练完成的 adapter；S5 只评测它 |
+| `<组>/seed<k>/STARTED.json`、`failures/`、`FAILED.json`、`claims/` | 开始记录、计算失败记录、第二次失败的标记、正在运行的 VM 的认领 |
+
+这些文件都由运行器写；请不要手动改动或删除，否则恢复和核对会出错。运行器只删除两样东西：同一任务更旧的 checkpoint
+（新的核对通过后），以及它自己的认领文件。旧 checkpoint 是永久删除，不进 Drive 的回收站（回收站里的文件仍占配额）。
+全部任务跑完后约占 7–9 GB（估计：每个任务保留一个约 0.36 GB 的 checkpoint、约 0.12 GB 的 `final/` 和 rollouts，另有试跑），
+所以开始前请确认 Drive 至少有 10 GB 空闲；`train` 开始或恢复一个任务前检查 Drive 剩余空间，不足 2 GB 就停下并在摘要里说明。
+
+**结果分支**：每个任务的 `runs/<组>_seed<k>/` 下有运行身份、训练摘要、日志历史、压缩后的 `rollouts.jsonl.gz` 和每次尝试的
+`train.log`；`train_job.json` 是本次运行的计划和每个任务的结果。权重和 checkpoint 只在 Drive 和 VM 上。

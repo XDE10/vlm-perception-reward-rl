@@ -51,9 +51,11 @@ def step(name, cmd, timeout=3600, required=True, depends_on=(), env=None, descri
             "depends_on": list(depends_on), "env": dict(env or {}), "description": description}
 
 
-def train_cmd(ctx, arm, smoke, out_dir, runtime=None, resume=None, python=None):
+def train_cmd(ctx, arm, smoke, out_dir, runtime=None, resume=None, python=None, experiment=None):
     cmd = [python or ctx.python, "-m", "scripts.training.train_rl", "--arm", arm, "--seed", "1", "--smoke", smoke,
            "--output-dir", out_dir]
+    if experiment:
+        cmd += ["--experiment", experiment]
     if ctx.model_dir:
         cmd += ["--model-path", ctx.model_dir]
     if runtime:
@@ -185,7 +187,111 @@ def drive_check_steps(ctx):
     ]
 
 
-TASKS = {"preflight": preflight_steps, "drive-check": drive_check_steps, "v0": v0_steps}
+S4_REGISTRY = "configs/experiments/s4_runs_20261110.json"
+PILOT_ARMS = ["rl_ans", "rl_v4", "rl_v5_placebo", "rl_blind"]  # registry pilot.arm_runs, in that order
+
+
+def drive_flags(ctx):
+    flags = []
+    for flag, key in [("--drive-remote", "drive_remote"), ("--drive-dir", "drive_dir"), ("--drive-mount", "drive_mount")]:
+        if ctx.options.get(key):
+            flags += [flag, ctx.options[key]]
+    return flags
+
+
+def s4_common(ctx):
+    py, out = ctx.python, ctx.out
+    return [
+        step("env_report", [py, "-m", "scripts.colab.env_report", "--root", ctx.root, "--out", out / "env.json"], 900,
+             description="software, GPU and environment lock report"),
+        step("verify_pack", [py, "-m", "scripts.colab.verify_pack", "--repo", ctx.repo, "--out",
+                             out / "pack_verification.json"], 900, description="private data matches its anchors"),
+    ]
+
+
+def register_check_step(ctx):
+    return step("register_check", [ctx.python, "-m", "scripts.training.register_runs", "--check"], 900,
+                description="registered runs equal the configs; data on this VM equals the registered SHA256 and rows")
+
+
+def vllm_env_step(ctx):
+    return step("vllm_env", [ctx.kernel_python, "-m", "scripts.colab.bootstrap", "vllm-env", "--root", ctx.root], 5400,
+                description="vLLM venv (CUDA 13): the frozen runtime generates with vLLM")
+
+
+def pilot_steps(ctx):
+    """S4 pilot (docs/plan/S4预注册_20261110.md section 11): train-only, smoke-marked, gates G1-G6."""
+    py, out, model = ctx.python, ctx.out, ctx.model_dir
+    decide = [py, "-m", "scripts.colab.decide_pilot", "--out-dir", out, "--repo", ctx.repo, "--job", ctx.run_id]
+    if ctx.dry_run:  # the test world's synthetic data cannot match the registered SHA256: no register_check here
+        return s4_common(ctx) + [
+            step("pytest", [py, "-m", "pytest", "-q", "-p", "no:cacheprovider", "tests/test_eval_stats.py",
+                            "--junitxml=%s" % (out / "pytest.xml")], 1800, env={"CUDA_VISIBLE_DEVICES": ""},
+                 description="dry run: one fast test module"),
+            step("decide_pilot", decide + ["--python", py, "--allow-missing"], 900,
+                 description="dry run: gates from what exists, nothing written to Drive"),
+        ]
+    supervise = [py, "-m", "scripts.colab.s4_supervise"]
+    common = ["--repo", ctx.repo, "--job", ctx.run_id, "--python", ctx.vllm_python, "--model-path", model] + drive_flags(ctx)
+    steps = s4_common(ctx) + [
+        step("pytest", [py, "-m", "pytest", "-q", "-p", "no:cacheprovider", "--junitxml=%s" % (out / "pytest.xml")], 3600,
+             env={"CUDA_VISIBLE_DEVICES": "", "P3_QWEN_PROCESSOR_DIR": model, "HF_HUB_OFFLINE": "1"},
+             description="full CPU test suite on the VM (GPU hidden)"),
+        register_check_step(ctx),
+        drive_probe_step(ctx, required=True),
+        vllm_env_step(ctx),
+        step("pilot_v5", supervise + ["pilot-run", "--kind", "learning_run", "--name", "pilot_v5", "--out",
+                                      out / "pilot_v5", "--drive"] + common, 3 * 3600,
+             depends_on=["vllm_env", "drive_probe"],
+             description="rl_v5 seed 1, formal shape, 40 steps, checkpoints every 20 steps copied to Drive (G1-G6)"),
+        step("pilot_resume", supervise + ["pilot-resume", "--name", "pilot_resume", "--out", out / "pilot_resume"]
+             + common, 2 * 3600, depends_on=["vllm_env", "drive_probe"],
+             description="small shape: stop after checkpoint-1, restore it from Drive, resume to step 2 (G5)"),
+    ]
+    for index, arm in enumerate(PILOT_ARMS):
+        name = "pilot_" + arm
+        steps.append(step(name, supervise + ["pilot-run", "--kind", "arm_runs", "--index", str(index), "--name", name,
+                                             "--out", out / name] + common, 3600, depends_on=["vllm_env"],
+                          description="%s seed 1, formal shape, 3 steps (G1-G3, G6)" % arm))
+    steps += [
+        step("pilot_v5_retry", supervise + ["pilot-run", "--kind", "learning_retry", "--name", "pilot_v5_retry", "--out",
+                                            out / "pilot_v5_retry", "--only-if-g4-failed", out / "pilot_v5"] + common,
+             4 * 3600, depends_on=["vllm_env", "pilot_v5"],
+             description="only if G4 failed and the other gates passed: rl_v5, 76 steps"),
+        # no depends_on: the gates are decided (and PILOT_LATEST.json written) whatever the pilot runs did
+        step("decide_pilot", decide + ["--python", ctx.vllm_python] + drive_flags(ctx), 1800,
+             description="gates G1-G6; pilot_gates.json and PILOT_LATEST.json on Drive"),
+    ]
+    return steps
+
+
+def train_steps(ctx):
+    """S4 formal runs (docs/plan/S4预注册_20261110.md sections 8-12): as many as fit in this VM's remaining time."""
+    py, out = ctx.python, ctx.out
+    opts = ctx.options
+    cmd = [py, "-m", "scripts.colab.train_s4", "--repo", ctx.repo, "--root", ctx.root, "--out", out, "--job", ctx.run_id,
+           "--session", opts.get("session") or ""] + drive_flags(ctx)
+    for flag, key in [("--max-hours", "max_hours"), ("--vm-hours", "vm_hours"), ("--cu-balance", "cu_balance"),
+                      ("--cu-rate", "cu_rate"), ("--cu-measured-epoch", "cu_measured_epoch")]:
+        if opts.get(key) is not None:
+            cmd += [flag, str(opts[key])]
+    if ctx.dry_run:
+        return s4_common(ctx) + [
+            step("train_runs", cmd + ["--python", py, "--dry-run"], 1800,
+                 description="dry run: read the Drive state and print the plan; nothing is written or trained"),
+        ]
+    cmd += ["--python", ctx.vllm_python, "--model-path", ctx.model_dir]
+    return s4_common(ctx) + [
+        register_check_step(ctx),
+        drive_probe_step(ctx, required=True),
+        vllm_env_step(ctx),
+        step("train_runs", cmd, 84600, depends_on=["vllm_env", "drive_probe", "register_check"],
+             description="registered runs in order: claim, restore from Drive, train, verify on Drive"),
+    ]
+
+
+TASKS = {"preflight": preflight_steps, "drive-check": drive_check_steps, "v0": v0_steps, "pilot": pilot_steps,
+         "train": train_steps}
 
 
 def steps_for(ctx):
@@ -205,4 +311,4 @@ def prepare(ctx):
     write_json(ctx.out / "bootstrap.json", ctx.bootstrap)
 
 
-__all__ = ["ARMS", "Context", "TASKS", "prepare", "steps_for"]
+__all__ = ["ARMS", "Context", "PILOT_ARMS", "S4_REGISTRY", "TASKS", "prepare", "steps_for"]

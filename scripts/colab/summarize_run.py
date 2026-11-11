@@ -16,6 +16,20 @@ from scripts.colab.common import write_json
 DEFAULT_THRESHOLDS = {"PointLiesOnLine": 0.06, "Parallel": 15.0, "Perpendicular": 15.0, "PointLiesOnCircle": 0.15,
                       "Angle": 35.0, "CongruentLength": 1.5, "CongruentAngle": 25.0}
 ON_BY_DEFAULT = {"PointLiesOnLine", "Parallel", "Perpendicular", "PointLiesOnCircle"}
+# scripts/colab/train_s4.py PROBLEM_STATES (kept here so the summary stays importable without the VM modules)
+TRAIN_PROBLEM_STATES = ("failed", "failed_once", "completed_drive_failed", "restore_failed", "setup", "not_started")
+GATE_LABELS = {"G1_importance_sampling": "G1 重要性采样", "G2_memory": "G2 显存", "G3_stability": "G3 稳定",
+               "G4_learning": "G4 学习信号", "G5_checkpoint_resume": "G5 checkpoint 与恢复", "G6_protocol": "G6 协议"}
+RUN_STATE_LABELS = {"completed": "完成", "completed_drive_failed": "完成，但 Drive 上的 final 未核对", "interrupted": "中断",
+                    "failed": "失败（第二次计算失败）", "failed_once": "计算失败一次，本次没有时间重启",
+                    "restore_failed": "从 Drive 恢复失败", "setup": "设置问题", "not_started": "未开始", "skipped": "跳过"}
+
+
+def _brief_supervisor(sup):
+    if not sup:
+        return None
+    return {k: sup.get(k) for k in ("outcome", "detail", "skipped", "reason", "last_step", "max_steps", "wall_seconds",
+                                    "startup_seconds", "checkpoints_saved")} if sup else None
 
 
 def _load(path):
@@ -127,8 +141,31 @@ def build(out_dir):
                "v0_val82": _load(out / "v0_val82" / "summary.json"),
                "harness_check": _load(out / "harness_check" / "summary.json"),
                "is_check": run_summary(out / "is_check") if (out / "is_check").is_dir() else None,
-               "s3_decisions": _load(out / "s3_decisions.json")}
+               "s3_decisions": _load(out / "s3_decisions.json"),
+               "pilot_gates": _load(out / "pilot_gates.json"),
+               "pilot_runs": {p.name: dict(run_summary(p), supervisor=_brief_supervisor(_load(p / "supervisor.json")))
+                              for p in sorted(out.glob("pilot_*")) if p.is_dir() and "." not in p.name},
+               "pilot_resume": _load(out / "pilot_resume.supervisor.json"),
+               "train_job": _load(out / "train_job.json")}
     checks = []
+    dry = bool(((_load(out / "request.json") or {}).get("options") or {}).get("dry_run"))
+    if summary["task"] == "pilot":
+        gates = summary["pilot_gates"] or {}
+        if dry:
+            checks.append(("写出了试跑门槛的判定（dry run：没有训练，不写 Drive）", bool(gates)))
+        else:
+            checks.append(("试跑门槛 G1–G6 全部通过（S4 预注册第 11 节）", bool(gates.get("passed"))))
+            checks.append(("试跑结论 PILOT_LATEST.json 已写到 Google Drive", bool((gates.get("drive") or {}).get("written"))))
+    if summary["task"] == "train":
+        job = summary["train_job"] or {}
+        stop = job.get("stop") or {}
+        if dry:
+            checks.append(("写出了训练计划（dry run：没有训练，不写 Drive）", bool(job)))
+        else:
+            checks.append(("没有设置、代码冻结、Drive 或磁盘空间问题阻止训练",
+                           bool(job) and stop.get("kind") not in ("setup", "space")))
+            checks.append(("本次运行的任务都完成、按规则中断或跳过（没有失败）",
+                           bool(job) and not any(r.get("state") in TRAIN_PROBLEM_STATES for r in job.get("runs") or [])))
     if summary["task"] == "drive-check":
         checks.append(("Drive 写入、读回、哈希校验、删除全部成功", bool((summary["drive_probe"] or {}).get("ok"))))
     if summary["eval_sets_check"] is not None:
@@ -139,7 +176,6 @@ def build(out_dir):
         checks.append(("评测代码路径检查通过（train 输入，五种条件与统计）", bool(summary["harness_check"].get("ok"))))
     if summary["task"] == "v0":
         decisions = summary["s3_decisions"] or {}
-        dry = bool(((_load(out / "request.json") or {}).get("options") or {}).get("dry_run"))
         checks.append(("写出了 S3 决策文件" if dry else "S3 决策完整（s3_decisions.json，输入检查全部通过）",
                        bool(decisions) and (dry or bool(decisions.get("complete")))))
     if summary["pytest"] is not None:
@@ -282,6 +318,9 @@ def markdown(s):
     for name in ["smoke_full_hf", "smoke_full_vllm", "resume", "is_check"]:
         if s.get(name):
             rows.append((name, s[name]))
+    for name, run in sorted((s.get("pilot_runs") or {}).items()):
+        if run.get("train"):
+            rows.append((name, run))
     if rows:
         lines += ["", "## GRPO 冒烟", "",
                   "| 运行 | 步数 | rollout 数 | 步时中位数（秒） | 峰值显存（GB） | 答案正确 | 格式 | 每条断言数 | 对齐检查：前向 / 左填充行 |",
@@ -295,6 +334,8 @@ def markdown(s):
                 _fmt(ro.get("claims_per_completion"), 2),
                 "%s / %s" % (guard["checked_forwards"], guard["left_padded_rows"]) if guard else "—"))
     lines += s3_lines(s)
+    lines += pilot_lines(s)
+    lines += train_lines(s)
     lines += drive_lines(s.get("drive_probe"))
     gh = s.get("github_check") or {}
     if gh and gh.get("mode") != "off":
@@ -392,6 +433,113 @@ def s3_lines(s):
             lines.append("- %s：差 %s，95%% 区间 %s–%s，p = %s（%s 个图簇）" % (
                 name, _fmt(c["estimate"]), _fmt(c["ci95"][0]), _fmt(c["ci95"][1]), _fmt(c["p_value"], 4), c["clusters"]))
         lines.append("- 检查：%s" % "，".join("%s %s" % (k, "✅" if v else "❌") for k, v in (harness.get("checks") or {}).items()))
+    return lines
+
+
+def pilot_lines(s):
+    """Sections of a ``pilot`` run (docs/plan/S4预注册_20261110.md section 11)."""
+    gates = s.get("pilot_gates")
+    if not gates:
+        return []
+    detail = {k: v.get("detail") or {} for k, v in gates["gates"].items()}
+    lines = ["", "## S4 试跑门槛（`pilot_gates.json`，规则见 S4 预注册第 11 节；只用 train，冒烟标记，不进入任何分析）", "",
+             "结论：**%s**；PILOT_LATEST.json %s" % (
+                 "全部通过，可以开始正式任务" if gates.get("passed") else "未通过，不能开始正式任务",
+                 "已写到 Drive（`%s`）" % gates["drive"].get("path") if (gates.get("drive") or {}).get("written")
+                 else "没有写到 Drive（%s）" % (gates.get("drive") or {}).get("reason")), "",
+             "| 门槛 | 结果 | 依据 |", "|---|---|---|"]
+    g1 = detail.get("G1_importance_sampling", {})
+    lines.append("| %s | %s | %s |" % (GATE_LABELS["G1_importance_sampling"], _ok(gates, "G1_importance_sampling"), "；".join(
+        "%s：权重 %s，log-prob 差最大 %s，不合格步 %s" % (
+            name, "—" if not d.get("ratio_mean_range") else "%.3f–%.3f" % tuple(d["ratio_mean_range"]),
+            _fmt(d.get("logp_difference_mean_max"), 4), d.get("failing_steps") or "无") for name, d in sorted(g1.items()))))
+    g2 = detail.get("G2_memory", {})
+    lines.append("| %s | %s | 上限 %s GB；峰值 %s |" % (GATE_LABELS["G2_memory"], _ok(gates, "G2_memory"), g2.get("limit_gb"),
+                                                 "，".join("%s %s" % (k, _fmt(v, 1)) for k, v in
+                                                          sorted((g2.get("peak_gb") or {}).items()))))
+    g3 = detail.get("G3_stability", {})
+    lines.append("| %s | %s | %s |" % (GATE_LABELS["G3_stability"], _ok(gates, "G3_stability"), "；".join(
+        "%s：%s" % (name, "跑完" if d.get("completed") else "未跑完（%s）" % (d.get("detail") or d.get("outcome")))
+        + ("，判分错误率 %s" % _fmt(d.get("verifier_error_rate"), 4) if "verifier_error_rate" in d else "")
+        for name, d in sorted(g3.items()))))
+    g4 = detail.get("G4_learning", {})
+    first = g4.get("pilot_v5") or {}
+    text = "pilot_v5 第 %s–%s 步格式率 %s → 第 %s–%s 步 %s" % (
+        (first.get("steps") or [None] * 4)[0], (first.get("steps") or [None] * 4)[1], _fmt(first.get("early_mean")),
+        (first.get("steps") or [None] * 4)[2], (first.get("steps") or [None] * 4)[3], _fmt(first.get("late_mean")))
+    if g4.get("retry"):
+        text += "；76 步重试：%s → %s" % (_fmt(g4["retry"].get("early_mean")), _fmt(g4["retry"].get("late_mean")))
+    lines.append("| %s | %s | %s |" % (GATE_LABELS["G4_learning"], _ok(gates, "G4_learning"), text))
+    g5 = detail.get("G5_checkpoint_resume", {})
+    lines.append("| %s | %s | pilot_v5 checkpoint 核对 %s，final %s；从 Drive 恢复 %s%s |" % (
+        GATE_LABELS["G5_checkpoint_resume"], _ok(gates, "G5_checkpoint_resume"), g5.get("pilot_v5_checkpoints_verified"),
+        "已核对" if g5.get("pilot_v5_final_verified") else "未核对", "通过" if g5.get("resume_ok") else "未通过",
+        "（%s 秒）" % _fmt(g5.get("restore_seconds"), 0) if g5.get("restore_seconds") else ""))
+    g6 = detail.get("G6_protocol", {})
+    lines.append("| %s | %s | %s |" % (GATE_LABELS["G6_protocol"], _ok(gates, "G6_protocol"), "；".join(
+        "%s：%s，提示最长 %s token" % (name, "/".join(d.get("protocols") or ["无 rollout"]), d.get("max_prompt_tokens"))
+        for name, d in sorted(g6.items()))))
+    consistency = gates.get("consistency") or {}
+    code = gates.get("code_now") or {}
+    lines += ["", "- 各试跑的训练代码 SHA256 一致：%s；包版本一致：%s；`train` 用的代码核对在这台 VM 上%s" % (
+        consistency.get("one_source"), consistency.get("one_package_set"),
+        "可用且与试跑一致" if code.get("matches_pilot") else "未通过（%s）" % code.get("error"))]
+    recorded = gates.get("recorded") or {}
+    if recorded:
+        lines += ["", "只记录、不设门槛（正式形状的试跑）：", "",
+                  "| 试跑 | 步时中位数 / p90（秒） | 截断比例 | 平均补全长度 | 答案准确率 | 格式率 | 每条断言数 | KL | 熵 |",
+                  "|---|---|---|---|---|---|---|---|---|"]
+        for name, r in sorted(recorded.items()):
+            lines.append("| %s | %s / %s | %s | %s | %s | %s | %s | %s | %s |" % (
+                name, _fmt(r.get("step_seconds_median"), 1), _fmt(r.get("step_seconds_p90"), 1),
+                _fmt(r.get("truncated_fraction")), _fmt(r.get("completion_length_mean"), 0), _fmt(r.get("answer_acc")),
+                _fmt(r.get("format_rate")), _fmt(r.get("claims_per_completion"), 2), _fmt(r.get("kl"), 4),
+                _fmt(r.get("entropy"))))
+    timing = gates.get("timing") or {}
+    if timing:
+        lines += ["", "- 供 `train` 估计用时：启动约 %s 秒，checkpoint 上传最长 %s 秒，final 上传 %s 秒，恢复 %s 秒" % (
+            _fmt(timing.get("startup_seconds"), 0), _fmt(timing.get("checkpoint_upload_seconds"), 0),
+            _fmt(timing.get("final_upload_seconds"), 0), _fmt(timing.get("restore_seconds"), 0))]
+    return lines
+
+
+def _ok(gates, name):
+    return "✅" if (gates["gates"].get(name) or {}).get("ok") else "❌"
+
+
+def train_lines(s):
+    """Sections of a ``train`` run (docs/plan/S4预注册_20261110.md sections 8-12)."""
+    job = s.get("train_job")
+    if not job:
+        return []
+    checks = job.get("checks") or {}
+    stop = job.get("stop") or {}
+    lines = ["", "## S4 正式任务（`train_job.json`）%s" % ("：dry run，只读 Drive，没有训练" if job.get("dry_run") else ""), "",
+             "- 试跑：%s（通过：%s）；代码基准：%s" % (checks.get("pilot"), checks.get("pilot_passed"),
+                                            checks.get("baseline") or "本次写入或尚无"),
+             "- 计划在 %s 前结束，%s 停止仍在运行的任务；计划步时 %s 秒" % (
+                 checks.get("finish_by_utc"), checks.get("stop_at_utc"), checks.get("planned_step_seconds")),
+             "- 结束原因：%s（%s）" % (stop.get("kind"), stop.get("reason"))]
+    for problem in checks.get("problems") or []:
+        lines.append("- 阻止训练的问题：%s" % problem)
+    if job.get("plan"):
+        lines += ["", "| 顺序 | 任务 | Drive 上的状态 | 本次 | 说明 |", "|---|---|---|---|---|"]
+        for p in job["plan"]:
+            lines.append("| %s | %s | %s | %s | %s |" % (p["order"], p["run"], p["state"], p["action"], p.get("reason") or ""))
+    if job.get("runs"):
+        lines += ["", "| 任务 | 结果 | 尝试次数 | 最后一步 | 用时 | checkpoint 上传（成功/全部） | final 已核对 |",
+                  "|---|---|---|---|---|---|---|"]
+        for r in job["runs"]:
+            attempts = r.get("attempts") or []
+            last = attempts[-1] if attempts else {}
+            uploads = [u for a in attempts for u in a.get("uploads") or []]
+            lines.append("| %s | %s | %d | %s/%s | %s | %d/%d | %s |" % (
+                r["run"], RUN_STATE_LABELS.get(r.get("state"), r.get("state")), len(attempts), last.get("last_step"),
+                last.get("max_steps"), _fmt(sum(a.get("wall_seconds") or 0 for a in attempts), 0),
+                sum(1 for u in uploads if u.get("ok")), len(uploads),
+                "是" if (last.get("final_upload") or {}).get("ok") else "否"))
+            if r.get("reason"):
+                lines.append("|  | %s |  |  |  |  |  |" % r["reason"][:300])
     return lines
 
 

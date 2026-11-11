@@ -382,3 +382,51 @@ def test_v0_dry_run_with_queue_lost_exec_and_extra_assignment(tmp_path):
     request = json.loads(show(origin, run_dir, "request.json"))
     assert request["options"]["min_gpu_gb"] == 40 and request["task"] == "v0"
     assert (stub_root / "vm/p3/out" / (run_dir.name + ".lock")).is_file()
+
+
+def test_s4_pilot_and_train_dry_runs(tmp_path):
+    """S4: both tasks end to end on a stub VM with a fake Drive. The request carries the registered GPU, the session,
+    the time limit and the compute-unit balance; the pilot decides its gates and the train job writes its plan (here:
+    no pilot on Drive, so nothing may start). Dry runs train nothing and write nothing to Drive."""
+    repo, origin, stub_root, env = build_world(tmp_path)
+    fake_bin = tmp_path / "fake_rclone_bin"
+    fake_bin.mkdir()
+    rclone = fake_bin / "rclone"
+    rclone.write_text("#!/bin/sh\nexec '%s' '%s' \"$@\"\n" % (sys.executable, ROOT / "tests" / "rclone_stub.py"))
+    rclone.chmod(0o755)
+    drive_root = tmp_path / "drive"
+    drive_root.mkdir()
+    env.update(PATH=str(fake_bin) + os.pathsep + env["PATH"], FAKE_DRIVE_ROOT=str(drive_root), P3_DRIVE_REMOTE="mydrive:",
+               P3_DRIVE_MOUNT=str(tmp_path / "no_mount"),
+               STUB_USAGE="Current balance: 2386.50 compute units\\nUsage rate: 6.73/hr\\nActive assignments: 0")
+    refused = launch(repo, env, "pilot", "--dry-run", "--max-hours", "3")
+    assert refused.returncode != 0 and "options of the train task only" in refused.stderr
+    refused = launch(repo, env, "train")  # a VM the runner creates has no Drive: refused before any request
+    assert refused.returncode != 0 and "needs a VM with Google Drive" in refused.stderr
+    assert not (repo / ".colab_runs").exists() or not any((repo / ".colab_runs").iterdir())
+    result = launch(repo, env, "pilot", "--dry-run")
+    assert result.returncode == 0, result.stderr[-4000:] + result.stdout[-2000:]
+    run_dir = only_run(repo)
+    summary = assert_pushed(origin, run_dir, ("summary.md", "summary.json", "pilot_gates.json", "request.json",
+                                              "_local/launch.log"))
+    assert summary["task"] == "pilot" and summary["overall"] == "passed"
+    assert [s["name"] for s in summary["steps"]] == ["env_report", "verify_pack", "pytest", "decide_pilot"]
+    options = json.loads(show(origin, run_dir, "request.json"))["options"]
+    assert options["required_gpu"] == "NVIDIA A100-SXM4-40GB" and options["min_gpu_gb"] == 40
+    gates = json.loads(show(origin, run_dir, "pilot_gates.json"))
+    assert gates["passed"] is False and gates["drive"]["written"] is False
+    assert "## S4 试跑门槛" in show(origin, run_dir, "summary.md")
+    result = launch(repo, env, "train", "--dry-run", "--max-hours", "5")
+    assert result.returncode == 0, result.stderr[-4000:] + result.stdout[-2000:]
+    run_dir = next(p for p in (repo / ".colab_runs").iterdir() if p.name.startswith("train-"))
+    summary = assert_pushed(origin, run_dir, ("summary.md", "summary.json", "train_job.json", "request.json"))
+    assert summary["overall"] == "passed"
+    assert [s["name"] for s in summary["steps"]] == ["env_report", "verify_pack", "train_runs"]
+    options = json.loads(show(origin, run_dir, "request.json"))["options"]
+    assert (options["max_hours"], options["cu_balance"], options["cu_rate"]) == (5.0, 2386.5, 6.73)
+    assert options["session"] == (run_dir / "session").read_text().strip() and options["cu_measured_epoch"]
+    job = json.loads(show(origin, run_dir, "train_job.json"))
+    assert job["dry_run"] and job["stop"]["kind"] == "setup" and "no pilot result on Drive" in job["checks"]["problems"][0]
+    assert "## S4 正式任务" in show(origin, run_dir, "summary.md")
+    s4_dir = drive_root / "ColabProjects" / "vlm-perception-reward-rl" / "s4"
+    assert not s4_dir.exists() or not any(p.is_file() for p in s4_dir.rglob("*"))  # no S4 state written by dry runs

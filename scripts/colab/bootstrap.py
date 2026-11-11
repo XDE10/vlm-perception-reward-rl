@@ -97,6 +97,16 @@ def gpu_memory_problem(gpu, min_gb):
     return None
 
 
+def gpu_name_problem(gpu, required):
+    """None when the GPU is exactly ``required`` (S4 registry gpu_name, D54); else the reason to stop."""
+    if not required:
+        return None
+    if gpu.get("name") != required:
+        return ("this task runs only on %s (the S4 registration, decision D54); this VM has %s. "
+                "Prepare a session with: colab new -s p3 --gpu A100" % (required, gpu.get("name") or "no readable GPU"))
+    return None
+
+
 def backend_candidates(driver_cuda):
     """Highest compatible PyTorch CUDA build first; torch 2.13.0 exists for cu126/cu129/cu130 (not cu128)."""
     if not driver_cuda:
@@ -227,8 +237,9 @@ def main(root, request):
             log("GPU: %s, %s MiB, driver %s (CUDA %s)" % (gpu.get("name"), gpu.get("memory_mib"), gpu.get("driver"),
                                                         gpu.get("driver_cuda")))
             record["min_gpu_gb"] = options.get("min_gpu_gb")
-            problem = gpu_memory_problem(gpu, options.get("min_gpu_gb"))
-            if problem:  # before any install: a too-small GPU costs seconds, not the 10-20 minute environment build
+            record["required_gpu"] = options.get("required_gpu")
+            problem = gpu_memory_problem(gpu, options.get("min_gpu_gb")) or gpu_name_problem(gpu, options.get("required_gpu"))
+            if problem:  # before any install: a wrong GPU costs seconds, not the 10-20 minute environment build
                 raise StepError(problem)
             base = build_base_env(root, repo, gpu)
             record["envs"] = {"base": base}

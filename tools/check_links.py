@@ -40,6 +40,7 @@ CURRENT_TARGETS = [
     "docs/plan/执行计划_20261108.md",
     "docs/plan/决策记录.md",
     "docs/plan/S4预注册_20261110.md",
+    "docs/plan/阶段报告_S4_运行器_20261110.md",
 ]
 LINK = re.compile(r"!?\[[^\]]*\]\(\s*(?:<([^>]+)>|([^)\s]+))\s*\)")
 

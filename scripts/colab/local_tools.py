@@ -162,6 +162,16 @@ def active_assignments(text):
     return int(match.group(1)) if match else None
 
 
+def usage_numbers(text):
+    """{"balance": compute units, "rate": units per hour} from ``colab usage`` output; {} when the balance is absent."""
+    balance = re.search(r"Current balance:\s*([0-9][0-9,]*(?:\.[0-9]+)?)\s*compute units", text)
+    if not balance:
+        return {}
+    rate = re.search(r"Usage rate:\s*([0-9][0-9,]*(?:\.[0-9]+)?)\s*/\s*hr", text)
+    return {"balance": float(balance.group(1).replace(",", "")),
+            "rate": float(rate.group(1).replace(",", "")) if rate else None}
+
+
 def extract(archive, dest):
     dest = Path(dest)
     dest.mkdir(parents=True, exist_ok=True)

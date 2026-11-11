@@ -3,6 +3,8 @@
 #   bash colab/launch.sh check                 verify local prerequisites, data, Colab auth, git push access
 #   bash colab/launch.sh preflight [options]   run the GPU preflight (fresh VM, or --session NAME)
 #   bash colab/launch.sh v0 [options]          S3: evaluation inputs, train-only decisions, V0 diagnosis (A100/H100 only)
+#   bash colab/launch.sh pilot [options]       S4: the pre-registered pilot and its gates G1-G6 (A100-SXM4-40GB, Drive)
+#   bash colab/launch.sh train [options]       S4: formal runs in registered order, as many as fit (A100-SXM4-40GB, Drive)
 #   bash colab/launch.sh drive-check [options] cheap test of the optional Google Drive (rclone) setup
 #   bash colab/launch.sh collect RUN_ID        reattach after a disconnect: wait, fetch, push (from GitHub if the VM is gone)
 #   bash colab/launch.sh push RUN_ID           (re)push a run to its results/RUN_ID branch
@@ -11,6 +13,7 @@
 # Options: --gpu A100|H100|G4|L4   --session NAME (use a VM you prepared, see colab/README.md section 8)
 #   --keep (do not release a VM this run created)   --release (also release a --session VM at the end)
 #   --no-vm-push   --no-vllm   --allow-dirty   --dry-run
+#   train only: --max-hours H (start no run that would end later; stop a run at H)   --vm-hours H (VM lifetime, 24)
 # Settings (environment or .colab_local.env): P3_DATA_ROOT, P3_GPU, COLAB_GLOBAL_FLAGS, P3_POLL_SECONDS,
 #   P3_PART_MB, P3_UPLOAD_TRIES, P3_UPLOAD_BACKOFF, P3_UPLOAD_TIMEOUT, P3_RETRY_SLEEP, P3_CODE_SOURCE (auto|upload),
 #   P3_ALLOCATE_TRIES (default 10), P3_ALLOCATE_WAIT (seconds between tries, default 60),
@@ -620,6 +623,13 @@ cmd_run() {
   fi
   # the frozen runtime (D43) holds on A100 40/80 GB and H100 only: the VM checks this before installing anything
   [[ "$task" == "v0" ]] && min_gpu=40
+  local required_gpu="" max_hours="" vm_hours=""
+  if [[ "$task" == "pilot" || "$task" == "train" ]]; then
+    # S4 runs only on the registered GPU (D54); the VM stops before installing anything on another one
+    min_gpu=40
+    required_gpu="$("$PY" -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["gpu_name"])' \
+      configs/experiments/s4_runs_20261110.json)" || die "cannot read the GPU of the S4 registration"
+  fi
   while [[ $# -gt 0 ]]; do
     case "$1" in
       --gpu) GPU="${2:?--gpu needs a value}"; shift 2 ;;
@@ -630,9 +640,26 @@ cmd_run() {
       --no-vllm) vllm=0; shift ;;
       --allow-dirty) dirty_ok=1; shift ;;
       --dry-run) dry=1; shift ;;
+      --max-hours) max_hours="${2:?--max-hours needs a number of hours}"; shift 2 ;;
+      --vm-hours) vm_hours="${2:?--vm-hours needs a number of hours}"; shift 2 ;;
       *) die "unknown option '$1' (in zsh, do not put a # comment after the command)" ;;
     esac
   done
+  if [[ -n "$max_hours$vm_hours" && "$task" != "train" ]]; then
+    die "--max-hours and --vm-hours are options of the train task only"
+  fi
+  local hours
+  for hours in "$max_hours" "$vm_hours"; do
+    [[ -z "$hours" || "$hours" =~ ^[0-9]+([.][0-9]+)?$ ]] || die "hours must be a number, e.g. 10 or 7.5 (got '$hours')"
+  done
+  if [[ "$task" == "pilot" || "$task" == "train" ]] && [[ "$vllm" != 1 ]]; then
+    die "--no-vllm does not apply to $task: the frozen runtime generates with vLLM"
+  fi
+  if [[ "$task" == "pilot" || "$task" == "train" ]] && [[ -z "$attach" && "$dry" != 1 ]]; then
+    # a VM this runner creates has no rclone remote (the launcher never handles Drive credentials, D31/D37), so the
+    # required drive_probe step would fail after the 10-20 minute environment build
+    die "$task needs a VM with Google Drive (colab/README.md section 8); prepare it, then run: bash colab/launch.sh $task --session p3"
+  fi
   if [[ -n "$attach" ]]; then
     [[ "$attach" =~ ^[A-Za-z0-9._-]+$ ]] || die "session names contain only letters, digits, '.', '_' and '-'"
     ATTACHED=1
@@ -715,9 +742,12 @@ cmd_run() {
   local colab_version options local_json
   colab_version="$(colab_ version 2>/dev/null | tail -n 1 || true)"
   printf '%s\n' "$colab_version" > "$RUN_DIR/colab_version.txt"
-  options="$("$PY" -c 'import json,sys; a=sys.argv; print(json.dumps({"vllm_probe": a[1] == "1", "dry_run": a[2] == "1", "gpu_requested": a[3], "env": a[4], "drive_persist": a[5], "drive_remote": a[6], "drive_dir": a[7], "drive_mount": a[8], "min_gpu_gb": int(a[9]) if a[9] else None}))' \
+  # read before the request is built: the train task projects the compute-unit balance from it (S4 section 10)
+  colab_ usage </dev/null > "$RUN_DIR/usage_before.txt" 2>&1 || true
+  options="$("$PY" -c 'import json,os,sys; from scripts.colab.local_tools import usage_numbers; a=sys.argv; u=usage_numbers(open(a[14], encoding="utf-8", errors="replace").read()); print(json.dumps({"vllm_probe": a[1] == "1", "dry_run": a[2] == "1", "gpu_requested": a[3], "env": a[4], "drive_persist": a[5], "drive_remote": a[6], "drive_dir": a[7], "drive_mount": a[8], "min_gpu_gb": int(a[9]) if a[9] else None, "session": a[10], "required_gpu": a[11] or None, "max_hours": float(a[12]) if a[12] else None, "vm_hours": float(a[13]) if a[13] else None, "cu_balance": u.get("balance"), "cu_rate": u.get("rate"), "cu_measured_epoch": os.path.getmtime(a[14]) if u else None}))' \
     "$vllm" "$dry" "${GPU:-none}" "$env_mode" "$drive_persist" "${P3_DRIVE_REMOTE:-mydrive:}" \
-    "${P3_DRIVE_DIR:-ColabProjects/vlm-perception-reward-rl}" "${P3_DRIVE_MOUNT:-/content/mydrive}" "$min_gpu")"
+    "${P3_DRIVE_DIR:-ColabProjects/vlm-perception-reward-rl}" "${P3_DRIVE_MOUNT:-/content/mydrive}" "$min_gpu" \
+    "$SESSION" "$required_gpu" "$max_hours" "$vm_hours" "$RUN_DIR/usage_before.txt")"
   local_json="$("$PY" -c 'import json,platform,sys; print(json.dumps({"colab_version": sys.argv[1], "data_root": sys.argv[2], "host": platform.platform(), "python": platform.python_version()}))' "$colab_version" "$DATA_ROOT")"
   printf '%s\n' "$local_json" > "$RUN_DIR/local.json"
   # VM-side push (D37): only the target and the path of a credential file the user put on the VM travel in the
@@ -740,7 +770,6 @@ cmd_run() {
     --code-uploads "$RUN_DIR/code_uploads.tsv" --code-mode "$code_mode" --tarball-url "$tarball" \
     --tree-file "$RUN_DIR/tree.bin" --part-mb "$PART_MB" --options "$options" --local "$local_json" \
     --github "$github_json" >/dev/null
-  colab_ usage </dev/null > "$RUN_DIR/usage_before.txt" 2>&1 || true
   warn_active_assignments
 
   trap on_exit EXIT
@@ -869,6 +898,8 @@ main() {
     check) cmd_check ;;
     preflight) cmd_run preflight "$@" ;;
     v0) cmd_run v0 "$@" ;;
+    pilot) cmd_run pilot "$@" ;;
+    train) cmd_run train "$@" ;;
     drive-check) cmd_run drive-check "$@" ;;
     collect) cmd_collect "$@" ;;
     push) need git; check_python; load_run "${1:-}"; push_results "$RUN_ID" ;;
