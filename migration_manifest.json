@@ -4095,11 +4095,11 @@
   },
   {
    "path": "colab/README.md",
-   "bytes": 26020,
-   "sha256": "dc096f38ebe8bb51e65df614ff35313b620b5dedb6f2decf8147d7461052a1a4",
+   "bytes": 26248,
+   "sha256": "744091a8e8300033558626f4a17ab20fd3ff64e6879dc8c45e3f3f41c438972f",
    "source_sha256": "932007e1f9719066c8c3b6e17fd3da3ac427e094ffcc2fa7b67311b7bf8faa29",
    "changed_for_portability": true,
-   "updated_in": "s5-final-eval"
+   "updated_in": "colab-status-recovery"
   },
   {
    "path": "colab/kernel_bootstrap.py",
@@ -4124,11 +4124,11 @@
   },
   {
    "path": "colab/launch.sh",
-   "bytes": 41696,
-   "sha256": "8b2becb1e783684f390dc441037cac00a1967056c17a618118bf9cfb47af7cb5",
+   "bytes": 44845,
+   "sha256": "35483f9f007e554b6c4f6e886ffd13b7d00efabb937ae65ccdcc94d52bd62d63",
    "source_sha256": "71a765f7cff528a8c46272a5888a66f5959e50363f016d83f51c9c7d637c5c39",
    "changed_for_portability": true,
-   "updated_in": "s5-final-eval"
+   "updated_in": "colab-status-recovery"
   },
   {
    "path": "configs/README.md",
@@ -26566,10 +26566,11 @@
   },
   {
    "path": "scripts/colab/local_tools.py",
-   "bytes": 11922,
-   "sha256": "7b73b89f7a391e4fe491d84ee95e5044538871a358a77c0ab006e372488e6bc6",
+   "bytes": 14982,
+   "sha256": "95961686464f1c301c9c7c5e2a0936153e85cd873bf4267b172426055a2c90a7",
    "source_sha256": "b79f9ad4c1ebfe750266c56f835e32e437bb758920f1742d9e69200cb8c5bc56",
-   "changed_for_portability": true
+   "changed_for_portability": true,
+   "updated_in": "colab-status-recovery"
   },
   {
    "path": "scripts/colab/pack_private_data.py",
@@ -27280,10 +27281,11 @@
   },
   {
    "path": "tests/colab_stub.py",
-   "bytes": 7174,
-   "sha256": "b08f1c0ca57102591f30428f64000c7719af9b697daec01a433b12231df089fa",
+   "bytes": 7829,
+   "sha256": "e1d67a6c5b912389a4fb59b7e5a6799a1593c258dfb5279ff573f5813454d520",
    "source_sha256": "ca5df672316ffb262b1df8c430f19d24e783912872dbf5d126ea944d6090bb00",
-   "changed_for_portability": true
+   "changed_for_portability": true,
+   "updated_in": "colab-status-recovery"
   },
   {
    "path": "tests/fake_train_rl.py",
@@ -27343,10 +27345,11 @@
   },
   {
    "path": "tests/test_colab_launcher.py",
-   "bytes": 25564,
-   "sha256": "be9af138e861f026ed2084e6283ea798744f0b193905078c9aa1864c2457a7ca",
+   "bytes": 26980,
+   "sha256": "fcc0a5de6b13cfc1e943c6480b1a3dfef810f980957d288077675a35ea2cadf4",
    "source_sha256": "bb348c2f89d06301942158d05db9bd1d715b86906dd891fe6f86de5a45065f48",
-   "changed_for_portability": true
+   "changed_for_portability": true,
+   "updated_in": "colab-status-recovery"
   },
   {
    "path": "tests/test_colab_local_tools.py",
@@ -29366,6 +29369,42 @@
      "path": "tests/test_s5_runner.py",
      "previous_sha256": null,
      "current_sha256": "d097b8a11ef776fad1e7a30ce599cb300c088fbdd41df2c0846313f39352a431"
+    }
+   ],
+   "dropped_tracked_paths": [],
+   "untracked_entries_kept_verbatim": 3425,
+   "note": "Only git-visible files were re-hashed; git-ignored payload entries (data/) were carried over unchanged. Run the full rebuild on a machine that has data/ to re-hash the payload."
+  },
+  {
+   "date": "2026-11-12",
+   "label": "colab-status-recovery",
+   "mode": "git_tracked_only",
+   "purpose": "Diagnose Colab status transport errors and recover verified results without relying on the original VM",
+   "changes": [
+    {
+     "path": "colab/README.md",
+     "previous_sha256": "dc096f38ebe8bb51e65df614ff35313b620b5dedb6f2decf8147d7461052a1a4",
+     "current_sha256": "744091a8e8300033558626f4a17ab20fd3ff64e6879dc8c45e3f3f41c438972f"
+    },
+    {
+     "path": "colab/launch.sh",
+     "previous_sha256": "8b2becb1e783684f390dc441037cac00a1967056c17a618118bf9cfb47af7cb5",
+     "current_sha256": "35483f9f007e554b6c4f6e886ffd13b7d00efabb937ae65ccdcc94d52bd62d63"
+    },
+    {
+     "path": "scripts/colab/local_tools.py",
+     "previous_sha256": "7b73b89f7a391e4fe491d84ee95e5044538871a358a77c0ab006e372488e6bc6",
+     "current_sha256": "95961686464f1c301c9c7c5e2a0936153e85cd873bf4267b172426055a2c90a7"
+    },
+    {
+     "path": "tests/colab_stub.py",
+     "previous_sha256": "b08f1c0ca57102591f30428f64000c7719af9b697daec01a433b12231df089fa",
+     "current_sha256": "e1d67a6c5b912389a4fb59b7e5a6799a1593c258dfb5279ff573f5813454d520"
+    },
+    {
+     "path": "tests/test_colab_launcher.py",
+     "previous_sha256": "be9af138e861f026ed2084e6283ea798744f0b193905078c9aa1864c2457a7ca",
+     "current_sha256": "fcc0a5de6b13cfc1e943c6480b1a3dfef810f980957d288077675a35ea2cadf4"
     }
    ],
    "dropped_tracked_paths": [],

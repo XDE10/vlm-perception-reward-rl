@@ -194,11 +194,17 @@ def test_dry_run_preflight_end_to_end(tmp_path):
 
 def test_dropped_connection_falls_back_to_polling(tmp_path):
     repo, origin, stub_root, env = build_world(tmp_path)
-    env["STUB_DROP_JOB"] = "1"
+    env.update(STUB_DROP_JOB="1", STUB_FAIL_STATUS="3")
     result = launch(repo, env, "preflight", "--dry-run", "--no-vllm")
     assert result.returncode == 0, result.stderr[-4000:]
     assert "polling the VM" in result.stderr
-    summary = assert_pushed(origin, only_run(repo))
+    assert "remote status connection recovered" in result.stderr
+    assert "503" in result.stderr
+    assert "SECRET-STATUS-TOKEN" not in result.stderr
+    run = only_run(repo)
+    assert "503" in (run / "status_download.log").read_text()
+    assert "SECRET-STATUS-TOKEN" not in (run / "status_download.log").read_text()
+    summary = assert_pushed(origin, run)
     assert summary["overall"] == "passed"
 
 
@@ -324,6 +330,26 @@ def test_vm_gone_after_the_job_results_come_from_github(tmp_path):
     assert (run_dir / "results" / run_dir.name / "summary.md").is_file()
     assert any(entry.startswith("p3-colab-vm|") for entry in branch_log(origin, run_dir))
     assert assert_pushed(origin, run_dir)["overall"] == "passed"
+
+
+def test_replaced_vm_recovers_verified_drive_archive_without_stopping_replacement(tmp_path):
+    repo, origin, stub_root, env = build_world(tmp_path)
+    fake_bin = tmp_path / "bin"
+    wrapper = fake_bin / "rclone"
+    wrapper.write_text("#!/bin/sh\nexec '%s' '%s' \"$@\"\n" % (sys.executable, ROOT / "tests/rclone_stub.py"))
+    wrapper.chmod(0o755)
+    drive_root = tmp_path / "drive"
+    drive_root.mkdir()
+    env.update(PATH=str(fake_bin) + os.pathsep + env["PATH"], FAKE_DRIVE_ROOT=str(drive_root),
+               P3_DRIVE_REMOTE="mydrive:", STUB_DROP_JOB="1", STUB_VANISH_AFTER_JOB="1", STUB_REPLACE_VM="1")
+    result = launch(repo, env, "preflight", "--dry-run", "--no-vllm", "--no-vm-push")
+    assert result.returncode == 0, result.stderr[-4000:]
+    assert "verified results recovered from Drive" in result.stderr
+    assert "releasing VM" not in result.stderr
+    run = only_run(repo)
+    name = (run / "session").read_text().strip()
+    assert (stub_root / "sessions" / name / "replacement").is_file()
+    assert assert_pushed(origin, run)["overall"] == "passed"
 
 
 def test_prepared_session_without_credentials_falls_back_to_a_local_push(tmp_path):

@@ -119,9 +119,11 @@ bash colab/launch.sh train --session p3
 
 ## 三、断线、中断与恢复
 
-- **按 Ctrl-C 或关掉终端**：只是断开连接，VM 上的任务会继续跑完。在准备好的 VM 上（第八节），任务结束时 VM 会自己把结果推到 GitHub，你可以不管它。
+- **按 Ctrl-C 或关掉终端**：本地启动器与 VM 断开。VM 仍在运行时，任务可继续，结束后按 VM 的配置保存结果。
 - **重新连上并取回结果**：`bash colab/launch.sh collect <run_id>`。它会等任务结束，然后取回结果、推送结果，并释放运行器新建的 VM。
-  如果 VM 已经被 Colab 回收，但 VM 在那之前推送过结果，`collect` 会直接用 GitHub 上的那份。
+  状态下载失败时，启动器会单独核对 Colab 会话，并将脱敏错误写入 `.colab_runs/<run_id>/status_download.log`。
+  原 VM 无法访问时，先尝试 GitHub 结果分支，再尝试用本地 rclone 从 Drive 取回经过大小和 SHA256 校验的结果包。
+  若 S4 的 VM 提前退出且只留下检查点，新的 `train` 会从最近一个经 Drive 核验的检查点恢复。
 - **主动释放 VM**（不要结果了）：`bash colab/launch.sh stop <run_id>`
 - **查看本地记录的所有运行**：`bash colab/launch.sh list`
 - **只是推送失败**（例如凭据问题）：修好后运行 `bash colab/launch.sh push <run_id>`。
