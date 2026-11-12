@@ -1,6 +1,6 @@
 {
  "project": "项目三_多模态几何推理",
- "date": "2026-11-11",
+ "date": "2026-11-12",
  "schema_version": 2,
  "source_root": "D:\\Users\\Mr.Z\\Desktop\\modern_genai",
  "files": [
@@ -23950,11 +23950,12 @@
   },
   {
    "path": "docs/guides/00_项目全貌与审查指南_S4.md",
-   "bytes": 14163,
-   "sha256": "66e502e2ad6c1be53273bf20cb30f777bda0bd8c127ff4fc4a739014c13d992a",
+   "bytes": 15216,
+   "sha256": "24b9a9d38de32d718959686370526e162da95ab6756385b0cad9ef474fec2b62",
    "source_sha256": "66e502e2ad6c1be53273bf20cb30f777bda0bd8c127ff4fc4a739014c13d992a",
-   "changed_for_portability": false,
-   "added_in": "2026-11-11_stage4_rev4"
+   "changed_for_portability": true,
+   "added_in": "2026-11-11_stage4_rev4",
+   "updated_in": "2026-11-12_stage4_progress"
   },
   {
    "path": "docs/guides/argon_review_prompt.md",
@@ -24177,10 +24178,11 @@
   },
   {
    "path": "reports/README.md",
-   "bytes": 2936,
-   "sha256": "7f78ff7e3e4335e504ce819cff2b6ed43a9ccde452460adcec5eb86be2ef6852",
+   "bytes": 3130,
+   "sha256": "cce955ee20ad8096dfb2f2879cbb5b853db90645bfee0311e43f2d13c40b6709",
    "source_sha256": "aba3ef9af9df316dea07a1cf6d11972f6969e61063e1a0b55b7aab42761f27f9",
-   "changed_for_portability": true
+   "changed_for_portability": true,
+   "updated_in": "2026-11-12_stage4_progress"
   },
   {
    "path": "reports/artifact_inventory.json",
@@ -25917,6 +25919,22 @@
    "sha256": "060ed64aca2b575247864ae2f215b675e364accb8fb4abc7eec86952d1f0063f",
    "source_sha256": "060ed64aca2b575247864ae2f215b675e364accb8fb4abc7eec86952d1f0063f",
    "changed_for_portability": false
+  },
+  {
+   "path": "reports/s4_execution_progress_20261112/README.md",
+   "bytes": 6364,
+   "sha256": "180b5985d8e74ed1e374c908064a15f893a66d91bab288274ba0e4734860c406",
+   "source_sha256": "180b5985d8e74ed1e374c908064a15f893a66d91bab288274ba0e4734860c406",
+   "changed_for_portability": false,
+   "added_in": "2026-11-12_stage4_progress"
+  },
+  {
+   "path": "reports/s4_execution_progress_20261112/summary.json",
+   "bytes": 2974,
+   "sha256": "0187eaf4f95fd5c58fb175477875d5b82f04aa2a4cdb16bc6ecb8439b34d11b1",
+   "source_sha256": "0187eaf4f95fd5c58fb175477875d5b82f04aa2a4cdb16bc6ecb8439b34d11b1",
+   "changed_for_portability": false,
+   "added_in": "2026-11-12_stage4_progress"
   },
   {
    "path": "reports/s4_preregistration_20261110/README.md",
@@ -29211,6 +29229,37 @@
      "path": "tests/test_s4_registration.py",
      "previous_sha256": "e7aeaf20cfd58939dda6e82a51bab2efc307631ac3e7340001a1302019f9fb62",
      "current_sha256": "5ee9f88a1167b91b617a13dbe8184b4db2f23ae82bd65f28fbbab25042c56733"
+    }
+   ],
+   "dropped_tracked_paths": [],
+   "untracked_entries_kept_verbatim": 3425,
+   "note": "Only git-visible files were re-hashed; git-ignored payload entries (data/) were carried over unchanged. Run the full rebuild on a machine that has data/ to re-hash the payload."
+  },
+  {
+   "date": "2026-11-12",
+   "label": "2026-11-12_stage4_progress",
+   "mode": "git_tracked_only",
+   "purpose": "Record S4 Pilot approval, Route B review adoption, and formal training live execution progress",
+   "changes": [
+    {
+     "path": "docs/guides/00_项目全貌与审查指南_S4.md",
+     "previous_sha256": "66e502e2ad6c1be53273bf20cb30f777bda0bd8c127ff4fc4a739014c13d992a",
+     "current_sha256": "24b9a9d38de32d718959686370526e162da95ab6756385b0cad9ef474fec2b62"
+    },
+    {
+     "path": "reports/README.md",
+     "previous_sha256": "7f78ff7e3e4335e504ce819cff2b6ed43a9ccde452460adcec5eb86be2ef6852",
+     "current_sha256": "cce955ee20ad8096dfb2f2879cbb5b853db90645bfee0311e43f2d13c40b6709"
+    },
+    {
+     "path": "reports/s4_execution_progress_20261112/README.md",
+     "previous_sha256": null,
+     "current_sha256": "180b5985d8e74ed1e374c908064a15f893a66d91bab288274ba0e4734860c406"
+    },
+    {
+     "path": "reports/s4_execution_progress_20261112/summary.json",
+     "previous_sha256": null,
+     "current_sha256": "0187eaf4f95fd5c58fb175477875d5b82f04aa2a4cdb16bc6ecb8439b34d11b1"
     }
    ],
    "dropped_tracked_paths": [],
