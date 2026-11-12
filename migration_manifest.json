@@ -4095,10 +4095,11 @@
   },
   {
    "path": "colab/README.md",
-   "bytes": 24897,
-   "sha256": "46bc51a0092b69debdfaa5d93058af0397f7be099ea8b9166f9bbd607a6d1e04",
+   "bytes": 26020,
+   "sha256": "dc096f38ebe8bb51e65df614ff35313b620b5dedb6f2decf8147d7461052a1a4",
    "source_sha256": "932007e1f9719066c8c3b6e17fd3da3ac427e094ffcc2fa7b67311b7bf8faa29",
-   "changed_for_portability": true
+   "changed_for_portability": true,
+   "updated_in": "s5-final-eval"
   },
   {
    "path": "colab/kernel_bootstrap.py",
@@ -4123,10 +4124,11 @@
   },
   {
    "path": "colab/launch.sh",
-   "bytes": 41500,
-   "sha256": "e14851e98de29718d085ef1f0967a8eac67cc91363562e51820d76bc9d90d674",
+   "bytes": 41696,
+   "sha256": "8b2becb1e783684f390dc441037cac00a1967056c17a618118bf9cfb47af7cb5",
    "source_sha256": "71a765f7cff528a8c46272a5888a66f5959e50363f016d83f51c9c7d637c5c39",
-   "changed_for_portability": true
+   "changed_for_portability": true,
+   "updated_in": "s5-final-eval"
   },
   {
    "path": "configs/README.md",
@@ -25958,6 +25960,14 @@
    "changed_for_portability": false
   },
   {
+   "path": "reports/s4_rollout_audit_20261112/README.md",
+   "bytes": 2675,
+   "sha256": "18595737b04f251298a38b2a8101f42cf60dc8af5917f2388392de7012aeb47a",
+   "source_sha256": "18595737b04f251298a38b2a8101f42cf60dc8af5917f2388392de7012aeb47a",
+   "changed_for_portability": false,
+   "added_in": "s5-final-eval"
+  },
+  {
    "path": "reports/strict_v8_20261024/approved_input_preflight.json",
    "bytes": 707,
    "sha256": "b1432785d75ebe9cb41772a175e0049162e86e60906c2a45897f4eaec4c3f1a0",
@@ -26449,10 +26459,11 @@
   },
   {
    "path": "scripts/README.md",
-   "bytes": 16124,
-   "sha256": "9ad1aa2140ef5e219b108a3b8503b81b2476e78d3111fce8957ddad39a46f6fb",
+   "bytes": 16515,
+   "sha256": "8194456d66a6935d1971e582fbd52e4261b33e357d02733bf542ebf070df48e1",
    "source_sha256": "eda255f3087e1cdbf10295a30894dcceb5eeed01031ac3dbc0f65b51d594256c",
-   "changed_for_portability": true
+   "changed_for_portability": true,
+   "updated_in": "s5-final-eval"
   },
   {
    "path": "scripts/__init__.py",
@@ -26532,6 +26543,14 @@
    "changed_for_portability": false
   },
   {
+   "path": "scripts/colab/final_eval.py",
+   "bytes": 9464,
+   "sha256": "d15e320df559ef62dc693f0a034ff3657539a7942bdc69e2904ef30dfe795765",
+   "source_sha256": "d15e320df559ef62dc693f0a034ff3657539a7942bdc69e2904ef30dfe795765",
+   "changed_for_portability": false,
+   "added_in": "s5-final-eval"
+  },
+  {
    "path": "scripts/colab/gpu_probe.py",
    "bytes": 13513,
    "sha256": "bd8d64f30cf7294516471c1507670760cbfd635be93295ce3564ba844afa08e2",
@@ -26595,6 +26614,22 @@
    "changed_for_portability": false
   },
   {
+   "path": "scripts/colab/s5_analysis.py",
+   "bytes": 6509,
+   "sha256": "c97be6c5ead58b3c64c78380f492005eedf67444a0e8a48a8319fe0f34bed4c7",
+   "source_sha256": "c97be6c5ead58b3c64c78380f492005eedf67444a0e8a48a8319fe0f34bed4c7",
+   "changed_for_portability": false,
+   "added_in": "s5-final-eval"
+  },
+  {
+   "path": "scripts/colab/s5_inputs.py",
+   "bytes": 6678,
+   "sha256": "455360ef91473c3d805aa6f2a7c263aaba53d17472db3c18405112e5b0619f23",
+   "source_sha256": "455360ef91473c3d805aa6f2a7c263aaba53d17472db3c18405112e5b0619f23",
+   "changed_for_portability": false,
+   "added_in": "s5-final-eval"
+  },
+  {
    "path": "scripts/colab/summarize_run.py",
    "bytes": 42471,
    "sha256": "1dd36d24bdee9742da565d020df05f0deb678634b29aebb7feaa6f856105e073",
@@ -26604,10 +26639,11 @@
   },
   {
    "path": "scripts/colab/tasks.py",
-   "bytes": 18912,
-   "sha256": "723a95ead9a5429c5bf8689f34185b48dd67d20e65fb32b3c7fee4fecb592c7d",
+   "bytes": 19773,
+   "sha256": "1d6ceacf384a48121f725f42c61c71fdd279afbb666f7e30e177f80925caba28",
    "source_sha256": "516613dcb3689e785698d1f7de5f88671b9298b95135ed53fc2a1d1af73962f5",
-   "changed_for_portability": true
+   "changed_for_portability": true,
+   "updated_in": "s5-final-eval"
   },
   {
    "path": "scripts/colab/train_s4.py",
@@ -27045,10 +27081,11 @@
   },
   {
    "path": "src/evaluation/public_sources.py",
-   "bytes": 4840,
-   "sha256": "1db2b9ef2be8e119b0c852e21761d7b2419ae192924062c7525b3346127de8d7",
+   "bytes": 4960,
+   "sha256": "0b13db934c383a506c31531f1df922b649c9e9c9ee84b7913a548ce468199ebd",
    "source_sha256": "1db2b9ef2be8e119b0c852e21761d7b2419ae192924062c7525b3346127de8d7",
-   "changed_for_portability": false
+   "changed_for_portability": true,
+   "updated_in": "s5-final-eval"
   },
   {
    "path": "src/evaluation/stats.py",
@@ -27558,6 +27595,14 @@
    "sha256": "8cf9a8491f45cbeed345020fc738aa0fe82a6db05225c480d035f4525af973e3",
    "source_sha256": "8cf9a8491f45cbeed345020fc738aa0fe82a6db05225c480d035f4525af973e3",
    "changed_for_portability": false
+  },
+  {
+   "path": "tests/test_s5_runner.py",
+   "bytes": 2553,
+   "sha256": "d097b8a11ef776fad1e7a30ce599cb300c088fbdd41df2c0846313f39352a431",
+   "source_sha256": "d097b8a11ef776fad1e7a30ce599cb300c088fbdd41df2c0846313f39352a431",
+   "changed_for_portability": false,
+   "added_in": "s5-final-eval"
   },
   {
    "path": "tests/test_tokenizer_audit.py",
@@ -29260,6 +29305,67 @@
      "path": "reports/s4_execution_progress_20261112/summary.json",
      "previous_sha256": null,
      "current_sha256": "0187eaf4f95fd5c58fb175477875d5b82f04aa2a4cdb16bc6ecb8439b34d11b1"
+    }
+   ],
+   "dropped_tracked_paths": [],
+   "untracked_entries_kept_verbatim": 3425,
+   "note": "Only git-visible files were re-hashed; git-ignored payload entries (data/) were carried over unchanged. Run the full rebuild on a machine that has data/ to re-hash the payload."
+  },
+  {
+   "date": "2026-11-12",
+   "label": "s5-final-eval",
+   "mode": "git_tracked_only",
+   "purpose": "D66 rollout audit and pre-registered S5 evaluation runner",
+   "changes": [
+    {
+     "path": "colab/README.md",
+     "previous_sha256": "46bc51a0092b69debdfaa5d93058af0397f7be099ea8b9166f9bbd607a6d1e04",
+     "current_sha256": "dc096f38ebe8bb51e65df614ff35313b620b5dedb6f2decf8147d7461052a1a4"
+    },
+    {
+     "path": "colab/launch.sh",
+     "previous_sha256": "e14851e98de29718d085ef1f0967a8eac67cc91363562e51820d76bc9d90d674",
+     "current_sha256": "8b2becb1e783684f390dc441037cac00a1967056c17a618118bf9cfb47af7cb5"
+    },
+    {
+     "path": "reports/s4_rollout_audit_20261112/README.md",
+     "previous_sha256": null,
+     "current_sha256": "18595737b04f251298a38b2a8101f42cf60dc8af5917f2388392de7012aeb47a"
+    },
+    {
+     "path": "scripts/README.md",
+     "previous_sha256": "9ad1aa2140ef5e219b108a3b8503b81b2476e78d3111fce8957ddad39a46f6fb",
+     "current_sha256": "8194456d66a6935d1971e582fbd52e4261b33e357d02733bf542ebf070df48e1"
+    },
+    {
+     "path": "scripts/colab/final_eval.py",
+     "previous_sha256": null,
+     "current_sha256": "d15e320df559ef62dc693f0a034ff3657539a7942bdc69e2904ef30dfe795765"
+    },
+    {
+     "path": "scripts/colab/s5_analysis.py",
+     "previous_sha256": null,
+     "current_sha256": "c97be6c5ead58b3c64c78380f492005eedf67444a0e8a48a8319fe0f34bed4c7"
+    },
+    {
+     "path": "scripts/colab/s5_inputs.py",
+     "previous_sha256": null,
+     "current_sha256": "455360ef91473c3d805aa6f2a7c263aaba53d17472db3c18405112e5b0619f23"
+    },
+    {
+     "path": "scripts/colab/tasks.py",
+     "previous_sha256": "723a95ead9a5429c5bf8689f34185b48dd67d20e65fb32b3c7fee4fecb592c7d",
+     "current_sha256": "1d6ceacf384a48121f725f42c61c71fdd279afbb666f7e30e177f80925caba28"
+    },
+    {
+     "path": "src/evaluation/public_sources.py",
+     "previous_sha256": "1db2b9ef2be8e119b0c852e21761d7b2419ae192924062c7525b3346127de8d7",
+     "current_sha256": "0b13db934c383a506c31531f1df922b649c9e9c9ee84b7913a548ce468199ebd"
+    },
+    {
+     "path": "tests/test_s5_runner.py",
+     "previous_sha256": null,
+     "current_sha256": "d097b8a11ef776fad1e7a30ce599cb300c088fbdd41df2c0846313f39352a431"
     }
    ],
    "dropped_tracked_paths": [],

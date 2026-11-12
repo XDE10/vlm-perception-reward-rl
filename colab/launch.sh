@@ -5,6 +5,7 @@
 #   bash colab/launch.sh v0 [options]          S3: evaluation inputs, train-only decisions, V0 diagnosis (A100/H100 only)
 #   bash colab/launch.sh pilot [options]       S4: the pre-registered pilot and its gates G1-G6 (A100-SXM4-40GB, Drive)
 #   bash colab/launch.sh train [options]       S4: formal runs in registered order, as many as fit (A100-SXM4-40GB, Drive)
+#   bash colab/launch.sh final-eval [options]  S5: frozen evaluation of V0 and registered finals (A100-SXM4-40GB, Drive)
 #   bash colab/launch.sh drive-check [options] cheap test of the optional Google Drive (rclone) setup
 #   bash colab/launch.sh collect RUN_ID        reattach after a disconnect: wait, fetch, push (from GitHub if the VM is gone)
 #   bash colab/launch.sh push RUN_ID           (re)push a run to its results/RUN_ID branch
@@ -624,8 +625,8 @@ cmd_run() {
   # the frozen runtime (D43) holds on A100 40/80 GB and H100 only: the VM checks this before installing anything
   [[ "$task" == "v0" ]] && min_gpu=40
   local required_gpu="" max_hours="" vm_hours=""
-  if [[ "$task" == "pilot" || "$task" == "train" ]]; then
-    # S4 runs only on the registered GPU (D54); the VM stops before installing anything on another one
+  if [[ "$task" == "pilot" || "$task" == "train" || "$task" == "final-eval" ]]; then
+    # Keep the same GPU model across formal evaluation runs as well as training.
     min_gpu=40
     required_gpu="$("$PY" -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["gpu_name"])' \
       configs/experiments/s4_runs_20261110.json)" || die "cannot read the GPU of the S4 registration"
@@ -655,7 +656,7 @@ cmd_run() {
   if [[ "$task" == "pilot" || "$task" == "train" ]] && [[ "$vllm" != 1 ]]; then
     die "--no-vllm does not apply to $task: the frozen runtime generates with vLLM"
   fi
-  if [[ "$task" == "pilot" || "$task" == "train" ]] && [[ -z "$attach" && "$dry" != 1 ]]; then
+  if [[ "$task" == "pilot" || "$task" == "train" || "$task" == "final-eval" ]] && [[ -z "$attach" && "$dry" != 1 ]]; then
     # a VM this runner creates has no rclone remote (the launcher never handles Drive credentials, D31/D37), so the
     # required drive_probe step would fail after the 10-20 minute environment build
     die "$task needs a VM with Google Drive (colab/README.md section 8); prepare it, then run: bash colab/launch.sh $task --session p3"
@@ -900,6 +901,7 @@ main() {
     v0) cmd_run v0 "$@" ;;
     pilot) cmd_run pilot "$@" ;;
     train) cmd_run train "$@" ;;
+    final-eval) cmd_run final-eval "$@" ;;
     drive-check) cmd_run drive-check "$@" ;;
     collect) cmd_collect "$@" ;;
     push) need git; check_python; load_run "${1:-}"; push_results "$RUN_ID" ;;

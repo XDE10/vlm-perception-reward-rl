@@ -290,8 +290,24 @@ def train_steps(ctx):
     ]
 
 
+def final_eval_steps(ctx):
+    from scripts.colab.s5_inputs import SOURCES
+
+    py, public, out = ctx.python, ctx.root / "public", ctx.out
+    cmd = [py, "-m", "scripts.colab.final_eval", "--sources", public, "--out", out / "s5",
+           "--cache", ctx.root / "s5-cache"] + drive_flags(ctx)
+    if ctx.dry_run:
+        return [step("s5_inventory", cmd + ["--inventory-only"], 1800)]
+    return s4_common(ctx) + [
+        step("public_sources", [py, "-m", "scripts.colab.public_sources", "--dest", public,
+                                "--out", out / "public_sources.json", "--names", *SOURCES], 3600),
+        step("final_eval", cmd + ["--model-path", ctx.model_dir], 21 * 3600, depends_on=["verify_pack", "public_sources"],
+             description="S5 P1 greedy predictions and preregistered paired comparisons"),
+    ]
+
+
 TASKS = {"preflight": preflight_steps, "drive-check": drive_check_steps, "v0": v0_steps, "pilot": pilot_steps,
-         "train": train_steps}
+         "train": train_steps, "final-eval": final_eval_steps}
 
 
 def steps_for(ctx):

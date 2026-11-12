@@ -358,3 +358,15 @@ bash colab/launch.sh train --session p3
 
 **结果分支**：每个任务的 `runs/<组>_seed<k>/` 下有运行身份、训练摘要、日志历史、压缩后的 `rollouts.jsonl.gz` 和每次尝试的
 `train.log`；`train_job.json` 是本次运行的计划和每个任务的结果。权重和 checkpoint 只在 Drive 和 VM 上。
+
+## 十、S5 正式终评
+
+在挂好 Drive 的 A100-SXM4-40GB 上运行 `bash colab/launch.sh final-eval --session p3 --release`。
+入口先核对登记任务在 Drive 上的终态，只评测配置和运行时哈希匹配的 `final/`，并按同一协议评测 V0。正式任务仍在运行或待跑时会退出。
+
+按 [S3 设计](../docs/plan/S3设计_20261109.md) 和 [S4 预注册](../docs/plan/S4预注册_20261110.md) 使用 P1、HF 贪心、1024 token、固定 32 条批次和未合并 LoRA。
+每个模型与条件的逐题结果核对后保存在 Drive 的 `s5/predictions/`。VM 中断后，用同一代码提交和环境重跑命令会复用已核对的条件。
+结果分支的 `s5/` 包含任务清单、逐题文件的 Drive 路径和 SHA256、九项主比较的区间与 Holm 校正、逐种子及次要结果。
+
+Geometry3K 的次要 InterGPS FALSE 率以可解析的去重断言为分母，使用训练同源的几何证伪器。
+MathVista testmini 使用原题、选项和单位字段组成提示，以项目的答案段抽取和确定性判分报告全量、GPS 和去 Geometry3K 来源三组结果。
