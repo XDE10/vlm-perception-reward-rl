@@ -1,0 +1,241 @@
+[p3] 12:39:48 GitHub: no credential file at /content/gh_credentials, so the launcher pushes the results from your machine (to let the VM push, see colab/README.md section 8)
+[p3] 12:39:48 job train-20261113T123614Z-51ed: 6 steps
+[p3] 12:39:48 step env_report started: /content/p3/env/base/bin/python -m scripts.colab.env_report --root /content/p3 --out /content/p3/out/train-20261113T123614Z-51ed/env.json
+[p3] 12:39:50 step env_report PASSED in 0m02s
+[p3] 12:39:50 step verify_pack started: /content/p3/env/base/bin/python -m scripts.colab.verify_pack --repo /content/p3/repo --out /content/p3/out/train-20261113T123614Z-51ed/pack_verification.json
+[p3] 12:39:50 step verify_pack PASSED in 0m00s
+[p3] 12:39:50 step register_check started: /content/p3/env/base/bin/python -m scripts.training.register_runs --check
+[p3] 12:39:53 step register_check PASSED in 0m02s
+[p3] 12:39:53 step drive_probe started: /usr/bin/python3 -m scripts.colab.drive probe --out /content/p3/out/train-20261113T123614Z-51ed/drive_probe.json --run-id train-20261113T123614Z-51ed --scratch /content/p3/out/train-20261113T123614Z-51ed/.drive_scratch --remote mydrive: --dir ColabProjects/vlm-perception-reward-rl --mount /content/m
+[p3] 12:40:40 step drive_probe PASSED in 0m46s
+[p3] 12:40:40 step vllm_env started: /usr/bin/python3 -m scripts.colab.bootstrap vllm-env --root /content/p3
+[p3] 12:41:08 step vllm_env PASSED in 0m28s
+[p3] 12:41:08 step train_runs started: /content/p3/env/base/bin/python -m scripts.colab.train_s4 --repo /content/p3/repo --root /content/p3 --out /content/p3/out/train-20261113T123614Z-51ed --job train-20261113T123614Z-51ed --session p3-d66-Flysb-2 --drive-remote mydrive: --drive-dir ColabProjects/vlm-perception-reward-rl --drive-mount /
+[p3] 12:42:08 train_runs running 1m00s | [p3] 12:42:03 train: #5 rl_v5_placebo/seed1: skip (completed)
+[p3] 12:43:08 train_runs running 2m00s | [p3] 12:42:48 train: #12 rl_ans/seed3: start
+[p3] 12:44:08 train_runs running 3m00s | [p3] 12:42:48 train: #12 rl_ans/seed3: start
+[p3] 12:45:08 train_runs running 4m00s | [p3] 12:42:48 train: #12 rl_ans/seed3: start
+[p3] 12:46:08 train_runs running 5m00s | [p3] 12:42:48 train: #12 rl_ans/seed3: start
+[p3] 12:47:08 train_runs running 6m00s | [p3] 12:42:48 train: #12 rl_ans/seed3: start
+[p3] 12:48:08 train_runs running 7m00s | [p3] 12:47:12 [rl_ans/seed3] step 1/228 | 73.3 s/step | eta 4h37m27s | format 0.6406 | answer 0.0781
+[p3] 12:49:08 train_runs running 8m00s | [p3] 12:49:06 [rl_ans/seed3] step 3/228 | 61.1 s/step | eta 3h49m01s | format 0.6406 | answer 0.0781
+[p3] 12:50:08 train_runs running 9m00s | [p3] 12:49:06 [rl_ans/seed3] step 3/228 | 61.1 s/step | eta 3h49m01s | format 0.6406 | answer 0.0781
+[p3] 12:51:08 train_runs running 10m00s | [p3] 12:50:27 [rl_ans/seed3] step 4/228 | 61.1 s/step | eta 3h48m00s | format 0.5938 | answer 0.0625
+[p3] 12:52:08 train_runs running 11m00s | [p3] 12:51:13 [rl_ans/seed3] step 5/228 | 61.1 s/step | eta 3h46m59s | format 0.7188 | answer 0.0625
+[p3] 12:53:08 train_runs running 12m00s | [p3] 12:53:00 [rl_ans/seed3] step 7/228 | 55.6 s/step | eta 3h24m54s | format 0.4844 | answer 0.0312
+[p3] 12:54:08 train_runs running 13m00s | [p3] 12:53:52 [rl_ans/seed3] step 8/228 | 50.9 s/step | eta 3h06m31s | format 0.5781 | answer 0.0312
+[p3] 12:55:08 train_runs running 14m00s | [p3] 12:54:58 [rl_ans/seed3] step 9/228 | 55.6 s/step | eta 3h23m02s | format 0.6562 | answer 0.0
+[p3] 12:56:08 train_runs running 15m00s | [p3] 12:55:58 [rl_ans/seed3] step 10/228 | 55.6 s/step | eta 3h22m07s | format 0.6094 | answer 0.0312
+[p3] 12:57:08 train_runs running 16m00s | [p3] 12:56:40 [rl_ans/seed3] step 11/228 | 55.6 s/step | eta 3h21m11s | format 0.7031 | answer 0.0469
+[p3] 12:58:08 train_runs running 17m00s | [p3] 12:57:27 [rl_ans/seed3] step 12/228 | 50.9 s/step | eta 3h03m07s | format 0.6875 | answer 0.0312
+[p3] 12:59:08 train_runs running 18m00s | [p3] 12:58:21 [rl_ans/seed3] step 13/228 | 52.7 s/step | eta 3h08m50s | format 0.625 | answer 0.0156
+[p3] 13:00:08 train_runs running 19m00s | [p3] 13:00:05 [rl_ans/seed3] step 15/228 | 52.7 s/step | eta 3h07m05s | format 0.7031 | answer 0.0938
+[p3] 13:01:08 train_runs running 20m00s | [p3] 13:00:56 [rl_ans/seed3] step 16/228 | 50.9 s/step | eta 2h59m44s | format 0.5938 | answer 0.0625
+[p3] 13:02:08 train_runs running 21m00s | [p3] 13:00:56 [rl_ans/seed3] step 16/228 | 50.9 s/step | eta 2h59m44s | format 0.5938 | answer 0.0625
+[p3] 13:03:08 train_runs running 22m00s | [p3] 13:03:06 [rl_ans/seed3] step 18/228 | 52.7 s/step | eta 3h04m27s | format 0.6875 | answer 0.0938
+[p3] 13:04:08 train_runs running 23m00s | [p3] 13:03:06 [rl_ans/seed3] step 18/228 | 52.7 s/step | eta 3h04m27s | format 0.6875 | answer 0.0938
+[p3] 13:05:08 train_runs running 24m00s | [p3] 13:04:16 [rl_ans/seed3] step 19/228 | 53.1 s/step | eta 3h04m49s | format 0.7188 | answer 0.0781
+[p3] 13:06:08 train_runs running 25m00s | [p3] 13:06:05 [rl_ans/seed3] step 21/228 | 53.1 s/step | eta 3h03m03s | format 0.6719 | answer 0.0156
+[p3] 13:07:08 train_runs running 26m00s | [p3] 13:07:05 [rl_ans/seed3] step 22/228 | 53.1 s/step | eta 3h02m10s | format 0.6562 | answer 0.0469
+[p3] 13:08:08 train_runs running 27m00s | [p3] 13:07:05 [rl_ans/seed3] step 22/228 | 53.1 s/step | eta 3h02m10s | format 0.6562 | answer 0.0469
+[p3] 13:09:08 train_runs running 28m00s | [p3] 13:08:15 [rl_ans/seed3] step 23/228 | 53.9 s/step | eta 3h03m59s | format 0.6719 | answer 0.0625
+[p3] 13:10:08 train_runs running 29m00s | [p3] 13:09:11 [rl_ans/seed3] step 24/228 | 53.9 s/step | eta 3h03m06s | format 0.6094 | answer 0.0312
+[p3] 13:11:08 train_runs running 30m00s | [p3] 13:10:11 [rl_ans/seed3] step 25/228 | 54.6 s/step | eta 3h04m36s | format 0.7031 | answer 0.0156
+[p3] 13:12:08 train_runs running 31m00s | [p3] 13:11:12 [rl_ans/seed3] step 26/228 | 54.6 s/step | eta 3h03m42s | format 0.625 | answer 0.0469
+[p3] 13:13:08 train_runs running 32m00s | [p3] 13:13:01 [rl_ans/seed3] step 28/228 | 54.6 s/step | eta 3h01m52s | format 0.7969 | answer 0.0
+[p3] 13:14:08 train_runs running 33m00s | [p3] 13:13:52 [rl_ans/seed3] step 29/228 | 54.6 s/step | eta 3h00m58s | format 0.75 | answer 0.125
+[p3] 13:15:08 train_runs running 34m00s | [p3] 13:14:50 [rl_ans/seed3] step 30/228 | 54.6 s/step | eta 3h00m03s | format 0.5781 | answer 0.0312
+[p3] 13:16:08 train_runs running 35m00s | [p3] 13:16:01 [rl_ans/seed3] step 31/228 | 54.7 s/step | eta 2h59m29s | format 0.6406 | answer 0.1094
+[p3] 13:17:08 train_runs running 36m00s | [p3] 13:16:01 [rl_ans/seed3] step 31/228 | 54.7 s/step | eta 2h59m29s | format 0.6406 | answer 0.1094
+[p3] 13:18:08 train_runs running 37m00s | [p3] 13:17:12 [rl_ans/seed3] step 32/228 | 54.7 s/step | eta 2h58m34s | format 0.6875 | answer 0.1719
+[p3] 13:19:08 train_runs running 38m00s | [p3] 13:18:27 [rl_ans/seed3] step 33/228 | 55.6 s/step | eta 3h00m47s | format 0.6719 | answer 0.0781
+[p3] 13:20:08 train_runs running 39m00s | [p3] 13:19:25 [rl_ans/seed3] step 34/228 | 55.6 s/step | eta 2h59m52s | format 0.6562 | answer 0.1094
+[p3] 13:21:08 train_runs running 40m00s | [p3] 13:20:16 [rl_ans/seed3] step 35/228 | 55.6 s/step | eta 2h58m56s | format 0.5469 | answer 0.0469
+[p3] 13:22:08 train_runs running 41m00s | [p3] 13:21:12 [rl_ans/seed3] step 36/228 | 54.7 s/step | eta 2h54m55s | format 0.7188 | answer 0.0156
+[p3] 13:23:08 train_runs running 42m00s | [p3] 13:23:03 [rl_ans/seed3] step 38/228 | 54.7 s/step | eta 2h53m06s | format 0.5312 | answer 0.0469
+[p3] 13:24:08 train_runs running 43m00s | [p3] 13:23:54 [rl_ans/seed3] step 39/228 | 54.7 s/step | eta 2h52m11s | format 0.6875 | answer 0.0312
+[p3] 13:25:08 train_runs running 44m00s | [p3] 13:24:44 [rl_ans/seed3] step 40/228 | 54.6 s/step | eta 2h50m58s | format 0.7344 | answer 0.0469
+[p3] 13:26:08 train_runs running 45m00s | [p3] 13:25:38 [rl_ans/seed3] step 41/228 | 54.6 s/step | eta 2h50m03s | format 0.6719 | answer 0.0469
+[p3] 13:27:08 train_runs running 46m00s | [p3] 13:26:21 [rl_ans/seed3] step 42/228 | 54.0 s/step | eta 2h47m29s | format 0.6875 | answer 0.0469
+[p3] 13:28:08 train_runs running 47m00s | [p3] 13:27:25 [rl_ans/seed3] step 43/228 | 54.6 s/step | eta 2h48m14s | format 0.6562 | answer 0.0312
+[p3] 13:29:08 train_runs running 48m00s | [p3] 13:28:22 [rl_ans/seed3] step 44/228 | 54.6 s/step | eta 2h47m19s | format 0.5625 | answer 0.0625
+[p3] 13:30:08 train_runs running 49m00s | [p3] 13:29:19 [rl_ans/seed3] step 45/228 | 54.7 s/step | eta 2h46m43s | format 0.6094 | answer 0.0625
+[p3] 13:31:08 train_runs running 50m00s | [p3] 13:31:04 [rl_ans/seed3] step 47/228 | 54.7 s/step | eta 2h44m54s | format 0.6406 | answer 0.0312
+[p3] 13:32:09 train_runs running 51m00s | [p3] 13:31:55 [rl_ans/seed3] step 48/228 | 54.6 s/step | eta 2h43m41s | format 0.7188 | answer 0.0938
+[p3] 13:33:09 train_runs running 52m00s | [p3] 13:32:54 [rl_ans/seed3] step 49/228 | 54.7 s/step | eta 2h43m05s | format 0.75 | answer 0.1406
+[p3] 13:34:09 train_runs running 53m00s | [p3] 13:33:57 [rl_ans/seed3] step 50/228 | 54.7 s/step | eta 2h42m10s | format 0.75 | answer 0.0469
+[p3] 13:35:09 train_runs running 54m00s | [p3] 13:35:06 [rl_ans/seed3] step 51/228 | 55.6 s/step | eta 2h43m58s | format 0.5781 | answer 0.0312
+[p3] 13:36:09 train_runs running 55m00s | [p3] 13:35:55 [rl_ans/seed3] step 52/228 | 54.7 s/step | eta 2h40m21s | format 0.6875 | answer 0.0938
+[p3] 13:37:09 train_runs running 56m00s | [p3] 13:36:48 [rl_ans/seed3] step 53/228 | 54.7 s/step | eta 2h39m26s | format 0.5156 | answer 0.0156
+[p3] 13:38:09 train_runs running 57m00s | [p3] 13:37:55 [rl_ans/seed3] step 54/228 | 54.7 s/step | eta 2h38m31s | format 0.7031 | answer 0.0781
+[p3] 13:39:09 train_runs running 58m00s | [p3] 13:39:00 [rl_ans/seed3] step 55/228 | 55.6 s/step | eta 2h40m16s | format 0.7031 | answer 0.1406
+[p3] 13:40:09 train_runs running 59m00s | [p3] 13:39:58 [rl_ans/seed3] step 56/228 | 55.6 s/step | eta 2h39m20s | format 0.6562 | answer 0.0
+[p3] 13:41:09 train_runs running 1h00m00s | [p3] 13:40:53 [rl_ans/seed3] step 57/228 | 55.6 s/step | eta 2h38m25s | format 0.6406 | answer 0.0938
+[p3] 13:42:09 train_runs running 1h01m00s | [p3] 13:42:07 [rl_ans/seed3] step 58/228 | 55.6 s/step | eta 2h37m29s | format 0.625 | answer 0.0938
+[p3] 13:43:09 train_runs running 1h02m00s | [p3] 13:42:07 [rl_ans/seed3] step 58/228 | 55.6 s/step | eta 2h37m29s | format 0.625 | answer 0.0938
+[p3] 13:44:09 train_runs running 1h03m00s | [p3] 13:43:10 [rl_ans/seed3] step 59/228 | 55.6 s/step | eta 2h36m41s | format 0.7656 | answer 0.0312
+[p3] 13:45:09 train_runs running 1h04m00s | [p3] 13:44:56 [rl_ans/seed3] step 61/228 | 55.6 s/step | eta 2h34m50s | format 0.7031 | answer 0.0312
+[p3] 13:46:09 train_runs running 1h05m00s | [p3] 13:45:47 [rl_ans/seed3] step 62/228 | 55.6 s/step | eta 2h33m47s | format 0.6875 | answer 0.0625
+[p3] 13:47:09 train_runs running 1h06m00s | [p3] 13:46:38 [rl_ans/seed3] step 63/228 | 55.6 s/step | eta 2h32m51s | format 0.6406 | answer 0.1406
+[p3] 13:48:09 train_runs running 1h07m00s | [p3] 13:47:24 [rl_ans/seed3] step 64/228 | 54.7 s/step | eta 2h29m25s | format 0.6406 | answer 0.0156
+[p3] 13:49:09 train_runs running 1h08m00s | [p3] 13:49:00 [rl_ans/seed3] step 66/228 | 54.6 s/step | eta 2h27m19s | format 0.6875 | answer 0.0625
+[p3] 13:50:09 train_runs running 1h09m00s | [p3] 13:49:57 [rl_ans/seed3] step 67/228 | 54.7 s/step | eta 2h26m41s | format 0.75 | answer 0.0625
+[p3] 13:51:09 train_runs running 1h10m00s | [p3] 13:50:54 [rl_ans/seed3] step 68/228 | 54.7 s/step | eta 2h25m46s | format 0.6094 | answer 0.0312
+[p3] 13:52:09 train_runs running 1h11m00s | [p3] 13:52:03 [rl_ans/seed3] step 69/228 | 55.6 s/step | eta 2h27m18s | format 0.7656 | answer 0.0156
+[p3] 13:53:09 train_runs running 1h12m00s | [p3] 13:52:03 [rl_ans/seed3] step 69/228 | 55.6 s/step | eta 2h27m18s | format 0.7656 | answer 0.0156
+[p3] 13:54:09 train_runs running 1h13m00s | [p3] 13:53:14 [rl_ans/seed3] step 70/228 | 55.6 s/step | eta 2h26m22s | format 0.5781 | answer 0.0781
+[p3] 13:55:09 train_runs running 1h14m00s | [p3] 13:54:12 [rl_ans/seed3] step 71/228 | 55.6 s/step | eta 2h25m33s | format 0.7812 | answer 0.0938
+[p3] 13:56:09 train_runs running 1h15m00s | [p3] 13:55:12 [rl_ans/seed3] step 72/228 | 55.6 s/step | eta 2h24m38s | format 0.7656 | answer 0.0312
+[p3] 13:57:09 train_runs running 1h16m00s | [p3] 13:56:15 [rl_ans/seed3] step 73/228 | 55.8 s/step | eta 2h24m06s | format 0.6875 | answer 0.0781
+[p3] 13:58:09 train_runs running 1h17m00s | [p3] 13:57:23 [rl_ans/seed3] step 74/228 | 55.8 s/step | eta 2h23m10s | format 0.75 | answer 0.125
+[p3] 13:59:09 train_runs running 1h18m00s | [p3] 13:58:19 [rl_ans/seed3] step 75/228 | 55.8 s/step | eta 2h22m14s | format 0.6875 | answer 0.0312
+[p3] 14:00:09 train_runs running 1h19m00s | [p3] 13:59:30 [rl_ans/seed3] step 76/228 | 55.8 s/step | eta 2h21m18s | format 0.7188 | answer 0.0625
+[p3] 14:01:09 train_runs running 1h20m00s | [p3] 14:00:26 [rl_ans/seed3] step 77/228 | 55.8 s/step | eta 2h20m22s | format 0.6719 | answer 0.0312
+[p3] 14:02:09 train_runs running 1h21m00s | [p3] 14:01:28 [rl_ans/seed3] step 78/228 | 55.8 s/step | eta 2h19m27s | format 0.7344 | answer 0.0781
+[p3] 14:03:09 train_runs running 1h22m00s | [p3] 14:02:44 [rl_ans/seed3] step 79/228 | 56.4 s/step | eta 2h19m56s | format 0.6875 | answer 0.1406
+[p3] 14:04:09 train_runs running 1h23m00s | [p3] 14:03:47 [rl_ans/seed3] step 80/228 | 56.4 s/step | eta 2h19m00s | format 0.7031 | answer 0.0625
+[p3] 14:05:09 train_runs running 1h24m00s | [p3] 14:04:45 [rl_ans/seed3] step 81/228 | 56.5 s/step | eta 2h18m19s | format 0.6562 | answer 0.0469
+[p3] 14:06:09 train_runs running 1h25m00s | [p3] 14:05:42 [rl_ans/seed3] step 82/228 | 56.4 s/step | eta 2h17m07s | format 0.7656 | answer 0.1094
+[p3] 14:07:09 train_runs running 1h26m00s | [p3] 14:06:45 [rl_ans/seed3] step 83/228 | 56.5 s/step | eta 2h16m26s | format 0.6094 | answer 0.0469
+[p3] 14:08:09 train_runs running 1h27m00s | [p3] 14:07:54 [rl_ans/seed3] step 84/228 | 56.5 s/step | eta 2h15m29s | format 0.7188 | answer 0.0469
+[p3] 14:09:09 train_runs running 1h28m00s | [p3] 14:08:55 [rl_ans/seed3] step 85/228 | 57.2 s/step | eta 2h16m14s | format 0.6875 | answer 0.0625
+[p3] 14:10:09 train_runs running 1h29m00s | [p3] 14:09:50 [rl_ans/seed3] step 86/228 | 56.5 s/step | eta 2h13m36s | format 0.7656 | answer 0.0312
+[p3] 14:11:09 train_runs running 1h30m00s | [p3] 14:11:08 [rl_ans/seed3] step 87/228 | 57.2 s/step | eta 2h14m19s | format 0.7188 | answer 0.0156
+[p3] 14:12:09 train_runs running 1h31m00s | [p3] 14:11:49 [rl_ans/seed3] step 88/228 | 56.5 s/step | eta 2h11m44s | format 0.7969 | answer 0.0781
+[p3] 14:13:09 train_runs running 1h32m00s | [p3] 14:12:34 [rl_ans/seed3] step 89/228 | 56.5 s/step | eta 2h10m47s | format 0.7344 | answer 0.0
+[p3] 14:14:09 train_runs running 1h33m00s | [p3] 14:13:34 [rl_ans/seed3] step 90/228 | 56.5 s/step | eta 2h09m51s | format 0.7969 | answer 0.0
+[p3] 14:15:09 train_runs running 1h34m00s | [p3] 14:14:29 [rl_ans/seed3] step 91/228 | 56.5 s/step | eta 2h08m54s | format 0.7812 | answer 0.0625
+[p3] 14:16:09 train_runs running 1h35m00s | [p3] 14:15:24 [rl_ans/seed3] step 92/228 | 56.4 s/step | eta 2h07m44s | format 0.7344 | answer 0.125
+[p3] 14:17:09 train_runs running 1h36m00s | [p3] 14:17:02 [rl_ans/seed3] step 94/228 | 55.8 s/step | eta 2h04m34s | format 0.75 | answer 0.0469
+[p3] 14:18:09 train_runs running 1h37m00s | [p3] 14:17:56 [rl_ans/seed3] step 95/228 | 55.8 s/step | eta 2h03m38s | format 0.8281 | answer 0.0938
+[p3] 14:19:09 train_runs running 1h38m00s | [p3] 14:18:39 [rl_ans/seed3] step 96/228 | 55.6 s/step | eta 2h02m23s | format 0.7656 | answer 0.0469
+[p3] 14:20:09 train_runs running 1h39m00s | [p3] 14:19:46 [rl_ans/seed3] step 97/228 | 55.8 s/step | eta 2h01m47s | format 0.7812 | answer 0.1094
+[p3] 14:21:09 train_runs running 1h40m00s | [p3] 14:20:39 [rl_ans/seed3] step 98/228 | 55.6 s/step | eta 2h00m31s | format 0.6094 | answer 0.1094
+[p3] 14:22:09 train_runs running 1h41m00s | [p3] 14:21:36 [rl_ans/seed3] step 99/228 | 55.8 s/step | eta 1h59m55s | format 0.7812 | answer 0.0625
+[p3] 14:23:09 train_runs running 1h42m00s | [p3] 14:23:07 [rl_ans/seed3] step 101/228 | 55.6 s/step | eta 1h57m44s | format 0.7812 | answer 0.0625
+[p3] 14:24:09 train_runs running 1h43m00s | [p3] 14:24:06 [rl_ans/seed3] step 102/228 | 55.6 s/step | eta 1h56m49s | format 0.75 | answer 0.1562
+[p3] 14:25:09 train_runs running 1h44m00s | [p3] 14:24:06 [rl_ans/seed3] step 102/228 | 55.6 s/step | eta 1h56m49s | format 0.75 | answer 0.1562
+[p3] 14:26:09 train_runs running 1h45m00s | [p3] 14:26:06 [rl_ans/seed3] step 104/228 | 55.6 s/step | eta 1h54m58s | format 0.7812 | answer 0.0781
+[p3] 14:27:09 train_runs running 1h46m00s | [p3] 14:26:57 [rl_ans/seed3] step 105/228 | 55.6 s/step | eta 1h54m02s | format 0.7031 | answer 0.0469
+[p3] 14:28:09 train_runs running 1h47m00s | [p3] 14:27:54 [rl_ans/seed3] step 106/228 | 55.6 s/step | eta 1h53m01s | format 0.7031 | answer 0.0312
+[p3] 14:29:09 train_runs running 1h48m00s | [p3] 14:29:06 [rl_ans/seed3] step 107/228 | 55.6 s/step | eta 1h52m11s | format 0.7812 | answer 0.1406
+[p3] 14:30:09 train_runs running 1h49m00s | [p3] 14:29:59 [rl_ans/seed3] step 108/228 | 55.6 s/step | eta 1h51m10s | format 0.9062 | answer 0.0469
+[p3] 14:31:09 train_runs running 1h50m00s | [p3] 14:30:48 [rl_ans/seed3] step 109/228 | 55.6 s/step | eta 1h50m14s | format 0.6875 | answer 0.0781
+[p3] 14:32:09 train_runs running 1h51m00s | [p3] 14:31:32 [rl_ans/seed3] step 110/228 | 55.6 s/step | eta 1h49m18s | format 0.7656 | answer 0.1562
+[p3] 14:33:09 train_runs running 1h52m00s | [p3] 14:32:24 [rl_ans/seed3] step 111/228 | 55.6 s/step | eta 1h48m23s | format 0.6875 | answer 0.125
+[p3] 14:34:09 train_runs running 1h53m00s | [p3] 14:34:07 [rl_ans/seed3] step 113/228 | 55.6 s/step | eta 1h46m31s | format 0.7656 | answer 0.0469
+[p3] 14:35:09 train_runs running 1h54m00s | [p3] 14:34:57 [rl_ans/seed3] step 114/228 | 55.3 s/step | eta 1h45m03s | format 0.8125 | answer 0.0312
+[p3] 14:36:09 train_runs running 1h55m00s | [p3] 14:35:54 [rl_ans/seed3] step 115/228 | 55.3 s/step | eta 1h44m07s | format 0.7969 | answer 0.0469
+[p3] 14:37:09 train_runs running 1h56m00s | [p3] 14:36:58 [rl_ans/seed3] step 116/228 | 55.3 s/step | eta 1h43m12s | format 0.7031 | answer 0.0469
+[p3] 14:38:09 train_runs running 1h57m00s | [p3] 14:38:01 [rl_ans/seed3] step 117/228 | 55.6 s/step | eta 1h42m49s | format 0.7344 | answer 0.0156
+[p3] 14:39:09 train_runs running 1h58m00s | [p3] 14:38:49 [rl_ans/seed3] step 118/228 | 55.3 s/step | eta 1h41m21s | format 0.8125 | answer 0.0469
+[p3] 14:40:09 train_runs running 1h59m00s | [p3] 14:39:42 [rl_ans/seed3] step 119/228 | 55.3 s/step | eta 1h40m26s | format 0.7188 | answer 0.0938
+[p3] 14:41:09 train_runs running 2h00m00s | [p3] 14:40:44 [rl_ans/seed3] step 120/228 | 55.3 s/step | eta 1h39m31s | format 0.75 | answer 0.0625
+[p3] 14:42:09 train_runs running 2h01m00s | [p3] 14:41:44 [rl_ans/seed3] step 121/228 | 55.6 s/step | eta 1h39m07s | format 0.7656 | answer 0.0938
+[p3] 14:43:09 train_runs running 2h02m00s | [p3] 14:42:35 [rl_ans/seed3] step 122/228 | 55.3 s/step | eta 1h37m40s | format 0.75 | answer 0.125
+[p3] 14:44:09 train_runs running 2h03m00s | [p3] 14:43:34 [rl_ans/seed3] step 123/228 | 55.6 s/step | eta 1h37m16s | format 0.7031 | answer 0.0781
+[p3] 14:45:09 train_runs running 2h04m00s | [p3] 14:44:40 [rl_ans/seed3] step 124/228 | 55.6 s/step | eta 1h36m20s | format 0.6875 | answer 0.2031
+[p3] 14:46:09 train_runs running 2h05m00s | [p3] 14:46:05 [rl_ans/seed3] step 125/228 | 55.6 s/step | eta 1h35m25s | format 0.7188 | answer 0.0625
+[p3] 14:47:09 train_runs running 2h06m00s | [p3] 14:47:01 [rl_ans/seed3] step 126/228 | 55.6 s/step | eta 1h34m29s | format 0.75 | answer 0.0312
+[p3] 14:48:09 train_runs running 2h07m00s | [p3] 14:47:54 [rl_ans/seed3] step 127/228 | 55.6 s/step | eta 1h33m33s | format 0.6719 | answer 0.0781
+[p3] 14:49:09 train_runs running 2h08m00s | [p3] 14:48:56 [rl_ans/seed3] step 128/228 | 55.6 s/step | eta 1h32m38s | format 0.6875 | answer 0.1094
+[p3] 14:50:09 train_runs running 2h09m00s | [p3] 14:49:46 [rl_ans/seed3] step 129/228 | 55.6 s/step | eta 1h31m42s | format 0.7812 | answer 0.125
+[p3] 14:51:09 train_runs running 2h10m00s | [p3] 14:50:51 [rl_ans/seed3] step 130/228 | 55.6 s/step | eta 1h30m46s | format 0.7344 | answer 0.125
+[p3] 14:52:09 train_runs running 2h11m00s | [p3] 14:51:47 [rl_ans/seed3] step 131/228 | 55.6 s/step | eta 1h29m51s | format 0.7969 | answer 0.0
+[p3] 14:53:09 train_runs running 2h12m00s | [p3] 14:52:35 [rl_ans/seed3] step 132/228 | 55.3 s/step | eta 1h28m27s | format 0.6562 | answer 0.125
+[p3] 14:54:09 train_runs running 2h13m00s | [p3] 14:53:36 [rl_ans/seed3] step 133/228 | 55.6 s/step | eta 1h28m00s | format 0.8125 | answer 0.0469
+[p3] 14:55:09 train_runs running 2h14m00s | [p3] 14:54:26 [rl_ans/seed3] step 134/228 | 55.3 s/step | eta 1h26m37s | format 0.6719 | answer 0.0625
+[p3] 14:56:09 train_runs running 2h15m00s | [p3] 14:55:22 [rl_ans/seed3] step 135/228 | 55.3 s/step | eta 1h25m42s | format 0.6875 | answer 0.0625
+[p3] 14:57:09 train_runs running 2h16m00s | [p3] 14:56:32 [rl_ans/seed3] step 136/228 | 55.3 s/step | eta 1h24m46s | format 0.7969 | answer 0.0938
+[p3] 14:58:09 train_runs running 2h17m00s | [p3] 14:57:33 [rl_ans/seed3] step 137/228 | 55.6 s/step | eta 1h24m17s | format 0.6719 | answer 0.0469
+[p3] 14:59:09 train_runs running 2h18m00s | [p3] 14:59:04 [rl_ans/seed3] step 139/228 | 55.3 s/step | eta 1h22m00s | format 0.8125 | answer 0.0625
+[p3] 15:00:09 train_runs running 2h19m00s | [p3] 15:00:04 [rl_ans/seed3] step 140/228 | 55.3 s/step | eta 1h21m05s | format 0.6719 | answer 0.0
+[p3] 15:01:09 train_runs running 2h20m00s | [p3] 15:00:04 [rl_ans/seed3] step 140/228 | 55.3 s/step | eta 1h21m05s | format 0.6719 | answer 0.0
+[p3] 15:02:09 train_runs running 2h21m00s | [p3] 15:02:04 [rl_ans/seed3] step 142/228 | 55.3 s/step | eta 1h19m15s | format 0.6875 | answer 0.0156
+[p3] 15:03:09 train_runs running 2h22m00s | [p3] 15:02:47 [rl_ans/seed3] step 143/228 | 55.3 s/step | eta 1h18m19s | format 0.7656 | answer 0.1094
+[p3] 15:04:09 train_runs running 2h23m00s | [p3] 15:03:47 [rl_ans/seed3] step 144/228 | 55.3 s/step | eta 1h17m24s | format 0.7188 | answer 0.0312
+[p3] 15:05:09 train_runs running 2h24m00s | [p3] 15:04:44 [rl_ans/seed3] step 145/228 | 55.6 s/step | eta 1h16m53s | format 0.7656 | answer 0.1875
+[p3] 15:06:09 train_runs running 2h25m00s | [p3] 15:05:27 [rl_ans/seed3] step 146/228 | 55.3 s/step | eta 1h15m33s | format 0.7344 | answer 0.0625
+[p3] 15:07:09 train_runs running 2h26m00s | [p3] 15:07:02 [rl_ans/seed3] step 148/228 | 54.9 s/step | eta 1h13m14s | format 0.7656 | answer 0.0625
+[p3] 15:08:09 train_runs running 2h27m00s | [p3] 15:07:45 [rl_ans/seed3] step 149/228 | 54.9 s/step | eta 1h12m19s | format 0.7031 | answer 0.0781
+[p3] 15:09:09 train_runs running 2h28m00s | [p3] 15:08:50 [rl_ans/seed3] step 150/228 | 54.9 s/step | eta 1h11m24s | format 0.7031 | answer 0.0625
+[p3] 15:10:09 train_runs running 2h29m00s | [p3] 15:09:51 [rl_ans/seed3] step 151/228 | 55.3 s/step | eta 1h10m57s | format 0.7969 | answer 0.0156
+[p3] 15:11:09 train_runs running 2h30m00s | [p3] 15:10:42 [rl_ans/seed3] step 152/228 | 54.9 s/step | eta 1h09m34s | format 0.7344 | answer 0.125
+[p3] 15:12:09 train_runs running 2h31m00s | [p3] 15:11:37 [rl_ans/seed3] step 153/228 | 54.9 s/step | eta 1h08m39s | format 0.7344 | answer 0.0625
+[p3] 15:13:09 train_runs running 2h32m00s | [p3] 15:12:48 [rl_ans/seed3] step 154/228 | 54.9 s/step | eta 1h07m44s | format 0.875 | answer 0.1094
+[p3] 15:14:09 train_runs running 2h33m00s | [p3] 15:13:50 [rl_ans/seed3] step 155/228 | 55.3 s/step | eta 1h07m16s | format 0.7188 | answer 0.0938
+[p3] 15:15:09 train_runs running 2h34m00s | [p3] 15:14:55 [rl_ans/seed3] step 156/228 | 55.3 s/step | eta 1h06m20s | format 0.7656 | answer 0.0469
+[p3] 15:16:09 train_runs running 2h35m00s | [p3] 15:15:56 [rl_ans/seed3] step 157/228 | 55.6 s/step | eta 1h05m46s | format 0.7812 | answer 0.0469
+[p3] 15:17:09 train_runs running 2h36m00s | [p3] 15:16:55 [rl_ans/seed3] step 158/228 | 55.6 s/step | eta 1h04m50s | format 0.8125 | answer 0.0625
+[p3] 15:18:09 train_runs running 2h37m00s | [p3] 15:17:45 [rl_ans/seed3] step 159/228 | 55.6 s/step | eta 1h03m55s | format 0.8281 | answer 0.0156
+[p3] 15:19:09 train_runs running 2h38m00s | [p3] 15:18:48 [rl_ans/seed3] step 160/228 | 55.6 s/step | eta 1h02m59s | format 0.75 | answer 0.0625
+[p3] 15:20:09 train_runs running 2h39m00s | [p3] 15:20:02 [rl_ans/seed3] step 161/228 | 55.6 s/step | eta 1h02m04s | format 0.8125 | answer 0.0156
+[p3] 15:21:09 train_runs running 2h40m00s | [p3] 15:20:48 [rl_ans/seed3] step 162/228 | 55.6 s/step | eta 1h01m08s | format 0.875 | answer 0.1094
+[p3] 15:22:09 train_runs running 2h41m00s | [p3] 15:21:40 [rl_ans/seed3] step 163/228 | 55.6 s/step | eta 1h00m12s | format 0.7969 | answer 0.0781
+[p3] 15:23:09 train_runs running 2h42m00s | [p3] 15:22:50 [rl_ans/seed3] step 164/228 | 55.6 s/step | eta 59m17s | format 0.7031 | answer 0.0156
+[p3] 15:24:09 train_runs running 2h43m00s | [p3] 15:23:46 [rl_ans/seed3] step 165/228 | 55.6 s/step | eta 58m21s | format 0.8438 | answer 0.1719
+[p3] 15:25:09 train_runs running 2h44m00s | [p3] 15:24:42 [rl_ans/seed3] step 166/228 | 55.3 s/step | eta 57m08s | format 0.6875 | answer 0.1875
+[p3] 15:26:09 train_runs running 2h45m00s | [p3] 15:26:05 [rl_ans/seed3] step 167/228 | 55.6 s/step | eta 56m30s | format 0.8125 | answer 0.0312
+[p3] 15:27:09 train_runs running 2h46m00s | [p3] 15:27:07 [rl_ans/seed3] step 168/228 | 55.6 s/step | eta 55m34s | format 0.7344 | answer 0.0938
+[p3] 15:28:09 train_runs running 2h47m00s | [p3] 15:27:59 [rl_ans/seed3] step 169/228 | 55.6 s/step | eta 54m39s | format 0.75 | answer 0.0
+[p3] 15:29:09 train_runs running 2h48m00s | [p3] 15:28:45 [rl_ans/seed3] step 170/228 | 55.3 s/step | eta 53m26s | format 0.7969 | answer 0.1719
+[p3] 15:30:09 train_runs running 2h49m00s | [p3] 15:29:39 [rl_ans/seed3] step 171/228 | 55.3 s/step | eta 52m31s | format 0.7969 | answer 0.0312
+[p3] 15:31:09 train_runs running 2h50m00s | [p3] 15:30:31 [rl_ans/seed3] step 172/228 | 55.2 s/step | eta 51m30s | format 0.7969 | answer 0.0156
+[p3] 15:32:09 train_runs running 2h51m00s | [p3] 15:31:23 [rl_ans/seed3] step 173/228 | 55.2 s/step | eta 50m35s | format 0.6875 | answer 0.125
+[p3] 15:33:09 train_runs running 2h52m00s | [p3] 15:33:01 [rl_ans/seed3] step 175/228 | 54.9 s/step | eta 48m31s | format 0.7656 | answer 0.0938
+[p3] 15:34:09 train_runs running 2h53m00s | [p3] 15:33:50 [rl_ans/seed3] step 176/228 | 54.9 s/step | eta 47m32s | format 0.7969 | answer 0.0625
+[p3] 15:35:09 train_runs running 2h54m00s | [p3] 15:34:42 [rl_ans/seed3] step 177/228 | 54.9 s/step | eta 46m37s | format 0.7344 | answer 0.1094
+[p3] 15:36:09 train_runs running 2h55m00s | [p3] 15:35:37 [rl_ans/seed3] step 178/228 | 54.7 s/step | eta 45m37s | format 0.7344 | answer 0.0312
+[p3] 15:37:09 train_runs running 2h56m00s | [p3] 15:36:44 [rl_ans/seed3] step 179/228 | 54.9 s/step | eta 44m47s | format 0.7969 | answer 0.1094
+[p3] 15:38:09 train_runs running 2h57m00s | [p3] 15:37:59 [rl_ans/seed3] step 180/228 | 54.9 s/step | eta 43m52s | format 0.9062 | answer 0.0625
+[p3] 15:39:09 train_runs running 2h58m00s | [p3] 15:39:05 [rl_ans/seed3] step 181/228 | 54.9 s/step | eta 43m01s | format 0.8281 | answer 0.0469
+[p3] 15:40:09 train_runs running 2h59m00s | [p3] 15:40:04 [rl_ans/seed3] step 182/228 | 54.9 s/step | eta 42m06s | format 0.8594 | answer 0.0156
+[p3] 15:41:09 train_runs running 3h00m00s | [p3] 15:40:59 [rl_ans/seed3] step 183/228 | 54.9 s/step | eta 41m11s | format 0.7656 | answer 0.0625
+[p3] 15:42:09 train_runs running 3h01m00s | [p3] 15:41:44 [rl_ans/seed3] step 184/228 | 54.9 s/step | eta 40m13s | format 0.7656 | answer 0.0938
+[p3] 15:43:09 train_runs running 3h02m00s | [p3] 15:42:47 [rl_ans/seed3] step 185/228 | 54.9 s/step | eta 39m22s | format 0.8125 | answer 0.2188
+[p3] 15:44:09 train_runs running 3h03m00s | [p3] 15:43:55 [rl_ans/seed3] step 186/228 | 54.9 s/step | eta 38m27s | format 0.7031 | answer 0.0781
+[p3] 15:45:09 train_runs running 3h04m00s | [p3] 15:44:50 [rl_ans/seed3] step 187/228 | 54.9 s/step | eta 37m32s | format 0.7031 | answer 0.0312
+[p3] 15:46:09 train_runs running 3h05m00s | [p3] 15:45:46 [rl_ans/seed3] step 188/228 | 54.9 s/step | eta 36m37s | format 0.8281 | answer 0.0938
+[p3] 15:47:09 train_runs running 3h06m00s | [p3] 15:46:44 [rl_ans/seed3] step 189/228 | 55.1 s/step | eta 35m50s | format 0.7656 | answer 0.2031
+[p3] 15:48:09 train_runs running 3h07m00s | [p3] 15:47:40 [rl_ans/seed3] step 190/228 | 55.1 s/step | eta 34m52s | format 0.8594 | answer 0.1562
+[p3] 15:49:09 train_runs running 3h08m00s | [p3] 15:48:30 [rl_ans/seed3] step 191/228 | 55.1 s/step | eta 33m57s | format 0.75 | answer 0.0625
+[p3] 15:50:09 train_runs running 3h09m00s | [p3] 15:49:28 [rl_ans/seed3] step 192/228 | 55.1 s/step | eta 33m02s | format 0.7188 | answer 0.1406
+[p3] 15:51:09 train_runs running 3h10m00s | [p3] 15:50:23 [rl_ans/seed3] step 193/228 | 55.1 s/step | eta 32m07s | format 0.75 | answer 0.1094
+[p3] 15:52:09 train_runs running 3h11m00s | [p3] 15:52:01 [rl_ans/seed3] step 195/228 | 54.9 s/step | eta 30m12s | format 0.7656 | answer 0.0938
+[p3] 15:53:09 train_runs running 3h12m00s | [p3] 15:52:47 [rl_ans/seed3] step 196/228 | 54.9 s/step | eta 29m15s | format 0.7031 | answer 0.0625
+[p3] 15:54:09 train_runs running 3h13m00s | [p3] 15:53:38 [rl_ans/seed3] step 197/228 | 54.9 s/step | eta 28m20s | format 0.7344 | answer 0.0781
+[p3] 15:55:09 train_runs running 3h14m00s | [p3] 15:54:45 [rl_ans/seed3] step 198/228 | 54.9 s/step | eta 27m25s | format 0.8281 | answer 0.0156
+[p3] 15:56:09 train_runs running 3h15m00s | [p3] 15:55:38 [rl_ans/seed3] step 199/228 | 54.9 s/step | eta 26m30s | format 0.75 | answer 0.25
+[p3] 15:57:09 train_runs running 3h16m00s | [p3] 15:56:51 [rl_ans/seed3] step 200/228 | 54.9 s/step | eta 25m35s | format 0.875 | answer 0.0625
+[p3] 15:58:09 train_runs running 3h17m00s | [p3] 15:57:42 [rl_ans/seed3] step 201/228 | 54.9 s/step | eta 24m40s | format 0.8906 | answer 0.0625
+[p3] 15:59:09 train_runs running 3h18m00s | [p3] 15:58:40 [rl_ans/seed3] step 202/228 | 54.9 s/step | eta 23m46s | format 0.8125 | answer 0.0625
+[p3] 16:00:09 train_runs running 3h19m00s | [p3] 15:59:47 [rl_ans/seed3] step 203/228 | 54.9 s/step | eta 22m53s | format 0.7656 | answer 0.1562
+[p3] 16:01:09 train_runs running 3h20m00s | [p3] 16:00:56 [rl_ans/seed3] step 204/228 | 54.9 s/step | eta 21m58s | format 0.7188 | answer 0.0625
+[p3] 16:02:09 train_runs running 3h21m00s | [p3] 16:01:46 [rl_ans/seed3] step 205/228 | 54.9 s/step | eta 21m03s | format 0.7344 | answer 0.0312
+[p3] 16:03:09 train_runs running 3h22m00s | [p3] 16:02:49 [rl_ans/seed3] step 206/228 | 54.9 s/step | eta 20m08s | format 0.8594 | answer 0.0469
+[p3] 16:04:09 train_runs running 3h23m00s | [p3] 16:03:33 [rl_ans/seed3] step 207/228 | 54.9 s/step | eta 19m13s | format 0.8438 | answer 0.0469
+[p3] 16:05:09 train_runs running 3h24m00s | [p3] 16:04:25 [rl_ans/seed3] step 208/228 | 54.9 s/step | eta 18m17s | format 0.8125 | answer 0.0625
+[p3] 16:06:09 train_runs running 3h25m00s | [p3] 16:06:01 [rl_ans/seed3] step 210/228 | 54.7 s/step | eta 16m25s | format 0.8594 | answer 0.0156
+[p3] 16:07:09 train_runs running 3h26m00s | [p3] 16:06:57 [rl_ans/seed3] step 211/228 | 54.9 s/step | eta 15m32s | format 0.6562 | answer 0.0469
+[p3] 16:08:09 train_runs running 3h27m00s | [p3] 16:06:57 [rl_ans/seed3] step 211/228 | 54.9 s/step | eta 15m32s | format 0.6562 | answer 0.0469
+[p3] 16:09:09 train_runs running 3h28m00s | [p3] 16:08:21 [rl_ans/seed3] step 212/228 | 54.9 s/step | eta 14m37s | format 0.8125 | answer 0.1406
+[p3] 16:10:09 train_runs running 3h29m00s | [p3] 16:09:28 [rl_ans/seed3] step 213/228 | 54.9 s/step | eta 13m43s | format 0.8281 | answer 0.0625
+[p3] 16:11:09 train_runs running 3h30m00s | [p3] 16:10:31 [rl_ans/seed3] step 214/228 | 54.9 s/step | eta 12m49s | format 0.7969 | answer 0.0469
+[p3] 16:12:09 train_runs running 3h31m00s | [p3] 16:11:36 [rl_ans/seed3] step 215/228 | 55.1 s/step | eta 11m55s | format 0.875 | answer 0.0156
+[p3] 16:13:09 train_runs running 3h32m00s | [p3] 16:12:39 [rl_ans/seed3] step 216/228 | 55.1 s/step | eta 11m00s | format 0.8438 | answer 0.0938
+[p3] 16:14:09 train_runs running 3h33m00s | [p3] 16:13:25 [rl_ans/seed3] step 217/228 | 55.1 s/step | eta 10m05s | format 0.875 | answer 0.3125
+[p3] 16:15:09 train_runs running 3h34m00s | [p3] 16:15:06 [rl_ans/seed3] step 219/228 | 54.9 s/step | eta 8m14s | format 0.7969 | answer 0.2188
+[p3] 16:16:09 train_runs running 3h35m00s | [p3] 16:16:04 [rl_ans/seed3] step 220/228 | 54.9 s/step | eta 7m19s | format 0.8125 | answer 0.0625
+[p3] 16:17:09 train_runs running 3h36m00s | [p3] 16:17:01 [rl_ans/seed3] step 221/228 | 55.1 s/step | eta 6m25s | format 0.7812 | answer 0.1094
+[p3] 16:18:09 train_runs running 3h37m00s | [p3] 16:17:49 [rl_ans/seed3] step 222/228 | 54.9 s/step | eta 5m29s | format 0.8125 | answer 0.0469
+[p3] 16:19:09 train_runs running 3h38m00s | [p3] 16:19:03 [rl_ans/seed3] step 223/228 | 55.1 s/step | eta 4m35s | format 0.7969 | answer 0.0938
+[p3] 16:20:09 train_runs running 3h39m00s | [p3] 16:20:07 [rl_ans/seed3] step 224/228 | 55.1 s/step | eta 3m40s | format 0.8438 | answer 0.0156
+[p3] 16:21:09 train_runs running 3h40m00s | [p3] 16:20:53 [rl_ans/seed3] step 225/228 | 55.1 s/step | eta 2m45s | format 0.8438 | answer 0.0625
+[p3] 16:22:09 train_runs running 3h41m00s | [p3] 16:21:44 [rl_ans/seed3] step 226/228 | 54.9 s/step | eta 1m49s | format 0.7969 | answer 0.1719
+[p3] 16:23:09 train_runs running 3h42m00s | [p3] 16:22:49 [rl_ans/seed3] step 227/228 | 55.1 s/step | eta 0m55s | format 0.8281 | answer 0.0156
+[p3] 16:24:09 train_runs running 3h43m00s | [p3] 16:23:39 [rl_ans/seed3] step 228/228 | 54.9 s/step | eta 0m00s | format 0.7812 | answer 0.1719
+[p3] 16:25:09 train_runs running 3h44m00s | [p3] 16:25:04 [rl_ans/seed3] ended: completed after 3h40m22s
+[p3] 16:26:09 train_runs running 3h45m00s | [p3] 16:25:04 [rl_ans/seed3] ended: completed after 3h40m22s
+[p3] 16:26:43 step train_runs PASSED in 3h45m35s
+[p3] 16:26:51 Drive copy (results): verified mydrive:ColabProjects/vlm-perception-reward-rl/runs/train-20261113T123614Z-51ed
+[p3] 16:26:51 JOB_DONE overall=passed package=train-20261113T123614Z-51ed.results.tar.gz (3 parts, 4.4 MB)

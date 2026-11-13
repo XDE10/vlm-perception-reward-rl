@@ -1,0 +1,12 @@
+
+[00:26:51] download /content/p3/out/train-20261113T123614Z-51ed.done.json
+[colab] Downloaded '/content/p3/out/train-20261113T123614Z-51ed.done.json' to '/home/xde10/projects/vlm-perception-reward-rl/.colab_runs/train-20261113T123614Z-51ed/done.json'
+
+[00:26:56] download /content/p3/out/train-20261113T123614Z-51ed.results.tar.gz.part000
+[colab] Downloaded '/content/p3/out/train-20261113T123614Z-51ed.results.tar.gz.part000' to '/home/xde10/projects/vlm-perception-reward-rl/.colab_runs/train-20261113T123614Z-51ed/parts/train-20261113T123614Z-51ed.results.tar.gz.part000'
+
+[00:27:00] download /content/p3/out/train-20261113T123614Z-51ed.results.tar.gz.part001
+[colab] Downloaded '/content/p3/out/train-20261113T123614Z-51ed.results.tar.gz.part001' to '/home/xde10/projects/vlm-perception-reward-rl/.colab_runs/train-20261113T123614Z-51ed/parts/train-20261113T123614Z-51ed.results.tar.gz.part001'
+
+[00:27:01] download /content/p3/out/train-20261113T123614Z-51ed.results.tar.gz.part002
+[colab] Downloaded '/content/p3/out/train-20261113T123614Z-51ed.results.tar.gz.part002' to '/home/xde10/projects/vlm-perception-reward-rl/.colab_runs/train-20261113T123614Z-51ed/parts/train-20261113T123614Z-51ed.results.tar.gz.part002'

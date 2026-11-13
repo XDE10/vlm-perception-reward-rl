@@ -1,0 +1,9 @@
+{
+  "mode": "auto",
+  "branch": "results/train-20261113T123614Z-51ed",
+  "url": "https://github.com/XDE10/vlm-perception-reward-rl.git",
+  "credentials_file": "/content/gh_credentials",
+  "credentials_present": false,
+  "ok": false,
+  "reason": "no credential file at /content/gh_credentials, so the launcher pushes the results from your machine (to let the VM push, see colab/README.md section 8)"
+}

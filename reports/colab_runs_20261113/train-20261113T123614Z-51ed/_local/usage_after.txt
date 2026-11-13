@@ -1,0 +1,3 @@
+Current balance: 1058.79 compute units
+Usage rate: 20.10/hr
+Active assignments: 2

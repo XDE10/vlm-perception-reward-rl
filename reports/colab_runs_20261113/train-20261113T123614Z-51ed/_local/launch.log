@@ -1,0 +1,31 @@
+[launch 20:36:14] run train-20261113T123614Z-51ed (task train, commit 2bc87709bc30) on your session p3-d66-Flysb-2 (its hardware decides the GPU)
+[launch 20:36:15] code: the VM downloads commit 2bc87709bc30 from GitHub and verifies every file against its git blob SHA-1
+[launch 20:36:15] building private data pack from /home/xde10/projects/vlm-perception-reward-rl/data
+[launch 20:36:16] data pack: {"pack": "/home/xde10/projects/vlm-perception-reward-rl/.colab_cache/p3_private_082210c90d5b3834.tar.gz", "sha256": "8f571a49c40d45a8226245d4dee0715d05c94e518b64496a2d731b9cb926f5e2", "bytes": 21164679, "content_sha256": "082210c90d5b3834539380c37bb5a43deab0f4354b5ff630910a6c06be06f1a1", "files": 71
+[launch 20:36:21] WARNING: Colab reports 4 active assignment(s) before this run (expected 1); another VM may be using compute units
+[launch 20:36:26]   [p3-d66-Flysb-2] gpu-a100-s-usw4b0-194nfwmmnwrbt | Hardware: A100 | Shape: Standard | Variant: GPU
+[launch 20:36:26]   [shuffle-r1-g4] gpu-g4-s-euw4a2-3goowb3orqpo | Hardware: G4 | Shape: Standard | Variant: GPU
+[launch 20:36:26]   [p1-r1-pilot16-b] gpu-g4-s-use5a2-124rbv4coenbm | Hardware: G4 | Shape: Standard | Variant: GPU
+[launch 20:36:26]   [p2-latent-main-r2] gpu-g4-s-use5c0-o22f1tgdedjz | Hardware: G4 | Shape: Standard | Variant: GPU
+[launch 20:36:26] stop the ones you do not use with: colab stop -s NAME
+[launch 20:36:26] using your session p3-d66-Flysb-2; it is not released at the end unless you pass --release
+[launch 20:36:31] upload inputs 1/12 p3_private_082210c90d5b3834.tar.gz.part000 (2048 KiB)
+[launch 20:36:42] upload inputs 2/12 p3_private_082210c90d5b3834.tar.gz.part001 (2048 KiB)
+[launch 20:36:46] upload inputs 3/12 p3_private_082210c90d5b3834.tar.gz.part002 (2048 KiB)
+[launch 20:36:51] upload inputs 4/12 p3_private_082210c90d5b3834.tar.gz.part003 (2048 KiB)
+[launch 20:36:56] upload inputs 5/12 p3_private_082210c90d5b3834.tar.gz.part004 (2048 KiB)
+[launch 20:36:59] upload inputs 6/12 p3_private_082210c90d5b3834.tar.gz.part005 (2048 KiB)
+[launch 20:37:13] upload inputs 7/12 p3_private_082210c90d5b3834.tar.gz.part006 (2048 KiB)
+[launch 20:37:39] upload inputs 8/12 p3_private_082210c90d5b3834.tar.gz.part007 (2048 KiB)
+[launch 20:37:55] upload inputs 9/12 p3_private_082210c90d5b3834.tar.gz.part008 (2048 KiB)
+[launch 20:38:02] upload inputs 10/12 p3_private_082210c90d5b3834.tar.gz.part009 (2048 KiB)
+[launch 20:38:08] upload inputs 11/12 p3_private_082210c90d5b3834.tar.gz.part010 (188 KiB)
+[launch 20:38:11] upload inputs 12/12 request.json (76 KiB)
+[launch 20:38:13] uploaded inputs: 20745 KiB in 102s (~203 KiB/s)
+[launch 20:38:22] all uploaded parts verified on the VM (size and SHA256)
+[launch 20:38:22] bootstrap on the VM (code, environment install and model download; ~10-20 min)
+[launch 20:39:43] job running on the VM; progress lines follow (Ctrl-C detaches, the job keeps running)
+[launch 00:26:51] fetching results
+[launch 00:27:05] results in /home/xde10/projects/vlm-perception-reward-rl/.colab_runs/train-20261113T123614Z-51ed/results/train-20261113T123614Z-51ed (overall: passed)
+[launch 00:27:05] Drive copy verified: mydrive:ColabProjects/vlm-perception-reward-rl/runs/train-20261113T123614Z-51ed
+[launch 00:27:07] releasing VM p3-d66-Flysb-2
