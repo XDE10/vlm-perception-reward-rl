@@ -1,0 +1,48 @@
+{
+  "run": "rl_blind/seed2",
+  "config_sha256": "a693252caf89e0dbeff5c9bd7fa5f6f74fa7562d063dcefa3430ee6018bdd85d",
+  "global_step": 228,
+  "max_steps": 228,
+  "wall_seconds": 5789.479798555374,
+  "peak_gpu_memory_gb": 22.491858944,
+  "vision_cache": null,
+  "mm_alignment": {
+    "version": "mm-alignment-guard-v1-20261109",
+    "checked_forwards": 0,
+    "left_padded_rows": 0,
+    "max_left_padding": 0
+  },
+  "vllm_image_grid": {
+    "images": 0,
+    "distinct_sizes": 0,
+    "train_limits": [
+      3136,
+      802816
+    ],
+    "vllm_limits": [
+      3136,
+      12845056
+    ],
+    "factor": 28,
+    "mismatches": 0
+  },
+  "generation_backend": "vllm",
+  "registration": {
+    "registry": "s4_20261110",
+    "order": 8,
+    "arm": "rl_blind",
+    "seed": 2,
+    "optional": false,
+    "config_sha256": "a693252caf89e0dbeff5c9bd7fa5f6f74fa7562d063dcefa3430ee6018bdd85d",
+    "rows": 609,
+    "data_sha256": {
+      "manifest": "ce02856dc5c594d7899539fb67e5b0eac621def38103e91b3f822af4ceaff2ba",
+      "train_file": "49bed0b5a42db8e7051bd2f2a9e3731c84ff8421fe7af05f9ed0e645e5a37fd2",
+      "intergps_annotations": "d83517c40cfb5e864344b0221dcd1698d118e461b16c587822c0b6ee8c67c00b"
+    },
+    "gpu_name": "NVIDIA A100-SXM4-40GB",
+    "gpu_name_seen": "NVIDIA A100-SXM4-40GB",
+    "matched": true
+  },
+  "python": "3.12.3"
+}

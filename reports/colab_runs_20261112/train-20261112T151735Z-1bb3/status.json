@@ -1,0 +1,176 @@
+{
+  "schema": "p3-job-status-v1",
+  "run_id": "train-20261112T151735Z-1bb3",
+  "task": "train",
+  "state": "done",
+  "started_utc": "2026-11-12T15:22:47Z",
+  "updated_utc": "2026-11-13T10:00:50Z",
+  "steps": [
+    {
+      "name": "env_report",
+      "state": "passed",
+      "required": true,
+      "description": "software, GPU and environment lock report",
+      "started_utc": "2026-11-12T15:22:47Z",
+      "log": "logs/env_report.log",
+      "exit_code": 0,
+      "seconds": 2.2,
+      "finished_utc": "2026-11-12T15:22:49Z"
+    },
+    {
+      "name": "verify_pack",
+      "state": "passed",
+      "required": true,
+      "description": "private data matches its anchors",
+      "started_utc": "2026-11-12T15:22:49Z",
+      "log": "logs/verify_pack.log",
+      "exit_code": 0,
+      "seconds": 0.3,
+      "finished_utc": "2026-11-12T15:22:50Z"
+    },
+    {
+      "name": "register_check",
+      "state": "passed",
+      "required": true,
+      "description": "registered runs equal the configs; data on this VM equals the registered SHA256 and rows",
+      "started_utc": "2026-11-12T15:22:50Z",
+      "log": "logs/register_check.log",
+      "exit_code": 0,
+      "seconds": 2.6,
+      "finished_utc": "2026-11-12T15:22:52Z"
+    },
+    {
+      "name": "drive_probe",
+      "state": "passed",
+      "required": true,
+      "description": "Google Drive via rclone: write, read back, hash check, delete (optional unless drive-check)",
+      "started_utc": "2026-11-12T15:22:52Z",
+      "log": "logs/drive_probe.log",
+      "exit_code": 0,
+      "seconds": 41.8,
+      "finished_utc": "2026-11-12T15:23:34Z"
+    },
+    {
+      "name": "vllm_env",
+      "state": "passed",
+      "required": true,
+      "description": "vLLM venv (CUDA 13): the frozen runtime generates with vLLM",
+      "started_utc": "2026-11-12T15:23:34Z",
+      "log": "logs/vllm_env.log",
+      "exit_code": 0,
+      "seconds": 86.3,
+      "finished_utc": "2026-11-12T15:25:00Z"
+    },
+    {
+      "name": "train_runs",
+      "state": "passed",
+      "required": true,
+      "description": "registered runs in order: claim, restore from Drive, train, verify on Drive",
+      "started_utc": "2026-11-12T15:25:00Z",
+      "log": "logs/train_runs.log",
+      "exit_code": 0,
+      "seconds": 66942.8,
+      "finished_utc": "2026-11-13T10:00:43Z"
+    }
+  ],
+  "current": null,
+  "github_check": {
+    "mode": "auto",
+    "ok": false,
+    "credentials_present": false,
+    "push_access": null,
+    "branch": "results/train-20261112T151735Z-1bb3",
+    "reason": "no credential file at /content/gh_credentials, so the launcher pushes the results from your machine (to let the VM push, see colab/README.md section 8)",
+    "warning": null
+  },
+  "overall": "passed",
+  "package": {
+    "name": "train-20261112T151735Z-1bb3.results.tar.gz",
+    "sha256": "f34bb10ec4277b2dacf610a05269b0d2ee281091727c53f1478ec45074339a7e",
+    "bytes": 24357324,
+    "parts": [
+      {
+        "name": "train-20261112T151735Z-1bb3.results.tar.gz.part000",
+        "bytes": 2097152,
+        "sha256": "13465fc98b5fc89d2fcd402049bf4abfee685f4968a8ffa8a6eac264c2fb1dae"
+      },
+      {
+        "name": "train-20261112T151735Z-1bb3.results.tar.gz.part001",
+        "bytes": 2097152,
+        "sha256": "ca12efd825d38bf863b7c60b9d40be27d8ac55d4e664b354aa689b42609fa1e5"
+      },
+      {
+        "name": "train-20261112T151735Z-1bb3.results.tar.gz.part002",
+        "bytes": 2097152,
+        "sha256": "35e7d99fbd9a55545adf1f0ed3a181b5c59d75d1f37083b83e85cf5c0f11a51e"
+      },
+      {
+        "name": "train-20261112T151735Z-1bb3.results.tar.gz.part003",
+        "bytes": 2097152,
+        "sha256": "5d64d926c4631ef1149c99ed7b8c3f24d9a62e11ea9054d0113cdf7f535d00fb"
+      },
+      {
+        "name": "train-20261112T151735Z-1bb3.results.tar.gz.part004",
+        "bytes": 2097152,
+        "sha256": "b46e261feaa5ff4d5554646ac0628abfbcc071c3d835c477bdcbc1a634a70a46"
+      },
+      {
+        "name": "train-20261112T151735Z-1bb3.results.tar.gz.part005",
+        "bytes": 2097152,
+        "sha256": "59e5398e1a2d0a9429d9dc0714a5aefe1db6cb782125d0d9d2c0c49de45023bf"
+      },
+      {
+        "name": "train-20261112T151735Z-1bb3.results.tar.gz.part006",
+        "bytes": 2097152,
+        "sha256": "efc0cf133165ce07a96428f76c3409e668231ed6531a0bec334f369eeaddd25b"
+      },
+      {
+        "name": "train-20261112T151735Z-1bb3.results.tar.gz.part007",
+        "bytes": 2097152,
+        "sha256": "4d17661330678b00b6569443e918850e772506ced347caa07ef55c3906d39eb2"
+      },
+      {
+        "name": "train-20261112T151735Z-1bb3.results.tar.gz.part008",
+        "bytes": 2097152,
+        "sha256": "d8e73d0d87fe89b2a102d898d85f26ec93da5ffd027baee28831c7fa7db6f879"
+      },
+      {
+        "name": "train-20261112T151735Z-1bb3.results.tar.gz.part009",
+        "bytes": 2097152,
+        "sha256": "c4645db2ca6e5ffdd4aca54c5e661a788a4f9294ca40ccdcfd809bf8a12ab092"
+      },
+      {
+        "name": "train-20261112T151735Z-1bb3.results.tar.gz.part010",
+        "bytes": 2097152,
+        "sha256": "7de74f8c0510e37d21b861057cf0443234e50e4b0f169a3c38a36654b256b575"
+      },
+      {
+        "name": "train-20261112T151735Z-1bb3.results.tar.gz.part011",
+        "bytes": 1288652,
+        "sha256": "a71f9426ae01f737be7b03b325b6a9e7f472344fb25a8afb67687166eda4fe65"
+      }
+    ],
+    "skipped": 0,
+    "gzipped": []
+  },
+  "github": {
+    "attempted": false,
+    "ok": false,
+    "branch": "results/train-20261112T151735Z-1bb3",
+    "reason": "no credential file at /content/gh_credentials, so the launcher pushes the results from your machine (to let the VM push, see colab/README.md section 8)",
+    "seconds": 0.0
+  },
+  "drive": {
+    "ok": true,
+    "attempted": true,
+    "verified": true,
+    "target": "mydrive:ColabProjects/vlm-perception-reward-rl/runs/train-20261112T151735Z-1bb3",
+    "files": 2,
+    "bytes": 24359855,
+    "copy_seconds": 4.5,
+    "check_seconds": 1.0,
+    "reason": null,
+    "mode": "results"
+  },
+  "finished_utc": "2026-11-13T10:00:50Z"
+}

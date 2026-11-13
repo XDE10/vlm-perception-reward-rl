@@ -1,0 +1,30 @@
+[launch 23:17:35] run train-20261112T151735Z-1bb3 (task train, commit 63097832fa30) on your session p3 (its hardware decides the GPU)
+[launch 23:17:40] code: the VM downloads commit 63097832fa30 from GitHub and verifies every file against its git blob SHA-1
+[launch 23:17:40] building private data pack from /home/xde10/projects/vlm-perception-reward-rl/data
+[launch 23:17:40] data pack: {"pack": "/home/xde10/projects/vlm-perception-reward-rl/.colab_cache/p3_private_082210c90d5b3834.tar.gz", "sha256": "8f571a49c40d45a8226245d4dee0715d05c94e518b64496a2d731b9cb926f5e2", "bytes": 21164679, "content_sha256": "082210c90d5b3834539380c37bb5a43deab0f4354b5ff630910a6c06be06f1a1", "files": 71
+[launch 23:17:43] using your session p3; it is not released at the end unless you pass --release
+[launch 23:17:46] upload inputs 1/12 p3_private_082210c90d5b3834.tar.gz.part000 (2048 KiB)
+[launch 23:17:47] upload of p3_private_082210c90d5b3834.tar.gz.part000 failed (attempt 1/6 after 1s): [colab] Upload failed: HTTPSConnectionPool(host='8080-gpu-a100-s-usc1f0-2lad5kldhep4f-f.us-central1.prod.r.colab.dev', port=443): Max retries exceeded with url: /api/contents/content/p3/inbox/p3_private_082210c90d5b3834.tar.gz.part000?authuser=0&colab-runtime-proxy-token=REDACTED (Caused by SSLError
+[launch 23:18:02] upload inputs 2/12 p3_private_082210c90d5b3834.tar.gz.part001 (2048 KiB)
+[launch 23:18:24] upload inputs 3/12 p3_private_082210c90d5b3834.tar.gz.part002 (2048 KiB)
+[launch 23:19:02] upload inputs 4/12 p3_private_082210c90d5b3834.tar.gz.part003 (2048 KiB)
+[launch 23:19:31] upload inputs 5/12 p3_private_082210c90d5b3834.tar.gz.part004 (2048 KiB)
+[launch 23:19:35] upload inputs 6/12 p3_private_082210c90d5b3834.tar.gz.part005 (2048 KiB)
+[launch 23:19:51] upload inputs 7/12 p3_private_082210c90d5b3834.tar.gz.part006 (2048 KiB)
+[launch 23:19:57] upload inputs 8/12 p3_private_082210c90d5b3834.tar.gz.part007 (2048 KiB)
+[launch 23:20:08] upload inputs 9/12 p3_private_082210c90d5b3834.tar.gz.part008 (2048 KiB)
+[launch 23:20:12] upload inputs 10/12 p3_private_082210c90d5b3834.tar.gz.part009 (2048 KiB)
+[launch 23:20:19] upload inputs 11/12 p3_private_082210c90d5b3834.tar.gz.part010 (188 KiB)
+[launch 23:20:22] upload inputs 12/12 request.json (76 KiB)
+[launch 23:20:24] uploaded inputs: 20744 KiB in 158s (~131 KiB/s)
+[launch 23:20:30] all uploaded parts verified on the VM (size and SHA256)
+[launch 23:20:30] bootstrap on the VM (code, environment install and model download; ~10-20 min)
+[launch 23:22:40] job running on the VM; progress lines follow (Ctrl-C detaches, the job keeps running)
+[launch 18:00:52] interrupted
+[launch 18:00:52] the job keeps running on the VM; reattach with: bash colab/launch.sh collect train-20261112T151735Z-1bb3
+[launch 18:01:54] reattaching to p3
+[launch 18:01:56] remote: state=done steps 6/6 | overall=passed
+[launch 18:01:56] fetching results
+[launch 18:02:51] results in /home/xde10/projects/vlm-perception-reward-rl/.colab_runs/train-20261112T151735Z-1bb3/results/train-20261112T151735Z-1bb3 (overall: passed)
+[launch 18:02:51] Drive copy verified: mydrive:ColabProjects/vlm-perception-reward-rl/runs/train-20261112T151735Z-1bb3
+[launch 18:02:53] releasing VM p3
