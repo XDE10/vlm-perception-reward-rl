@@ -1,6 +1,6 @@
 {
  "project": "项目三_多模态几何推理",
- "date": "2026-11-12",
+ "date": "2026-11-13",
  "schema_version": 2,
  "source_root": "D:\\Users\\Mr.Z\\Desktop\\modern_genai",
  "files": [
@@ -4088,10 +4088,11 @@
   },
   {
    "path": "README.md",
-   "bytes": 7730,
-   "sha256": "0be2c03d72b49641624547e647c5dcf522cffcc1d96a64c1ca6a71234f1f6227",
+   "bytes": 7879,
+   "sha256": "80d41ba931a54148df0a091dd2a27afa7af5f4d4b5fb0b81a108964e39eacf02",
    "source_sha256": "3ac26e1f349304d2465f99785649a8d98066a5a566a2507329cc2a1d7b6e280a",
-   "changed_for_portability": true
+   "changed_for_portability": true,
+   "updated_in": "s4-review-snapshot"
   },
   {
    "path": "colab/README.md",
@@ -25960,6 +25961,14 @@
    "changed_for_portability": false
   },
   {
+   "path": "reports/s4_review_snapshot_20261113/README.md",
+   "bytes": 2633,
+   "sha256": "d09b9a9a37cba44fd1376215afc3212c81f2d544f81e31be7b6fe5259d37bbb0",
+   "source_sha256": "d09b9a9a37cba44fd1376215afc3212c81f2d544f81e31be7b6fe5259d37bbb0",
+   "changed_for_portability": false,
+   "added_in": "s4-review-snapshot"
+  },
+  {
    "path": "reports/s4_rollout_audit_20261112/README.md",
    "bytes": 2675,
    "sha256": "18595737b04f251298a38b2a8101f42cf60dc8af5917f2388392de7012aeb47a",
@@ -29405,6 +29414,27 @@
      "path": "tests/test_colab_launcher.py",
      "previous_sha256": "be9af138e861f026ed2084e6283ea798744f0b193905078c9aa1864c2457a7ca",
      "current_sha256": "fcc0a5de6b13cfc1e943c6480b1a3dfef810f980957d288077675a35ea2cadf4"
+    }
+   ],
+   "dropped_tracked_paths": [],
+   "untracked_entries_kept_verbatim": 3425,
+   "note": "Only git-visible files were re-hashed; git-ignored payload entries (data/) were carried over unchanged. Run the full rebuild on a machine that has data/ to re-hash the payload."
+  },
+  {
+   "date": "2026-11-13",
+   "label": "s4-review-snapshot",
+   "mode": "git_tracked_only",
+   "purpose": "Record the verified D66 training snapshot and S5 readiness",
+   "changes": [
+    {
+     "path": "README.md",
+     "previous_sha256": "0be2c03d72b49641624547e647c5dcf522cffcc1d96a64c1ca6a71234f1f6227",
+     "current_sha256": "80d41ba931a54148df0a091dd2a27afa7af5f4d4b5fb0b81a108964e39eacf02"
+    },
+    {
+     "path": "reports/s4_review_snapshot_20261113/README.md",
+     "previous_sha256": null,
+     "current_sha256": "d09b9a9a37cba44fd1376215afc3212c81f2d544f81e31be7b6fe5259d37bbb0"
     }
    ],
    "dropped_tracked_paths": [],

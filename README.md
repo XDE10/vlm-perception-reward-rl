@@ -2,17 +2,18 @@
 
 基于 Qwen2.5-VL-3B-Instruct 的几何图形事实感知项目：用经过认证的部分几何事实
 构造可证伪的感知奖励做 GRPO，并用对照组和反事实评测研究“视觉信息是否被真正使用”。
-本仓库是可复现的数据、配置、训练入口与审计证据集合；**尚未有 GPU 验收后的训练产物**。
+本仓库包含可复现的数据清单、训练与评测入口及审计记录。S4 正式训练正在进行，S5 留出集终评待启动。
 执行计划与决策见 [docs/plan/](docs/plan/执行计划_20261108.md)。
 
 ## 当前状态
 
-| 项目 | 事实（2026-11-10） |
+| 项目 | 事实（2026-11-13，UTC+8） |
 | --- | --- |
 | 批准数据 | 609 条训练事实（458 幅图）/ 82 条 validation 事实（77 幅图），部分认证事实，不是全图金标 |
 | 模型 | `Qwen/Qwen2.5-VL-3B-Instruct` revision `66285546d2b821cf421d4f5eb2576359d3770cd3` |
-| 训练阶段 | S4 已预注册（[docs/plan/S4预注册_20261110.md](docs/plan/S4预注册_20261110.md)）：12 个正式任务（+2 个可选）全部从 V0 出发、用 S3 选定的提示 P1，配置哈希登记在 `configs/experiments/s4_runs_20261110.json`。试跑与正式训练的 Colab 任务（`pilot`、`train`）已实现，只在本机测试过（[运行器报告](docs/plan/阶段报告_S4_运行器_20261110.md)）；**还没有试跑，也没有正式训练**。旧的感知 SFT → 稀疏 GRPO 入口保留为历史 |
-| GPU | A100-SXM4-40GB 上 S2 预检（18/18）与 S3 `v0`（12/12）通过：环境、数据核对、3 步 GRPO 冒烟、断点恢复、V0 诊断。这是工程验证，不是训练结果 |
+| S4 正式训练 | [D66 预注册](docs/plan/S4预注册_20261110.md) 登记 12 个正式任务（另有 2 个可选），全部从 V0 起跑。已核对 8 个正式任务的 Drive 完成标记，其中 `rl_v5/seed1` 已完成 228 步并复核最终文件，`rl_v5/seed2` 从第 38 步恢复后完成 228 步。见 [最新快照](reports/s4_review_snapshot_20261113/README.md) |
+| S5 正式终评 | 已接入 `final-eval`，复用 S3 预注册的三类主终点与九项比较。快照时尚无正式结果 |
+| GPU 验证 | A100-SXM4-40GB 上 S2 预检（18/18）、S3 `v0`（12/12）与 D66 S4 试跑（G1–G6）通过。正式训练结束状态以 D66 登记身份和 Drive 完成标记为准 |
 | 测试 | 本机 WSL2（Python 3.12.3，有 `data/` 和固定 revision 的处理器文件）全部通过，见 [docs/verification.md](docs/verification.md) |
 | 历史 | 2026-10-24 迁移、2026-11-08 清理与结构整理、2026-11-09 S1–S3、2026-11-10 S4 预注册与运行器，均记录在 [CHANGELOG.md](CHANGELOG.md) |
 
@@ -69,7 +70,7 @@ CUDA、模型前后向或新环境依赖已安装。
 - 唯一训练/评测数据入口：`data/portable_release/` 中由
   [release manifest](data/portable_release/manifest.json) 的 `approved_*_files`
   列出的文件；609/82 行是当前批准范围。
-- 模型输入只放行 `problem` 与相对 `image_path`；SFT 目标是 `model_perception`。
+- 模型输入只放行 `problem` 与相对 `image_path`。正式训练使用 V0 加语言 LoRA 的 GRPO；历史 SFT 的目标字段为 `model_perception`。
   `reference_answer`、认证正负事实、审核意见不得进入提示。
 - 认证范围之外的事实视为未知（mask）；不能宣称完整防幻觉或全图 precision/recall。
 - 不手改批准字段、行内容、图片或 SHA；不把 validation/测试题用于训练或调奖励。
@@ -85,11 +86,12 @@ bash colab/launch.sh preflight
 bash colab/launch.sh v0 --session p3
 bash colab/launch.sh pilot --session p3
 bash colab/launch.sh train --session p3
+bash colab/launch.sh final-eval --session p3 --release
 ```
 
 `check` 是本地自检（colab 认证、数据 SHA、git 推送权限，不建 VM）；`preflight` 是 S2 的 GPU 预检；`v0` 是 S3 的评测输入核对、
 train 上的决策测量与 V0 诊断，在你准备好的 VM `p3` 上运行。`pilot` 是 S4 的试跑与开跑门槛，`train` 按登记顺序跑正式任务
-（每次跑到 VM 的时间用完，需要多次运行）；两者只在 A100-SXM4-40GB 上、挂好 Google Drive 的 VM 上运行（colab/README.md 第九节）。
+（每次跑到 VM 的时间用完，需要多次运行）；`final-eval` 在正式任务收尾后运行。三者使用挂好 Google Drive 的 A100-SXM4-40GB（colab/README.md 第九、十节）。
 
 ## 训练入口
 
