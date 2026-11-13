@@ -1,0 +1,131 @@
+{
+  "schema": "p3-job-status-v1",
+  "run_id": "train-20261113T180946Z-8ea4",
+  "task": "train",
+  "state": "done",
+  "started_utc": "2026-11-13T18:14:05Z",
+  "updated_utc": "2026-11-13T20:13:38Z",
+  "steps": [
+    {
+      "name": "env_report",
+      "state": "passed",
+      "required": true,
+      "description": "software, GPU and environment lock report",
+      "started_utc": "2026-11-13T18:14:05Z",
+      "log": "logs/env_report.log",
+      "exit_code": 0,
+      "seconds": 2.2,
+      "finished_utc": "2026-11-13T18:14:07Z"
+    },
+    {
+      "name": "verify_pack",
+      "state": "passed",
+      "required": true,
+      "description": "private data matches its anchors",
+      "started_utc": "2026-11-13T18:14:07Z",
+      "log": "logs/verify_pack.log",
+      "exit_code": 0,
+      "seconds": 0.3,
+      "finished_utc": "2026-11-13T18:14:07Z"
+    },
+    {
+      "name": "register_check",
+      "state": "passed",
+      "required": true,
+      "description": "registered runs equal the configs; data on this VM equals the registered SHA256 and rows",
+      "started_utc": "2026-11-13T18:14:07Z",
+      "log": "logs/register_check.log",
+      "exit_code": 0,
+      "seconds": 2.6,
+      "finished_utc": "2026-11-13T18:14:10Z"
+    },
+    {
+      "name": "drive_probe",
+      "state": "passed",
+      "required": true,
+      "description": "Google Drive via rclone: write, read back, hash check, delete (optional unless drive-check)",
+      "started_utc": "2026-11-13T18:14:10Z",
+      "log": "logs/drive_probe.log",
+      "exit_code": 0,
+      "seconds": 75.0,
+      "finished_utc": "2026-11-13T18:15:25Z"
+    },
+    {
+      "name": "vllm_env",
+      "state": "passed",
+      "required": true,
+      "description": "vLLM venv (CUDA 13): the frozen runtime generates with vLLM",
+      "started_utc": "2026-11-13T18:15:25Z",
+      "log": "logs/vllm_env.log",
+      "exit_code": 0,
+      "seconds": 26.5,
+      "finished_utc": "2026-11-13T18:15:51Z"
+    },
+    {
+      "name": "train_runs",
+      "state": "passed",
+      "required": true,
+      "description": "registered runs in order: claim, restore from Drive, train, verify on Drive",
+      "started_utc": "2026-11-13T18:15:51Z",
+      "log": "logs/train_runs.log",
+      "exit_code": 0,
+      "seconds": 7055.7,
+      "finished_utc": "2026-11-13T20:13:27Z"
+    }
+  ],
+  "current": null,
+  "github_check": {
+    "mode": "auto",
+    "ok": false,
+    "credentials_present": false,
+    "push_access": null,
+    "branch": "results/train-20261113T180946Z-8ea4",
+    "reason": "no credential file at /content/gh_credentials, so the launcher pushes the results from your machine (to let the VM push, see colab/README.md section 8)",
+    "warning": null
+  },
+  "overall": "passed",
+  "package": {
+    "name": "train-20261113T180946Z-8ea4.results.tar.gz",
+    "sha256": "db561337009b8802fce258d5e385764eb99c719e2367adf267b4433d7e889a61",
+    "bytes": 4254972,
+    "parts": [
+      {
+        "name": "train-20261113T180946Z-8ea4.results.tar.gz.part000",
+        "bytes": 2097152,
+        "sha256": "522760b8797f18c78ebd6d0ee69cc5fb25e5566bb5394b073b7cabf3869e58d4"
+      },
+      {
+        "name": "train-20261113T180946Z-8ea4.results.tar.gz.part001",
+        "bytes": 2097152,
+        "sha256": "7c04df4aea941b0d15f5f6df53a8758961f13f081f5a693d90e3ebdf25ba6049"
+      },
+      {
+        "name": "train-20261113T180946Z-8ea4.results.tar.gz.part002",
+        "bytes": 60668,
+        "sha256": "6ffe7e0e56269d6937edbfaf7120efbcf7adfd3c95d37d5722a3f0bac45f5d57"
+      }
+    ],
+    "skipped": 0,
+    "gzipped": []
+  },
+  "github": {
+    "attempted": false,
+    "ok": false,
+    "branch": "results/train-20261113T180946Z-8ea4",
+    "reason": "no credential file at /content/gh_credentials, so the launcher pushes the results from your machine (to let the VM push, see colab/README.md section 8)",
+    "seconds": 0.0
+  },
+  "drive": {
+    "ok": true,
+    "attempted": true,
+    "verified": true,
+    "target": "mydrive:ColabProjects/vlm-perception-reward-rl/runs/train-20261113T180946Z-8ea4",
+    "files": 2,
+    "bytes": 4255808,
+    "copy_seconds": 7.7,
+    "check_seconds": 2.9,
+    "reason": null,
+    "mode": "results"
+  },
+  "finished_utc": "2026-11-13T20:13:38Z"
+}

@@ -1,0 +1,636 @@
+{
+  "run_id": "train-20261113T180946Z-8ea4",
+  "task": "train",
+  "steps": [
+    {
+      "name": "env_report",
+      "state": "passed",
+      "required": true,
+      "description": "software, GPU and environment lock report",
+      "started_utc": "2026-11-13T18:14:05Z",
+      "log": "logs/env_report.log",
+      "exit_code": 0,
+      "seconds": 2.2,
+      "finished_utc": "2026-11-13T18:14:07Z"
+    },
+    {
+      "name": "verify_pack",
+      "state": "passed",
+      "required": true,
+      "description": "private data matches its anchors",
+      "started_utc": "2026-11-13T18:14:07Z",
+      "log": "logs/verify_pack.log",
+      "exit_code": 0,
+      "seconds": 0.3,
+      "finished_utc": "2026-11-13T18:14:07Z"
+    },
+    {
+      "name": "register_check",
+      "state": "passed",
+      "required": true,
+      "description": "registered runs equal the configs; data on this VM equals the registered SHA256 and rows",
+      "started_utc": "2026-11-13T18:14:07Z",
+      "log": "logs/register_check.log",
+      "exit_code": 0,
+      "seconds": 2.6,
+      "finished_utc": "2026-11-13T18:14:10Z"
+    },
+    {
+      "name": "drive_probe",
+      "state": "passed",
+      "required": true,
+      "description": "Google Drive via rclone: write, read back, hash check, delete (optional unless drive-check)",
+      "started_utc": "2026-11-13T18:14:10Z",
+      "log": "logs/drive_probe.log",
+      "exit_code": 0,
+      "seconds": 75.0,
+      "finished_utc": "2026-11-13T18:15:25Z"
+    },
+    {
+      "name": "vllm_env",
+      "state": "passed",
+      "required": true,
+      "description": "vLLM venv (CUDA 13): the frozen runtime generates with vLLM",
+      "started_utc": "2026-11-13T18:15:25Z",
+      "log": "logs/vllm_env.log",
+      "exit_code": 0,
+      "seconds": 26.5,
+      "finished_utc": "2026-11-13T18:15:51Z"
+    },
+    {
+      "name": "train_runs",
+      "state": "passed",
+      "required": true,
+      "description": "registered runs in order: claim, restore from Drive, train, verify on Drive",
+      "started_utc": "2026-11-13T18:15:51Z",
+      "log": "logs/train_runs.log",
+      "exit_code": 0,
+      "seconds": 7055.7,
+      "finished_utc": "2026-11-13T20:13:27Z"
+    }
+  ],
+  "error": null,
+  "env": {
+    "python": "3.12.3",
+    "platform": "Linux-6.6.159+-x86_64-with-glibc2.39",
+    "cpu_count": 12,
+    "ram_gb": 87.5,
+    "disk_free_gb": 239.8,
+    "packages": {
+      "torch": "2.13.0+cu130",
+      "torchvision": "0.28.0+cu130",
+      "transformers": "5.19.0",
+      "trl": "1.17.1",
+      "peft": "0.21.2",
+      "accelerate": "1.15.0",
+      "datasets": "4.8.5",
+      "math-verify": "0.9.0",
+      "sympy": "1.14.0",
+      "huggingface-hub": "1.33.0",
+      "numpy": "2.5.4",
+      "pillow": "13.0.0",
+      "pytest": "9.2.0",
+      "vllm": null
+    },
+    "torch": {
+      "version": "2.13.0+cu130",
+      "cuda_runtime": "13.0",
+      "cudnn": 92000,
+      "cuda_available": true
+    },
+    "gpu": {
+      "name": "NVIDIA A100-SXM4-40GB",
+      "total_gb": 42.41,
+      "capability": [
+        8,
+        0
+      ],
+      "count": 1,
+      "bf16": true
+    },
+    "env": {
+      "torch_backend": "cu130",
+      "lock": "requirements/locks/colab-gpu-cu130.txt",
+      "lock_sha256": "d009cd2e1a7848a1e21326b601d8f849fbf03052b34d07d808afe9c8bb065d2e",
+      "freeze_sha256": "ff9316bc44f93d48a284d806fc493dc0ad16c5237d84f7eb0acc0cc848f26f6a",
+      "install_seconds": 22.078590869903564
+    },
+    "driver": {
+      "available": true,
+      "name": "NVIDIA A100-SXM4-40GB",
+      "memory_mib": 40960.0,
+      "driver": "580.82.07",
+      "driver_cuda": [
+        13,
+        0
+      ]
+    },
+    "model": {
+      "repo": "Qwen/Qwen2.5-VL-3B-Instruct",
+      "revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+      "local_dir": "/content/p3/models/Qwen2.5-VL-3B-Instruct@66285546d2b8",
+      "total_bytes": 7520892432,
+      "download_seconds": 19.783495664596558
+    },
+    "model_files_sha256": {
+      "chat_template.json": "ad60d90252ed0b0705ba14e2d0ad0fec0beac1ea955642b54059b36052d8bc96",
+      "config.json": "7ed3eed5be6924cc800e8a5e53fc405c1aab1aaf36bad65c33403b36c56827f5",
+      "generation_config.json": "533f191cc257b7de37a4fccd0a7a1706d75e1aa660f93efaa54e5a2a9f9aace9",
+      "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+      "model-00001-of-00002.safetensors": "41a8895c164b4d32bae6b302f4603fcbc1797f32dafa45c7e9bcda23c6755df8",
+      "model-00002-of-00002.safetensors": "365531ff8752420e89dee707b79d021fb2d6e25abafe486f080555a4fe6972e4",
+      "model.safetensors.index.json": "c7dd78a4c6bea60b51332f1baf37b8f8124ecab2c35395a29a29825bf2619768",
+      "preprocessor_config.json": "f2058c716eef96ccaed1cc1e2d0c08306b62586d535b28d9d08e691b2fab7ca0",
+      "tokenizer.json": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+      "tokenizer_config.json": "4abd3520120e266da84c0864fee064d1fb10806f02225911a47253dd38dc5f56",
+      "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+    }
+  },
+  "pack": {
+    "schema": "p3-pack-verification-v1",
+    "content_sha256": "082210c90d5b3834539380c37bb5a43deab0f4354b5ff630910a6c06be06f1a1",
+    "recomputed_content_sha256": "082210c90d5b3834539380c37bb5a43deab0f4354b5ff630910a6c06be06f1a1",
+    "files": 716,
+    "anchors": [
+      "ledger",
+      "release",
+      "row"
+    ],
+    "missing_optional": [],
+    "problems": [],
+    "ok": true
+  },
+  "pytest": null,
+  "calibration": null,
+  "gpu_probe": null,
+  "v0_probe": null,
+  "smoke": {},
+  "smoke_full_hf": null,
+  "smoke_full_vllm": null,
+  "resume": null,
+  "frozen_runtime": null,
+  "drive_probe": {
+    "schema": "p3-drive-probe-v1",
+    "detect": {
+      "remote": "mydrive:",
+      "base_dir": "ColabProjects/vlm-perception-reward-rl",
+      "mount": "/content/mydrive",
+      "rclone": "/usr/bin/rclone",
+      "rclone_version": "rclone v1.60.1-DEV",
+      "config": null,
+      "config_source": "default",
+      "remote_configured": true,
+      "mount_present": true,
+      "usable": true,
+      "method": "rclone",
+      "notes": [],
+      "remotes": [
+        "mydrive:"
+      ]
+    },
+    "ok": true,
+    "steps": {
+      "upload_text": {
+        "rc": 0,
+        "seconds": 8.77,
+        "error": null
+      },
+      "read_back_text": {
+        "rc": 0,
+        "seconds": 6.34,
+        "matches": true
+      },
+      "upload_blob": {
+        "rc": 0,
+        "seconds": 5.72,
+        "mb_per_s": 2.8
+      },
+      "download_blob": {
+        "rc": 0,
+        "seconds": 7.82,
+        "mb_per_s": 2.0,
+        "md5_matches": true
+      },
+      "rclone_check": {
+        "rc": 0,
+        "identical": true
+      },
+      "mount_write": {
+        "visible_on_remote": true,
+        "seconds_until_visible": 17.4
+      }
+    },
+    "deleted_probe_files": [
+      "probe.txt",
+      "probe.bin",
+      "via_mount.txt"
+    ],
+    "target": "mydrive:ColabProjects/vlm-perception-reward-rl/_p3_probe/train-20261113T180946Z-8ea4",
+    "size_mb": 16
+  },
+  "github_check": {
+    "mode": "auto",
+    "branch": "results/train-20261113T180946Z-8ea4",
+    "url": "https://github.com/XDE10/vlm-perception-reward-rl.git",
+    "credentials_file": "/content/gh_credentials",
+    "credentials_present": false,
+    "ok": false,
+    "reason": "no credential file at /content/gh_credentials, so the launcher pushes the results from your machine (to let the VM push, see colab/README.md section 8)"
+  },
+  "public_sources": null,
+  "eval_sets_check": null,
+  "cfgeo_build": null,
+  "prompt_select": null,
+  "v0_val82": null,
+  "harness_check": null,
+  "is_check": null,
+  "s3_decisions": null,
+  "pilot_gates": null,
+  "pilot_runs": {},
+  "pilot_resume": null,
+  "train_job": {
+    "schema": "p3-s4-train-job-v1",
+    "job": "train-20261113T180946Z-8ea4",
+    "session": "p3-d66-finish",
+    "dry_run": false,
+    "started_utc": "2026-11-13T18:15:51Z",
+    "plan": [
+      {
+        "order": 1,
+        "run": "rl_v5/seed1",
+        "state": "completed",
+        "action": "skip",
+        "reason": "completed",
+        "remaining_steps": 0,
+        "utc": "2026-11-13T18:16:19Z"
+      },
+      {
+        "order": 2,
+        "run": "rl_ans/seed1",
+        "state": "completed",
+        "action": "skip",
+        "reason": "completed",
+        "remaining_steps": 0,
+        "utc": "2026-11-13T18:16:41Z"
+      },
+      {
+        "order": 3,
+        "run": "rl_blind/seed1",
+        "state": "completed",
+        "action": "skip",
+        "reason": "completed",
+        "remaining_steps": 0,
+        "utc": "2026-11-13T18:16:52Z"
+      },
+      {
+        "order": 4,
+        "run": "rl_v4/seed1",
+        "state": "completed",
+        "action": "skip",
+        "reason": "completed",
+        "remaining_steps": 0,
+        "utc": "2026-11-13T18:17:04Z"
+      },
+      {
+        "order": 5,
+        "run": "rl_v5_placebo/seed1",
+        "state": "completed",
+        "action": "skip",
+        "reason": "completed",
+        "remaining_steps": 0,
+        "utc": "2026-11-13T18:17:33Z"
+      },
+      {
+        "order": 6,
+        "run": "rl_v5/seed2",
+        "state": "completed",
+        "action": "skip",
+        "reason": "completed",
+        "remaining_steps": 0,
+        "utc": "2026-11-13T18:17:53Z"
+      },
+      {
+        "order": 7,
+        "run": "rl_ans/seed2",
+        "state": "completed",
+        "action": "skip",
+        "reason": "completed",
+        "remaining_steps": 0,
+        "utc": "2026-11-13T18:18:04Z"
+      },
+      {
+        "order": 8,
+        "run": "rl_blind/seed2",
+        "state": "completed",
+        "action": "skip",
+        "reason": "completed",
+        "remaining_steps": 0,
+        "utc": "2026-11-13T18:18:14Z"
+      },
+      {
+        "order": 9,
+        "run": "rl_v4/seed2",
+        "state": "completed",
+        "action": "skip",
+        "reason": "completed",
+        "remaining_steps": 0,
+        "utc": "2026-11-13T18:18:27Z"
+      },
+      {
+        "order": 10,
+        "run": "rl_v5_placebo/seed2",
+        "state": "completed",
+        "action": "skip",
+        "reason": "completed",
+        "remaining_steps": 0,
+        "utc": "2026-11-13T18:18:38Z"
+      },
+      {
+        "order": 11,
+        "run": "rl_v5/seed3",
+        "state": "started",
+        "action": "resume",
+        "reason": "from checkpoint-114",
+        "remaining_steps": 114,
+        "utc": "2026-11-13T18:18:51Z"
+      },
+      {
+        "order": 12,
+        "run": "rl_ans/seed3",
+        "state": "completed",
+        "action": "skip",
+        "reason": "completed",
+        "remaining_steps": 0,
+        "utc": "2026-11-13T20:10:25Z"
+      },
+      {
+        "order": 13,
+        "run": "rl_v5_groupnorm/seed1",
+        "state": "new",
+        "action": "stop",
+        "reason": "rl_v5_groupnorm/seed1 needs about 5h00m53s, 1h47m24s left before the deadline",
+        "remaining_steps": 228,
+        "utc": "2026-11-13T20:13:27Z"
+      }
+    ],
+    "runs": [
+      {
+        "order": 11,
+        "run": "rl_v5/seed3",
+        "attempts": [
+          {
+            "attempt": 1,
+            "started_utc": "2026-11-13T18:19:36Z",
+            "set_aside": null,
+            "restore": {
+              "step": 114,
+              "ok": true,
+              "started_utc": "2026-11-13T18:19:48Z",
+              "fetch": {
+                "ok": true,
+                "source": "mydrive:ColabProjects/vlm-perception-reward-rl/s4/rl_v3_p1_20261110/rl_v5/seed3/checkpoint-114",
+                "copy_seconds": 28.1,
+                "check_seconds": 4.1,
+                "copy_rc": 0,
+                "check_rc": 0
+              },
+              "path": "/content/p3/repo/runs/rl_v3_p1_20261110/rl_v5/seed3/checkpoint-114",
+              "files": 15,
+              "rollouts_kept": 7296,
+              "rollouts_dropped_after_checkpoint": 0,
+              "seconds": 33.9
+            },
+            "outcome": "completed",
+            "detail": null,
+            "exit_code": 0,
+            "last_step": 228,
+            "max_steps": 228,
+            "wall_seconds": 6452.5,
+            "startup_seconds": 283.6,
+            "step_seconds": {
+              "115": 48.7419,
+              "116": 64.9481,
+              "117": 55.6758,
+              "118": 54.2279,
+              "119": 61.0996,
+              "120": 55.4922,
+              "121": 50.9405,
+              "122": 63.8972,
+              "123": 60.5635,
+              "124": 40.9796,
+              "125": 53.8693,
+              "126": 60.4838,
+              "127": 56.341,
+              "128": 63.685,
+              "129": 51.7589,
+              "130": 52.9882,
+              "131": 61.9827,
+              "132": 69.2783,
+              "133": 51.4611,
+              "134": 56.6303,
+              "135": 66.2033,
+              "136": 53.4831,
+              "137": 54.136,
+              "138": 51.5778,
+              "139": 61.4842,
+              "140": 36.5029,
+              "141": 47.8063,
+              "142": 49.1941,
+              "143": 65.8332,
+              "144": 40.8751,
+              "145": 63.9246,
+              "146": 63.8275,
+              "147": 57.445,
+              "148": 54.6717,
+              "149": 55.7808,
+              "150": 62.5674,
+              "151": 47.8765,
+              "152": 75.8433,
+              "153": 45.7496,
+              "154": 57.3087,
+              "155": 73.9383,
+              "156": 49.2364,
+              "157": 46.0306,
+              "158": 53.1117,
+              "159": 53.7373,
+              "160": 75.2578,
+              "161": 53.7612,
+              "162": 67.7701,
+              "163": 86.4697,
+              "164": 42.7377,
+              "165": 47.3926,
+              "166": 56.5787,
+              "167": 53.8233,
+              "168": 66.8278,
+              "169": 45.7312,
+              "170": 47.8274,
+              "171": 48.1794,
+              "172": 43.2984,
+              "173": 58.5693,
+              "174": 67.1685,
+              "175": 47.9865,
+              "176": 47.5433,
+              "177": 39.4833,
+              "178": 48.1882,
+              "179": 58.1929,
+              "180": 41.8348,
+              "181": 45.232,
+              "182": 49.8779,
+              "183": 66.5555,
+              "184": 49.9914,
+              "185": 47.766,
+              "186": 55.2597,
+              "187": 64.8225,
+              "188": 53.0914,
+              "189": 43.4822,
+              "190": 46.858,
+              "191": 54.5043,
+              "192": 52.9018,
+              "193": 43.2254,
+              "194": 46.0921,
+              "195": 59.7576,
+              "196": 49.6152,
+              "197": 64.4688,
+              "198": 51.6254,
+              "199": 53.5196,
+              "200": 57.1106,
+              "201": 69.2024,
+              "202": 48.2472,
+              "203": 54.0617,
+              "204": 47.7145,
+              "205": 54.927,
+              "206": 47.1176,
+              "207": 51.375,
+              "208": 43.4173,
+              "209": 58.1672,
+              "210": 44.4655,
+              "211": 51.3922,
+              "212": 63.6319,
+              "213": 58.7097,
+              "214": 39.4702,
+              "215": 40.5549,
+              "216": 59.5804,
+              "217": 62.2902,
+              "218": 52.0937,
+              "219": 47.0786,
+              "220": 56.8214,
+              "221": 47.3607,
+              "222": 54.8053,
+              "223": 47.3644,
+              "224": 49.8575,
+              "225": 38.3053,
+              "226": 49.3092,
+              "227": 47.6706,
+              "228": 60.3353
+            },
+            "final_upload": {
+              "ok": true,
+              "started_utc": "2026-11-13T20:09:05Z",
+              "copy": {
+                "ok": true,
+                "target": "mydrive:ColabProjects/vlm-perception-reward-rl/s4/rl_v3_p1_20261110/rl_v5/seed3",
+                "files": 15,
+                "bytes": 285245271,
+                "copy_seconds": 19.1,
+                "check_seconds": 4.0,
+                "copy_rc": 0,
+                "check_rc": 0
+              },
+              "files": 15,
+              "bytes": 285245271,
+              "marker": "COMPLETED.json",
+              "seconds": 58.2
+            },
+            "log_tail": null,
+            "registration": {
+              "event": "registration_matched",
+              "registry": "s4_20261110",
+              "order": 11,
+              "arm": "rl_v5",
+              "seed": 3,
+              "optional": false,
+              "config_sha256": "cc6395ea7aabb4054e0c5dd52c676c1892b61457ff4db6a4f669f1949d469f69",
+              "rows": 609,
+              "data_sha256": {
+                "manifest": "ce02856dc5c594d7899539fb67e5b0eac621def38103e91b3f822af4ceaff2ba",
+                "train_file": "49bed0b5a42db8e7051bd2f2a9e3731c84ff8421fe7af05f9ed0e645e5a37fd2",
+                "intergps_annotations": "d83517c40cfb5e864344b0221dcd1698d118e461b16c587822c0b6ee8c67c00b"
+              },
+              "gpu_name": "NVIDIA A100-SXM4-40GB",
+              "gpu_name_seen": "NVIDIA A100-SXM4-40GB",
+              "matched": true
+            },
+            "uploads": [
+              {
+                "step": 152,
+                "ok": true,
+                "seconds": 74.3,
+                "reason": null
+              },
+              {
+                "step": 190,
+                "ok": true,
+                "seconds": 77.5,
+                "reason": null
+              },
+              {
+                "step": 228,
+                "ok": true,
+                "seconds": 77.0,
+                "reason": null
+              }
+            ],
+            "collected": [
+              "run_identity.json",
+              "train_summary.json",
+              "log_history.json",
+              "trainable_parameters.json",
+              "restored_from_drive.json",
+              "rollouts.jsonl.gz"
+            ]
+          }
+        ],
+        "state": "completed",
+        "started_utc": "2026-11-13T18:18:51Z",
+        "finished_utc": "2026-11-13T20:10:13Z"
+      }
+    ],
+    "stop": {
+      "kind": "time",
+      "reason": "rl_v5_groupnorm/seed1 needs about 5h00m53s, 1h47m24s left before the deadline",
+      "utc": "2026-11-13T20:13:27Z"
+    },
+    "checks": {
+      "drive_free_bytes": 4989732619897,
+      "pilot": "pilot-20261111T142648Z-a507",
+      "pilot_passed": true,
+      "baseline": "train-20261111T161741Z-2bf5",
+      "problems": [],
+      "container_started_utc": "2026-11-13T18:07:26Z",
+      "finish_by_utc": "2026-11-13T22:00:51Z",
+      "stop_at_utc": "2026-11-13T22:15:51Z",
+      "planned_step_seconds": 75.6,
+      "runs_link": {
+        "link": "/content/p3/repo/runs",
+        "target": "/content/p3/runs",
+        "moved": null
+      }
+    },
+    "finished_utc": "2026-11-13T20:13:27Z"
+  },
+  "checks": [
+    {
+      "check": "没有设置、代码冻结、Drive 或磁盘空间问题阻止训练",
+      "ok": true
+    },
+    {
+      "check": "本次运行的任务都完成、按规则中断或跳过（没有失败）",
+      "ok": true
+    },
+    {
+      "check": "私有数据与锚点一致",
+      "ok": true
+    }
+  ],
+  "overall": "passed"
+}
