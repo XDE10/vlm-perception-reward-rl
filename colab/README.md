@@ -119,9 +119,11 @@ bash colab/launch.sh train --session p3
 
 ## 三、断线、中断与恢复
 
-- **按 Ctrl-C 或关掉终端**：只是断开连接，VM 上的任务会继续跑完。在准备好的 VM 上（第八节），任务结束时 VM 会自己把结果推到 GitHub，你可以不管它。
+- **按 Ctrl-C 或关掉终端**：本地启动器与 VM 断开。VM 仍在运行时，任务可继续，结束后按 VM 的配置保存结果。
 - **重新连上并取回结果**：`bash colab/launch.sh collect <run_id>`。它会等任务结束，然后取回结果、推送结果，并释放运行器新建的 VM。
-  如果 VM 已经被 Colab 回收，但 VM 在那之前推送过结果，`collect` 会直接用 GitHub 上的那份。
+  状态下载失败时，启动器会单独核对 Colab 会话，并将脱敏错误写入 `.colab_runs/<run_id>/status_download.log`。
+  原 VM 无法访问时，先尝试 GitHub 结果分支，再尝试用本地 rclone 从 Drive 取回经过大小和 SHA256 校验的结果包。
+  若 S4 的 VM 提前退出且只留下检查点，新的 `train` 会从最近一个经 Drive 核验的检查点恢复。
 - **主动释放 VM**（不要结果了）：`bash colab/launch.sh stop <run_id>`
 - **查看本地记录的所有运行**：`bash colab/launch.sh list`
 - **只是推送失败**（例如凭据问题）：修好后运行 `bash colab/launch.sh push <run_id>`。
@@ -358,3 +360,15 @@ bash colab/launch.sh train --session p3
 
 **结果分支**：每个任务的 `runs/<组>_seed<k>/` 下有运行身份、训练摘要、日志历史、压缩后的 `rollouts.jsonl.gz` 和每次尝试的
 `train.log`；`train_job.json` 是本次运行的计划和每个任务的结果。权重和 checkpoint 只在 Drive 和 VM 上。
+
+## 十、S5 正式终评
+
+在挂好 Drive 的 A100-SXM4-40GB 上运行 `bash colab/launch.sh final-eval --session p3 --release`。
+入口先核对登记任务在 Drive 上的终态，只评测配置和运行时哈希匹配的 `final/`，并按同一协议评测 V0。正式任务仍在运行或待跑时会退出。
+
+按 [S3 设计](../docs/plan/S3设计_20261109.md) 和 [S4 预注册](../docs/plan/S4预注册_20261110.md) 使用 P1、HF 贪心、1024 token、固定 32 条批次和未合并 LoRA。
+每个模型与条件的逐题结果核对后保存在 Drive 的 `s5/predictions/`。VM 中断后，用同一代码提交和环境重跑命令会复用已核对的条件。
+结果分支的 `s5/` 包含任务清单、逐题文件的 Drive 路径和 SHA256、九项主比较的区间与 Holm 校正、逐种子及次要结果。
+
+Geometry3K 的次要 InterGPS FALSE 率以可解析的去重断言为分母，使用训练同源的几何证伪器。
+MathVista testmini 使用原题、选项和单位字段组成提示，以项目的答案段抽取和确定性判分报告全量、GPS 和去 Geometry3K 来源三组结果。

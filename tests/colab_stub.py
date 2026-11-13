@@ -32,9 +32,17 @@ from pathlib import Path
 
 STUB = Path(os.environ["STUB_ROOT"])
 REMOTE_PREFIX = "/content/p3"
-# run the job, then remove the VM's files and the session (argv: python, job script, vm dir, session dir)
-VANISH = ("import shutil, subprocess, sys; subprocess.call(sys.argv[1:3]); "
-          "[shutil.rmtree(p, ignore_errors=True) for p in sys.argv[3:]]")
+# Run the job, then reclaim the VM. Optionally give its session name to a different VM.
+VANISH = """import os, shutil, subprocess, sys
+from pathlib import Path
+subprocess.call(sys.argv[1:3])
+for path in sys.argv[3:]:
+    shutil.rmtree(path, ignore_errors=True)
+if os.environ.get("STUB_REPLACE_VM") == "1":
+    session = Path(sys.argv[4])
+    session.mkdir()
+    (session / "replacement").touch()
+"""
 
 
 def remote_path(path):
@@ -72,7 +80,12 @@ def main():
     elif command == "usage":
         print(os.environ.get("STUB_USAGE", "stub usage").replace("\\n", "\n"))
     elif command == "sessions":
-        print("stub sessions: " + " ".join(sorted(p.name for p in (STUB / "sessions").glob("*"))))
+        active = sorted((STUB / "sessions").glob("*"))
+        for vm in active:
+            suffix = "-replacement" if (vm / "replacement").exists() else ""
+            print(f"[{vm.name}] stub-{vm.name}{suffix} | Hardware: A100 | Shape: Standard | Variant: GPU")
+        if not active:
+            print("[colab] No active sessions.")
     elif command == "new":
         with open(str(STUB / "calls.log"), "a") as handle:
             handle.write("new-env ASSIGN_RETRIES=%s\n" % os.environ.get("COLAB_CLI_ASSIGN_RETRIES", "unset"))
@@ -104,6 +117,9 @@ def main():
         print("[colab] Uploaded '%s' to '%s'" % (positional[0], positional[1]))
     elif command == "download":
         positional = [a for a in rest if a not in ("-s", option(rest, "-s"))]
+        if positional[0].endswith("/status.json") and take(STUB / "status_failed", int(os.environ.get("STUB_FAIL_STATUS", "0"))):
+            print("[colab] Download failed: 503 https://stub.colab.dev/?colab-runtime-proxy-token=SECRET-STATUS-TOKEN")
+            sys.exit(1)
         source = remote_path(positional[0])
         if not source.is_file():
             sys.exit("stub: no such remote file %s" % positional[0])

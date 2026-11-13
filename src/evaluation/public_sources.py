@@ -16,6 +16,7 @@ from pathlib import Path
 BASES = {
     "geometry3k": "https://huggingface.co/datasets/hiyouga/geometry3k/resolve/fd21e533e1e50d0662a2bf7b223e60511bd5f8b7/",
     "intergps": "https://raw.githubusercontent.com/lupantech/InterGPS/99e6b5293c7bb4a5eaf2a370e6b213c79ab33ebb/",
+    "mathvista": "https://huggingface.co/datasets/AI4Math/MathVista/resolve/2b6ad69445fbb5695c9b165475e8decdbeb97747/",
 }
 WRAPPER = {split: "geometry3k/data/%s-00000-of-00001.parquet" % split for split in ("train", "validation", "test")}
 LEDGER_PREFIX = "data/project3_sources/"

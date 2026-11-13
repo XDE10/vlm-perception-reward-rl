@@ -14,6 +14,7 @@ import json
 import re
 import sys
 import tarfile
+import tempfile
 import time
 from pathlib import Path
 
@@ -133,8 +134,12 @@ def redact_tree(root):
     return changed
 
 
-def status_line(path):
+def status_line(path, run_id=None):
     status = read_json(path)
+    if run_id is not None and (status.get("schema") != "p3-job-status-v1" or status.get("run_id") != run_id or
+                               status.get("state") not in ("starting", "running", "summarizing", "packaging",
+                                                           "github_push", "drive_copy", "done")):
+        raise ValueError("status does not identify the requested run")
     steps = status.get("steps", [])
     done = sum(s.get("state") in ("passed", "failed", "timeout", "skipped") for s in steps)
     failed = [s["name"] for s in steps if s.get("state") in ("failed", "timeout")]
@@ -147,6 +152,53 @@ def status_line(path):
     if status.get("overall"):
         text += " | overall=" + status["overall"]
     return text
+
+
+def session_endpoint(text, name):
+    """An endpoint, 'absent' from a recognized listing, or 'unknown'."""
+    sessions = dict(re.findall(r"^\[([^\]]+)\]\s+(\S+)\s+\|\s+Hardware:", text, re.MULTILINE))
+    if sessions or re.search(r"^(?:\[colab\] )?No active sessions\b", text, re.MULTILINE):
+        return sessions.get(name, "absent")
+    return "unknown"
+
+
+def recover_drive(run_id, run_dir):
+    """Restore a completed, digest-verified package without using the Colab VM."""
+    from scripts.colab import drive
+
+    run_dir = Path(run_dir)
+    options_file = run_dir / "drive_options.json"
+    options = read_json(options_file) if options_file.is_file() else {}
+    info = drive.detect(remote=options.get("remote"), base_dir=options.get("base_dir"))
+    if not info["usable"]:
+        return None
+    rel = "runs/" + drive.check_rel(run_id)
+    raw, status = drive.get_text(info, rel + "/package.json", timeout=35)
+    if status != "ok":
+        return None
+    package = json.loads(raw)
+    name = run_id + ".results.tar.gz"
+    if package.get("run_id") != run_id or package.get("name") != name:
+        raise ValueError("Drive package does not identify the requested run")
+    with tempfile.TemporaryDirectory(dir=str(run_dir)) as tmp:
+        tmp = Path(tmp)
+        archive = tmp / name
+        target = drive.target_of(info, rel + "/" + name)
+        rc, _, _, _ = drive._run(drive.rclone_cmd(info, "copyto", target, archive), timeout=900)
+        if rc or not archive.is_file() or archive.stat().st_size != package["bytes"] or sha256_file(archive) != package["sha256"]:
+            return None
+        extract(archive, tmp / "results")
+        recovered = tmp / "results" / run_id
+        if not (recovered / "summary.json").is_file():
+            raise ValueError("Drive package has no summary for this run")
+        destination = run_dir / "results" / run_id
+        if (destination / "summary.json").is_file():
+            return destination
+        destination.parent.mkdir(exist_ok=True)
+        if destination.exists():
+            destination.rename(tmp / "incomplete_results")
+        recovered.rename(destination)
+    return destination
 
 
 def field(path, key):
@@ -210,6 +262,12 @@ def main(argv=None):
     sub.add_parser("redact-stdin")
     p = sub.add_parser("status-line")
     p.add_argument("path")
+    p.add_argument("--run-id")
+    p = sub.add_parser("session-endpoint")
+    p.add_argument("name")
+    p = sub.add_parser("recover-drive")
+    p.add_argument("run_id")
+    p.add_argument("run_dir")
     p = sub.add_parser("field")
     p.add_argument("path")
     p.add_argument("key")
@@ -239,7 +297,14 @@ def main(argv=None):
     elif args.command == "redact-stdin":
         sys.stdout.write(redact_text(sys.stdin.read())[0])
     elif args.command == "status-line":
-        print(status_line(args.path))
+        print(status_line(args.path, args.run_id))
+    elif args.command == "session-endpoint":
+        print(session_endpoint(sys.stdin.read(), args.name))
+    elif args.command == "recover-drive":
+        path = recover_drive(args.run_id, args.run_dir)
+        if path is None:
+            return 1
+        print(path)
     elif args.command == "field":
         print(field(args.path, args.key))
     elif args.command == "parts":

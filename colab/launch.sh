@@ -5,6 +5,7 @@
 #   bash colab/launch.sh v0 [options]          S3: evaluation inputs, train-only decisions, V0 diagnosis (A100/H100 only)
 #   bash colab/launch.sh pilot [options]       S4: the pre-registered pilot and its gates G1-G6 (A100-SXM4-40GB, Drive)
 #   bash colab/launch.sh train [options]       S4: formal runs in registered order, as many as fit (A100-SXM4-40GB, Drive)
+#   bash colab/launch.sh final-eval [options]  S5: frozen evaluation of V0 and registered finals (A100-SXM4-40GB, Drive)
 #   bash colab/launch.sh drive-check [options] cheap test of the optional Google Drive (rclone) setup
 #   bash colab/launch.sh collect RUN_ID        reattach after a disconnect: wait, fetch, push (from GitHub if the VM is gone)
 #   bash colab/launch.sh push RUN_ID           (re)push a run to its results/RUN_ID branch
@@ -59,6 +60,7 @@ PUSH_ON_FAILURE=0
 KEEP=0
 ATTACHED=0
 RELEASE=0
+POLL_OUTCOME=""
 
 log() { printf '[launch %s] %s\n' "$(date +%H:%M:%S)" "$*" | tee -a "$RUN_LOG" >&2; }
 die() { log "ERROR: $*"; exit 1; }
@@ -132,7 +134,13 @@ stop_session() {
 should_release() { [[ "$KEEP" != 1 && ( "$ATTACHED" != 1 || "$RELEASE" == 1 ) ]]; }
 
 release_or_remind() {
+  [[ "$SESSION_HANDLED" != 1 ]] || return 0
   if should_release; then
+    if [[ -s "$RUN_DIR/session_endpoint" ]] && [[ "$(current_endpoint)" != "$(cat "$RUN_DIR/session_endpoint")" ]]; then
+      log "release skipped: the original VM for $SESSION could not be confirmed"
+      SESSION_HANDLED=1
+      return 0
+    fi
     stop_session
   elif [[ "$ATTACHED" == 1 ]]; then
     log "your session $SESSION stays up and keeps using compute units; when you are done: colab stop -s $SESSION"
@@ -149,7 +157,7 @@ on_exit() {
   if [[ -n "$RUN_DIR" && -f "$RUN_DIR/state" ]]; then cp "$RUN_DIR/state" "$RUN_DIR/exit_state" 2>/dev/null || true; fi
   if [[ -n "$SESSION" && "$SESSION_HANDLED" != 1 ]]; then
     if [[ "$JOB_STARTED" == 1 && "$RESULTS_FETCHED" != 1 ]]; then
-      log "the job keeps running on the VM; reattach with: bash colab/launch.sh collect $RUN_ID"
+      log "the launcher did not stop the VM; check the run with: bash colab/launch.sh collect $RUN_ID"
       [[ "$ATTACHED" == 1 ]] || log "to release the VM instead: bash colab/launch.sh stop $RUN_ID"
     else
       release_or_remind
@@ -236,29 +244,59 @@ verify_inbox() {
   die "uploaded parts still differ on the VM after 3 repair rounds (see $RUN_DIR/upload.log)"
 }
 
+current_endpoint() {
+  local listing
+  if listing="$(colab_t 25 sessions </dev/null 2>/dev/null)"; then
+    printf '%s\n' "$listing" | "$PY" -m scripts.colab.local_tools session-endpoint "$SESSION"
+  else
+    printf 'unknown\n'
+  fi
+}
+
 remote_status_line() {
-  local target="$RUN_DIR/remote_status.json"
-  if colab_t 600 download -s "$SESSION" "$REMOTE/out/$RUN_ID/status.json" "$target" </dev/null >/dev/null 2>&1; then
-    "$PY" -m scripts.colab.local_tools status-line "$target"
+  local target="$RUN_DIR/remote_status.json" tmp error line detail rc=0
+  tmp="$(mktemp "$RUN_DIR/.status.XXXXXXXX")" || return 1
+  error="$tmp.error"
+  colab_t 35 download -s "$SESSION" "$REMOTE/out/$RUN_ID/status.json" "$tmp" </dev/null >"$error" 2>&1 || rc=$?
+  if [[ "$rc" == 0 ]] && line="$("$PY" -m scripts.colab.local_tools status-line "$tmp" --run-id "$RUN_ID" 2>>"$error")"; then
+    mv "$tmp" "$target"
+    rm -f "$error"
+    printf '%s\n' "$line"
     return 0
   fi
+  detail="$(tail -n 3 "$error" | tr '\n' ' ' | "$PY" -m scripts.colab.local_tools redact-stdin | cut -c1-450)"
+  printf '[%s] download exit=%s %s\n' "$(date +%H:%M:%S)" "$rc" "$detail" >>"$RUN_DIR/status_download.log"
+  rm -f "$tmp" "$error"
   return 1
 }
 
 poll_until_done() {
-  local fails=0 state
+  local fails=0 missing=0 state line endpoint original=""
+  [[ ! -f "$RUN_DIR/session_endpoint" ]] || original="$(cat "$RUN_DIR/session_endpoint")"
   while true; do
     if line="$(remote_status_line)"; then
-      fails=0
+      if ((fails > 0)); then log "remote status connection recovered after $fails failed poll(s)"; fi
+      fails=0; missing=0
       log "remote: $line"
       state="$("$PY" -m scripts.colab.local_tools field "$RUN_DIR/remote_status.json" state)"
       [[ "$state" == "done" ]] && return 0
     else
       fails=$((fails + 1))
-      log "could not read remote status ($fails/15)"
-      if ((fails >= 15)); then return 1; fi
+      endpoint="$(current_endpoint)"
+      if [[ "$endpoint" == absent || ( "$endpoint" != unknown && -n "$original" && "$endpoint" != "$original" ) ]]; then
+        missing=$((missing + 1))
+        if ((missing >= 2)); then
+          POLL_OUTCOME=vm-unavailable
+          log "the original VM is absent or its session name now points to another VM"
+          return 1
+        fi
+      else
+        missing=0
+      fi
+      log "could not read remote status ($fails/15): $(tail -n 1 "$RUN_DIR/status_download.log" | cut -c1-240)"
+      if ((fails >= 15)); then POLL_OUTCOME=detached; return 1; fi
     fi
-    sleep "$POLL"
+    if ((missing > 0 && POLL > 10)); then sleep 10; else sleep "$POLL"; fi
   done
 }
 
@@ -319,6 +357,20 @@ finish_from_github() {
   log "results in $RUN_DIR/results/$RUN_ID (overall: $(run_overall))"
 }
 
+finish_without_vm() {
+  if finish_from_github; then
+    :
+  elif "$PY" -m scripts.colab.local_tools recover-drive "$RUN_ID" "$RUN_DIR" >>"$RUN_DIR/drive_recovery.log" 2>&1; then
+    RESULTS_FETCHED=1
+    printf 'fetched\n' > "$RUN_DIR/state"
+    log "verified results recovered from Drive (overall: $(run_overall))"
+  else
+    return 1
+  fi
+  # A fallback artifact does not prove that the named VM is still this run's VM.
+  if [[ ! -s "$RUN_DIR/session_endpoint" || "$POLL_OUTCOME" == vm-unavailable ]]; then SESSION_HANDLED=1; fi
+}
+
 run_overall() {
   local value=""
   [[ -f "$RUN_DIR/done.json" ]] && value="$(done_field overall 2>/dev/null || true)"
@@ -330,7 +382,7 @@ run_overall() {
 fetch_results() {
   log "fetching results"
   if ! retry 5 download_file "$REMOTE/out/$RUN_ID.done.json" "$RUN_DIR/done.json"; then
-    finish_from_github && return 0
+    finish_without_vm && return 0
     die "could not download done.json (CLI output in $RUN_DIR/download.log)"
   fi
   local from_branch=0
@@ -348,8 +400,10 @@ fetch_results() {
     mkdir -p "$RUN_DIR/parts"
     local part
     for part in $("$PY" -m scripts.colab.local_tools parts "$RUN_DIR/done.json"); do
-      retry 5 download_file "$REMOTE/out/$part" "$RUN_DIR/parts/$part" ||
+      if ! retry 5 download_file "$REMOTE/out/$part" "$RUN_DIR/parts/$part"; then
+        finish_without_vm && return 0
         die "could not download $part (CLI output in $RUN_DIR/download.log)"
+      fi
     done
     "$PY" -m scripts.colab.local_tools join "$RUN_DIR/done.json" "$RUN_DIR/parts" "$RUN_DIR/results.tar.gz" >/dev/null
     rm -rf "$RUN_DIR/results"
@@ -415,7 +469,7 @@ push_results() {
     } > "$dest/RUN_STOPPED_EARLY.txt"
   fi
   # drive_mount.log stays local: the user's Drive tooling may print credentials
-  for f in launch.log bootstrap.log job.log upload.log upload_times.tsv inbox.log download.log usage_before.txt \
+  for f in launch.log bootstrap.log job.log upload.log upload_times.tsv inbox.log download.log status_download.log usage_before.txt \
     usage_after.txt local.json dirty.diff colab_version.txt done.json bootstrap.json pack.json; do
     [[ -f "$run_dir/$f" ]] && cp "$run_dir/$f" "$dest/_local/"
   done
@@ -624,8 +678,8 @@ cmd_run() {
   # the frozen runtime (D43) holds on A100 40/80 GB and H100 only: the VM checks this before installing anything
   [[ "$task" == "v0" ]] && min_gpu=40
   local required_gpu="" max_hours="" vm_hours=""
-  if [[ "$task" == "pilot" || "$task" == "train" ]]; then
-    # S4 runs only on the registered GPU (D54); the VM stops before installing anything on another one
+  if [[ "$task" == "pilot" || "$task" == "train" || "$task" == "final-eval" ]]; then
+    # Keep the same GPU model across formal evaluation runs as well as training.
     min_gpu=40
     required_gpu="$("$PY" -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["gpu_name"])' \
       configs/experiments/s4_runs_20261110.json)" || die "cannot read the GPU of the S4 registration"
@@ -655,7 +709,7 @@ cmd_run() {
   if [[ "$task" == "pilot" || "$task" == "train" ]] && [[ "$vllm" != 1 ]]; then
     die "--no-vllm does not apply to $task: the frozen runtime generates with vLLM"
   fi
-  if [[ "$task" == "pilot" || "$task" == "train" ]] && [[ -z "$attach" && "$dry" != 1 ]]; then
+  if [[ "$task" == "pilot" || "$task" == "train" || "$task" == "final-eval" ]] && [[ -z "$attach" && "$dry" != 1 ]]; then
     # a VM this runner creates has no rclone remote (the launcher never handles Drive credentials, D31/D37), so the
     # required drive_probe step would fail after the 10-20 minute environment build
     die "$task needs a VM with Google Drive (colab/README.md section 8); prepare it, then run: bash colab/launch.sh $task --session p3"
@@ -783,6 +837,11 @@ cmd_run() {
     inbox_listing || die "could not run code on the new VM (see $RUN_DIR/inbox.log)"
   fi
   printf 'allocated\n' > "$RUN_DIR/state"
+  local endpoint
+  endpoint="$(current_endpoint)"
+  if [[ "$endpoint" != unknown && "$endpoint" != absent ]]; then printf '%s\n' "$endpoint" > "$RUN_DIR/session_endpoint"; fi
+  "$PY" -c 'import json,sys; print(json.dumps(dict(remote=sys.argv[1],base_dir=sys.argv[2])))' \
+    "${P3_DRIVE_REMOTE:-mydrive:}" "${P3_DRIVE_DIR:-ColabProjects/vlm-perception-reward-rl}" > "$RUN_DIR/drive_options.json"
   if [[ "$ATTACHED" == 1 ]]; then
     [[ -z "${P3_DRIVE_MOUNT_CMD:-}${P3_DRIVE_SETUP_FILE:-}" ]] ||
       log "Drive hooks skipped: you prepared session $SESSION yourself"
@@ -822,7 +881,7 @@ cmd_run() {
   printf 'running\n' > "$RUN_DIR/state"
   log "job running on the VM; progress lines follow (Ctrl-C detaches, the job keeps running)"
   start_job
-  wait_and_fetch "the VM stopped answering; reattach later with: bash colab/launch.sh collect $RUN_ID"
+  wait_and_fetch
   release_or_remind
   colab_ usage </dev/null > "$RUN_DIR/usage_after.txt" 2>&1 || true
   push_results "$RUN_ID" || true
@@ -831,11 +890,10 @@ cmd_run() {
 }
 
 wait_and_fetch() {
-  local message=$1
   if ! grep -q "JOB_DONE" "$RUN_DIR/job.log" 2>/dev/null; then
     log "no live connection to the job; polling the VM every ${POLL}s"
     if ! poll_until_done; then
-      finish_from_github || die "$message"
+      recover_after_poll
       return 0
     fi
   fi
@@ -871,15 +929,28 @@ cmd_collect() {
   colab_ usage </dev/null > "$RUN_DIR/usage_after.txt" 2>&1 || true
   push_results "$RUN_ID" || true
   print_summary
+  [[ "$(run_overall)" == "passed" ]] || exit 3
 }
 
 wait_and_fetch_collect() {
-  # collect never relies on the live output: poll, and use GitHub if the VM is gone
   if ! poll_until_done; then
-    finish_from_github || die "the VM does not answer and results/$RUN_ID is not on GitHub; it may have been reclaimed"
+    recover_after_poll
     return 0
   fi
   fetch_results
+}
+
+recover_after_poll() {
+  finish_without_vm && return 0
+  printf '%s\n' "$POLL_OUTCOME" >"$RUN_DIR/state"
+  SESSION_HANDLED=1
+  if [[ "$POLL_OUTCOME" == vm-unavailable ]]; then
+    if [[ "$(cat "$RUN_DIR/task")" == train ]]; then
+      die "original VM unavailable; no completed result on GitHub or Drive. A new train job can resume from a verified Drive checkpoint."
+    fi
+    die "original VM unavailable; no completed result on GitHub or Drive"
+  fi
+  die "status monitoring disconnected; VM and job state are unknown. Reattach with: bash colab/launch.sh collect $RUN_ID"
 }
 
 cmd_list() {
@@ -900,6 +971,7 @@ main() {
     v0) cmd_run v0 "$@" ;;
     pilot) cmd_run pilot "$@" ;;
     train) cmd_run train "$@" ;;
+    final-eval) cmd_run final-eval "$@" ;;
     drive-check) cmd_run drive-check "$@" ;;
     collect) cmd_collect "$@" ;;
     push) need git; check_python; load_run "${1:-}"; push_results "$RUN_ID" ;;

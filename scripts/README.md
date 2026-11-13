@@ -108,5 +108,8 @@
 | `prompt_select.py` | VM：在 64 道已批准 train 题上测量 P0 与 P1 的格式率、答案准确率和补全长度（温度 1.0 各 4 个样本，另加贪心） | 主线 | 任务 `v0` 的步骤 `prompt_select` |
 | `v0_diagnosis.py` | VM：V0 在 82 道 validation 上的贪心诊断（P0 有图、P0 无图、只要答案的提示），含失败分类；只测量 | 主线 | 任务 `v0` 的步骤 `v0_val82` |
 | `harness_check.py` | VM：用 train 输入走一遍 S5 的评测代码（五种条件、E1 评分、统计模块） | 主线 | 任务 `v0` 的步骤 `harness_check` |
+| `final_eval.py` | VM：核对 S4 终态和最终 adapter，运行并保存 S5 的逐题预测 | 主线 | 任务 `final-eval` |
+| `s5_inputs.py` | VM：重建 S5 固定题集，处理 MathVista 判分和 InterGPS 证伪诊断 | 主线 | 由 `final_eval.py` 导入 |
+| `s5_analysis.py` | VM：汇总预注册的九项比较、逐种子和次要指标 | 主线 | 由 `final_eval.py` 导入 |
 | `decide_s3.py` | VM：按 S3 设计第 6 节的预注册规则写出 `s3_decisions.json`（提示、格式预热、长度上限、分辨率、生成后端） | 主线 | 任务 `v0` 的步骤 `decide_s3` |
 | `summarize_run.py` | VM：把一次运行的所有产物汇总成 `summary.json` 与 `summary.md` | 主线 | 运行结束时自动调用 |
