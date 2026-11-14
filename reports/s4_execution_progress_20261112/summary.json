@@ -1,0 +1,100 @@
+{
+  "schema": "p3-s4-execution-progress-v1",
+  "created_utc": "2026-11-12T02:35:00Z",
+  "local_time": "2026-11-12T10:35:00+08:00",
+  "environment": {
+    "gpu": "NVIDIA A100-SXM4-40GB",
+    "vram_total_gb": 42.41,
+    "driver": "580.82.07",
+    "cuda": "13.0",
+    "torch": "2.13.0+cu130",
+    "transformers": "5.19.0",
+    "trl": "1.17.1",
+    "peft": "0.21.2",
+    "base_model": "Qwen/Qwen2.5-VL-3B-Instruct@66285546d2b8"
+  },
+  "review_and_debiasing": {
+    "decision": "D66",
+    "revision": "Revision 4 (docs/plan/S4预注册_20261110.md)",
+    "route": "Route B",
+    "changes": [
+      {
+        "file": "configs/experiments/rl_v3_p1_20261110.json",
+        "key": "train.scale_rewards",
+        "value": "none",
+        "rationale": "Align with standard Dr.GRPO to eliminate zero-hit batch gradient hijacking from lambda cancellation"
+      },
+      {
+        "file": "src/rewards/perception_v5.py",
+        "key": "broken_perception_block_reward",
+        "value": -1.0,
+        "rationale": "Eliminate broken tag safe-haven loophole by penalizing broken blocks strictly worse than worst-case valid parsing"
+      }
+    ],
+    "unit_tests": "316 passed, 0 failed, 0 errors"
+  },
+  "pilot": {
+    "job_id": "pilot-20261111T142648Z-a507",
+    "overall": "passed",
+    "cu_consumed": 29.71,
+    "gates": {
+      "G1_importance_sampling": "passed",
+      "G2_memory_peak_gb": 26.6,
+      "G3_stability_verifier_errors": 0,
+      "G4_learning_format_jump": "0.608 -> 0.652",
+      "G5_drive_checkpoint_resume": "passed",
+      "G6_protocol_p1": "passed"
+    },
+    "drive_marker": "mydrive:ColabProjects/vlm-perception-reward-rl/s4/rl_v3_p1_20261110/PILOT_LATEST.json"
+  },
+  "formal_training": {
+    "job_id": "train-20261111T161741Z-2bf5",
+    "session": "p3",
+    "started_utc": "2026-11-11T16:17:41Z",
+    "running_duration": "10h15m+",
+    "resilience": "Stream connection loss auto-degraded to VM polling every 120s; execution uninterrupted",
+    "completed_runs": [
+      {
+        "order": 1,
+        "run": "rl_v5/seed1",
+        "steps": 228,
+        "status": "completed",
+        "drive_verified": true
+      },
+      {
+        "order": 2,
+        "run": "rl_ans/seed1",
+        "steps": 228,
+        "duration_seconds": 12969,
+        "status": "completed",
+        "drive_verified": true
+      },
+      {
+        "order": 3,
+        "run": "rl_blind/seed1",
+        "steps": 228,
+        "duration_seconds": 5827,
+        "status": "completed",
+        "drive_verified": true
+      },
+      {
+        "order": 4,
+        "run": "rl_v4/seed1",
+        "steps": 228,
+        "duration_seconds": 12886,
+        "status": "completed",
+        "drive_verified": true
+      }
+    ],
+    "active_run": {
+      "order": 5,
+      "run": "rl_v5_placebo/seed1",
+      "current_step": 82,
+      "total_steps": 228,
+      "step_time_seconds": 54.8,
+      "status": "running",
+      "latest_verified_checkpoint": "checkpoint-76"
+    },
+    "pending_runs_count": 7
+  }
+}

@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS = ROOT / "scripts"
-GROUPS = ["common", "data", "training", "reporting", "migration"]
+GROUPS = ["common", "data", "training", "reporting", "migration", "colab"]
 
 
 def test_scripts_has_no_flat_modules():
@@ -86,3 +86,27 @@ def test_configs_use_relative_paths_and_pinned_revision():
             assert re.fullmatch(r"[0-9a-f]{40}", config["model_revision"]), config_path
         # model 是 HF id 或相对 runs/ 目录，二者都不能是绝对路径/盘符路径。
         assert not re.match(r"^[A-Za-z]:", str(config["model"])), config_path
+
+
+def test_colab_readme_commands_are_zsh_safe():
+    """The user pastes these commands into zsh, where `# ...` is not a comment unless interactivecomments is set:
+    `bash colab/launch.sh preflight  # note` would pass '#' and the note to the launcher as arguments."""
+    import re
+
+    text = (ROOT / "colab" / "README.md").read_text(encoding="utf-8")
+    problems = []
+    for block in re.findall(r"```(?:bash|sh|zsh)\n(.*?)```", text, re.S):
+        heredoc_end = None
+        for line in block.splitlines():
+            if heredoc_end is not None:
+                if line.strip() == heredoc_end:
+                    heredoc_end = None
+                continue  # heredoc lines are data for the file being written
+            match = re.search(r"<<-?\s*'?([A-Za-z_]+)'?", line)
+            if match:
+                heredoc_end = match.group(1)
+            if line.lstrip().startswith("#") or re.search(r"\s#\s", line):
+                problems.append(line)
+            if re.search(r"(^|\s)[^'\"\s]*[*?][^'\"\s]*(\s|$)", line.split("#")[0]) and "'" not in line:
+                problems.append(line)  # unquoted glob: zsh stops with "no matches found"
+    assert problems == [], problems

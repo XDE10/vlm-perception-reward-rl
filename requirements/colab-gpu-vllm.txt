@@ -1,0 +1,5 @@
+# Optional vLLM generation backend, probed by preflight in a separate venv (never mixed into the base env).
+# vllm 0.32.0 pins torch==2.13.0 / transformers<5.20 and its PyPI wheel is built for CUDA 13, so it is only
+# probed when the driver supports CUDA 13 (torch backend cu130).
+-r colab-gpu.txt
+vllm==0.32.0

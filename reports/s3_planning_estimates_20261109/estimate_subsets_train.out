@@ -1,0 +1,6 @@
+train problems                                        2101  (100.0% of train)
+vision-needed (VN)                                    1539  (73.3% of train)
+VN with length goal                                    634  (30.2% of train)
+VN with area goal                                      188  (8.9% of train)
+CF-Geo candidate (strict)                              551  (26.2% of train)
+numeric length labels to edit (in CF candidates)      1156  (55.0% of train)

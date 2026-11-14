@@ -1,6 +1,6 @@
 # 目录结构约定
 
-更新：2026-11-08。本页定义仓库的物理布局和新增文件的落位规则；数据与报告
+更新：2026-11-09。本页定义仓库的物理布局和新增文件的落位规则；数据与报告
 的冻结策略见 [data.md](data.md) 与 [verification.md](verification.md)。
 
 ## 顶层布局
@@ -13,7 +13,8 @@
 ├── pyproject.toml         # 项目元数据 + pytest 配置
 ├── .editorconfig          # 编码/换行/缩进约定
 ├── .gitignore             # data/、runs/、缓存等本地内容不入库
-├── configs/               # 当前执行配置（相对路径，2 步工程 smoke）
+├── colab/                 # Colab 运行器：launch.sh（本地入口）、kernel_*.py（在 Colab 内核中执行）、使用说明
+├── configs/               # 当前执行配置；experiments/ 为协议 v3 正式实验（基础配置 + 组别）
 ├── data/                  # 本地数据载荷（约 1.4 GB，git 忽略，SHA 由清单校验）
 ├── docs/                  # 说明页 + 历史留档（见下）
 ├── reports/               # 只追加的版本化证据与报告
@@ -24,8 +25,9 @@
 └── tools/                 # 离线校验与仓库维护工具
 ```
 
-`runs/`、`backups/`、`.venv/`、`.pilot_deps/` 是本地目录，默认被
-`.gitignore` 忽略，不应提交。
+`runs/`、`backups/`、`.venv/`、`.pilot_deps/`，以及 Colab 运行器的 `.colab_cache/`、`.colab_runs/`、
+`.colab_local.env` 都是本地目录或文件，默认被 `.gitignore` 忽略，不应提交。Colab 运行的结果通过
+`results/<run_id>` 分支进入 `reports/colab_runs_<日期>/`。
 
 ## scripts/ 分组
 
@@ -39,6 +41,7 @@
 | `scripts/training/` | 训练入口、视觉诊断、配置生成、数学验证 worker |
 | `scripts/reporting/` | 发布/执行报告、汇总与交付清单 |
 | `scripts/migration/` | 历史迁移打包脚本（不随当前布局保证可运行） |
+| `scripts/colab/` | Colab 运行器的本地打包工具与 VM 端步骤（引导、任务步骤、探针、运行时决策、摘要） |
 
 完整脚本清单与状态见 [scripts/README.md](../scripts/README.md)。
 历史方案文档中的 `python -m scripts.<name>` 是当时快照，当前入口以 README 和
@@ -49,10 +52,11 @@
 | 目录 | 职责 |
 | --- | --- |
 | `src/data/` | 数据准入、模型输入白名单、事实序列化、split 保护、感知奖励解析 |
-| `src/evaluation/` | 有限几何 schema 的解析与覆盖感知评分 |
+| `src/evaluation/` | 有限几何 schema 的解析与覆盖感知评分；S3 起的评测集规则、CF-Geo 重建、统一评测路径与统计 |
 | `src/losses/` | CPU 参考损失（正确性参照，不是 GPU 训练器） |
 | `src/teachers/` | tokenizer/配置元数据审计（不下载权重） |
-| `src/training/` | manifest 门控的 HF SFT/GRPO 入口、奖励回调 |
+| `src/rewards/` | 协议 v3 的奖励组件：逐条断言解析、InterGPS 几何证伪、可证伪感知奖励 v5、答案校验进程池、罗列攻击探针 |
+| `src/training/` | 统一 GRPO 入口（协议 v3、组别配置、奖励汇总与逐条日志、语言 LoRA、ViT 缓存）；旧的 manifest 门控 SFT/GRPO 入口（历史） |
 
 新增代码优先放进 `src/`（可复用逻辑）或 `scripts/<group>/`（一次性/流水线
 命令），测试放 `tests/test_*.py`，校验工具放 `tools/`。
@@ -77,8 +81,9 @@
 
 ## 新增/移动文件时的检查
 
-1. 新文件是否需要进入 `migration_manifest.json`：运行
-   `python tools/build_migration_manifest.py`，它会保留溯源字段并记录变更。
+1. 新文件是否需要进入 `migration_manifest.json`：在有 `data/` 的机器上运行
+   `python tools/build_migration_manifest.py`，它会保留溯源字段并记录变更；没有 `data/`
+   时（如新 clone 或沙箱）改用 `--git-tracked-only`，只重算 git 可见文件，`data/` 条目原样保留。
 2. 是否破坏 `python -m scripts.<group>.<name>` 或 `from scripts.` 导入：运行
    `python -m pytest -q` 并做一次导入检查。
 3. 是否破坏当前文档链接：运行 `python tools/check_links.py`。

@@ -29,6 +29,39 @@ runs/... SFT merged 权重 → 稀疏 GRPO（感知奖励 + math_verify 数学�
 src/evaluation/geometry_perception_parser.py + 视觉诊断脚本 → 评测/诊断记录
 ```
 
+图中从 `configs/*.json → scripts/training/train_project3.py` 开始的训练部分是旧入口（感知 SFT → 稀疏 GRPO），只作历史保留。
+正式实验从 `data/portable_release/` 进入下一节的协议 v3 流水线：所有组都从 V0 出发，不做感知 SFT。
+
+## 协议 v3 统一 GRPO 流水线（2026-11-09 起的正式实验）
+
+```text
+configs/experiments/rl_v3_p1_20261110.json（S4；rl_v3.json 为 S1–S3 的 P0 版本）+ arms.json
+        │  ──► src/training/rl_config.py（基础配置 + 组别 + 种子 → 完整配置与哈希）
+        │  ──► src/training/registry.py（S4 登记表 s4_runs_20261110.json：正式任务的配置哈希、数据、GPU 必须一致）
+        ▼
+src/training/rl_data.py：release manifest 门控 → v4 奖励行契约 → 受保护 dev ID → 图片字节 SHA
+        │                 → 与 InterGPS 记录的像素哈希一致 → 安慰剂错位配对 / 去图（blind）
+        ▼
+src/training/protocol_v3.py：统一 system prompt；提示变体由配置的协议编号决定（S4 为 P1）；
+        │                     输出 <perception>…</perception><think>…</think><answer>…</answer>
+        │
+        ▼
+src/training/rl_entry.py：语言 LoRA（精确模块名，ViT/merger 冻结断言）→ TRL GRPOTrainer
+        │                  → 运行身份（配置/版本/源码/数据 SHA）→ checkpoint 与恢复校验
+        ▼
+src/training/rl_rewards.py：每批算一次，三个奖励头
+        ├── 答案：src/rewards/answer.py（math_verify 常驻进程池，只认唯一 <answer>）
+        ├── 格式：三段协议 + 至少 1 条可解析事实
+        └── 感知：none | v4（冻结） | v5（src/rewards/perception_v5.py + geometry_oracle.py）
+        ▼
+runs/<实验>/<组>/seed<k>/：rollouts.jsonl（逐条 rollout 与奖励明细）、run_identity.json、final/ adapter
+```
+
+S4 在 Colab 上的执行（`scripts/colab/`，决策 D59–D64）：`train_s4.py` 按登记顺序认领任务、从 Google Drive 恢复，经
+`s4_supervise.py` 在独立进程组里运行 `train_rl --registered`；每个 checkpoint 写完后由后台线程经 `s4_state.py` 复制到 Drive
+并核对（`rclone copy` + `rclone check`，再写 `DRIVE_VERIFIED.json`），恢复只用带这个标记的 checkpoint。试跑的门槛由
+`decide_pilot.py` 判定。这些脚本只用标准库，不在运行身份的 `source_sha256` 里，所以不受代码冻结的核对约束。
+
 ## 模块职责
 
 | 模块 | 职责 | 关键边界 |
@@ -40,9 +73,22 @@ src/evaluation/geometry_perception_parser.py + 视觉诊断脚本 → 评测/诊
 | `src/data/project3_perception_prototype.py` / `project3_perception_v2.py` | 基于 InterGPS 的有限 schema AST/事实原型与复核序列化 | 原型和复核输出都不是视觉金标 |
 | `src/data/perception_v4.py` | 解析审核内容、规范化 Angle→Length→Parallel→Perpendicular→Tangent，计算稀疏范围奖励 | 认证范围外的事实未知（mask），不按“缺标签”惩罚 |
 | `src/data/project3_perception_preview.py` | 独立的预览序列化，供人工/模型审核 | 与生产奖励解析器解耦，避免自证 |
-| `src/training/approved_hf.py` | HF/TRL SFT 与 GRPO 入口：VL processor、assistant-only labels、LoRA、合并权重身份检查 | 依赖配置中的固定模型 revision 与 release manifest；GPU 行为未在本机验收 |
+| `src/training/approved_hf.py` | 旧 HF/TRL SFT 与 GRPO 入口：VL processor、assistant-only labels、LoRA、合并权重身份检查 | 历史入口；2026-11-09 只修复 LoRA 误入 ViT 与 transformers 5 模型类 |
+| `src/training/rl_entry.py` / `rl_config.py` / `rl_data.py` / `rl_rewards.py` | 协议 v3 统一 GRPO 入口：组别配置解析、数据门控、奖励汇总与逐条日志、运行身份与恢复；loss 或梯度范数出现 NaN/inf 立即停止 | 组别只能覆盖白名单字段；CPU 用 tiny Qwen2.5-VL 端到端测试；S2 预检与 S3 `v0` 在 A100 上跑过 3 步冒烟 |
+| `src/training/registry.py` | S4 登记表的派生字段（配置哈希、运行时内容哈希、数据 SHA256）与执行时核对 | 登记运行在加载模型前核对配置、数据、行数与 GPU，不一致就停止；哈希由脚本生成，不手写 |
+| `src/training/protocol_v3.py` | 所有组共用的 system prompt 与输出解析 | 训练与评测提示经 TRL 渲染后逐字一致（有测试） |
+| `src/training/lora_language.py` / `vision_cache.py` | 只挂语言模块的 LoRA 与冻结断言；可选的冻结 ViT 输出缓存 | 缓存只在冻结且等价性检验通过时启用 |
+| `src/training/multimodal_guard.py` | 让 TRL 评分前向的图像 token 类型与 input_ids 对齐（处理器左填充），并在每次前向检查 | 不一致就报错停止，不会带着错误的 M-RoPE 位置训练（D33） |
+| `src/rewards/claims.py` / `geometry_oracle.py` / `perception_v5.py` | 逐条断言解析；用 InterGPS 坐标与线/圆实例证伪断言；可证伪感知奖励 v5.1 | 几何只用来否定，不用来认证；标注否定了自身认证事实的图，同类检验不参与证伪（一致性门控）；门控后每类留一法残余误杀率 ≤ 5%（D35） |
+| `src/rewards/answer.py` / `attacks.py` | math_verify 常驻进程池与仅去掉表述形式的答案规范化；确定性罗列攻击探针 | 训练判定不加数值容差 |
+| `src/data/intergps_index.py` | InterGPS 人工标注的只读几何视图（点坐标、线/圆实例、题型） | 坐标只用于与平移无关的相对检验 |
 | `src/training/perception_reward_v4.py` | 训练器回调，把感知奖励接到 TRL | 奖励标签是私有元数据，不进入可见输入 |
 | `src/evaluation/geometry_perception_parser.py` | 有限关系 schema 解析、确定性序列化、覆盖感知去重评分 | 拒绝解析不等于模型推理错误；无标签类别不惩罚 |
+| `src/evaluation/eval_sets.py` / `public_sources.py` | S3 预注册的评测集规则（视觉必需子集、CF-Geo 候选、取整题的答案集合、换图配对）；固定版本公开数据的下载与按 `migration_manifest.json` 核对 | 规则只读题面、答案和 InterGPS 人工标注，不看模型输出；下载的文件不进数据包，也不进结果分支 |
+| `src/evaluation/cfgeo.py` | CF-Geo 补丁格式与重建：在固定版本的原图上贴补丁，前后都核对像素哈希 | 补丁只含我们填的底色和画的数字，仓库里没有原图 |
+| `src/evaluation/generate_v3.py` / `harness.py` | 批量贪心生成与评分；所有模型、所有条件（原图、无图、换图、CF k=1、CF k=2）共用一条评测路径 | 每个模型用同样的批次（32）和顺序；LoRA 不合并加载，即训练出的策略本身 |
+| `src/evaluation/stats.py` | 按图聚类的配对 bootstrap 与置换检验、Holm 校正、McNemar 精确检验（D46） | “能区分”要求 Holm 校正后 p < 0.05 且区间不跨 0 |
+| `src/training/vllm_guard.py` | 用 vLLM 生成时，检查每张训练图在训练处理器和 vLLM 默认设置下得到相同的 patch 网格 | 不同就在训练前停止（TRL 不能把 max_pixels 传给 vLLM） |
 | `src/losses/reference.py` | SFT/GRPO/对齐 KL 的 CPU 参考实现 | 正确性参照，不是 GPU 训练器或性能结论 |
 | `src/teachers/tokenizer_audit.py` | 按白名单下载 tokenizer/config 元数据并逐 token 比对 | 不下载模型权重，不产生能力结论 |
 
@@ -63,9 +109,10 @@ src/evaluation/geometry_perception_parser.py + 视觉诊断脚本 → 评测/诊
 
 ## 明确不在当前实现内的东西
 
-- 没有已验收的 CUDA 训练、显存/恢复结果；`configs/` 只有 2 步工程 smoke。
-- 没有 EasyR1 集成；详细方案中的 EasyR1 是设计路线。
-- 没有完整 V0～V4 实验矩阵；当前链路是“感知事实 SFT → 稀疏 GRPO”的工程验证。
+- 没有正式训练结果。GPU 上只跑过 S2 预检与 S3 `v0`（3 步 GRPO 冒烟、显存与步时测量、HF 生成下的断点恢复），属于工程验证；
+  S4 的 12 个正式任务按 [S4 预注册](plan/S4预注册_20261110.md) 运行，`pilot` 与 `train` 任务已实现但还没有在 GPU 上运行。
+- 没有 EasyR1 集成；详细方案中的 EasyR1 是设计路线，正式实验沿用 TRL（见决策记录）。
+- 没有完整 V0～V4 SFT 矩阵；正式实验按 [执行计划](plan/执行计划_20261108.md) 的组别进行。
 - 没有全图事实 precision/recall 金标；认证事实是部分覆盖，未知按 mask 处理。
 - `src/losses/` 与历史 CPU 文档中的多项目共用设施已被 2026-11-08 清理分离，
   不再是本仓库运行依赖。

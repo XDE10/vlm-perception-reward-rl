@@ -22,6 +22,13 @@
 | `training_readiness_20261023_v2.*`、`completion_audit.json`、`artifact_inventory.json` | 训练前置检查与总览 |
 | `tokenizer_alignment*` | tokenizer 对齐与复审 |
 | `pytest_full.log`、`blueprint_data_revision.diff`、`overnight_execution_summary.md`、`cpu_demo.json` | 测试/差异/执行摘要 |
+| `certified_fact_errata_20261109/` | 第三次预检校准中被几何检验否定的认证事实的看图核对（AI 核对，release 不变） |
+| `s3_planning_estimates_20261109/` | S3 评测规则在 train 上的数量估计与 CF-Geo 原型（不读 validation 和 test） |
+| `eval_sets_20261109/` | 按 S3 预注册规则生成的评测集定义（test 视觉必需子集、CF 候选、换图配对），不含图像 |
+| `cfgeo_20261109/` | CF-Geo 评测集与 train 开发集：编辑补丁、像素哈希、标准答案、两轮看图抽查记录（不含原图） |
+| `s4_preregistration_20261110/` | S4 预注册引用数字的复现：S3 决策文件副本的核对、P0/P1 格式率按题聚类的 bootstrap 区间（只用 train） |
+| `s4_execution_progress_20261112/` | S4 阶段性执行与训练进展：路线 B 审查决议落地、Pilot 试跑 6 大门槛通过数据、正式训练 10h+ 执行实况与消融组归档 |
+| [s4_s5_progress_20261114/](s4_s5_progress_20261114/README.md) | D66 S4 完成核验、S5 预测进度及独立 Shuffle-R1 单卡对照 |
 
 ## 约定
 

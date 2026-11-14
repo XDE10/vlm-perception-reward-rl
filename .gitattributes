@@ -1,0 +1,7 @@
+# Shell scripts and Colab kernel scripts must keep LF line endings even on Windows checkouts
+# (core.autocrlf=true would otherwise break `bash colab/launch.sh` under WSL).
+*.sh text eol=lf
+colab/*.py text eol=lf
+scripts/colab/*.py text eol=lf
+# Byte-exact copies of files written by a Colab run; their SHA256 is checked by tests (S4 pre-registration, D52).
+configs/experiments/s3_decisions_*.json -text

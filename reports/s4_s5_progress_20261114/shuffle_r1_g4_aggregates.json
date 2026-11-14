@@ -1,0 +1,380 @@
+{
+  "results": {
+    "base": {
+      "protocol": {
+        "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+        "revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+        "upstream": "b863694f25d38d0e118761363dc5897bb9625e82",
+        "data_url": "https://raw.githubusercontent.com/lupantech/InterGPS/99e6b5293c7bb4a5eaf2a370e6b213c79ab33ebb/data/geometry3k/test.zip",
+        "data_sha256": "a0d5dece634686303eb6cabca0a7306136ca8ade5f562a4af4c6561ecaf6c9b3",
+        "prompt": "You FIRST think about the reasoning process as an internal monologue and then provide the final answer.\n The reasoning process MUST BE enclosed within <think> </think> tags. The final answer MUST BE put in \\boxed{}.",
+        "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+        "min_pixels": 262144,
+        "max_pixels": 4194304,
+        "max_model_len": 8192,
+        "max_tokens": 2048,
+        "temperature": 0.5,
+        "repeats": 8,
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "tensor_parallel_size": 1
+      },
+      "summary": {
+        "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+        "revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+        "runs": [
+          {
+            "seed": 0,
+            "correct": 152,
+            "n": 601,
+            "pass_at_1": 0.2529118136439268,
+            "elapsed_seconds": 80.51265374600007
+          },
+          {
+            "seed": 1,
+            "correct": 155,
+            "n": 601,
+            "pass_at_1": 0.2579034941763727,
+            "elapsed_seconds": 30.963773434999894
+          },
+          {
+            "seed": 2,
+            "correct": 146,
+            "n": 601,
+            "pass_at_1": 0.24292845257903495,
+            "elapsed_seconds": 30.967459125000005
+          },
+          {
+            "seed": 3,
+            "correct": 151,
+            "n": 601,
+            "pass_at_1": 0.2512479201331115,
+            "elapsed_seconds": 29.602190285999995
+          },
+          {
+            "seed": 4,
+            "correct": 126,
+            "n": 601,
+            "pass_at_1": 0.2096505823627288,
+            "elapsed_seconds": 29.904506799000046
+          },
+          {
+            "seed": 5,
+            "correct": 136,
+            "n": 601,
+            "pass_at_1": 0.22628951747088186,
+            "elapsed_seconds": 29.75683600299999
+          },
+          {
+            "seed": 6,
+            "correct": 152,
+            "n": 601,
+            "pass_at_1": 0.2529118136439268,
+            "elapsed_seconds": 29.234456075000026
+          },
+          {
+            "seed": 7,
+            "correct": 157,
+            "n": 601,
+            "pass_at_1": 0.2612312811980033,
+            "elapsed_seconds": 30.262324399000136
+          }
+        ],
+        "mean_pass_at_1": 0.24438435940099834,
+        "predictions_count": 4808
+      }
+    },
+    "shuffle": {
+      "protocol": {
+        "model": "XenoZLH/Shuffle-R1-Qwen-3B",
+        "revision": "1ce00fe544ce3b23e686b58094c8f3132700ecdf",
+        "upstream": "b863694f25d38d0e118761363dc5897bb9625e82",
+        "data_url": "https://raw.githubusercontent.com/lupantech/InterGPS/99e6b5293c7bb4a5eaf2a370e6b213c79ab33ebb/data/geometry3k/test.zip",
+        "data_sha256": "a0d5dece634686303eb6cabca0a7306136ca8ade5f562a4af4c6561ecaf6c9b3",
+        "prompt": "You FIRST think about the reasoning process as an internal monologue and then provide the final answer.\n The reasoning process MUST BE enclosed within <think> </think> tags. The final answer MUST BE put in \\boxed{}.",
+        "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+        "min_pixels": 262144,
+        "max_pixels": 4194304,
+        "max_model_len": 8192,
+        "max_tokens": 2048,
+        "temperature": 0.5,
+        "repeats": 8,
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "tensor_parallel_size": 1
+      },
+      "summary": {
+        "model": "XenoZLH/Shuffle-R1-Qwen-3B",
+        "revision": "1ce00fe544ce3b23e686b58094c8f3132700ecdf",
+        "runs": [
+          {
+            "seed": 0,
+            "correct": 249,
+            "n": 601,
+            "pass_at_1": 0.41430948419301167,
+            "elapsed_seconds": 26.979691957000114
+          },
+          {
+            "seed": 1,
+            "correct": 248,
+            "n": 601,
+            "pass_at_1": 0.41264559068219636,
+            "elapsed_seconds": 19.169179098000086
+          },
+          {
+            "seed": 2,
+            "correct": 245,
+            "n": 601,
+            "pass_at_1": 0.40765391014975044,
+            "elapsed_seconds": 18.478461999000046
+          },
+          {
+            "seed": 3,
+            "correct": 236,
+            "n": 601,
+            "pass_at_1": 0.39267886855241263,
+            "elapsed_seconds": 19.657279710999774
+          },
+          {
+            "seed": 4,
+            "correct": 248,
+            "n": 601,
+            "pass_at_1": 0.41264559068219636,
+            "elapsed_seconds": 16.935916402999737
+          },
+          {
+            "seed": 5,
+            "correct": 251,
+            "n": 601,
+            "pass_at_1": 0.4176372712146423,
+            "elapsed_seconds": 17.001016095000068
+          },
+          {
+            "seed": 6,
+            "correct": 246,
+            "n": 601,
+            "pass_at_1": 0.40931780366056575,
+            "elapsed_seconds": 16.327156176000244
+          },
+          {
+            "seed": 7,
+            "correct": 258,
+            "n": 601,
+            "pass_at_1": 0.4292845257903494,
+            "elapsed_seconds": 15.800145354000051
+          }
+        ],
+        "mean_pass_at_1": 0.4120216306156406,
+        "predictions_count": 4808
+      }
+    }
+  },
+  "xformers-results": {
+    "base": {
+      "protocol": {
+        "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+        "revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+        "upstream": "b863694f25d38d0e118761363dc5897bb9625e82",
+        "data_url": "https://raw.githubusercontent.com/lupantech/InterGPS/99e6b5293c7bb4a5eaf2a370e6b213c79ab33ebb/data/geometry3k/test.zip",
+        "data_sha256": "a0d5dece634686303eb6cabca0a7306136ca8ade5f562a4af4c6561ecaf6c9b3",
+        "prompt": "You FIRST think about the reasoning process as an internal monologue and then provide the final answer.\n The reasoning process MUST BE enclosed within <think> </think> tags. The final answer MUST BE put in \\boxed{}.",
+        "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+        "backend": "XFORMERS",
+        "engine": "v0",
+        "xformers_fa3": false,
+        "min_pixels": 262144,
+        "max_pixels": 4194304,
+        "max_model_len": 8192,
+        "max_tokens": 2048,
+        "temperature": 0.5,
+        "repeats": 8,
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "tensor_parallel_size": 1
+      },
+      "summary": {
+        "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+        "revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+        "runs": [
+          {
+            "seed": 0,
+            "correct": 157,
+            "n": 601,
+            "pass_at_1": 0.2612312811980033,
+            "elapsed_seconds": 57.5974523219993
+          },
+          {
+            "seed": 1,
+            "correct": 146,
+            "n": 601,
+            "pass_at_1": 0.24292845257903495,
+            "elapsed_seconds": 59.790700609999476
+          },
+          {
+            "seed": 2,
+            "correct": 139,
+            "n": 601,
+            "pass_at_1": 0.23128119800332778,
+            "elapsed_seconds": 58.259640797999964
+          },
+          {
+            "seed": 3,
+            "correct": 155,
+            "n": 601,
+            "pass_at_1": 0.2579034941763727,
+            "elapsed_seconds": 54.801578407001216
+          },
+          {
+            "seed": 4,
+            "correct": 137,
+            "n": 601,
+            "pass_at_1": 0.22795341098169716,
+            "elapsed_seconds": 57.32704321900019
+          },
+          {
+            "seed": 5,
+            "correct": 144,
+            "n": 601,
+            "pass_at_1": 0.23960066555740434,
+            "elapsed_seconds": 56.35704776400053
+          },
+          {
+            "seed": 6,
+            "correct": 160,
+            "n": 601,
+            "pass_at_1": 0.26622296173044924,
+            "elapsed_seconds": 54.81701870899997
+          },
+          {
+            "seed": 7,
+            "correct": 149,
+            "n": 601,
+            "pass_at_1": 0.24792013311148087,
+            "elapsed_seconds": 58.64436908099924
+          }
+        ],
+        "mean_pass_at_1": 0.2468801996672213,
+        "predictions_count": 4808
+      }
+    },
+    "shuffle": {
+      "protocol": {
+        "model": "XenoZLH/Shuffle-R1-Qwen-3B",
+        "revision": "1ce00fe544ce3b23e686b58094c8f3132700ecdf",
+        "upstream": "b863694f25d38d0e118761363dc5897bb9625e82",
+        "data_url": "https://raw.githubusercontent.com/lupantech/InterGPS/99e6b5293c7bb4a5eaf2a370e6b213c79ab33ebb/data/geometry3k/test.zip",
+        "data_sha256": "a0d5dece634686303eb6cabca0a7306136ca8ade5f562a4af4c6561ecaf6c9b3",
+        "prompt": "You FIRST think about the reasoning process as an internal monologue and then provide the final answer.\n The reasoning process MUST BE enclosed within <think> </think> tags. The final answer MUST BE put in \\boxed{}.",
+        "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+        "backend": "XFORMERS",
+        "engine": "v0",
+        "xformers_fa3": false,
+        "min_pixels": 262144,
+        "max_pixels": 4194304,
+        "max_model_len": 8192,
+        "max_tokens": 2048,
+        "temperature": 0.5,
+        "repeats": 8,
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "tensor_parallel_size": 1
+      },
+      "summary": {
+        "model": "XenoZLH/Shuffle-R1-Qwen-3B",
+        "revision": "1ce00fe544ce3b23e686b58094c8f3132700ecdf",
+        "runs": [
+          {
+            "seed": 0,
+            "correct": 243,
+            "n": 601,
+            "pass_at_1": 0.4043261231281198,
+            "elapsed_seconds": 40.43547068499902
+          },
+          {
+            "seed": 1,
+            "correct": 241,
+            "n": 601,
+            "pass_at_1": 0.40099833610648916,
+            "elapsed_seconds": 39.01905315299882
+          },
+          {
+            "seed": 2,
+            "correct": 245,
+            "n": 601,
+            "pass_at_1": 0.40765391014975044,
+            "elapsed_seconds": 40.37960503499926
+          },
+          {
+            "seed": 3,
+            "correct": 235,
+            "n": 601,
+            "pass_at_1": 0.3910149750415973,
+            "elapsed_seconds": 37.6060442729995
+          },
+          {
+            "seed": 4,
+            "correct": 249,
+            "n": 601,
+            "pass_at_1": 0.41430948419301167,
+            "elapsed_seconds": 38.205613394000466
+          },
+          {
+            "seed": 5,
+            "correct": 253,
+            "n": 601,
+            "pass_at_1": 0.4209650582362729,
+            "elapsed_seconds": 38.31840153000121
+          },
+          {
+            "seed": 6,
+            "correct": 252,
+            "n": 601,
+            "pass_at_1": 0.4193011647254576,
+            "elapsed_seconds": 36.98656621099872
+          },
+          {
+            "seed": 7,
+            "correct": 260,
+            "n": 601,
+            "pass_at_1": 0.43261231281198004,
+            "elapsed_seconds": 37.64500179600145
+          }
+        ],
+        "mean_pass_at_1": 0.4113976705490849,
+        "predictions_count": 4808
+      }
+    }
+  }
+}

@@ -93,9 +93,11 @@ def run(config_path):
     if not torch.cuda.is_available():raise RuntimeError('Formal run requires CUDA; use CPU small-tensor smoke separately')
     if torch.cuda.device_count()!=1:raise RuntimeError('Initial configuration supports exactly one visible GPU')
     from datasets import Dataset
-    from transformers import AutoModelForCausalLM,AutoModelForVision2Seq,AutoTokenizer,AutoProcessor,Trainer,TrainingArguments,TrainerCallback,set_seed
+    from transformers import AutoModelForCausalLM,AutoTokenizer,AutoProcessor,Trainer,TrainingArguments,TrainerCallback,set_seed
     from peft import LoraConfig,get_peft_model
     from trl import GRPOConfig,GRPOTrainer
+    from src.training.hf_compat import vision_model_class
+    from src.training.lora_language import language_lora_targets,parameter_identity
     set_seed(c['seed']);out=Path(c['output_dir']);out.mkdir(parents=True,exist_ok=True)
     if (out/'run_identity.json').exists() and read(out/'run_identity.json')!=identity:raise ValueError('Run/data/model identity changed; choose new output')
     (out/'run_identity.json').write_text(json.dumps(identity,ensure_ascii=False,indent=2),encoding='utf-8')
@@ -106,12 +108,14 @@ def run(config_path):
     if not resume and list(out.glob('checkpoint-*')):raise ValueError('Existing checkpoints require explicit resume or a new output directory')
     if resume and read(Path(resume)/'run_identity.json')!=identity:raise ValueError('Checkpoint identity mismatch')
     vision=c.get('vision',False)
-    loader=AutoModelForVision2Seq if vision else AutoModelForCausalLM
-    model=loader.from_pretrained(c['model'],revision=c['model_revision'],torch_dtype=torch.bfloat16,attn_implementation='sdpa').to('cuda')
+    loader=vision_model_class() if vision else AutoModelForCausalLM
+    model=loader.from_pretrained(c['model'],revision=c['model_revision'],dtype=torch.bfloat16,attn_implementation='sdpa').to('cuda')
     model.config.use_cache=False
     processor=(AutoProcessor.from_pretrained(c['model'],revision=c['model_revision'],max_pixels=c.get('max_pixels',802816)) if vision else AutoTokenizer.from_pretrained(c['tokenizer_path'],local_files_only=True))
     tok=processor.tokenizer if vision else processor;tok.pad_token=tok.pad_token or tok.eos_token;tok.padding_side='left' if c['stage']=='rl' else 'right'
-    lora=LoraConfig(r=c.get('lora_r',16),lora_alpha=c.get('lora_alpha',32),lora_dropout=0,target_modules=['q_proj','k_proj','v_proj','o_proj','gate_proj','up_proj','down_proj'],task_type='CAUSAL_LM')
+    # 2026-11-09 fix: suffix-only targets also matched the ViT MLP (model.visual.blocks.N.mlp.*_proj);
+    # resolve exact language-module names instead and verify the vision tower stays frozen below.
+    lora=LoraConfig(r=c.get('lora_r',16),lora_alpha=c.get('lora_alpha',32),lora_dropout=0,target_modules=language_lora_targets(model),task_type='CAUSAL_LM')
     common=dict(output_dir=str(out),max_steps=c['max_steps'],learning_rate=c['learning_rate'],per_device_train_batch_size=c.get('batch_size',1),
         gradient_accumulation_steps=c.get('gradient_accumulation_steps',8),bf16=True,fp16=False,gradient_checkpointing=True,
         gradient_checkpointing_kwargs={'use_reentrant':False},report_to='none',logging_steps=1,save_steps=c.get('save_steps',20),
@@ -149,6 +153,7 @@ def run(config_path):
             from src.training.perception_reward_v4 import perception_reward
             rewards.append(perception_reward);args.reward_weights=[1.,c.get('perception_reward_weight',.2)]
         trainer=GRPOTrainer(model=model,args=args,train_dataset=Dataset.from_list(data),processing_class=processor,peft_config=lora,reward_funcs=rewards,callbacks=[IdentityCallback()])
+    if vision:parameter_identity(trainer.model)  # fail closed if any vision/merger tensor is trainable
     trainer.train(resume_from_checkpoint=resume);trainer.save_model(out/'final');processor.save_pretrained(out/'final')
     if c['stage']=='sft' and c.get('export_merged_base',False):
         merged=trainer.model.merge_and_unload();merged.save_pretrained(out/'merged');processor.save_pretrained(out/'merged')
