@@ -1,6 +1,6 @@
 {
  "project": "项目三_多模态几何推理",
- "date": "2026-11-13",
+ "date": "2026-11-14",
  "schema_version": 2,
  "source_root": "D:\\Users\\Mr.Z\\Desktop\\modern_genai",
  "files": [
@@ -4088,11 +4088,11 @@
   },
   {
    "path": "README.md",
-   "bytes": 7879,
-   "sha256": "80d41ba931a54148df0a091dd2a27afa7af5f4d4b5fb0b81a108964e39eacf02",
+   "bytes": 7917,
+   "sha256": "8bbbc719208e9af93931dd55949246f2b86ba176d89a8c4a8642cd411044878b",
    "source_sha256": "3ac26e1f349304d2465f99785649a8d98066a5a566a2507329cc2a1d7b6e280a",
    "changed_for_portability": true,
-   "updated_in": "s4-review-snapshot"
+   "updated_in": "s4_s5_progress_20261114"
   },
   {
    "path": "colab/README.md",
@@ -24181,11 +24181,11 @@
   },
   {
    "path": "reports/README.md",
-   "bytes": 3130,
-   "sha256": "cce955ee20ad8096dfb2f2879cbb5b853db90645bfee0311e43f2d13c40b6709",
+   "bytes": 3269,
+   "sha256": "5c9d1c43bb93fdde062811cd81b53dd5431c93bfba14037d130c2d47f57999e9",
    "source_sha256": "aba3ef9af9df316dea07a1cf6d11972f6969e61063e1a0b55b7aab42761f27f9",
    "changed_for_portability": true,
-   "updated_in": "2026-11-12_stage4_progress"
+   "updated_in": "s4_s5_progress_20261114"
   },
   {
    "path": "reports/artifact_inventory.json",
@@ -25975,6 +25975,22 @@
    "source_sha256": "18595737b04f251298a38b2a8101f42cf60dc8af5917f2388392de7012aeb47a",
    "changed_for_portability": false,
    "added_in": "s5-final-eval"
+  },
+  {
+   "path": "reports/s4_s5_progress_20261114/README.md",
+   "bytes": 4875,
+   "sha256": "5f44b87b627552f29f80fa25d090ba4d18ab8a544bd8cb98de75e4de55549ced",
+   "source_sha256": "5f44b87b627552f29f80fa25d090ba4d18ab8a544bd8cb98de75e4de55549ced",
+   "changed_for_portability": false,
+   "added_in": "s4_s5_progress_20261114"
+  },
+  {
+   "path": "reports/s4_s5_progress_20261114/shuffle_r1_g4_aggregates.json",
+   "bytes": 11783,
+   "sha256": "a571954397ef021f98292c63813a7c36e75eb1678fe858272acc72ef33c587b8",
+   "source_sha256": "a571954397ef021f98292c63813a7c36e75eb1678fe858272acc72ef33c587b8",
+   "changed_for_portability": false,
+   "added_in": "s4_s5_progress_20261114"
   },
   {
    "path": "reports/strict_v8_20261024/approved_input_preflight.json",
@@ -29435,6 +29451,37 @@
      "path": "reports/s4_review_snapshot_20261113/README.md",
      "previous_sha256": null,
      "current_sha256": "d09b9a9a37cba44fd1376215afc3212c81f2d544f81e31be7b6fe5259d37bbb0"
+    }
+   ],
+   "dropped_tracked_paths": [],
+   "untracked_entries_kept_verbatim": 3425,
+   "note": "Only git-visible files were re-hashed; git-ignored payload entries (data/) were carried over unchanged. Run the full rebuild on a machine that has data/ to re-hash the payload."
+  },
+  {
+   "date": "2026-11-14",
+   "label": "s4_s5_progress_20261114",
+   "mode": "git_tracked_only",
+   "purpose": "Record verified S4 completion, in-progress S5, and independent Shuffle-R1 controls",
+   "changes": [
+    {
+     "path": "README.md",
+     "previous_sha256": "80d41ba931a54148df0a091dd2a27afa7af5f4d4b5fb0b81a108964e39eacf02",
+     "current_sha256": "8bbbc719208e9af93931dd55949246f2b86ba176d89a8c4a8642cd411044878b"
+    },
+    {
+     "path": "reports/README.md",
+     "previous_sha256": "cce955ee20ad8096dfb2f2879cbb5b853db90645bfee0311e43f2d13c40b6709",
+     "current_sha256": "5c9d1c43bb93fdde062811cd81b53dd5431c93bfba14037d130c2d47f57999e9"
+    },
+    {
+     "path": "reports/s4_s5_progress_20261114/README.md",
+     "previous_sha256": null,
+     "current_sha256": "5f44b87b627552f29f80fa25d090ba4d18ab8a544bd8cb98de75e4de55549ced"
+    },
+    {
+     "path": "reports/s4_s5_progress_20261114/shuffle_r1_g4_aggregates.json",
+     "previous_sha256": null,
+     "current_sha256": "a571954397ef021f98292c63813a7c36e75eb1678fe858272acc72ef33c587b8"
     }
    ],
    "dropped_tracked_paths": [],
