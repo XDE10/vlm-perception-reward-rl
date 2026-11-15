@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/content/p3/repo/scripts/colab/final_eval.py", line 184, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/content/p3/repo/scripts/colab/final_eval.py", line 146, in main
+    raise RuntimeError(f"S5 needs the S4 Drive store: {info.get('reason')}")
+RuntimeError: S5 needs the S4 Drive store: None

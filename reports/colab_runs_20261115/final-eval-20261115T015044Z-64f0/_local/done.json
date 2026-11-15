@@ -1,0 +1,38 @@
+{
+  "run_id": "final-eval-20261115T015044Z-64f0",
+  "overall": "failed",
+  "package": {
+    "name": "final-eval-20261115T015044Z-64f0.results.tar.gz",
+    "sha256": "850adb8468c9589de373a8b798ea71dccc82bd86406564d1c175dd65635c6d3a",
+    "bytes": 29209,
+    "parts": [
+      {
+        "name": "final-eval-20261115T015044Z-64f0.results.tar.gz.part000",
+        "bytes": 29209,
+        "sha256": "850adb8468c9589de373a8b798ea71dccc82bd86406564d1c175dd65635c6d3a"
+      }
+    ],
+    "skipped": 0,
+    "gzipped": []
+  },
+  "github": {
+    "attempted": false,
+    "ok": false,
+    "branch": "results/final-eval-20261115T015044Z-64f0",
+    "reason": "no credential file at /content/gh_credentials, so the launcher pushes the results from your machine (to let the VM push, see colab/README.md section 8)",
+    "seconds": 0.0
+  },
+  "drive": {
+    "ok": false,
+    "attempted": false,
+    "verified": null,
+    "target": null,
+    "files": null,
+    "bytes": null,
+    "copy_seconds": null,
+    "check_seconds": null,
+    "reason": "rclone is not on PATH (Drive persistence needs the rclone CLI, not only the mount)",
+    "mode": "results"
+  },
+  "finished_utc": "2026-11-15T01:52:37Z"
+}

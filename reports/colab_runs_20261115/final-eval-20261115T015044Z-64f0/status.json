@@ -1,0 +1,100 @@
+{
+  "schema": "p3-job-status-v1",
+  "run_id": "final-eval-20261115T015044Z-64f0",
+  "task": "final-eval",
+  "state": "done",
+  "started_utc": "2026-11-15T01:52:30Z",
+  "updated_utc": "2026-11-15T01:52:37Z",
+  "steps": [
+    {
+      "name": "env_report",
+      "state": "passed",
+      "required": true,
+      "description": "software, GPU and environment lock report",
+      "started_utc": "2026-11-15T01:52:30Z",
+      "log": "logs/env_report.log",
+      "exit_code": 0,
+      "seconds": 2.3,
+      "finished_utc": "2026-11-15T01:52:32Z"
+    },
+    {
+      "name": "verify_pack",
+      "state": "passed",
+      "required": true,
+      "description": "private data matches its anchors",
+      "started_utc": "2026-11-15T01:52:32Z",
+      "log": "logs/verify_pack.log",
+      "exit_code": 0,
+      "seconds": 0.3,
+      "finished_utc": "2026-11-15T01:52:33Z"
+    },
+    {
+      "name": "public_sources",
+      "state": "passed",
+      "required": true,
+      "description": "",
+      "started_utc": "2026-11-15T01:52:33Z",
+      "log": "logs/public_sources.log",
+      "exit_code": 0,
+      "seconds": 4.5,
+      "finished_utc": "2026-11-15T01:52:37Z"
+    },
+    {
+      "name": "final_eval",
+      "state": "failed",
+      "required": true,
+      "description": "S5 P1 greedy predictions and preregistered paired comparisons",
+      "started_utc": "2026-11-15T01:52:37Z",
+      "log": "logs/final_eval.log",
+      "exit_code": 1,
+      "seconds": 0.2,
+      "finished_utc": "2026-11-15T01:52:37Z",
+      "log_tail": "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 198, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/content/p3/repo/scripts/colab/final_eval.py\", line 184, in <module>\n    raise SystemExit(main())\n                     ^^^^^^\n  File \"/content/p3/repo/scripts/colab/final_eval.py\", line 146, in main\n    raise RuntimeError(f\"S5 needs the S4 Drive store: {info.get('reason')}\")\nRuntimeError: S5 needs the S4 Drive store: None"
+    }
+  ],
+  "current": null,
+  "github_check": {
+    "mode": "auto",
+    "ok": false,
+    "credentials_present": false,
+    "push_access": null,
+    "branch": "results/final-eval-20261115T015044Z-64f0",
+    "reason": "no credential file at /content/gh_credentials, so the launcher pushes the results from your machine (to let the VM push, see colab/README.md section 8)",
+    "warning": null
+  },
+  "overall": "failed",
+  "package": {
+    "name": "final-eval-20261115T015044Z-64f0.results.tar.gz",
+    "sha256": "850adb8468c9589de373a8b798ea71dccc82bd86406564d1c175dd65635c6d3a",
+    "bytes": 29209,
+    "parts": [
+      {
+        "name": "final-eval-20261115T015044Z-64f0.results.tar.gz.part000",
+        "bytes": 29209,
+        "sha256": "850adb8468c9589de373a8b798ea71dccc82bd86406564d1c175dd65635c6d3a"
+      }
+    ],
+    "skipped": 0,
+    "gzipped": []
+  },
+  "github": {
+    "attempted": false,
+    "ok": false,
+    "branch": "results/final-eval-20261115T015044Z-64f0",
+    "reason": "no credential file at /content/gh_credentials, so the launcher pushes the results from your machine (to let the VM push, see colab/README.md section 8)",
+    "seconds": 0.0
+  },
+  "drive": {
+    "ok": false,
+    "attempted": false,
+    "verified": null,
+    "target": null,
+    "files": null,
+    "bytes": null,
+    "copy_seconds": null,
+    "check_seconds": null,
+    "reason": "rclone is not on PATH (Drive persistence needs the rclone CLI, not only the mount)",
+    "mode": "results"
+  },
+  "finished_utc": "2026-11-15T01:52:37Z"
+}

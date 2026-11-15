@@ -1,0 +1,12 @@
+[p3] 01:52:30 GitHub: no credential file at /content/gh_credentials, so the launcher pushes the results from your machine (to let the VM push, see colab/README.md section 8)
+[p3] 01:52:30 job final-eval-20261115T015044Z-64f0: 4 steps
+[p3] 01:52:30 step env_report started: /content/p3/env/base/bin/python -m scripts.colab.env_report --root /content/p3 --out /content/p3/out/final-eval-20261115T015044Z-64f0/env.json
+[p3] 01:52:32 step env_report PASSED in 0m02s
+[p3] 01:52:32 step verify_pack started: /content/p3/env/base/bin/python -m scripts.colab.verify_pack --repo /content/p3/repo --out /content/p3/out/final-eval-20261115T015044Z-64f0/pack_verification.json
+[p3] 01:52:33 step verify_pack PASSED in 0m00s
+[p3] 01:52:33 step public_sources started: /content/p3/env/base/bin/python -m scripts.colab.public_sources --dest /content/p3/public --out /content/p3/out/final-eval-20261115T015044Z-64f0/public_sources.json --names geometry3k/data/validation-00000-of-00001.parquet geometry3k/data/test-00000-of-00001.parquet mathvista/data/testmini-00000-of-
+[p3] 01:52:37 step public_sources PASSED in 0m04s
+[p3] 01:52:37 step final_eval started: /content/p3/env/base/bin/python -m scripts.colab.final_eval --sources /content/p3/public --out /content/p3/out/final-eval-20261115T015044Z-64f0/s5 --cache /content/p3/s5-cache --drive-remote mydrive: --drive-dir ColabProjects/vlm-perception-reward-rl --drive-mount /content/mydrive --model-path /cont
+[p3] 01:52:37 step final_eval FAILED in 0m00s
+[p3] 01:52:37 Drive copy (results) skipped: rclone is not on PATH (Drive persistence needs the rclone CLI, not only the mount)
+[p3] 01:52:37 JOB_DONE overall=failed package=final-eval-20261115T015044Z-64f0.results.tar.gz (1 parts, 0.0 MB)

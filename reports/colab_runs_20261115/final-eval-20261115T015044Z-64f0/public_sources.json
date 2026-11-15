@@ -1,0 +1,32 @@
+{
+  "schema": "p3-public-sources-v1",
+  "dest": "/content/p3/public",
+  "ok": true,
+  "files": [
+    {
+      "name": "geometry3k/data/validation-00000-of-00001.parquet",
+      "ok": true,
+      "reused": false,
+      "bytes": 5885804,
+      "attempts": 1,
+      "seconds": 1.1
+    },
+    {
+      "name": "geometry3k/data/test-00000-of-00001.parquet",
+      "ok": true,
+      "reused": false,
+      "bytes": 11831222,
+      "attempts": 1,
+      "seconds": 1.1
+    },
+    {
+      "name": "mathvista/data/testmini-00000-of-00001-725687bf7a18d64b.parquet",
+      "ok": true,
+      "reused": false,
+      "bytes": 141568126,
+      "attempts": 1,
+      "seconds": 2.2
+    }
+  ],
+  "bytes": 159285152
+}
