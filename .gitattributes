@@ -5,3 +5,13 @@ colab/*.py text eol=lf
 scripts/colab/*.py text eol=lf
 # Byte-exact copies of files written by a Colab run; their SHA256 is checked by tests (S4 pre-registration, D52).
 configs/experiments/s3_decisions_*.json -text
+
+# Captured reports, logs and patches retain their original bytes and whitespace.
+reports/shuffle_r1_cpu_completion_20261115/** -text -whitespace
+reports/shuffle_r1_cpu_data_freeze_20261115/** -text -whitespace
+reports/shuffle_r1_single_gpu_20261115/** -text -whitespace
+reports/项目三_最新进展审查与下一步执行裁决_20261115.md -text -whitespace
+reports/shuffle_r1_formal_progress_20261118/** -text
+reports/shuffle_r1_formal_progress_20261118/source/*.patch -whitespace
+reports/shuffle_r1_formal_progress_20261118/runtime/** -whitespace
+reports/shuffle_r1_formal_progress_20261118/verification/*pytest.txt -whitespace

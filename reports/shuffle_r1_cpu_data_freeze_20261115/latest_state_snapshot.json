@@ -1,0 +1,629 @@
+{
+  "project_root": "/home/xde10/projects/vlm-perception-reward-rl",
+  "shuffle_r1_dev": "/home/xde10/.local/state/vlm-perception-reward-rl/shuffle-r1-g4-dev",
+  "dev_git_status": {
+    "returncode": 0,
+    "output": "## g4-logical-batch-prep-20261115\n M shuffle_r1/checkpoint.py\n M shuffle_r1/config.py\n M shuffle_r1/fsdp.py\n M shuffle_r1/main.py\n M shuffle_r1/ray_trainer.py\n M shuffle_r1/single_gpu.py\n M tests/test_single_gpu_checkpoint.py\n M verl/utils/dataset.py\n M verl/workers/rollout/config.py\n M verl/workers/rollout/vllm_rollout/vllm_rollout_spmd.py\n M verl/workers/sharding_manager/fsdp_vllm.py\n?? configs/\n?? tests/test_single_gpu_runtime.py"
+  },
+  "dev_git_log": {
+    "returncode": 0,
+    "output": "020c28a274d8d7e324ba9eb13ec480d435cb5373 Add G4 single-GPU Shuffle-R1 execution configs\ndae6e8d2461a7eb3297ba3b15a8f8616859809c4 Fix transparent diagram alpha compositing for MMRL30k\naa88b60eac4085368d12a1c621929296d88e9d36 Freeze single-GPU Shuffle-R1 logical batches and checkpoint recovery\nb863694f25d38d0e118761363dc5897bb9625e82 Update README title for ICLR 2026 paper"
+  },
+  "dev_git_diff_stat": {
+    "returncode": 0,
+    "output": "shuffle_r1/checkpoint.py                           | 29 ++++++++++\n shuffle_r1/config.py                               | 19 +++++++\n shuffle_r1/fsdp.py                                 | 16 +++++-\n shuffle_r1/main.py                                 |  4 ++\n shuffle_r1/ray_trainer.py                          | 44 ++++++++++++----\n shuffle_r1/single_gpu.py                           | 30 +++++++++++\n tests/test_single_gpu_checkpoint.py                | 61 ++++++++++++++++++++++\n verl/utils/dataset.py                              | 44 ++++++++++------\n verl/workers/rollout/config.py                     |  3 +-\n .../rollout/vllm_rollout/vllm_rollout_spmd.py      | 45 +++++++++++++---\n verl/workers/sharding_manager/fsdp_vllm.py         | 23 ++++++--\n 11 files changed, 279 insertions(+), 39 deletions(-)"
+  },
+  "dev_git_diff_check": {
+    "returncode": 0,
+    "output": ""
+  },
+  "cpu_test_log_tail": "..........................................                               [100%]\n=============================== warnings summary ===============================\n../../../../.venvs/shuffle-r1-cpu-frozen-20261115/lib/python3.12/site-packages/ray/util/state/util.py:54\n  /home/xde10/.venvs/shuffle-r1-cpu-frozen-20261115/lib/python3.12/site-packages/ray/util/state/util.py:54: DeprecationWarning: Ray state API is no longer experimental. Please import from `ray.util.state`. instead. Importing from `ray.experimental` will be deprecated in future releases. \n    warnings.warn(\n\ntests/test_single_gpu_checkpoint.py: 18 warnings\n  /home/xde10/.venvs/shuffle-r1-cpu-frozen-20261115/lib/python3.12/site-packages/torchdata/stateful_dataloader/stateful_dataloader.py:379: UserWarning: 'set_vital' is deprecated, please do not call\n    torch.set_vital(\"Dataloader\", \"enabled\", \"True\")  # type: ignore[attr-defined]\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n42 passed, 19 warnings in 11.31s\n",
+  "real_data_collate": {
+    "dataset_path": "/home/xde10/.local/state/vlm-perception-reward-rl/mmrl30k-b362381-visible-clean/train.parquet",
+    "dataset_rows": 27802,
+    "tested_rows": 16,
+    "processor": "Qwen2VLImageProcessorFast",
+    "position_ids_shape": [
+      16,
+      3,
+      2048
+    ],
+    "image_extrema": [
+      [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      [
+        [
+          14,
+          255
+        ],
+        [
+          12,
+          255
+        ],
+        [
+          4,
+          255
+        ]
+      ],
+      [
+        [
+          17,
+          252
+        ],
+        [
+          16,
+          255
+        ],
+        [
+          21,
+          255
+        ]
+      ],
+      [
+        [
+          255,
+          255
+        ],
+        [
+          255,
+          255
+        ],
+        [
+          255,
+          255
+        ]
+      ],
+      [
+        [
+          36,
+          255
+        ],
+        [
+          41,
+          255
+        ],
+        [
+          46,
+          255
+        ]
+      ],
+      [
+        [
+          3,
+          255
+        ],
+        [
+          4,
+          255
+        ],
+        [
+          3,
+          255
+        ]
+      ],
+      [
+        [
+          2,
+          255
+        ],
+        [
+          5,
+          255
+        ],
+        [
+          2,
+          255
+        ]
+      ],
+      [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      [
+        [
+          6,
+          255
+        ],
+        [
+          17,
+          255
+        ],
+        [
+          12,
+          255
+        ]
+      ],
+      [
+        [
+          0,
+          255
+        ],
+        [
+          4,
+          255
+        ],
+        [
+          6,
+          255
+        ]
+      ],
+      [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ]
+    ],
+    "nonwhite_pixel_ratios": [
+      0.06718482514062118,
+      0.10720899977041402,
+      0.14917171439060206,
+      0.999992368917073,
+      0.9988028101162545,
+      0.0,
+      0.031628333333333335,
+      0.9997939607609716,
+      0.9997710675121907,
+      0.6720352172851562,
+      0.22105323586819242,
+      0.21578216552734375,
+      0.20174112256586482,
+      0.416545092078429,
+      0.060537285603481546,
+      0.043914596985056426
+    ],
+    "status": "PASS"
+  },
+  "alpha_rendering_audit": {
+    "method": "For every image with alpha/transparency, compare old PIL convert('RGB') with alpha-composite over opaque white at native size. Difference pixel if any RGB channel absolute delta >5.",
+    "splits": {
+      "train": {
+        "rows": 29101,
+        "alpha_or_transparency": 9228,
+        "visually_changed_over_1pct": 662,
+        "visually_changed_over_50pct": 492,
+        "old_rgb_over_90pct_black": 299,
+        "mean_mae_over_alpha_images": 11.028998394720375,
+        "mean_changed_pixel_fraction_over_alpha_images": 0.0525235813818384,
+        "by_source": {
+          "mm-eureka": {
+            "no_alpha": 19872,
+            "alpha_or_transparency": 7128,
+            "visually_changed_over_1pct": 662,
+            "visually_changed_over_50pct": 492,
+            "old_rgb_over_90pct_black": 299
+          },
+          "geo3k": {
+            "alpha_or_transparency": 2100,
+            "no_alpha": 1
+          }
+        }
+      },
+      "geo3k_train": {
+        "rows": 2101,
+        "alpha_or_transparency": 2100,
+        "visually_changed_over_1pct": 0,
+        "visually_changed_over_50pct": 0,
+        "old_rgb_over_90pct_black": 0,
+        "mean_mae_over_alpha_images": 0.0,
+        "mean_changed_pixel_fraction_over_alpha_images": 0.0,
+        "by_source": {
+          "geo3k": {
+            "alpha_or_transparency": 2100,
+            "no_alpha": 1
+          }
+        }
+      },
+      "geo3k_test": {
+        "rows": 601,
+        "alpha_or_transparency": 601,
+        "visually_changed_over_1pct": 0,
+        "visually_changed_over_50pct": 0,
+        "old_rgb_over_90pct_black": 0,
+        "mean_mae_over_alpha_images": 0.0,
+        "mean_changed_pixel_fraction_over_alpha_images": 0.0,
+        "by_source": {
+          "geo3k_test": {
+            "alpha_or_transparency": 601
+          }
+        }
+      },
+      "k12_train": {
+        "rows": 2100,
+        "alpha_or_transparency": 1170,
+        "visually_changed_over_1pct": 147,
+        "visually_changed_over_50pct": 109,
+        "old_rgb_over_90pct_black": 64,
+        "mean_mae_over_alpha_images": 19.083506894450466,
+        "mean_changed_pixel_fraction_over_alpha_images": 0.09278550612889608,
+        "by_source": {
+          "k12_freeform": {
+            "alpha_or_transparency": 1170,
+            "no_alpha": 930,
+            "visually_changed_over_1pct": 147,
+            "visually_changed_over_50pct": 109,
+            "old_rgb_over_90pct_black": 64
+          }
+        }
+      },
+      "k12_test": {
+        "rows": 808,
+        "alpha_or_transparency": 428,
+        "visually_changed_over_1pct": 48,
+        "visually_changed_over_50pct": 31,
+        "old_rgb_over_90pct_black": 19,
+        "mean_mae_over_alpha_images": 14.832615304210355,
+        "mean_changed_pixel_fraction_over_alpha_images": 0.07121376751486144,
+        "by_source": {
+          "k12_test": {
+            "alpha_or_transparency": 428,
+            "no_alpha": 380,
+            "visually_changed_over_1pct": 48,
+            "visually_changed_over_50pct": 31,
+            "old_rgb_over_90pct_black": 19
+          }
+        }
+      }
+    },
+    "interpretation": "Quantifies image rendering changes, not model accuracy. The correct rendering policy is to composite transparency over white before resize."
+  },
+  "final_train_manifest": {
+    "dataset": "XenoZLH/MMRL30k",
+    "source_revision": "b362381652529d67ebc26f5e140bd0a54ba4647d",
+    "source_original_train_rows": 29101,
+    "exact_visible_pixel_overlap_removed": 1013,
+    "near_duplicate_removed_after_exact_filter": 286,
+    "near_duplicate_dhash_rows": 286,
+    "near_duplicate_phash_independently_confirmed_rows": 285,
+    "dhash_only_high_confidence_rows": 1,
+    "near_duplicate_removed_by_source": {
+      "mm-eureka": 286
+    },
+    "final_train_rows": 27802,
+    "output": {
+      "path": "/home/xde10/.local/state/vlm-perception-reward-rl/mmrl30k-b362381-visible-clean/train.parquet",
+      "bytes": 2603466865,
+      "sha256": "07ecb1b098cc6cffadbef29740b44323bd9bb550bb3ab8ef1337cc5ff42eadbb",
+      "rows": 27802,
+      "schema": [
+        "problem",
+        "images",
+        "answer",
+        "source"
+      ]
+    },
+    "near_duplicate_rule": {
+      "dhash_candidate_threshold": 5,
+      "phash_independent_candidate_threshold": 8,
+      "visible_rendering": "RGBA alpha composite over opaque white",
+      "normalization": "letterbox to 256x256 grayscale",
+      "ssim_global_min": 0.97,
+      "ink_iou_grayscale_threshold": 0.95,
+      "ink_iou_min": 0.8,
+      "visual_manual_sample": "24 broad dHash candidate pairs and 16 high-SSIM borderline pairs inspected via contact sheets; all displayed pairs showed the same diagram/image content",
+      "note": "286 unique rows were excluded; 285 were independently found by both dHash and pHash, one additional row by dHash only. This is a high-confidence near-duplicate screen, not proof that all semantic/near duplicates are absent."
+    },
+    "policy": "Original published Parquet shards are unchanged. This is a separate derived train split for research; official test splits remain untouched."
+  },
+  "decontaminated_train_verification": {
+    "source_revision": "b362381652529d67ebc26f5e140bd0a54ba4647d",
+    "source_train_rows": 29101,
+    "holdout_unique_rgb_hashes": 1339,
+    "removed_rows": 1013,
+    "kept_rows": 28088,
+    "removed_by_source": {
+      "geo3k": 482,
+      "mm-eureka": 531
+    },
+    "output_bytes": 2668919569,
+    "output_sha256": "b811e3b415a0bc993cb4c6469cf3b2b854e6adcd63d549298946f4dc5e8bafd4",
+    "checks": {
+      "all_exact_overlap_rows_listed": true,
+      "source_train_row_accounting": true,
+      "manifest_row_count": true,
+      "manifest_sha256": true,
+      "manifest_file_size": true,
+      "expected_schema": true
+    },
+    "scope": "This verifies exact decoded-RGB-pixel isolation. It does not certify perceptual/near-duplicate isolation."
+  },
+  "g4_config_validation": {
+    "status": "PASS",
+    "configs": [
+      {
+        "config": "examples/qwen2_5_vl_3b_g4_b16_probe.yaml",
+        "validated": true,
+        "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+        "model_revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+        "train_files": "/content/mydrive/datasets/Shuffle-R1/MMRL30k-b362381-visible-clean/train.parquet",
+        "val_files": "/content/mydrive/datasets/Shuffle-R1/MMRL30k-b362381-visible-clean/probe_val.parquet",
+        "rollout_batch_size": 16,
+        "actor_global_batch_size": 16,
+        "rollout_n": 16,
+        "purning_ratio": 0.5,
+        "reference_data_parallel_size": 8,
+        "reference_micro_batch_size": 4,
+        "physical_update_micro_batch_size": 1,
+        "physical_experience_micro_batch_size": 1,
+        "rollout_chunk_prompts": 4,
+        "gpu_memory_utilization": 0.5,
+        "episodes": 1,
+        "max_steps": 1,
+        "checkpoint_model_revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+        "strict_checkpoint_manifest": true,
+        "driver_rng_checkpoint": true,
+        "geometry": {
+          "prompts": 16,
+          "samples_per_prompt": 16,
+          "kept_per_prompt": 8,
+          "candidate_rows": 256,
+          "kept_rows": 128,
+          "world_size": 8,
+          "actor_batch_config": 16,
+          "actor_batch_per_rank": 16,
+          "kept_rows_per_rank": 16,
+          "optimizer_steps_per_outer_step": 1,
+          "micro_batches_per_optimizer_step": 16,
+          "abs_pairs": 64,
+          "abs_update_steps": 8,
+          "abs_pairs_per_replay": 8,
+          "replay_times": 8,
+          "partial_actor_batch": false
+        }
+      },
+      {
+        "config": "examples/qwen2_5_vl_3b_g4_b512_step.yaml",
+        "validated": true,
+        "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+        "model_revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+        "train_files": "/content/mydrive/datasets/Shuffle-R1/MMRL30k-b362381-visible-clean/train.parquet",
+        "val_files": "/content/mydrive/datasets/Shuffle-R1/MMRL30k-b362381-visible-clean/probe_val.parquet",
+        "rollout_batch_size": 512,
+        "actor_global_batch_size": 128,
+        "rollout_n": 16,
+        "purning_ratio": 0.5,
+        "reference_data_parallel_size": 8,
+        "reference_micro_batch_size": 4,
+        "physical_update_micro_batch_size": 1,
+        "physical_experience_micro_batch_size": 1,
+        "rollout_chunk_prompts": 4,
+        "gpu_memory_utilization": 0.5,
+        "episodes": 1,
+        "max_steps": 1,
+        "checkpoint_model_revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+        "strict_checkpoint_manifest": true,
+        "driver_rng_checkpoint": true,
+        "geometry": {
+          "prompts": 512,
+          "samples_per_prompt": 16,
+          "kept_per_prompt": 8,
+          "candidate_rows": 8192,
+          "kept_rows": 4096,
+          "world_size": 8,
+          "actor_batch_config": 128,
+          "actor_batch_per_rank": 128,
+          "kept_rows_per_rank": 512,
+          "optimizer_steps_per_outer_step": 4,
+          "micro_batches_per_optimizer_step": 128,
+          "abs_pairs": 2048,
+          "abs_update_steps": 32,
+          "abs_pairs_per_replay": 256,
+          "replay_times": 8,
+          "partial_actor_batch": false
+        }
+      },
+      {
+        "config": "examples/qwen2_5_vl_3b_g4_full_20ep.yaml",
+        "validated": true,
+        "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+        "model_revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+        "train_files": "/content/mydrive/datasets/Shuffle-R1/MMRL30k-b362381-visible-clean/train.parquet",
+        "val_files": "/content/mydrive/datasets/Shuffle-R1/MMRL30k-b362381/data/geo3k_test-00000-of-00001.parquet",
+        "rollout_batch_size": 512,
+        "actor_global_batch_size": 128,
+        "rollout_n": 16,
+        "purning_ratio": 0.5,
+        "reference_data_parallel_size": 8,
+        "reference_micro_batch_size": 4,
+        "physical_update_micro_batch_size": 1,
+        "physical_experience_micro_batch_size": 1,
+        "rollout_chunk_prompts": 4,
+        "gpu_memory_utilization": 0.5,
+        "episodes": 20,
+        "max_steps": null,
+        "checkpoint_model_revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+        "strict_checkpoint_manifest": true,
+        "driver_rng_checkpoint": true,
+        "geometry": {
+          "prompts": 512,
+          "samples_per_prompt": 16,
+          "kept_per_prompt": 8,
+          "candidate_rows": 8192,
+          "kept_rows": 4096,
+          "world_size": 8,
+          "actor_batch_config": 128,
+          "actor_batch_per_rank": 128,
+          "kept_rows_per_rank": 512,
+          "optimizer_steps_per_outer_step": 4,
+          "micro_batches_per_optimizer_step": 128,
+          "abs_pairs": 2048,
+          "abs_update_steps": 32,
+          "abs_pairs_per_replay": 256,
+          "replay_times": 8,
+          "partial_actor_batch": false
+        },
+        "derived_batches_per_episode_drop_last": 54,
+        "derived_total_outer_steps_20_episodes": 1080
+      }
+    ],
+    "data": {
+      "final_train_rows": 27802,
+      "rollout_batch_size": 512,
+      "drop_last": true,
+      "batches_per_episode": 54,
+      "outer_steps_20_episodes": 1080
+    },
+    "note": "These are config/geometry validations only; no CUDA, vLLM, FSDP, NCCL, or G4 memory behavior is proven."
+  },
+  "s5_resume_verification": {
+    "run": "final-eval-20261115T023255Z-dc08",
+    "commit": "2bc87709bc30578441b7c08f38e0477b96002b26",
+    "status": "saved-and-released",
+    "completed_s4": 12,
+    "verified_conditions": 67,
+    "total_conditions": 117,
+    "remaining_conditions": 50,
+    "last_saved_condition": "rl_ans/seed2/test_blind",
+    "last_saved_prediction_count": 601,
+    "last_saved_prediction_sha256": "450ed1b8efc0bfc1eaaa0125b403258fd36d47787e16530eebd814e2abdaed84",
+    "last_saved_gpu": "NVIDIA A100-SXM4-40GB",
+    "last_saved_model_revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+    "last_saved_packages": {
+      "torch": "2.13.0+cu130",
+      "transformers": "5.19.0",
+      "trl": "1.17.1",
+      "peft": "0.21.2",
+      "accelerate": "1.15.0",
+      "datasets": "4.8.5",
+      "math-verify": "0.9.0",
+      "sympy": "1.14.0",
+      "vllm": null,
+      "pillow": "13.0.0"
+    },
+    "drive_marker_identities_verified": 67
+  },
+  "colab_usage": {
+    "returncode": 0,
+    "output": "Current balance: 453.38 compute units\nUsage rate: 10.05/hr\nActive assignments: 1"
+  },
+  "colab_sessions": {
+    "returncode": 0,
+    "output": "[?] gpu-g4-s-use5c0-1fa9z2ho7cme2 | Hardware: G4 | Shape: Standard | Variant: GPU"
+  },
+  "colab_ls": {
+    "returncode": 1,
+    "output": "[colab] Error: No active sessions found. Create one with 'colab new'."
+  },
+  "drive_listing": {
+    "returncode": 0,
+    "output": "[\n]"
+  },
+  "drive_about": {
+    "returncode": 0,
+    "output": "Total:   5 TiB\nUsed:    564.629 GiB\nFree:    4.449 TiB\nTrashed: 3.189 GiB\nOther:   23.068 MiB"
+  },
+  "final_data_files": {
+    "train.parquet": {
+      "bytes": 2603466865,
+      "sha256": "07ecb1b098cc6cffadbef29740b44323bd9bb550bb3ab8ef1337cc5ff42eadbb"
+    },
+    "probe_val.parquet": {
+      "bytes": 692919,
+      "sha256": "814fcf367c37b01b98b11a1f394b13a3b52fe1130462d3fb3986541367d05b2d"
+    },
+    "manifest.json": {
+      "bytes": 1719,
+      "sha256": "05ef8c6c9684425b20b160f468d5a118f0c9dea4edbaeb2fdff6e3506adf4e69"
+    }
+  }
+}

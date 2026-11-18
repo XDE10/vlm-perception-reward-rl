@@ -1,0 +1,8 @@
+{
+  "remote": "mydrive:ColabProjects/vlm-perception-reward-rl/shuffle-r1-overnight-20261116/formal-environment/shuffle-r1-environment-20261118.tar.gz",
+  "sha256": "1f7aedc06a2972548194f906a703335abd18918dc4f6f79fb68d71fd54a2e19f",
+  "bytes": 25811856,
+  "verified": true,
+  "contains_python_packages": 201,
+  "python": "3.12.3"
+}

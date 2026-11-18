@@ -28,6 +28,10 @@
 | `cfgeo_20261109/` | CF-Geo 评测集与 train 开发集：编辑补丁、像素哈希、标准答案、两轮看图抽查记录（不含原图） |
 | `s4_preregistration_20261110/` | S4 预注册引用数字的复现：S3 决策文件副本的核对、P0/P1 格式率按题聚类的 bootstrap 区间（只用 train） |
 | `s4_execution_progress_20261112/` | S4 阶段性执行与训练进展：路线 B 审查决议落地、Pilot 试跑 6 大门槛通过数据、正式训练 10h+ 执行实况与消融组归档 |
+| [shuffle_r1_single_gpu_20261115/](shuffle_r1_single_gpu_20261115/README.md) | 单卡逻辑批次、固定轨迹更新、RNG 与 checkpoint 的早期审查，保留当时未运行项 |
+| [shuffle_r1_cpu_data_freeze_20261115/](shuffle_r1_cpu_data_freeze_20261115/README.md) | 隔离 CPU 环境、原始 MMRL30k 审计、重叠图像清洗与 S5 暂停点 |
+| [shuffle_r1_cpu_completion_20261115/](shuffle_r1_cpu_completion_20261115/README.md) | 337 个候选行复核、27,436/256 划分与入口回归的历史记录 |
+| [shuffle_r1_formal_progress_20261118/](shuffle_r1_formal_progress_20261118/README.md) | 正式单卡代码 bundle/补丁、配置、监督与存储脚本、内部 dev 指标、原网盘切回和本轮提交验证 |
 | [s4_s5_progress_20261114/](s4_s5_progress_20261114/README.md) | D66 S4 完成核验、S5 预测进度及独立 Shuffle-R1 单卡对照 |
 
 ## 约定

@@ -1,0 +1,26 @@
+{
+  "route": {
+    "rclone_config": "/mnt/d/project3-shuffle-r1/storage-switch-20261117/rclone-project3.conf",
+    "active_remote": "p3original",
+    "switched_at": "2026-11-18T08:55:06+08:00",
+    "switchback_due": "2026-11-18T16:21:39+08:00"
+  },
+  "latest_original_checkpoint": {
+    "step": 43,
+    "remote": "mydrive:ColabProjects/vlm-perception-reward-rl/shuffle-r1-overnight-20261116/formal-checkpoints/global_step_43",
+    "verified": true,
+    "manifest_sha256": "e92eb0edf559c490fb4f94e461df57a4f98d4278984acee96f5f6fe07af2a29e",
+    "checkpoint_files": 17,
+    "checkpoint_bytes": 40967383104,
+    "optimizer_steps": 172,
+    "scheduler_steps": 43,
+    "checked_at": "2026-11-18T09:06:32+08:00"
+  },
+  "validation_steps": [
+    25
+  ],
+  "environment_sha256": "1f7aedc06a2972548194f906a703335abd18918dc4f6f79fb68d71fd54a2e19f",
+  "original_alias_verified": true,
+  "new_checkpoint_upload_verified": true,
+  "completed_at": "2026-11-18T09:06:32+08:00"
+}

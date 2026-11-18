@@ -1,0 +1,2 @@
+checked 199 relative links in 20 current pages
+46 relative links in 5 report pages: PASS

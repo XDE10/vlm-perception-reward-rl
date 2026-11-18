@@ -1,0 +1,164 @@
+{
+  "repo": "XenoZLH/MMRL30k",
+  "revision": "b362381652529d67ebc26f5e140bd0a54ba4647d",
+  "row_manifest_sha256": "49b650ee05e4ad6b65e757409581c0579d0eb268b4f213e498bdfc700951c6bf",
+  "shards": {
+    "data/geo3k_test-00000-of-00001.parquet": {
+      "bytes": 10703791,
+      "rows": 601,
+      "sha256": "4b4fc167600f513080c3462bb1ec603700ae59d2febd8296fe9992deb34b8a94"
+    },
+    "data/geo3k_train-00000-of-00000.parquet": {
+      "bytes": 38697035,
+      "rows": 2101,
+      "sha256": "2960ae9c50017da1b5d30b0ba03d2659102cffe8d55eb8a8b1e28aea30102510"
+    },
+    "data/k12_test-00000-of-00001.parquet": {
+      "bytes": 20310278,
+      "rows": 808,
+      "sha256": "4d342065a5d8fe194815943838a3bfd230df224fcd3ff07150a99baf71580da2"
+    },
+    "data/k12_train-00000-of-00000.parquet": {
+      "bytes": 162606817,
+      "rows": 2100,
+      "sha256": "a7cfda7f5e5070101afb43e09917c3ed40ade5525328670b599a66f07a70683a"
+    },
+    "data/train-00000-of-00003.parquet": {
+      "bytes": 889297651,
+      "rows": 10000,
+      "sha256": "e5057de556d2ec18df8c2ffd63dfda2f7ea044a72ac9a4feb33cc56c8ea414bd"
+    },
+    "data/train-00001-of-00003.parquet": {
+      "bytes": 921856728,
+      "rows": 10000,
+      "sha256": "b7b16d99ff15354377c0880dffab4aa7d02a5f387dfdc5a8c8683cb366be4721"
+    },
+    "data/train-00002-of-00003.parquet": {
+      "bytes": 876120130,
+      "rows": 9101,
+      "sha256": "6d627305d95ebebaeee315fdd78f793177bc168d8fe12533cd4a4c1a0e7f27b2"
+    }
+  },
+  "splits": {
+    "geo3k_test": {
+      "by_source": {
+        "geo3k_test": 601
+      },
+      "embedded_images_with_path": 0,
+      "errors": [],
+      "rows": 601,
+      "rows_beyond_first_occurrence": {
+        "image_bytes": 68,
+        "image_rgb": 68,
+        "problem": 155,
+        "problem_image": 0,
+        "problem_image_answer": 0
+      }
+    },
+    "geo3k_train": {
+      "by_source": {
+        "geo3k": 2101
+      },
+      "embedded_images_with_path": 0,
+      "errors": [],
+      "rows": 2101,
+      "rows_beyond_first_occurrence": {
+        "image_bytes": 650,
+        "image_rgb": 650,
+        "problem": 882,
+        "problem_image": 1,
+        "problem_image_answer": 1
+      }
+    },
+    "k12_test": {
+      "by_source": {
+        "k12_test": 808
+      },
+      "embedded_images_with_path": 0,
+      "errors": [],
+      "rows": 808,
+      "rows_beyond_first_occurrence": {
+        "image_bytes": 2,
+        "image_rgb": 2,
+        "problem": 4,
+        "problem_image": 2,
+        "problem_image_answer": 2
+      }
+    },
+    "k12_train": {
+      "by_source": {
+        "k12_freeform": 2100
+      },
+      "embedded_images_with_path": 0,
+      "errors": [],
+      "rows": 2100,
+      "rows_beyond_first_occurrence": {
+        "image_bytes": 11,
+        "image_rgb": 11,
+        "problem": 19,
+        "problem_image": 11,
+        "problem_image_answer": 11
+      }
+    },
+    "train": {
+      "by_source": {
+        "geo3k": 2101,
+        "mm-eureka": 27000
+      },
+      "embedded_images_with_path": 0,
+      "errors": [],
+      "rows": 29101,
+      "rows_beyond_first_occurrence": {
+        "image_bytes": 3013,
+        "image_rgb": 3429,
+        "problem": 5520,
+        "problem_image": 99,
+        "problem_image_answer": 74
+      }
+    }
+  },
+  "train_holdout_overlap": {
+    "geo3k_train/geo3k_test": {
+      "image_bytes": 299,
+      "image_rgb": 300,
+      "problem": 266,
+      "problem_image": 1,
+      "problem_image_answer": 1
+    },
+    "geo3k_train/k12_test": {
+      "image_bytes": 0,
+      "image_rgb": 0,
+      "problem": 0,
+      "problem_image": 0,
+      "problem_image_answer": 0
+    },
+    "k12_train/geo3k_test": {
+      "image_bytes": 0,
+      "image_rgb": 0,
+      "problem": 0,
+      "problem_image": 0,
+      "problem_image_answer": 0
+    },
+    "k12_train/k12_test": {
+      "image_bytes": 9,
+      "image_rgb": 9,
+      "problem": 16,
+      "problem_image": 7,
+      "problem_image_answer": 7
+    },
+    "train/geo3k_test": {
+      "image_bytes": 299,
+      "image_rgb": 300,
+      "problem": 266,
+      "problem_image": 1,
+      "problem_image_answer": 1
+    },
+    "train/k12_test": {
+      "image_bytes": 274,
+      "image_rgb": 275,
+      "problem": 0,
+      "problem_image": 0,
+      "problem_image_answer": 0
+    }
+  }
+}

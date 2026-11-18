@@ -1,0 +1,33 @@
+{
+  "source_repo": "XenoZLH/MMRL30k",
+  "source_revision": "b362381652529d67ebc26f5e140bd0a54ba4647d",
+  "source_train_shards": [
+    "data/train-00000-of-00003.parquet",
+    "data/train-00001-of-00003.parquet",
+    "data/train-00002-of-00003.parquet"
+  ],
+  "source_train_rows": 29101,
+  "holdout_splits": [
+    "geo3k_test",
+    "k12_test"
+  ],
+  "holdout_unique_rgb_hashes": 1339,
+  "removed_rows": 1013,
+  "kept_rows": 28088,
+  "removed_by_source": {
+    "geo3k": 482,
+    "mm-eureka": 531
+  },
+  "removed_by_shard": {
+    "data/train-00000-of-00003.parquet": 352,
+    "data/train-00001-of-00003.parquet": 350,
+    "data/train-00002-of-00003.parquet": 311
+  },
+  "output": {
+    "path": "/home/xde10/.local/state/vlm-perception-reward-rl/mmrl30k-b362381-decontaminated/train.parquet",
+    "bytes": 2668919569,
+    "sha256": "b811e3b415a0bc993cb4c6469cf3b2b854e6adcd63d549298946f4dc5e8bafd4",
+    "rows": 28088
+  },
+  "policy": "Exclude every upstream train row whose decoded RGB image dimensions+pixel bytes exactly match any geo3k_test or k12_test image. Upstream source files remain unchanged."
+}

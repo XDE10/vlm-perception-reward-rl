@@ -12,6 +12,10 @@
 - 旧入口 `scripts.training.train_project3`（只监督 `model_perception` 的感知 SFT，
   再从 SFT 权重起跑稀疏 GRPO）只作历史保留，不用于正式实验。不能宣称完整
   V0～V4 SFT 矩阵或 EasyR1 已跑通。
+- 另有独立的 Shuffle-R1 单卡复现轨道，冻结源码、配置和监督记录见
+  [2026-11-18 归档](reports/shuffle_r1_formal_progress_20261118/README.md)。其 MMRL30k
+  清洗集和内部 dev 与上述协议 v3 / S4 / S5 分开；不能把内部 dev 指标当作公开测试
+  或 S5 结论。归档脚本保留实际部署布局，不能直接替代本仓库的训练入口。
 - 先读 [README.md](README.md)，再按任务读 [docs/](docs/README.md) 与
   [configs/](configs/README.md)、[data/portable_release/manifest.json](data/portable_release/manifest.json)。
   无需先遍历全部原始数据、缓存或历史报告。
