@@ -1,0 +1,20 @@
+{
+  "step": 45,
+  "original_drive_verified": true,
+  "manifest_sha256": "e0bdc176c1c8bc7bb01584d814e03c874762e966ae79ad563e9810f6d8c1be00",
+  "checkpoint_files": 17,
+  "checkpoint_bytes": 40967383104,
+  "optimizer_steps": 180,
+  "scheduler_steps": 45,
+  "identity": {
+    "config_sha256": "c5b0fedce12601a5ef9818563e81b5adefb1f401f57aa8bb64a5b367ebe61eb4",
+    "data_sha256": {
+      "dev": "4608d8413e81031eb54433232426f6044d865c083fd1620745aac8f429c674d7",
+      "train": "e8e9a905119da70c75ce870d2fd5d5d2113693e4f2d0f9023690e246bf1276ef"
+    },
+    "git_commit": "1a7fb4b67e02a6b41cde437d7edc074ddd5a22e6",
+    "model_revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+    "source_sha256": "3d509aee1eea723ebf07121a8b39aaae45d8aef8e61c555219ff7fdfe7176da2"
+  },
+  "checked_at": "2026-11-18T10:42:35+08:00"
+}

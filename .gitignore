@@ -240,3 +240,6 @@ Thumbs.db
 [Dd]esktop.ini
 *:Zone.Identifier
 *Zone.Identifier*
+
+# Conversation uploads are local review inputs, not repository artifacts.
+/.codex-attachments/

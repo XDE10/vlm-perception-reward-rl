@@ -1,0 +1,2 @@
+Keep the two newest verified complete checkpoints.
+Archive model weights and dev results for earlier validation checkpoints.

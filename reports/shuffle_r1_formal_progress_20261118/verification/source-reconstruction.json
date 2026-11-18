@@ -1,0 +1,13 @@
+{
+  "bundle_verified": true,
+  "bundle_verification": "/home/xde10/projects/vlm-perception-reward-rl/reports/shuffle_r1_formal_progress_20261118/source/shuffle-r1.bundle is okay\nThe bundle contains this ref:\n1a7fb4b67e02a6b41cde437d7edc074ddd5a22e6 refs/heads/g4-logical-batch-prep-20261115\nThe bundle records a complete history.\nThe bundle uses this hash algorithm: sha1\n",
+  "bundle_heads": [
+    "1a7fb4b67e02a6b41cde437d7edc074ddd5a22e6 refs/heads/g4-logical-batch-prep-20261115"
+  ],
+  "patch_reconstructed_tree": "7ecfcbceea30118dd0a7766bfc47a3b135efe2bf",
+  "formal_tree": "7ecfcbceea30118dd0a7766bfc47a3b135efe2bf",
+  "trees_match": true,
+  "bundle_restored_into_empty_repository": true,
+  "restored_commit": "1a7fb4b67e02a6b41cde437d7edc074ddd5a22e6",
+  "restored_tree": "7ecfcbceea30118dd0a7766bfc47a3b135efe2bf"
+}
