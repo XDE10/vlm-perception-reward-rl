@@ -20,16 +20,17 @@ def make_repo(tmp_path):
     data_parent = tmp_path / "src_data"
     make_release(data_parent)
     data_root = data_parent / "data"
-    (data_root / "synthesis_mock").mkdir()
-    (data_root / "synthesis_mock/cache.jsonl").write_text('{"table": "jobs"}\n', encoding="utf-8")
+    (data_root / "project3_audit/geometry3k_intergps_links.jsonl").write_text(
+        '{"original_id": "1670"}\n', encoding="utf-8"
+    )
     repo = tmp_path / "repo"
     repo.mkdir()
     ledger_files = []
     for rel in ["data/portable_release/manifest.json", "data/project3_audit/intergps_annotations.jsonl",
-                "data/synthesis_mock/cache.jsonl"]:
+                "data/project3_audit/geometry3k_intergps_links.jsonl"]:
         path = data_parent / rel
         ledger_files.append({"path": rel, "bytes": path.stat().st_size, "sha256": sha(path)})
-    ledger_files.append({"path": "data/tokenizers/Qwen2.5-7B-Instruct/tokenizer.json", "bytes": 3, "sha256": "0" * 64})
+    ledger_files.append({"path": "data/project3_sources/manifest.json", "bytes": 3, "sha256": "0" * 64})
     (repo / "migration_manifest.json").write_text(json.dumps({"files": ledger_files}), encoding="utf-8")
     return data_root, repo
 
@@ -42,8 +43,8 @@ def test_plan_covers_release_rows_images_and_anchors(tmp_path):
     assert anchors["data/portable_release/project3_train_fact_pruned.jsonl"] == "release"
     assert sum(a == "row" for a in anchors.values()) == 4
     assert anchors["data/project3_audit/intergps_annotations.jsonl"] == "ledger"
-    assert anchors["data/synthesis_mock/cache.jsonl"] == "ledger"
-    assert missing == ["data/tokenizers/Qwen2.5-7B-Instruct/tokenizer.json"]  # optional and absent: reported, not fatal
+    assert anchors["data/project3_audit/geometry3k_intergps_links.jsonl"] == "ledger"
+    assert missing == ["data/project3_sources/manifest.json"]  # optional and absent: reported, not fatal
 
 
 def test_pack_is_deterministic_extracts_and_verifies(tmp_path):

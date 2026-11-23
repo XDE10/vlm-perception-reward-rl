@@ -4,7 +4,7 @@
     python -m scripts.colab.eval_inputs cfgeo --sources <public> --out <out>/cfgeo_build.json
 
 ``eval-sets`` applies the pre-registered rules (src/evaluation/eval_sets.py) to the pinned wrapper parquets and the
-packed InterGPS annotations and requires the result to equal reports/eval_sets_20261109/eval_sets.json (the
+packed InterGPS annotations and requires the result to equal configs/evaluation/eval_sets.json (the
 ``built_from`` provenance field aside). It also reports how many evaluation images the training resolution would
 shrink or enlarge (S3 design section 6, resolution row). ``cfgeo`` rebuilds every CF-Geo image of the evaluation and
 development files from the pinned images and the committed patches and checks every pixel SHA256.
@@ -15,8 +15,8 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-SPEC = ROOT / "reports/eval_sets_20261109/eval_sets.json"
-CFGEO = [ROOT / "reports/cfgeo_20261109/cfgeo.json", ROOT / "reports/cfgeo_20261109/cfgeo_dev_train.json"]
+SPEC = ROOT / "configs/evaluation/eval_sets.json"
+CFGEO = [ROOT / "configs/evaluation/cfgeo.json", ROOT / "configs/evaluation/cfgeo_dev_train.json"]
 ANNOTATIONS = ROOT / "data/project3_audit/intergps_annotations.jsonl"
 
 

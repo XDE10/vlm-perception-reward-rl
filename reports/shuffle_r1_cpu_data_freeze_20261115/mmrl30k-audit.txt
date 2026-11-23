@@ -1,9 +1,0 @@
-data/geo3k_test-00000-of-00001.parquet: 601 rows checked
-data/geo3k_train-00000-of-00000.parquet: 2101 rows checked
-/home/xde10/.venvs/shuffle-r1-cpu-frozen-20261115/lib/python3.12/site-packages/PIL/Image.py:1134: UserWarning: Palette images with Transparency expressed in bytes should be converted to RGBA images
-  warnings.warn(
-data/k12_test-00000-of-00001.parquet: 808 rows checked
-data/k12_train-00000-of-00000.parquet: 2100 rows checked
-data/train-00000-of-00003.parquet: 10000 rows checked
-data/train-00001-of-00003.parquet: 10000 rows checked
-data/train-00002-of-00003.parquet: 9101 rows checked

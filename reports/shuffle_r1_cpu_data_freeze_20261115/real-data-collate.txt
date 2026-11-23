@@ -1,2 +1,0 @@
-You have video processor config saved in `preprocessor.json` file which is deprecated. Video processor configs should be saved in their own `video_preprocessor.json` file. You can rename the file or load and save the processor back which renames it automatically. Loading from `preprocessor.json` will be removed in v5.0.
-2101 source rows; 16 prompts collated; position_ids (16, 3, 2048); Qwen2VLImageProcessorFast

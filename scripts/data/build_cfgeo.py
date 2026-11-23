@@ -1,8 +1,8 @@
 """Build CF-Geo edit patches with OCR (local machine or sandbox; needs rapidocr-onnxruntime 1.4.4 and Pillow 13.0.0).
 
-    python -m scripts.data.build_cfgeo --sources DIR --spec reports/eval_sets_20261109/eval_sets.json \
-        --out reports/cfgeo_20261109/cfgeo.json
-    python -m scripts.data.build_cfgeo --sources DIR --dev-train 48 --out reports/cfgeo_20261109/cfgeo_dev_train.json
+    python -m scripts.data.build_cfgeo --sources DIR --spec configs/evaluation/eval_sets.json \
+        --out configs/evaluation/cfgeo.json
+    python -m scripts.data.build_cfgeo --sources DIR --dev-train 48 --out configs/evaluation/cfgeo_dev_train.json
 
 Implements docs/plan/S3设计_20261109.md section 3.2 with the editing steps of its revision 1 (section 11), for every
 CF candidate of the evaluation-set specification (validation and test) or, with ``--dev-train``, for train
@@ -26,7 +26,7 @@ k=2 (double every length number):
 
 An item is kept only if both k=1 and k=2 pass. A patch is an RGBA rectangle whose alpha is 255 exactly where we set
 a pixel (our background fill or our digits) and 0 elsewhere, with those other pixels stored as zeros; no source
-pixel and no source image is written. Development used train only (scripts in reports/cfgeo_20261109/).
+pixel and no source image is written. Development used train only.
 """
 import argparse
 import json

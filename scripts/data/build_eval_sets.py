@@ -1,6 +1,6 @@
 """Build the pre-registered evaluation-set specification from pinned public sources (no model is involved).
 
-    python -m scripts.data.build_eval_sets --sources data/project3_sources --out reports/eval_sets_20261109/eval_sets.json
+    python -m scripts.data.build_eval_sets --sources data/project3_sources --out configs/evaluation/eval_sets.json
 
 Rules: docs/plan/S3设计_20261109.md sections 1-3 (src/evaluation/eval_sets.py). Every source file is checked
 against migration_manifest.json before it is read. InterGPS records are rebuilt from the pinned zips with

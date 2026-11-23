@@ -42,7 +42,7 @@ SOURCE_FILES = [
     "src/training/rl_entry.py", "src/training/rl_rewards.py", "src/training/vision_cache.py",
     "src/training/vllm_guard.py", "src/training/registry.py",
     "src/data/approved_training_inputs.py", "src/data/intergps_index.py", "src/data/perception_v4.py",
-    "src/data/project3_perception_v2.py", "src/data/project3_perception_prototype.py",
+    "src/data/geometry_expressions.py", "src/data/geometry_model_serialization.py",
     "src/training/perception_reward_v4.py", "scripts/training/math_verify_v3_strict_worker.py",
     "scripts/training/math_verify_pilot_worker.py",
 ]

@@ -93,7 +93,7 @@ def test_edit_replaces_the_label_keeps_nearby_lines_and_patches_reproduce_it():
 
 
 def test_k1_redraws_the_printed_string_and_bold_labels_get_a_stroke():
-    """Spot-check round 1 (reports/cfgeo_20261109/spot_check.md): "3.0" must stay "3.0" at k=1, bold digits stay bold."""
+    """CF-Geo image-editing regression: "3.0" must stay "3.0" at k=1, bold digits stay bold."""
     image, box = _label_image(line_colour=None, text="3.0")
     label = _box("3.0", box)
     assert B.edit(image, [label], [label], 1)[1][0]["to"] == "3.0"

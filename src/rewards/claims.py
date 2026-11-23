@@ -7,7 +7,7 @@ v4 behaviour). Canonical keys come from the frozen ``perception_v4.token_key``
 so certified tokens and predictions are matched with unchanged semantics.
 
 The strict schema check is ported from
-``reports/handover_20261024_v2/strict_geometry.py`` (schema v5, frozen evidence
+the original strict-geometry parser (schema v5, frozen evidence
 directory) with the same rules: arity, distinct points, segment/angle/circle
 roles, unit presence, positive values and the reflex-angle upper bound of 360.
 """
@@ -16,7 +16,7 @@ import re
 from dataclasses import dataclass
 
 from src.data.perception_v4 import token_key
-from src.data.project3_perception_v2 import ORDER, expression
+from src.data.geometry_expressions import ORDER, expression
 
 SCHEMA_VERSION = "claims-v6-20261109"
 _BLOCK_RE = re.compile(r"<perception>(.*?)</perception>", re.S)
