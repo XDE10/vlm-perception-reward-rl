@@ -9,10 +9,11 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
-from scripts.colab import decide_pilot, drive, s4_state, tasks, train_s4
+from scripts.colab import decide_pilot, drive, s4_state, s4_supervise, tasks, train_s4
 from scripts.colab.common import sha256_file
 from scripts.colab.s4_supervise import classify, parse_events
 
@@ -421,10 +422,32 @@ def test_train_job_order_deadline_resume_restart_and_failure(fake_drive, tmp_pat
     put_pilot_latest(open_store(tmp_path), copy)
     base = fake_drive / EXPERIMENT
     # job 1: run 1 completes; run 2 hangs at step 50 and is stopped at the deadline after checkpoint-38 is on Drive.
-    # The budget leaves room for run 1 on a busy CPU (every stub rclone call starts a Python process)
+    # Trigger the supervisor deadline only once the checkpoint is durable, independent of CPU speed.
+    supervise = s4_supervise.supervise
+    real_time = s4_supervise.time.time
+    checkpoint_marker = base / "rl_ans/seed1/checkpoint-38" / s4_state.VERIFIED
+
+    def supervise_until_checkpoint(name, *args, **kwargs):
+        if name != "rl_ans/seed1":
+            return supervise(name, *args, **kwargs)
+        kwargs["deadline"] = real_time() + 180
+        jump = 0.0
+
+        def clock():
+            nonlocal jump
+            now = real_time()
+            if not jump and checkpoint_marker.is_file():
+                jump = max(0.0, kwargs["deadline"] + 1 - now)
+            return now + jump
+
+        with monkeypatch.context() as mocked:
+            mocked.setattr(s4_supervise, "time", SimpleNamespace(time=clock))
+            return supervise(name, *args, **kwargs)
+
     monkeypatch.setenv("FAKE_TRAIN_HANG", "rl_ans/1:50")
-    code, record = job(copy, tmp_path, "job1", "--max-hours", str(45 / 3600.0), "--cu-balance", "1000",
-                       "--cu-rate", "6.73")
+    with monkeypatch.context() as mocked:
+        mocked.setattr(s4_supervise, "supervise", supervise_until_checkpoint)
+        code, record = job(copy, tmp_path, "job1", "--max-hours", "1", "--cu-balance", "1000", "--cu-rate", "6.73")
     assert code == 0, record
     assert [(r["run"], r["state"]) for r in record["runs"]] == [("rl_v5/seed1", "completed"), ("rl_ans/seed1", "interrupted")]
     assert record["stop"]["kind"] == "time" and "time budget" in record["runs"][1]["reason"]

@@ -20910,10 +20910,11 @@
   },
   {
    "path": "tests/test_s4_runner.py",
-   "bytes": 33418,
-   "sha256": "8cf9a8491f45cbeed345020fc738aa0fe82a6db05225c480d035f4525af973e3",
+   "bytes": 34329,
+   "sha256": "ed9545153719a774fc3fb62a7f6129b1e8aa64e1d5b0a71b7403c75c13f3ab09",
    "source_sha256": "8cf9a8491f45cbeed345020fc738aa0fe82a6db05225c480d035f4525af973e3",
-   "changed_for_portability": false
+   "changed_for_portability": true,
+   "updated_in": "source-release"
   },
   {
    "path": "tests/test_s5_runner.py",
@@ -23657,6 +23658,11 @@
      "path": "tests/test_project3_audit.py",
      "previous_sha256": "b71ec743d84abed03c47319fd36ce7d8237f05d0357877bb60dfc0dcf14b2aea",
      "current_sha256": "730728f439d35708846e6749bcf92c13fedf629ac20f793d8326ca8247fef624"
+    },
+    {
+     "path": "tests/test_s4_runner.py",
+     "previous_sha256": "8cf9a8491f45cbeed345020fc738aa0fe82a6db05225c480d035f4525af973e3",
+     "current_sha256": "ed9545153719a774fc3fb62a7f6129b1e8aa64e1d5b0a71b7403c75c13f3ab09"
     },
     {
      "path": "tools/build_migration_manifest.py",
