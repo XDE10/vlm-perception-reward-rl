@@ -10,7 +10,7 @@
 需要 Git 与 Python 3.10+。以下命令只使用 Git 仓库中的文件，可在 Windows PowerShell、Linux 或 WSL 运行。
 
 ```text
-git clone --branch main https://github.com/XDE10/vlm-perception-reward-rl.git
+git clone --depth 1 --branch main https://github.com/XDE10/vlm-perception-reward-rl.git
 cd vlm-perception-reward-rl
 python tools/verify_migration.py --full
 python -m scripts.training.register_runs --show rl_v5 1
