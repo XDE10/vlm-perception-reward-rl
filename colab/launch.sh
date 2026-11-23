@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Project 3 Colab launcher (WSL2 / Linux / macOS; run it with bash, also from zsh). Usage:
-#   bash colab/launch.sh check                 verify local prerequisites, data, Colab auth, git push access
+#   bash colab/launch.sh check                 verify local prerequisites, data and Colab auth
 #   bash colab/launch.sh preflight [options]   run the GPU preflight (fresh VM, or --session NAME)
 #   bash colab/launch.sh v0 [options]          S3: evaluation inputs, train-only decisions, V0 diagnosis (A100/H100 only)
 #   bash colab/launch.sh pilot [options]       S4: the pre-registered pilot and its gates G1-G6 (A100-SXM4-40GB, Drive)
@@ -15,7 +15,7 @@
 #   --keep (do not release a VM this run created)   --release (also release a --session VM at the end)
 #   --no-vm-push   --no-vllm   --allow-dirty   --dry-run
 #   train only: --max-hours H (start no run that would end later; stop a run at H)   --vm-hours H (VM lifetime, 24)
-# Settings (environment or .colab_local.env): P3_DATA_ROOT, P3_GPU, COLAB_GLOBAL_FLAGS, P3_POLL_SECONDS,
+# Settings (environment or .colab_local.env): P3_DATA_ROOT, P3_GPU, P3_PUBLISH_RESULTS, COLAB_GLOBAL_FLAGS, P3_POLL_SECONDS,
 #   P3_PART_MB, P3_UPLOAD_TRIES, P3_UPLOAD_BACKOFF, P3_UPLOAD_TIMEOUT, P3_RETRY_SLEEP, P3_CODE_SOURCE (auto|upload),
 #   P3_ALLOCATE_TRIES (default 10), P3_ALLOCATE_WAIT (seconds between tries, default 60),
 #   P3_JOB_START_TRIES (default 3), P3_JOB_START_WAIT (seconds before checking that the job started, default 30),
@@ -57,6 +57,7 @@ RESULTS_FETCHED=0
 SESSION_STOPPED=0
 SESSION_HANDLED=0
 PUSH_ON_FAILURE=0
+PUBLISH_RESULTS="${P3_PUBLISH_RESULTS:-0}"
 KEEP=0
 ATTACHED=0
 RELEASE=0
@@ -539,11 +540,13 @@ cmd_check() {
   "$PY" -m scripts.colab.pack_private_data --data-root "$DATA_ROOT" --check-only > "$CACHE/check.json" 2>&1 || true
   log "data check: $(head -c 600 "$CACHE/check.json")"
   grep -q '"ok": true' "$CACHE/check.json" || ok=0
-  if git push --dry-run -q origin "HEAD:refs/heads/results/_push_check" >/dev/null 2>&1; then
-    log "git push access: OK"
-  else
-    log "git push access: FAILED (configure credentials, e.g. 'gh auth login' or a credential helper)"
-    ok=0
+  if [[ "$PUBLISH_RESULTS" == 1 ]]; then
+    if git push --dry-run -q origin "HEAD:refs/heads/results/_push_check" >/dev/null 2>&1; then
+      log "git push access: OK"
+    else
+      log "git push access: FAILED (configure Git credentials or unset P3_PUBLISH_RESULTS)"
+      ok=0
+    fi
   fi
   if commit_is_published "$(git rev-parse HEAD)"; then
     log "code source: the VM will download commit $(git rev-parse --short=12 HEAD) from GitHub (no code upload)"
@@ -553,7 +556,7 @@ cmd_check() {
   if [[ -n "${P3_DRIVE_MOUNT_CMD:-}${P3_DRIVE_SETUP_FILE:-}" ]]; then
     log "Google Drive (optional): a Drive hook is configured; test it with: bash colab/launch.sh drive-check"
   else
-    log "Google Drive (optional): no Drive hook configured; results still go to the results/<run_id> branch"
+    log "Google Drive (optional): no Drive hook configured; use a mounted Drive for registered runs"
   fi
   if [[ "$ok" == 1 ]]; then log "all checks passed"; else die "some checks failed (see above)"; fi
 }
@@ -808,7 +811,7 @@ cmd_run() {
   # request; the VM pushes only if that file exists there, otherwise this machine pushes as before.
   local push_url="" github_json="{}" web_url
   web_url="$(repo_web_url)"
-  if [[ "$vm_push" != off ]]; then
+  if [[ "$PUBLISH_RESULTS" == 1 && "$vm_push" != off ]]; then
     if [[ -n "${P3_VM_PUSH_URL:-}" ]]; then
       push_url="$P3_VM_PUSH_URL"
     elif [[ "$web_url" =~ ^https://github\.com/[^/]+/[^/]+$ ]]; then
@@ -828,7 +831,7 @@ cmd_run() {
 
   trap on_exit EXIT
   trap 'log "interrupted"; exit 130' INT TERM
-  PUSH_ON_FAILURE=1
+  PUSH_ON_FAILURE="$PUBLISH_RESULTS"
   if [[ "$ATTACHED" == 1 ]]; then
     log "using your session $SESSION; it is not released at the end unless you pass --release"
     inbox_listing || die "could not run code on session $SESSION (does it exist? check with: colab sessions)"
@@ -884,7 +887,7 @@ cmd_run() {
   wait_and_fetch
   release_or_remind
   colab_ usage </dev/null > "$RUN_DIR/usage_after.txt" 2>&1 || true
-  push_results "$RUN_ID" || true
+  if [[ "$PUBLISH_RESULTS" == 1 ]]; then push_results "$RUN_ID" || true; fi
   print_summary
   [[ "$(run_overall)" == "passed" ]] || exit 3
 }
@@ -927,7 +930,7 @@ cmd_collect() {
   wait_and_fetch_collect
   release_or_remind
   colab_ usage </dev/null > "$RUN_DIR/usage_after.txt" 2>&1 || true
-  push_results "$RUN_ID" || true
+  if [[ "$PUBLISH_RESULTS" == 1 ]]; then push_results "$RUN_ID" || true; fi
   print_summary
   [[ "$(run_overall)" == "passed" ]] || exit 3
 }

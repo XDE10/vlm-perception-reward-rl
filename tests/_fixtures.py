@@ -1,6 +1,6 @@
-"""Small fixtures built from evidence files that are committed to git.
+"""Geometry fixtures for tests that run without the approved release.
 
-``reports/handover_audit_20261024_v1/sample_trace.json`` holds the released
+``tests/fixtures/geometry_sample.json`` holds the released
 row ``train:10`` (InterGPS id 1670) and its official InterGPS record, so tests
 can exercise real labels and real coordinates without the (untracked) data/.
 """
@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-TRACE = ROOT / "reports/handover_audit_20261024_v1/sample_trace.json"
+TRACE = ROOT / "tests/fixtures/geometry_sample.json"
 
 
 def trace():

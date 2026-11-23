@@ -92,7 +92,7 @@ def resolve(experiment_path, arm, seed, arms_path=None, smoke=None, n_rows=None)
         rows = min(n_rows, resolved["smoke"].get("limit_rows", n_rows))
         train["max_steps"] = resolved["smoke"].get("max_steps") or math.floor(train["epochs"] * rows / train["prompts_per_step"])
     resolved["run_name"] = f"{arm}/seed{int(seed)}" + ("_smoke" if smoke else "")
-    resolved["output_dir"] = str(Path(base["output_root"]) / resolved["run_name"])
+    resolved["output_dir"] = (Path(base["output_root"]) / resolved["run_name"]).as_posix()
     resolved["config_sha256"] = canonical_sha256({k: v for k, v in resolved.items() if k != "config_sha256"})
     return resolved
 

@@ -16,7 +16,7 @@ def sha(text):
 
 def test_git_tracked_mode_refreshes_code_and_keeps_data_entries(tmp_path):
     subprocess.run(["git", "init", "-q"], cwd=tmp_path, check=True)
-    (tmp_path / ".gitignore").write_text("/data/*\n", encoding="utf8")
+    (tmp_path / ".gitignore").write_text("/data/*\n", encoding="utf8", newline="\n")
     (tmp_path / "src").mkdir()
     (tmp_path / "src/a.py").write_text("new", encoding="utf8")
     (tmp_path / "src/b.py").write_text("same", encoding="utf8")

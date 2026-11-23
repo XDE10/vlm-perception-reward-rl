@@ -152,7 +152,7 @@ def v0_steps(ctx):
              description="pinned Geometry3K wrapper parquets, checked against migration_manifest.json"),
         step("eval_sets", [py, "-m", "scripts.colab.eval_inputs", "eval-sets", "--sources", public, "--out",
                            out / "eval_sets_check.json"], 1800, depends_on=["public_sources"],
-             description="evaluation-set rules reproduce reports/eval_sets_20261109/eval_sets.json (no model)"),
+             description="evaluation-set rules reproduce configs/evaluation/eval_sets.json (no model)"),
         step("cfgeo_build", [py, "-m", "scripts.colab.eval_inputs", "cfgeo", "--sources", public, "--out",
                              out / "cfgeo_build.json"], 1800, depends_on=["public_sources"],
              description="every CF-Geo image rebuilds from its patches to the recorded pixels (no model)"),

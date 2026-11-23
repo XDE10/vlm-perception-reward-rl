@@ -4,7 +4,7 @@
 
 The pack holds only what runs need: the approved release (rows, manifest,
 protected dev ids), the images those rows reference, the InterGPS audit files
-and a few small files the CPU test suite reads. Every file is verified before it
+and the source manifest when present. Every file is verified before it
 is packed, against one of three anchors committed in git or sealed in the
 release:
 
@@ -32,8 +32,6 @@ REQUIRED_LEDGER = ["data/project3_audit/intergps_annotations.jsonl"]
 OPTIONAL_LEDGER_PREFIXES = [
     "data/project3_audit/",  # Geometry3K <-> InterGPS links and MathVista overlap audit (evaluation stage)
     "data/project3_sources/manifest.json",  # pinned public source SHA256s (sources are re-downloaded on the VM)
-    "data/tokenizers/Qwen2.5-7B-Instruct/",  # legacy config directory checked by tests/test_repo_layout.py
-    "data/synthesis_mock/",  # read by tests/test_delivery_artifacts.py
 ]
 
 

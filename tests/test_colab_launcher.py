@@ -77,7 +77,7 @@ def build_world(tmp_path):
     wrapper.write_text("#!/bin/sh\nexec '%s' '%s' \"$@\"\n" % (sys.executable, ROOT / "tests" / "colab_stub.py"))
     wrapper.chmod(0o755)
     env = dict(os.environ, STUB_ROOT=str(stub_root), P3_COLAB_BIN=str(wrapper), P3_PYTHON=sys.executable,
-               P3_DATA_ROOT=str(data_parent / "data"), P3_POLL_SECONDS="1", P3_UPLOAD_BACKOFF="0", P3_RETRY_SLEEP="0",
+               P3_DATA_ROOT=str(data_parent / "data"), P3_PUBLISH_RESULTS="1", P3_POLL_SECONDS="1", P3_UPLOAD_BACKOFF="0", P3_RETRY_SLEEP="0",
                P3_ALLOCATE_WAIT="0", P3_JOB_START_WAIT="1",
                PYTHONPATH="",
                # never let a real rclone remote or a real GitHub credential of the developer be used by these tests
@@ -194,6 +194,7 @@ def test_dry_run_preflight_end_to_end(tmp_path):
 
 def test_dropped_connection_falls_back_to_polling(tmp_path):
     repo, origin, stub_root, env = build_world(tmp_path)
+    env.pop("P3_PUBLISH_RESULTS")
     env.update(STUB_DROP_JOB="1", STUB_FAIL_STATUS="3")
     result = launch(repo, env, "preflight", "--dry-run", "--no-vllm")
     assert result.returncode == 0, result.stderr[-4000:]
@@ -204,7 +205,10 @@ def test_dropped_connection_falls_back_to_polling(tmp_path):
     run = only_run(repo)
     assert "503" in (run / "status_download.log").read_text()
     assert "SECRET-STATUS-TOKEN" not in (run / "status_download.log").read_text()
-    summary = assert_pushed(origin, run)
+    assert not git("for-each-ref", "refs/heads/results/", cwd=origin).strip()
+    result_dirs = list((run / "results").iterdir())
+    assert len(result_dirs) == 1
+    summary = json.loads((result_dirs[0] / "summary.json").read_text(encoding="utf-8"))
     assert summary["overall"] == "passed"
 
 

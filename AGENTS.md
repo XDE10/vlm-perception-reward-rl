@@ -1,39 +1,9 @@
-# 项目入口与工作约定
+# 项目维护
 
-适用范围：本仓库根目录及其子目录。
+从 [README](README.md) 开始。协议 v3 和 Shuffle-R1 使用不同的训练数据、环境和评测协议。
 
-- 当前项目：项目三：多模态几何推理的视觉依赖与稀疏感知奖励。
-- 主模型是 Qwen2.5-VL-3B-Instruct；当前是 609 train / 82 validation 的部分认证
-  事实，不是全图金标。
-- 正式实验用协议 v3 统一入口 `scripts.training.train_rl`，所有组都从 V0 出发：
-  V0 是固定 revision 的 Qwen2.5-VL-3B-Instruct 原始权重，只挂语言 LoRA 做 GRPO，
-  不做感知 SFT（[执行计划](docs/plan/执行计划_20261108.md) 第 2.1、4 节，
-  [S4 预注册](docs/plan/S4预注册_20261110.md) 第 3 节）。
-- 旧入口 `scripts.training.train_project3`（只监督 `model_perception` 的感知 SFT，
-  再从 SFT 权重起跑稀疏 GRPO）只作历史保留，不用于正式实验。不能宣称完整
-  V0～V4 SFT 矩阵或 EasyR1 已跑通。
-- 另有独立的 Shuffle-R1 单卡复现轨道，冻结源码、配置和监督记录见
-  [2026-11-18 归档](reports/shuffle_r1_formal_progress_20261118/README.md)。其 MMRL30k
-  清洗集和内部 dev 与上述协议 v3 / S4 / S5 分开；不能把内部 dev 指标当作公开测试
-  或 S5 结论。归档脚本保留实际部署布局，不能直接替代本仓库的训练入口。
-- 先读 [README.md](README.md)，再按任务读 [docs/](docs/README.md) 与
-  [configs/](configs/README.md)、[data/portable_release/manifest.json](data/portable_release/manifest.json)。
-  无需先遍历全部原始数据、缓存或历史报告。
-- 当前执行配置在 [configs/](configs/)；[docs/blueprints/](docs/blueprints/) 中的
-  旧配置保留溯源，可能带旧绝对路径，不能直接执行。
-- 本项目独立于旧 `modern_genai` 和其他项目目录；旧共用环境/模块已被清理，不能
-  引用其 `.venv` 或旧入口。
-- 数据范围以 release manifest 的 `approved_training_files` /
-  `approved_evaluation_files` 和逐行批准为准。候选不等于批准，AI 审核不等于
-  人工金标；不要手改批准、行内容或哈希来绕过检查。
-- 代码能力看实际源码，状态看 README 与版本化报告；GPU 上跑过什么，以 README
-  和 `results/<run_id>` 结果分支为准。冒烟、试跑和历史 CPU 通过都不代表正式
-  训练成功或能力提升。
-- 命令从项目根目录执行；离线入口为
-  `python tools/verify_migration.py`（`--full` 含 SHA）。测试用
-  `python -m pytest -q`（需要 3.10+）；文档链接用
-  `python tools/check_links.py`。
-- 结构变更后重建清单：`python tools/build_migration_manifest.py`；不要手工编辑
-  `migration_manifest.json` 的哈希字段。
-- 文档/代码变更保留来源和验证记录；`data/`、`reports/` 布局冻结，新增内容用
-  新日期目录；历史归档不改写。报告未运行的检查。
+- 协议 v3 用 `scripts.training.train_rl`，固定模型 revision，从 V0 仅训练语言 LoRA。以 release manifest 与登记表为批准数据和训练身份来源。
+- Shuffle-R1 从 [单卡指南](shuffle_r1/README.md) 启动。150 步内部验证、历史单次对照和八采样公开评测分别引用，离线复核注明来源。
+- 结构变化后运行 `python tools/build_migration_manifest.py --date YYYY-MM-DD --purpose "reason"`。保留冻结数据哈希。
+- 验证使用 `python tools/verify_migration.py --full`、`python tools/check_links.py` 与 `python -m pytest -q`。有批准数据时加 `--data-root data` 单独核对数据。
+- 运行日志、复核明细、权重和私有数据包存到本地存档或项目存储。

@@ -1,5 +1,5 @@
 # CPU development/test environment for the protocol-v3 RL code (2026-11-09).
-# Verified in a Linux sandbox with Python 3.12.13; see docs/plan/决策记录.md (D1).
+# Python 3.12; use the CPU PyTorch backend for this environment.
 # torch/torchvision: install from https://download.pytorch.org/whl/cpu for a small CPU-only build.
 torch==2.13.0
 torchvision==0.28.0
@@ -13,3 +13,4 @@ sympy==1.14.0
 pillow
 numpy
 pytest
+pyarrow

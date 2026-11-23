@@ -3,7 +3,7 @@
     python -m scripts.colab.harness_check --model-path <snapshot> --sources <public> --out <out>/harness_check
 
 * E1 path: the first 16 approved train rows by sample_id, original image, v5 verdicts.
-* Answer conditions: 32 CF-Geo development items from public train (reports/cfgeo_20261109/cfgeo_dev_train.json,
+* Answer conditions: 32 CF-Geo development items from public train (configs/evaluation/cfgeo_dev_train.json,
   seed 20261109) under original, blind, swap (fixed pairing among the 32), CF k=1 and CF k=2.
 * The statistics module on V0's own outputs (original vs blind, CF k=2 vs k=1), to exercise it on real records.
 
@@ -16,7 +16,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-DEV = ROOT / "reports/cfgeo_20261109/cfgeo_dev_train.json"
+DEV = ROOT / "configs/evaluation/cfgeo_dev_train.json"
 SEED = 20261109
 
 
